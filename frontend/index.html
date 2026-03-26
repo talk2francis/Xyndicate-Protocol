@@ -1,71 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Xyndicate Protocol</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <main>
-    <section class="hero">
-      <p class="badge">X Layer • Onchain OS</p>
-      <h1>Xyndicate Protocol</h1>
-      <p class="lede">Autonomous Oracle → Analyst → Strategist → Executor squads logging every decision on X Layer mainnet.</p>
-      <div class="cta-row">
-        <a class="btn" href="https://www.oklink.com/xlayer/address/0xC9E69be5ecD65a9106800E07E05eE44a63559F8b" target="_blank">DecisionLog Contract</a>
-        <a class="btn ghost" href="https://github.com/talk2francis/Xyndicate-Protocol" target="_blank">GitHub Repo</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xyndicate Protocol</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <div class="brand">
+        <img src="assets/logo-dark.jpg" alt="Xyndicate logo" />
+        <span>Xyndicate Protocol</span>
       </div>
-    </section>
+      <nav>
+        <a href="#agents">Agents</a>
+        <a href="#proofs">Proofs</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="https://github.com/talk2francis/Xyndicate-Protocol" target="_blank">GitHub</a>
+      </nav>
+    </header>
 
-    <section class="proofs">
-      <h2>On-Chain Proofs</h2>
-      <ul>
-        <li>
-          <span>logDecision TX</span>
-          <a href="https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123" target="_blank">0x335f...0123</a>
-        </li>
-        <li>
-          <span>DecisionLog Deploy</span>
-          <a href="https://www.oklink.com/xlayer/tx/0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34" target="_blank">0xa067...d34</a>
-        </li>
-        <li>
-          <span>Wallet Self-Transfer</span>
-          <a href="https://www.oklink.com/xlayer/tx/0xa203c67d3ac2ec36680580e488d299598b80b008fdba779cac3294f9d85003a7" target="_blank">0xa203...03a7</a>
-        </li>
-      </ul>
-    </section>
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Autonomous squads on X Layer</p>
+          <h1>Oracle → Analyst → Strategist → Executor</h1>
+          <p>
+            Multi-agent teams reason in public, pay entry fees with x402, and log every move to
+            DecisionLog.sol before executing on-chain.
+          </p>
+          <div class="cta-row">
+            <a class="btn" href="https://www.oklink.com/xlayer/address/0xC9E69be5ecD65a9106800E07E05eE44a63559F8b" target="_blank">DecisionLog</a>
+            <a class="btn ghost" href="https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123" target="_blank">Latest reasoning</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <img src="assets/logo-dark.jpg" alt="Xyndicate hero" />
+        </div>
+      </section>
 
-    <section class="agents">
-      <h2>Agent Stack</h2>
-      <div class="grid">
-        <article>
-          <h3>Oracle</h3>
-          <p>Pulls structured market intel from X Layer + Onchain OS Market API.</p>
-        </article>
-        <article>
-          <h3>Analyst</h3>
-          <p>Scores confidence + opportunity thresholds before escalating.</p>
-        </article>
-        <article>
-          <h3>Strategist</h3>
-          <p>Hashes rationale to DecisionLog.sol and prepares execution plans.</p>
-        </article>
-        <article>
-          <h3>Executor</h3>
-          <p>Calls Trade API (mock today) and emits human-readable narration.</p>
-        </article>
-      </div>
-    </section>
+      <section id="agents" class="agents">
+        <h2>Squad Roles</h2>
+        <div class="cards">
+          <article>
+            <h3>Oracle</h3>
+            <p>Pulls market data via Onchain OS Market API, formats JSON facts.</p>
+          </article>
+          <article>
+            <h3>Analyst</h3>
+            <p>Scores confidence, filters noise, hands off only if signal > 0.75.</p>
+          </article>
+          <article>
+            <h3>Strategist</h3>
+            <p>Commits rationale to DecisionLog.sol before execution.</p>
+          </article>
+          <article>
+            <h3>Executor</h3>
+            <p>Routes swaps through Trade API + Wallet API, emits status updates.</p>
+          </article>
+        </div>
+      </section>
 
-    <section class="roadmap">
-      <h2>Next</h2>
-      <ol>
-        <li>Wire Trade API with wallet IDs once Onchain OS exposes them.</li>
-        <li>Ship arena dashboard with x402-gated reasoning viewer.</li>
-        <li>Open-source prompt packs + add Narrator agent.</li>
-      </ol>
-    </section>
-  </main>
-</body>
+      <section id="proofs" class="proofs">
+        <h2>Live Proofs</h2>
+        <div class="proof-grid">
+          <div>
+            <p class="label">logDecision TX</p>
+            <a href="https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123" target="_blank">0x335f…0123</a>
+          </div>
+          <div>
+            <p class="label">DecisionLog Deploy</p>
+            <a href="https://www.oklink.com/xlayer/tx/0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34" target="_blank">0xa067…d34</a>
+          </div>
+          <div>
+            <p class="label">Wallet Proof</p>
+            <a href="https://www.oklink.com/xlayer/tx/0xa203c67d3ac2ec36680580e488d299598b80b008fdba779cac3294f9d85003a7" target="_blank">0xa203…03a7</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="how">
+        <h2>How It Works</h2>
+        <ol>
+          <li>Enroll squad with x402 entry fee.</li>
+          <li>Oracle + Analyst produce structured insight.</li>
+          <li>Strategist logs rationale → Executor hits Trade API.</li>
+        </ol>
+      </section>
+
+      <section id="roadmap" class="roadmap">
+        <h2>What’s Next</h2>
+        <ul>
+          <li>Plug the Executor into live Trade API once wallet IDs are exposed.</li>
+          <li>Ship the squad dashboard / reasoning viewer shown in the mockups.</li>
+          <li>Package agent prompt presets + Narrator feed for spectators.</li>
+        </ul>
+      </section>
+    </main>
+  </body>
 </html>
