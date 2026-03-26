@@ -1,15 +1,27 @@
 import 'dotenv/config';
-import axios from 'axios';
-import OpenAI from 'openai';
+import { fetchMarketSnapshot } from './agents/oracle';
+import { craftStrategy, logDecision } from './agents/strategist';
+import { executeSwap } from './agents/executor';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+async function run() {
+  console.log('> Oracle: fetching market data');
+  const snapshot = await fetchMarketSnapshot();
+  console.log(snapshot);
 
-async function main() {
-  console.log('[Sergeant] Pipeline bootstrap placeholder.');
-  // TODO: wire Oracle -> Strategist -> Executor
+  console.log('> Strategist: crafting plan');
+  const decision = await craftStrategy(snapshot);
+  console.log(decision);
+
+  console.log('> Strategist: logging decision on-chain');
+  const txHash = await logDecision(decision);
+  console.log('  DecisionLog tx:', txHash);
+
+  console.log('> Executor: triggering Trade API swap');
+  const swap = await executeSwap({ from: 'USDC', to: 'ETH', amount: '10' });
+  console.log('  Swap response:', swap);
 }
 
-main().catch((err) => {
+run().catch((err) => {
   console.error(err);
   process.exit(1);
 });
