@@ -69,3 +69,20 @@ SYNDICATE_PRIVATE_KEY=0x... DECISION_LOG_ADDRESS=0x... X_LAYER_RPC=https://rpc.x
 - Integrate Wallet/x402 client with live Trade API once wallet IDs are exposed.
 - Build arena dashboard with your mockups + x402 gated reasoning viewer.
 - Expand agent prompts/personas and add Narrator module for spectator feed.
+
+## Agents (v0)
+| Agent | Repo path | Status |
+| --- | --- | --- |
+| Oracle | `agents/src/agents/oracle.ts` | Fetch scaffold ready; waits for Wallet/Market API credentials. |
+| Strategist | `agents/src/agents/strategist.ts` | GPT-4.1 mini reasoning + DecisionLog logging (active). |
+| Executor | `agents/src/agents/executor.ts` | Trade API stub ready; pending walletId exposure to hit live endpoint. |
+
+`agents/src/index.ts` wires the 3-agent loop; swap execution is paused until the Wallet API returns walletId metadata. Decision hashes are already logged on-chain via the Strategist (proof above).
+
+## Wallet/x402 Status
+- `agents/src/lib/onchainOs.ts` – signed OKX client (API key + secret + passphrase).
+- `agents/src/services/wallet.ts` – wallet creation + x402 payment helpers.
+- `agents/src/scripts/enrollSquad.ts` – CLI: create wallet → pay entry → call `SeasonManager.enroll`.
+- `.env.example` contains all required env vars; README retains the step-by-step instructions.
+
+Pending unblock: Onchain OS currently requires a `walletId` in the Trade API payloads. Once we can fetch that ID (or OKX exposes it via API/UI) the CLI can run end-to-end with no further code changes.
