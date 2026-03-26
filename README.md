@@ -30,6 +30,8 @@ Track progress in `docs/lean-plan.md`.
 | Proof | Hash | Link |
 | --- | --- | --- |
 | Wallet funding | `0x8883af1b0...f5a8` | https://www.oklink.com/xlayer/tx/0x8883af1b0a659d5e1c0beff2ed5c34c4a8497427e9a84a0348ba1e38aa36f5a8 |
+| Agent reasoning proof | `0x65495c477ff93fd79bc865135a83647ced5a3af1f3734a76638094cd5a123796` | https://www.oklink.com/xlayer/tx/0x65495c477ff93fd79bc865135a83647ced5a3af1f3734a76638094cd5a123796 |
+
 | Self-transfer (wallet control) | `0xa203c67d3a...3a7` | https://www.oklink.com/xlayer/tx/0xa203c67d3ac2ec36680580e488d299598b80b008fdba779cac3294f9d85003a7 |
 | DecisionLog deploy | `0xa067aca103...d34` | https://www.oklink.com/xlayer/tx/0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34 |
 | logDecision call | `0x335f27337c...0123` | https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123 |
