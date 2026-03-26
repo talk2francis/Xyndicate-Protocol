@@ -86,3 +86,6 @@ SYNDICATE_PRIVATE_KEY=0x... DECISION_LOG_ADDRESS=0x... X_LAYER_RPC=https://rpc.x
 - `.env.example` contains all required env vars; README retains the step-by-step instructions.
 
 Pending unblock: Onchain OS currently requires a `walletId` in the Trade API payloads. Once we can fetch that ID (or OKX exposes it via API/UI) the CLI can run end-to-end with no further code changes.
+
+### Direct DEX path
+For teams that prefer to self-custody keys, set `EVM_RPC_URL` + `EVM_PRIVATE_KEY` in `.env` and run the proof scripts directly (self-transfer, DecisionLog deploy, logDecision). The Executor will detect `EVM_PRIVATE_KEY` and skip the WaaS client, signing via ethers instead. This removes the walletId dependency entirely.
