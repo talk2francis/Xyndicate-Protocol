@@ -1,34 +1,49 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.19;
 
 contract DecisionLog {
-    struct Record {
-        address squad;
-        bytes32 decisionHash;
+    struct Decision {
+        string squadId;
+        string agentChain;
+        string rationale;
         uint256 timestamp;
-        string metadata;
     }
 
-    Record[] public records;
+    Decision[] public decisions;
 
-    event DecisionRecorded(uint256 indexed recordId, address indexed squad, bytes32 decisionHash, string metadata);
+    event DecisionRecorded(
+        string indexed squadId,
+        string agentChain,
+        string rationale,
+        uint256 timestamp
+    );
 
-    function recordDecision(bytes32 decisionHash, string calldata metadata) external returns (uint256 recordId) {
-        recordId = records.length;
-        records.push(Record({
-            squad: msg.sender,
-            decisionHash: decisionHash,
-            timestamp: block.timestamp,
-            metadata: metadata
-        }));
-        emit DecisionRecorded(recordId, msg.sender, decisionHash, metadata);
+    function logDecision(
+        string calldata squadId,
+        string calldata agentChain,
+        string calldata rationale
+    ) external {
+        decisions.push(
+            Decision({
+                squadId: squadId,
+                agentChain: agentChain,
+                rationale: rationale,
+                timestamp: block.timestamp
+            })
+        );
+        emit DecisionRecorded(squadId, agentChain, rationale, block.timestamp);
     }
 
-    function getRecord(uint256 recordId) external view returns (Record memory) {
-        return records[recordId];
+    function getDecisionCount() external view returns (uint256) {
+        return decisions.length;
     }
 
-    function recordCount() external view returns (uint256) {
-        return records.length;
+    function getDecision(uint256 index)
+        external
+        view
+        returns (string memory, string memory, string memory, uint256)
+    {
+        Decision memory d = decisions[index];
+        return (d.squadId, d.agentChain, d.rationale, d.timestamp);
     }
 }

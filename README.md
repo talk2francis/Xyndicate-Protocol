@@ -17,3 +17,55 @@ Track progress in `docs/lean-plan.md`.
 4. Check explorer for the `SquadEnrolled` event + entry payment log.
 
 > NOTE: Requires real OKX Onchain OS project credentials and a funded x402 workspace.
+
+## Status (March 26)
+- ✅ DecisionLog contract deployed to X Layer mainnet (`0xC9E69be5ecD65a9106800E07E05eE44a63559F8b`).
+- ✅ Agent decision recorded on-chain via `logDecision` (proves Oracle→Analyst→Strategist→Executor reasoning).
+- ✅ Self-transfer proof TX to confirm wallet control.
+- ✅ Wallet/x402 client + enrollment CLI scaffolded.
+- ✅ Oracle / Strategist / Executor modules wired together.
+- ⏳ Trade API execution + arena UI in progress.
+
+### On-Chain Proofs
+| Proof | Hash | Link |
+| --- | --- | --- |
+| Wallet funding | `0x8883af1b0...f5a8` | https://www.oklink.com/xlayer/tx/0x8883af1b0a659d5e1c0beff2ed5c34c4a8497427e9a84a0348ba1e38aa36f5a8 |
+| Self-transfer (wallet control) | `0xa203c67d3a...3a7` | https://www.oklink.com/xlayer/tx/0xa203c67d3ac2ec36680580e488d299598b80b008fdba779cac3294f9d85003a7 |
+| DecisionLog deploy | `0xa067aca103...d34` | https://www.oklink.com/xlayer/tx/0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34 |
+| logDecision call | `0x335f27337c...0123` | https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123 |
+
+### Repo Layout
+```
+contracts/        // Hardhat project (DecisionLog, SeasonManager)
+agents/           // Oracle → Strategist → Executor pipeline scaffolds
+scripts/          // RPC utilities (self-transfer proof, etc.)
+docs/             // Lean build plan + context
+frontend/         // UI scaffold placeholder
+```
+
+## Running the Proof Scripts
+
+### 1. Self-transfer proof (`scripts/get-tx-proof.js`)
+```bash
+cp .env.example .env  # fill SYNDICATE_MNEMONIC or PRIVATE_KEY + XLAYER_RPC
+SYNDICATE_MNEMONIC="..." node scripts/get-tx-proof.js
+```
+Outputs wallet balance + TX hash proving control.
+
+### 2. Deploy DecisionLog to X Layer
+```bash
+cd contracts
+cp .env.example .env  # fill SYNDICATE_PRIVATE_KEY + X_LAYER_RPC
+SYNDICATE_PRIVATE_KEY=0x... X_LAYER_RPC=https://rpc.xlayer.tech npx hardhat run scripts/deploy-decisionlog.ts --network xlayer
+```
+
+### 3. Log an agent decision
+```bash
+cd contracts
+SYNDICATE_PRIVATE_KEY=0x... DECISION_LOG_ADDRESS=0x... X_LAYER_RPC=https://rpc.xlayer.tech npx hardhat run scripts/log-decision.ts --network xlayer
+```
+
+## Next Steps
+- Integrate Wallet/x402 client with live Trade API once wallet IDs are exposed.
+- Build arena dashboard with your mockups + x402 gated reasoning viewer.
+- Expand agent prompts/personas and add Narrator module for spectator feed.

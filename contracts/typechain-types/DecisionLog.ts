@@ -9,7 +9,6 @@ import type {
   Result,
   Interface,
   EventFragment,
-  AddressLike,
   ContractRunner,
   ContractMethod,
   Listener,
@@ -23,81 +22,67 @@ import type {
   TypedContractMethod,
 } from "./common";
 
-export declare namespace DecisionLog {
-  export type RecordStruct = {
-    squad: AddressLike;
-    decisionHash: BytesLike;
-    timestamp: BigNumberish;
-    metadata: string;
-  };
-
-  export type RecordStructOutput = [
-    squad: string,
-    decisionHash: string,
-    timestamp: bigint,
-    metadata: string
-  ] & {
-    squad: string;
-    decisionHash: string;
-    timestamp: bigint;
-    metadata: string;
-  };
-}
-
 export interface DecisionLogInterface extends Interface {
   getFunction(
-    nameOrSignature: "getRecord" | "recordCount" | "recordDecision" | "records"
+    nameOrSignature:
+      | "decisions"
+      | "getDecision"
+      | "getDecisionCount"
+      | "logDecision"
   ): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "DecisionRecorded"): EventFragment;
 
   encodeFunctionData(
-    functionFragment: "getRecord",
+    functionFragment: "decisions",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "recordCount",
+    functionFragment: "getDecision",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDecisionCount",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "recordDecision",
-    values: [BytesLike, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "records",
-    values: [BigNumberish]
+    functionFragment: "logDecision",
+    values: [string, string, string]
   ): string;
 
-  decodeFunctionResult(functionFragment: "getRecord", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "decisions", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "recordCount",
+    functionFragment: "getDecision",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "recordDecision",
+    functionFragment: "getDecisionCount",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "records", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "logDecision",
+    data: BytesLike
+  ): Result;
 }
 
 export namespace DecisionRecordedEvent {
   export type InputTuple = [
-    recordId: BigNumberish,
-    squad: AddressLike,
-    decisionHash: BytesLike,
-    metadata: string
+    squadId: string,
+    agentChain: string,
+    rationale: string,
+    timestamp: BigNumberish
   ];
   export type OutputTuple = [
-    recordId: bigint,
-    squad: string,
-    decisionHash: string,
-    metadata: string
+    squadId: string,
+    agentChain: string,
+    rationale: string,
+    timestamp: bigint
   ];
   export interface OutputObject {
-    recordId: bigint;
-    squad: string;
-    decisionHash: string;
-    metadata: string;
+    squadId: string;
+    agentChain: string;
+    rationale: string;
+    timestamp: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -148,31 +133,31 @@ export interface DecisionLog extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  getRecord: TypedContractMethod<
-    [recordId: BigNumberish],
-    [DecisionLog.RecordStructOutput],
-    "view"
-  >;
-
-  recordCount: TypedContractMethod<[], [bigint], "view">;
-
-  recordDecision: TypedContractMethod<
-    [decisionHash: BytesLike, metadata: string],
-    [bigint],
-    "nonpayable"
-  >;
-
-  records: TypedContractMethod<
+  decisions: TypedContractMethod<
     [arg0: BigNumberish],
     [
-      [string, string, bigint, string] & {
-        squad: string;
-        decisionHash: string;
+      [string, string, string, bigint] & {
+        squadId: string;
+        agentChain: string;
+        rationale: string;
         timestamp: bigint;
-        metadata: string;
       }
     ],
     "view"
+  >;
+
+  getDecision: TypedContractMethod<
+    [index: BigNumberish],
+    [[string, string, string, bigint]],
+    "view"
+  >;
+
+  getDecisionCount: TypedContractMethod<[], [bigint], "view">;
+
+  logDecision: TypedContractMethod<
+    [squadId: string, agentChain: string, rationale: string],
+    [void],
+    "nonpayable"
   >;
 
   getFunction<T extends ContractMethod = ContractMethod>(
@@ -180,35 +165,35 @@ export interface DecisionLog extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "getRecord"
-  ): TypedContractMethod<
-    [recordId: BigNumberish],
-    [DecisionLog.RecordStructOutput],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "recordCount"
-  ): TypedContractMethod<[], [bigint], "view">;
-  getFunction(
-    nameOrSignature: "recordDecision"
-  ): TypedContractMethod<
-    [decisionHash: BytesLike, metadata: string],
-    [bigint],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "records"
+    nameOrSignature: "decisions"
   ): TypedContractMethod<
     [arg0: BigNumberish],
     [
-      [string, string, bigint, string] & {
-        squad: string;
-        decisionHash: string;
+      [string, string, string, bigint] & {
+        squadId: string;
+        agentChain: string;
+        rationale: string;
         timestamp: bigint;
-        metadata: string;
       }
     ],
     "view"
+  >;
+  getFunction(
+    nameOrSignature: "getDecision"
+  ): TypedContractMethod<
+    [index: BigNumberish],
+    [[string, string, string, bigint]],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getDecisionCount"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "logDecision"
+  ): TypedContractMethod<
+    [squadId: string, agentChain: string, rationale: string],
+    [void],
+    "nonpayable"
   >;
 
   getEvent(
@@ -220,7 +205,7 @@ export interface DecisionLog extends BaseContract {
   >;
 
   filters: {
-    "DecisionRecorded(uint256,address,bytes32,string)": TypedContractEvent<
+    "DecisionRecorded(string,string,string,uint256)": TypedContractEvent<
       DecisionRecordedEvent.InputTuple,
       DecisionRecordedEvent.OutputTuple,
       DecisionRecordedEvent.OutputObject
