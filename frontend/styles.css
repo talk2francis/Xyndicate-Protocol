@@ -37,11 +37,12 @@ main {
 }
 
 .brand img {
-  width: 58px;
-  height: 58px;
-  border-radius: 12px;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
   object-fit: cover;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  background: #fff;
+  border: 1px solid rgba(11, 12, 16, 0.08);
 }
 
 nav a {
