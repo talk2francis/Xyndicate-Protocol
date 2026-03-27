@@ -44,6 +44,12 @@
           <h2>Live Syndicate Leaderboard</h2>
           <p>Ranks update every 30 seconds straight from DecisionLog.sol.</p>
         </div>
+        <div class="stats-bar">
+          <div> <span id="stat-decisions">--</span> <small>Decisions Logged</small> </div>
+          <div> <span id="stat-squads">--</span> <small>Active Squads</small> </div>
+          <div> <span>Live</span> <small>Season Status</small> </div>
+          <div> <span>X Layer</span> <small>Network</small> </div>
+        </div>
         <div id="live-leaderboard" class="leaderboard">Loading leaderboard...</div>
         <div id="live-decisions" class="decision-stream">Loading live agent decisions...</div>
       </section>
@@ -133,6 +139,7 @@
           }
           renderLeaderboard(records);
           renderDecisions(records.slice(-3));
+          hydrateNarrator(records);
         } catch (err) {
           console.error(err);
           renderLeaderboard(FALLBACK_DECISIONS);
@@ -241,9 +248,9 @@ Chain: ${agentChain}
       }
       renderLeaderboard(FALLBACK_DECISIONS);
       renderDecisions(FALLBACK_DECISIONS.slice(-2));
+      hydrateNarrator(FALLBACK_DECISIONS);
       loadArena();
       setInterval(loadArena, 30000);
-      loadNarratorOutput();
       wireGate();
     </script>
   </body>
