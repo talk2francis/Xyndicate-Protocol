@@ -1,8 +1,4 @@
 import OpenAI from "openai";
-import { ethers } from "ethers";
-import decisionLogAbi from "../abi/DecisionLog.json";
-
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 type OracleReport = { pair: string; price: number; change24h: number };
 
@@ -13,6 +9,8 @@ export type AnalystAssessment = {
   topAsset: string;
   confidenceScore: number;
 };
+
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function runAnalyst(report: OracleReport): Promise<AnalystAssessment> {
   const systemPrompt = `You are the Analyst agent in the Syndicate Protocol multi-agent system.\n` +
@@ -30,19 +28,5 @@ export async function runAnalyst(report: OracleReport): Promise<AnalystAssessmen
     ]
   });
 
-  const assessment = JSON.parse(completion.choices[0].message?.content || "{}");
-  await logAnalystEvent(assessment);
-  return assessment;
-}
-
-async function logAnalystEvent(assessment: AnalystAssessment) {
-  const provider = new ethers.JsonRpcProvider(process.env.XLAYER_RPC);
-  const key = process.env.ANALYST_KEY || process.env.STRATEGIST_KEY;
-  const logAddress = process.env.DECISION_LOG_ADDRESS;
-  if (!key || !logAddress) return;
-  const wallet = new ethers.Wallet(key, provider);
-  const contract = new ethers.Contract(logAddress, decisionLogAbi, wallet);
-  const payload = JSON.stringify({ agent: "ANALYST", assessment });
-  const hash = ethers.keccak256(ethers.toUtf8Bytes(payload));
-  await (await contract.recordDecision(hash, payload)).wait();
+  return JSON.parse(completion.choices[0].message?.content || '{}');
 }

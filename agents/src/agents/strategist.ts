@@ -1,11 +1,10 @@
 import OpenAI from "openai";
 import { ethers } from "ethers";
-import decisionLogAbi from "../abi/DecisionLog.json";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const DECISION_LOG_ABI = ['function logDecision(string,string,string)'];
 
 export type StrategyDecision = {
-  hash: string;
   thesis: string;
 };
 
@@ -18,8 +17,7 @@ export async function craftStrategy(snapshot: { pair: string; price: number; cha
   });
   const content = completion.output?.[0]?.content?.[0];
   const thesis = typeof content === "string" ? content : JSON.stringify(content);
-  const hash = ethers.keccak256(ethers.toUtf8Bytes(thesis));
-  return { hash, thesis };
+  return { thesis };
 }
 
 export async function logDecision(decision: StrategyDecision) {
@@ -28,8 +26,10 @@ export async function logDecision(decision: StrategyDecision) {
   const logAddress = process.env.DECISION_LOG_ADDRESS;
   if (!walletKey || !logAddress) throw new Error("Missing strategist signer");
   const wallet = new ethers.Wallet(walletKey, provider);
-  const contract = new ethers.Contract(logAddress, decisionLogAbi, wallet);
-  const tx = await contract.recordDecision(decision.hash, decision.thesis);
+  const contract = new ethers.Contract(logAddress, DECISION_LOG_ABI, wallet);
+  const squadId = process.env.SQUAD_ID ?? "SYNDICATE_ALPHA";
+  const agentChain = "Oracle→Analyst→Strategist→Executor";
+  const tx = await contract.logDecision(squadId, agentChain, decision.thesis);
   await tx.wait();
   return tx.hash;
 }
