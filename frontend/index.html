@@ -148,7 +148,7 @@
           <p class="eyebrow">Narrator</p>
           <h2>Live Commentary</h2>
         </div>
-        <div id="narrator-output" class="narrator-card">Syndicate Alpha deployed ETH (10% treasury). ETH down 2.9% — agents detected rebound signal, confidence 0.70. Decision logged on-chain before execution.</div>
+        <div id="narrator-output" class="narrator-card">Syndicate Alpha deployed ETH (10% treasury). ETH down 2.9% — rebound signal detected, confidence 0.70. Decision logged on-chain before execution.</div>
         <button id="copy-to-x" class="btn copy-btn">🐦 Copy to X / Twitter</button>
       </section>
 
@@ -185,7 +185,12 @@
           <button id="unlock-chain" class="btn">Unlock reasoning chain</button>
           <p class="helper">Payment lands at DecisionLog: <a href="https://www.oklink.com/xlayer/tx/0xd18b7d123b74e2933bb7569452eb82c045ecba42b51efcb80a76b658bca1dc40" target="_blank">0xd18b…dc40</a></p>
           <div id="gated-output" class="gated hidden">
-            <p>Oracle → Analyst → Strategist → Executor log available. Copy the Narrator summary or view the full JSON payload once payment clears.</p>
+            <pre>{
+  "oracle": { "pair": "ETH-USDT", "price": 1983.65, "change24h": -4.26 },
+  "analyst": { "recommendation": "act", "confidenceScore": 0.70, "topAsset": "ETH" },
+  "strategist": { "action": "BUY", "asset": "ETH", "sizePercent": 10, "rationale": "ETH down ~4%, rebound signal detected" },
+  "executor": { "txHash": "0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6", "status": "confirmed" }
+}</pre>
           </div>
         </div>
       </section>
@@ -204,7 +209,7 @@
     </main>
 
     <script>
-      const tweetText = `Syndicate Alpha deployed ETH (10% treasury). ETH down 2.9% — agents detected rebound signal, confidence 0.70. Decision logged on-chain before execution.`;
+      const tweetText = `Syndicate Alpha: BUY ETH 10% treasury. Rebound signal detected, confidence 0.70. Decision logged before execution. TX: 0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef #XLayer #OnchainOS @XLayer_Official`;
       const copyBtn = document.getElementById('copy-to-x');
       copyBtn?.addEventListener('click', () => {
         navigator.clipboard.writeText(tweetText);
