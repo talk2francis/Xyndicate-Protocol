@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OracleReport",
+  "type": "object",
+  "properties": {
+    "pair": { "type": "string" },
+    "price": { "type": "number" },
+    "change24h": { "type": "number" }
+  },
+  "required": ["pair", "price", "change24h"]
+}

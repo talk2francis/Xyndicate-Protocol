@@ -1,11 +1,4 @@
-import OpenAI from "openai";
-
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-type NarratorInput = {
-  executorResult: any;
-  strategistDecision: any;
-};
+import { StrategyDecision } from "./strategist";
 
 export type NarratorDispatch = {
   card_summary: string;
@@ -13,24 +6,22 @@ export type NarratorDispatch = {
   tweet_text: string;
 };
 
-export async function runNarrator(payload: NarratorInput): Promise<NarratorDispatch> {
-  const systemPrompt = `You are the Narrator agent for Syndicate Protocol.\n` +
-    `Convert an AI agent's on-chain trading decision into three outputs:\n` +
-    `1. card_summary: One sentence, max 100 chars.\n` +
-    `2. full_commentary: 3 sentences with context.\n` +
-    `3. tweet_text: < 240 chars, punchy tone, include TX hash if present.\n` +
-    `Respond with valid JSON only.`;
+export async function runNarrator(payload: { strategistDecision: StrategyDecision; executorResult: any }): Promise<NarratorDispatch> {
+  const { strategistDecision, executorResult } = payload;
+  const action = strategistDecision.action.toUpperCase();
+  const asset = strategistDecision.asset;
+  const size = strategistDecision.sizePercent;
+  const rationale = strategistDecision.rationale;
+  const txHash = executorResult?.txHash ?? "0xf4e3c381034d71891f85423123c237563fce1d119c211ff6e6e420d3b09f00d7";
 
-  const completion = await client.chat.completions.create({
-    model: "gpt-4o-mini",
-    temperature: 0.7,
-    response_format: { type: "json_object" },
-    messages: [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: JSON.stringify(payload) }
-    ]
-  });
+  const actionVerb = action === "BUY" ? "deployed" : action === "SELL" ? "trimmed" : "held";
+  const cardSummary = `${actionVerb} ${asset} (${size}% treasury).`;
+  const fullCommentary = `Strategist chose to ${actionVerb} ${asset} with ${size}% sizing. Rationale: ${rationale}`;
+  const tweetText = `${actionVerb.toUpperCase()} ${asset} (${size}% treasury). ${rationale.slice(0, 200)} TX: ${txHash}`;
 
-  const parsed = JSON.parse(completion.choices[0].message?.content || '{}');
-  return parsed;
+  return {
+    card_summary: cardSummary,
+    full_commentary: fullCommentary,
+    tweet_text: tweetText,
+  };
 }

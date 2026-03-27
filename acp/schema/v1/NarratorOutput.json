@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NarratorOutput",
+  "type": "object",
+  "properties": {
+    "card_summary": { "type": "string" },
+    "full_commentary": { "type": "string" },
+    "tweet_text": { "type": "string" }
+  },
+  "required": ["card_summary", "full_commentary", "tweet_text"]
+}

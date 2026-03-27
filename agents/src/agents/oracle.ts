@@ -1,24 +1,22 @@
 import axios from "axios";
 
-const marketBase = process.env.ONCHAIN_OS_MARKET_URL || process.env.ONCHAIN_OS_BASE_URL;
-
 export type MarketSnapshot = {
   pair: string;
   price: number;
   change24h: number;
 };
 
-export async function fetchMarketSnapshot(pair = "USDC-ETH"): Promise<MarketSnapshot> {
-  if (!marketBase) {
-    return { pair, price: 0, change24h: 0 };
-  }
-  const { data } = await axios.get(`${marketBase}/v1/market/prices`, {
-    params: { pair },
-  });
-  const item = data?.data?.[0];
+const OKX_TICKER_URL = 'https://www.okx.com/api/v5/market/ticker';
+
+export async function fetchMarketSnapshot(pair = "ETH-USDT"): Promise<MarketSnapshot> {
+  const { data } = await axios.get(OKX_TICKER_URL, { params: { instId: pair } });
+  const ticker = data?.data?.[0];
+  const last = Number(ticker?.last ?? 0);
+  const open24h = Number(ticker?.open24h ?? 0);
+  const change24h = open24h ? ((last - open24h) / open24h) * 100 : 0;
   return {
     pair,
-    price: Number(item?.price ?? 0),
-    change24h: Number(item?.change24h ?? 0),
+    price: last,
+    change24h,
   };
 }

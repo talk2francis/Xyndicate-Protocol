@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExecutorResult",
+  "type": "object",
+  "properties": {
+    "params": {
+      "type": "object",
+      "properties": {
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "amount": { "type": "string" }
+      },
+      "required": ["from", "to", "amount"]
+    },
+    "txHash": { "type": "string" }
+  },
+  "required": ["params", "txHash"]
+}

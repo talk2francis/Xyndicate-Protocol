@@ -19,6 +19,7 @@ Track progress in `docs/lean-plan.md`.
 > NOTE: Requires real OKX Onchain OS project credentials and a funded x402 workspace.
 
 ## Status (March 26)
+- ✅ Agent Collaboration Protocol schemas published under `acp/schema/v1/` so other squads can integrate.
 - ✅ DecisionLog contract deployed to X Layer mainnet (`0xC9E69be5ecD65a9106800E07E05eE44a63559F8b`).
 - ✅ Agent decision recorded on-chain via `logDecision` (proves Oracle→Analyst→Strategist→Executor reasoning).
 - ✅ Self-transfer proof TX to confirm wallet control.
