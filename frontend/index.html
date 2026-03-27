@@ -218,12 +218,15 @@
     <script>
       const themeToggleBtn = document.getElementById('theme-toggle');
       const THEME_KEY = 'xyndicate-theme';
+      const root = document.documentElement;
 
       const applyTheme = (mode) => {
         if (mode === 'dark') {
           document.body.classList.add('dark');
+          root.classList.add('dark');
         } else {
           document.body.classList.remove('dark');
+          root.classList.remove('dark');
         }
         if (themeToggleBtn) {
           themeToggleBtn.setAttribute('aria-label', mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
