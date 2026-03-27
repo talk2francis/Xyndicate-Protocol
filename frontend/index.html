@@ -111,13 +111,31 @@
           <p>Decisions logged this round: 6</p>
           <div class="progress-shell"><span class="progress-fill" style="width:65%"></span></div>
         </div>
-        <div class="pipeline">
-          <span>ORACLE</span>
-          <span>ANALYST</span>
-          <span>STRATEGIST</span>
-          <span>EXECUTOR</span>
-          <span>NARRATOR</span>
-          <div class="pipeline-dot"></div>
+        <div class="agent-pipeline" id="agent-pipeline">
+          <div class="agent-box" data-agent="oracle" data-status="Fetching market data">
+            <p class="agent-name">ORACLE</p>
+            <p class="agent-status"><span class="status-text">Fetching market data</span><span class="cursor">|</span></p>
+          </div>
+          <span class="pipeline-arrow" aria-hidden="true"></span>
+          <div class="agent-box" data-agent="analyst" data-status="Scoring opportunities">
+            <p class="agent-name">ANALYST</p>
+            <p class="agent-status"><span class="status-text">Scoring opportunities</span><span class="cursor">|</span></p>
+          </div>
+          <span class="pipeline-arrow" aria-hidden="true"></span>
+          <div class="agent-box" data-agent="strategist" data-status="Forming decision">
+            <p class="agent-name">STRATEGIST</p>
+            <p class="agent-status"><span class="status-text">Forming decision</span><span class="cursor">|</span></p>
+          </div>
+          <span class="pipeline-arrow" aria-hidden="true"></span>
+          <div class="agent-box" data-agent="executor" data-status="Logging on-chain">
+            <p class="agent-name">EXECUTOR</p>
+            <p class="agent-status"><span class="status-text">Logging on-chain</span><span class="cursor">|</span></p>
+          </div>
+          <span class="pipeline-arrow" aria-hidden="true"></span>
+          <div class="agent-box" data-agent="narrator" data-status="Broadcasting result">
+            <p class="agent-name">NARRATOR</p>
+            <p class="agent-status"><span class="status-text">Broadcasting result</span><span class="cursor">|</span></p>
+          </div>
         </div>
         <div class="decision-feed">
           <h3>Latest Decisions</h3>
@@ -241,6 +259,66 @@
         localStorage.setItem(THEME_KEY, next);
         applyTheme(next);
       });
+
+      const pipeline = document.getElementById('agent-pipeline');
+      if (pipeline) {
+        const agentBoxes = Array.from(pipeline.querySelectorAll('.agent-box'));
+        const pipelineArrows = Array.from(pipeline.querySelectorAll('.pipeline-arrow'));
+        const totalAgents = agentBoxes.length;
+        let pipelineStep = 0;
+
+        const flashArrow = (idx) => {
+          const arrow = pipelineArrows[idx];
+          if (!arrow) return;
+          arrow.classList.add('arrow-transfer');
+          setTimeout(() => arrow.classList.remove('arrow-transfer'), 1000);
+        };
+
+        const setPipelineState = (step) => {
+          agentBoxes.forEach((box) => {
+            box.classList.remove('is-active', 'is-done');
+            const statusText = box.querySelector('.status-text');
+            if (statusText && box.dataset.status) {
+              statusText.textContent = box.dataset.status;
+            }
+          });
+
+          if (step === totalAgents) {
+            agentBoxes.forEach((box) => {
+              box.classList.add('is-done');
+              const statusText = box.querySelector('.status-text');
+              if (statusText) statusText.textContent = '✓ Complete';
+            });
+            return;
+          }
+
+          agentBoxes.forEach((box, idx) => {
+            if (idx < step) {
+              box.classList.add('is-done');
+              const statusText = box.querySelector('.status-text');
+              if (statusText) statusText.textContent = '✓ Complete';
+            }
+          });
+
+          const activeBox = agentBoxes[step];
+          if (activeBox) {
+            activeBox.classList.add('is-active');
+          }
+
+          if (step > 0 && step <= totalAgents) {
+            flashArrow(step - 1);
+          }
+        };
+
+        const runPipelineLoop = () => {
+          setPipelineState(pipelineStep);
+          const delay = pipelineStep === totalAgents ? 1500 : 2500;
+          pipelineStep = (pipelineStep + 1) % (totalAgents + 1);
+          setTimeout(runPipelineLoop, delay);
+        };
+
+        runPipelineLoop();
+      }
 
       const tweetText = `Xyndicate Alpha: BUY ETH 10% treasury. Rebound signal detected, confidence 0.70. Decision logged on-chain before execution. TX: 0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef #XLayer #OnchainOS @XLayer_Official`;
       const copyBtn = document.getElementById('copy-to-x');
