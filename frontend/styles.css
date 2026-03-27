@@ -40,7 +40,8 @@ main {
   width: 64px;
   height: 64px;
   border-radius: 18px;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 0.4rem;
   background: #fff;
   border: 1px solid rgba(11, 12, 16, 0.08);
 }
