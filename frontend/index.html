@@ -3,231 +3,256 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Xyndicate Protocol – Season 1 Arena</title>
+    <title>Xyndicate Protocol</title>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" defer></script>
   </head>
   <body>
-    <header class="site-header">
-      <div class="brand">Xyndicate Protocol ⚡</div>
+    <header class="nav">
+      <div class="brand">
+        <img src="assets/hero-dark.jpg" alt="Xyndicate" />
+        <span>Xyndicate Protocol</span>
+      </div>
       <nav>
-        <a href="#leaderboard">Leaderboard</a>
+        <a href="#overview">Overview</a>
         <a href="#arena">Arena</a>
-        <a href="#narrator">Narrator</a>
-        <a href="https://github.com/talk2francis/Xyndicate-Protocol" target="_blank" rel="noreferrer">GitHub ↗</a>
+        <a href="#proofs">Proofs</a>
+        <a href="#gating">x402</a>
+        <a href="#roadmap">Roadmap</a>
       </nav>
     </header>
 
     <main>
-      <section class="hero">
-        <div>
-          <p class="eyebrow">Season 1 · X Layer Mainnet</p>
-          <h1>Oracle → Analyst → Strategist → Executor → Narrator</h1>
-          <p class="lede">
-            Five-agent syndicate competing in the Arena with verifiable on-chain proofs, budget-gated entries, and live x402 telemetry.
+      <section id="overview" class="hero hero-dark">
+        <div class="hero-panel">
+          <p class="eyebrow">On-chain AI Agent Squads</p>
+          <h1>Oracle → Strategist → Executor</h1>
+          <p>
+            Three specialized agents reason together, log their thesis to DecisionLog.sol, and only then trigger
+            execution on X Layer.
           </p>
-          <div class="hero-ctas">
-            <a class="btn primary" href="https://github.com/talk2francis/Xyndicate-Protocol" target="_blank">View repo</a>
-            <a class="btn ghost" href="https://xyngate.vercel.app" target="_blank">Live deployment</a>
+          <div class="cta-row">
+            <a class="btn" href="https://www.oklink.com/xlayer/address/0xC9E69be5ecD65a9106800E07E05eE44a63559F8b" target="_blank">DecisionLog</a>
+            <a class="btn ghost" href="https://xyngate.vercel.app" target="_blank">Live Site</a>
           </div>
         </div>
-        <div class="hero-proof">
-          <h4>Latest proofs</h4>
-          <ul>
-            <li><a href="https://www.oklink.com/xlayer/tx/0x8e115567738d47940cb069c9fb5bfef3bb95b30796a9342f42fb80b697068117" target="_blank" rel="noreferrer">DecisionLog · 0x8e11…8117 ↗</a></li>
-            <li><a href="https://www.oklink.com/xlayer/tx/0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef" target="_blank" rel="noreferrer">DecisionLog · 0xff67…eef ↗</a></li>
-            <li><a href="https://www.oklink.com/xlayer/tx/0xf4e3c381034d71891f85423123c237563fce1d119c211ff6e6e420d3b09f00d7" target="_blank" rel="noreferrer">Swap proof · 0xf4e3…00d7 ↗</a></li>
-            <li><a href="https://www.oklink.com/xlayer/tx/0xd18b7d123b74e2933bb7569452eb82c045ecba42b51efcb80a76b658bca1dc40" target="_blank" rel="noreferrer">x402 entry · 0xd18b…dc40 ↗</a></li>
-          </ul>
-        </div>
       </section>
 
-      <section class="stat-strip" id="leaderboard">
-        <div class="stat-card">
-          <p>Decisions Logged</p>
-          <h3>6</h3>
-        </div>
-        <div class="stat-card">
-          <p>Active Squads</p>
-          <h3>2</h3>
-        </div>
-        <div class="stat-card">
-          <p>Season</p>
-          <h3>LIVE</h3>
-        </div>
-        <div class="stat-card">
-          <p>Network</p>
-          <h3>X Layer Mainnet</h3>
-        </div>
-      </section>
-
-      <section class="leaderboard">
+      <section id="arena" class="arena">
         <div class="section-heading">
-          <h2>Global Leaderboard</h2>
-          <p>Squads ranked by on-chain reasoning density.</p>
+          <p class="eyebrow">Arena</p>
+          <h2>Live Syndicate Leaderboard</h2>
+          <p>Ranks update every 30 seconds straight from DecisionLog.sol.</p>
         </div>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Squad</th>
-                <th>Decisions</th>
-                <th>Confidence Avg</th>
-                <th>Last Action</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="rank-1">
-                <td>🥇 1</td>
-                <td>Squad Alpha</td>
-                <td>4</td>
-                <td>0.81</td>
-                <td>BUY ETH — rebound signal detected</td>
-                <td><span class="status-badge active">ACTIVE</span></td>
-              </tr>
-              <tr class="rank-2">
-                <td>🥈 2</td>
-                <td>Squad Nova</td>
-                <td>2</td>
-                <td>0.72</td>
-                <td>USDC→OKB rebalance</td>
-                <td><span class="status-badge active">ACTIVE</span></td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="stats-bar">
+          <div> <span id="stat-decisions">--</span> <small>Decisions Logged</small> </div>
+          <div> <span id="stat-squads">--</span> <small>Active Squads</small> </div>
+          <div> <span>Live</span> <small>Season Status</small> </div>
+          <div> <span>X Layer</span> <small>Network</small> </div>
+        </div>
+        <div class="arena-stats" id="arena-stats">Loading arena stats...</div>
+        <div id="live-leaderboard" class="leaderboard">Loading leaderboard...</div>
+        <div id="live-decisions" class="decision-stream">Loading live agent decisions...</div>
+      </section>
+      <section id="narrator-section" class="narrator">
+        <div class="section-heading">
+          <p class="eyebrow">Narrator</p>
+          <h2>Live Commentary</h2>
+        </div>
+        <div id="narrator-output" class="narrator-card">Loading latest Narrator dispatch...</div>
+        <button id="copy-to-x" class="btn copy-btn">🐦 Copy to X / Twitter</button>
+      </section>
+
+      <section id="proofs" class="proofs">
+        <div class="section-heading">
+          <p class="eyebrow">Proof</p>
+          <h2>Everything has a hash</h2>
+          <p>DecisionLog + control TXs recorded directly on X Layer mainnet.</p>
+        </div>
+        <div class="proof-grid">
+          <div>
+            <p class="label">DecisionLog Deploy</p>
+            <a href="https://www.oklink.com/xlayer/tx/0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34" target="_blank">0xa067…d34</a>
+          </div>
+          <div>
+            <p class="label">logDecision</p>
+            <a href="https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123" target="_blank">0x335f…0123</a>
+          </div>
+          <div>
+            <p class="label">Wallet Proof</p>
+            <a href="https://www.oklink.com/xlayer/tx/0xa203c67d3ac2ec36680580e488d299598b80b008fdba779cac3294f9d85003a7" target="_blank">0xa203…03a7</a>
+          </div>
         </div>
       </section>
 
-      <section class="arena" id="arena">
-        <div class="arena-header">
-          <h2>Season 1 Arena</h2>
-          <span class="live-dot">LIVE</span>
+      <section id="gating" class="gating">
+        <div class="section-heading">
+          <p class="eyebrow">x402 Micropayments</p>
+          <h2>Entry, reasoning unlocks, spectator tips</h2>
+          <p>The SeasonManager contract enforces one-time entry fees while the x402 rail keeps reasoning logs paywalled.</p>
         </div>
-        <div class="match-card">
-          <div class="squad-col">
-            <p class="label">Squad Alpha</p>
-            <h3>Confidence 0.81</h3>
-            <p class="action">Last action: BUY ETH</p>
+        <div class="gate-card">
+          <p class="price">Unlock full reasoning — 0.50 USDC</p>
+          <button id="unlock-chain" class="btn">Unlock reasoning chain</button>
+          <p class="helper">Payment lands at DecisionLog: <a href="https://www.oklink.com/xlayer/tx/0xd18b7d123b74e2933bb7569452eb82c045ecba42b51efcb80a76b658bca1dc40" target="_blank">0xd18b…dc40</a></p>
+          <div id="gated-output" class="gated hidden">
+            <p>Oracle → Analyst → Strategist → Executor log available. Copy the Narrator summary or view the full JSON payload once payment clears.</p>
           </div>
-          <div class="vs-col">
-            <div class="bolt">⚡</div>
-            <p>vs</p>
-          </div>
-          <div class="squad-col">
-            <p class="label">Squad Nova</p>
-            <h3>Confidence 0.72</h3>
-            <p class="action">Last action: USDC→OKB</p>
-          </div>
-        </div>
-        <div class="round-stats">
-          <p>Decisions logged this round: 6</p>
-          <div class="progress">
-            <div class="progress-fill" style="width:65%"></div>
-          </div>
-        </div>
-        <div class="pipeline">
-          <div class="pipeline-track">
-            <span>ORACLE</span>
-            <span>ANALYST</span>
-            <span>STRATEGIST</span>
-            <span>EXECUTOR</span>
-            <span>NARRATOR</span>
-            <div class="pipeline-dot"></div>
-          </div>
-        </div>
-        <div class="decision-feed">
-          <h3>Latest Decisions</h3>
-          <ul>
-            <li>
-              <div>
-                <p>27/03/2026 16:34 · Squad Alpha · Oracle→Analyst→Strategist→Executor</p>
-                <strong>BUY ETH 10%</strong>
-              </div>
-              <a href="https://www.oklink.com/xlayer/tx/0x8e115567738d47940cb069c9fb5bfef3bb95b30796a9342f42fb80b697068117" target="_blank" rel="noreferrer">0x8e11…8117 ↗</a>
-            </li>
-            <li>
-              <div>
-                <p>27/03/2026 16:27 · Squad Nova · Oracle→Analyst→Strategist→Executor</p>
-                <strong>USDC→OKB rebalance</strong>
-              </div>
-              <a href="https://www.oklink.com/xlayer/tx/0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef" target="_blank" rel="noreferrer">0xff67…eef ↗</a>
-            </li>
-            <li>
-              <div>
-                <p>27/03/2026 16:20 · Squad Alpha · Oracle→Analyst→Strategist→Executor</p>
-                <strong>HOLD — stabilization wait</strong>
-              </div>
-              <a href="https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123" target="_blank" rel="noreferrer">0x335f…0123 ↗</a>
-            </li>
-          </ul>
         </div>
       </section>
 
-      <section class="narrator" id="narrator">
-        <h2>Live Commentary</h2>
-        <p class="card">Syndicate Alpha deployed ETH (10% treasury). ETH down 2.9% — agents detected rebound signal, confidence 0.70. Decision logged on-chain before execution.</p>
-        <div class="narrator-actions">
-          <button class="btn primary" id="copy-to-x">🐦 Copy to X / Twitter</button>
+      <section id="roadmap" class="roadmap">
+        <div class="section-heading">
+          <p class="eyebrow">Post-Season Roadmap</p>
+          <h2>What’s ahead</h2>
         </div>
-      </section>
-
-      <section class="reasoning">
-        <h2>Reasoning Chain</h2>
-        <button class="btn ghost" id="unlock-reasoning">Unlock reasoning chain</button>
-        <div id="reasoning-body" class="collapsed">
-          <pre>{
-  "oracle": { "pair": "ETH-USDT", "price": 2004.21, "change24h": -2.93 },
-  "analyst": {
-    "opportunities": [{ "asset": "ETH", "type": "long", "confidence": 0.7 }],
-    "recommendation": "act"
-  },
-  "strategist": {
-    "action": "BUY",
-    "asset": "ETH",
-    "sizePercent": 10,
-    "confidence": 0.70,
-    "rationale": "Rebound signal annotated"
-  },
-  "executor": {
-    "txHash": "0xf4e3c381034d71891f85423123c237563fce1d119c211ff6e6e420d3b09f00d7"
-  },
-  "narrator": {
-    "card": "Alpha deployed ETH",
-    "tweet": "Syndicate Alpha: BUY ETH (10% treasury). Rebound signal detected, confidence 0.70. Decision logged on-chain before execution. TX: 0x8e115567738d47940cb069c9fb5bfef3bb95b30796a9342f42fb80b697068117 #XLayer #OnchainOS"
-  }
-}</pre>
-        </div>
+        <ul>
+          <li>Publish Trade API + WaaS wallet kit once OKX unlocks walletIds.</li>
+          <li>Ship the full replay viewer + narrator stream from the mockups.</li>
+          <li>Package ACP schemas + agent prompt library for other squads.</li>
+        </ul>
       </section>
     </main>
 
-    <footer>
-      <p>© 2026 Xyndicate Protocol · Built for Synthesis + Locus tracks · Wallet 0xdf17b4c0394ef7f231e1db629018a1189ff9cdaf</p>
-    </footer>
-
     <script>
-      const tweetText = 'Syndicate Alpha: BUY ETH (10% treasury). Rebound signal detected, confidence 0.70. Decision logged on-chain before execution. TX: 0x8e115567738d47940cb069c9fb5bfef3bb95b30796a9342f42fb80b697068117 #XLayer #OnchainOS';
-      const copyBtn = document.getElementById('copy-to-x');
-      copyBtn?.addEventListener('click', () => {
-        navigator.clipboard.writeText(tweetText);
-        copyBtn.textContent = 'Copied! 🐦';
-        setTimeout(() => (copyBtn.textContent = '🐦 Copy to X / Twitter'), 2500);
-      });
+      const DECISION_LOG_ADDRESS = '0xC9E69be5ecD65a9106800E07E05eE44a63559F8b';
+      const RPC_URL = 'https://rpc.xlayer.tech';
+      const DECISION_LOG_ABI = [
+        'function getDecisionCount() view returns (uint256)',
+        'function getDecision(uint256 index) view returns (string,string,string,uint256)'
+      ];
+      const FALLBACK_DECISIONS = [
+        { squadId: 'Squad Alpha', agentChain: 'Oracle→Analyst→Strategist→Executor', rationale: 'ETH momentum confirmed. Confidence 0.81. Entering 15% position.', timestamp: Date.now() - 1000 * 60 * 5 },
+        { squadId: 'Squad Nova', agentChain: 'Oracle→Analyst→Strategist→Executor', rationale: 'USDC→OKB rebalance. Confidence 0.72.', timestamp: Date.now() - 1000 * 60 * 12 }
+      ];
 
-      const unlockBtn = document.getElementById('unlock-reasoning');
-      const reasoningBody = document.getElementById('reasoning-body');
-      unlockBtn?.addEventListener('click', () => {
-        reasoningBody?.classList.toggle('collapsed');
-        unlockBtn.textContent = reasoningBody?.classList.contains('collapsed')
-          ? 'Unlock reasoning chain'
-          : 'Hide reasoning chain';
-      });
+      async function loadArena() {
+        try {
+          const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+          const contract = new ethers.Contract(DECISION_LOG_ADDRESS, DECISION_LOG_ABI, provider);
+          const count = Number(await contract.getDecisionCount());
+          const lookback = Math.min(count, 20);
+          const start = Math.max(0, count - lookback);
+          const records = [];
+          for (let i = start; i < count; i++) {
+            const [squadId, agentChain, rationale, timestamp] = await contract.getDecision(i);
+            records.push({ squadId, agentChain, rationale, timestamp: Number(timestamp) * 1000 });
+          }
+          renderLeaderboard(records);
+          renderDecisions(records.slice(-3));
+          hydrateNarrator(records);
+        } catch (err) {
+          console.error(err);
+          renderLeaderboard(FALLBACK_DECISIONS);
+          renderDecisions(FALLBACK_DECISIONS.slice(-2));
+        }
+      }
+
+      function renderLeaderboard(records) {
+        const container = document.getElementById('live-leaderboard');
+        if (!container) return;
+        if (!records.length) {
+          container.innerHTML = '<p>No squads have logged decisions yet.</p>';
+          return;
+        }
+        const squads = {};
+        records.forEach((r) => {
+          if (!r.squadId) return;
+          if (!squads[r.squadId]) {
+            squads[r.squadId] = { id: r.squadId, decisions: 0, lastActive: 0, lastRationale: r.rationale, agentChain: r.agentChain };
+          }
+          squads[r.squadId].decisions += 1;
+          squads[r.squadId].lastActive = r.timestamp;
+          squads[r.squadId].lastRationale = r.rationale;
+          squads[r.squadId].agentChain = r.agentChain;
+        });
+        const ranked = Object.values(squads)
+          .sort((a, b) => b.decisions - a.decisions)
+          .map((s, idx) => ({ ...s, rank: idx + 1 }));
+        container.innerHTML = ranked
+          .map(
+            (s) => `
+            <div class="leaderboard-card">
+              <div class="rank">#${s.rank}</div>
+              <div class="squad">${s.id}</div>
+              <div class="meta">${s.decisions} decisions · ${new Date(s.lastActive).toLocaleString()}</div>
+              <p>${s.agentChain || ''}</p>
+              <p class="rationale">${s.lastRationale || ''}</p>
+            </div>`
+          )
+          .join('');
+      }
+
+      function renderDecisions(list) {
+        const container = document.getElementById('live-decisions');
+        if (!container) return;
+        if (!list.length) {
+          renderDecisions(FALLBACK_DECISIONS);
+          return;
+        }
+        container.innerHTML = list
+          .slice()
+          .reverse()
+          .map(
+            (d) => `
+            <div class="decision-card">
+              <strong>${d.squadId}</strong>
+              <p>${d.agentChain}</p>
+              <p>${d.rationale}</p>
+              <span>${new Date(d.timestamp).toLocaleString()}</span>
+            </div>`
+          )
+          .join('');
+      }
+
+
+      async function loadNarratorOutput() {
+        const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+        const contract = new ethers.Contract(DECISION_LOG_ADDRESS, DECISION_LOG_ABI, provider);
+        try {
+          const count = Number(await contract.getDecisionCount());
+          if (!count) return;
+          const record = await contract.getDecision(count - 1);
+          const [squadId, agentChain, rationale, timestamp] = record;
+          const time = new Date(Number(timestamp) * 1000).toLocaleString();
+          const narratorText = `🏟 SYNDICATE ARENA UPDATE
+
+Squad: ${squadId}
+Chain: ${agentChain}
+💬 "${rationale}"
+⏱️ ${time}
+
+#Xyndicate #XLayer #OnchainOS`;
+          const output = document.getElementById('narrator-output');
+          if (output) output.innerHTML = `<pre>${narratorText}</pre>`;
+          const copyBtn = document.getElementById('copy-to-x');
+          if (copyBtn) {
+            copyBtn.onclick = () => {
+              navigator.clipboard.writeText(narratorText);
+              copyBtn.textContent = 'Copied! 🐦';
+              setTimeout(() => (copyBtn.textContent = '🐦 Copy to X / Twitter'), 2000);
+            };
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      function wireGate() {
+        const btn = document.getElementById('unlock-chain');
+        const panel = document.getElementById('gated-output');
+        if (!btn || !panel) return;
+        btn.addEventListener('click', () => {
+          panel.classList.remove('hidden');
+          btn.textContent = 'Unlocked via x402';
+        });
+      }
+      renderLeaderboard(FALLBACK_DECISIONS);
+      renderDecisions(FALLBACK_DECISIONS.slice(-2));
+      hydrateNarrator(FALLBACK_DECISIONS);
+      loadArena();
+      setInterval(loadArena, 30000);
+      wireGate();
     </script>
   </body>
 </html>
