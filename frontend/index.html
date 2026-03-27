@@ -148,7 +148,7 @@
           <p class="eyebrow">Narrator</p>
           <h2>Live Commentary</h2>
         </div>
-        <div id="narrator-output" class="narrator-card">Syndicate Alpha deployed ETH (10% treasury). ETH down 2.9% — rebound signal detected, confidence 0.70. Decision logged on-chain before execution.</div>
+        <div id="narrator-output" class="narrator-card">Xyndicate Alpha deployed ETH (10% treasury). ETH down 2.9% — rebound signal detected, confidence 0.70. Decision logged on-chain before execution.</div>
         <button id="copy-to-x" class="btn copy-btn">🐦 Copy to X / Twitter</button>
       </section>
 
@@ -201,15 +201,15 @@
           <h2>What’s ahead</h2>
         </div>
         <ul>
-          <li>Publish Trade API + WaaS wallet kit once OKX unlocks walletIds.</li>
-          <li>Ship the full replay viewer + narrator stream from the mockups.</li>
-          <li>Package ACP schemas + agent prompt library for other squads.</li>
+          <li>Expand Trade API integration with full autonomous swap loop.</li>
+          <li>Ship season replay viewer and live Narrator spectator feed.</li>
+          <li>Open ACP standard for other X Layer teams to build on.</li>
         </ul>
       </section>
     </main>
 
     <script>
-      const tweetText = `Syndicate Alpha: BUY ETH 10% treasury. Rebound signal detected, confidence 0.70. Decision logged before execution. TX: 0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef #XLayer #OnchainOS @XLayer_Official`;
+      const tweetText = `Xyndicate Alpha: BUY ETH 10% treasury. Rebound signal detected, confidence 0.70. Decision logged on-chain before execution. TX: 0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef #XLayer #OnchainOS @XLayer_Official`;
       const copyBtn = document.getElementById('copy-to-x');
       copyBtn?.addEventListener('click', () => {
         navigator.clipboard.writeText(tweetText);
