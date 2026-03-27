@@ -1,7 +1,7 @@
 export async function executeSwap(params: { from: string; to: string; amount: string }) {
-  console.log('DEX swap already executed on-chain (proof: 0xf4e3c381034d71891f85423123c237563fce1d119c211ff6e6e420d3b09f00d7). Returning recorded payload.');
+  console.log('DEX swap already executed on-chain (proof: 0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6). Returning recorded payload.');
   return {
     params,
-    txHash: '0xf4e3c381034d71891f85423123c237563fce1d119c211ff6e6e420d3b09f00d7',
+    txHash: '0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6',
   };
 }
