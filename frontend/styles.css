@@ -210,3 +210,24 @@ nav a {
     background: rgba(0, 0, 0, 0.7);
   }
 }
+
+#live-decisions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.decision-card {
+  background: white;
+  border-radius: 18px;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(7, 10, 22, 0.08);
+}
+.decision-card strong {
+  display: block;
+  font-size: 1.1rem;
+}
+.decision-card span {
+  font-size: 0.85rem;
+  color: #6b6e78;
+}

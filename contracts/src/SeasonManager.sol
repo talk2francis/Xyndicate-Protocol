@@ -18,6 +18,7 @@ contract SeasonManager {
 
     event SquadEnrolled(address indexed squad, address agentWallet);
     event SquadDeactivated(address indexed squad);
+    event X402PaymentReceived(address indexed agent, uint256 amount, string seasonId);
 
     constructor(address _paymentHub, uint256 _entryFee) {
         paymentHub = IX402(_paymentHub);
@@ -34,6 +35,11 @@ contract SeasonManager {
         emit SquadEnrolled(msg.sender, agentWallet);
     }
 
+    function payEntryFee(string calldata seasonId) external payable {
+        require(msg.value >= entryFee, "fee too low");
+        emit X402PaymentReceived(msg.sender, msg.value, seasonId);
+    }
+
     function deactivate() external {
         Squad storage squad = squads[msg.sender];
         require(squad.owner == msg.sender, "not squad");
@@ -43,7 +49,6 @@ contract SeasonManager {
     }
 
     function updateEntryFee(uint256 newFee) external {
-        // placeholder owner check; to be replaced with governance or admin wallet
         require(msg.sender == address(paymentHub), "not authorized");
         entryFee = newFee;
     }

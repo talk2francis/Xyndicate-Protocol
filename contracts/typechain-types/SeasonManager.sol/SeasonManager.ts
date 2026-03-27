@@ -29,13 +29,17 @@ export interface SeasonManagerInterface extends Interface {
       | "deactivate"
       | "enroll"
       | "entryFee"
+      | "payEntryFee"
       | "paymentHub"
       | "squads"
       | "updateEntryFee"
   ): FunctionFragment;
 
   getEvent(
-    nameOrSignatureOrTopic: "SquadDeactivated" | "SquadEnrolled"
+    nameOrSignatureOrTopic:
+      | "SquadDeactivated"
+      | "SquadEnrolled"
+      | "X402PaymentReceived"
   ): EventFragment;
 
   encodeFunctionData(
@@ -44,6 +48,7 @@ export interface SeasonManagerInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "enroll", values: [AddressLike]): string;
   encodeFunctionData(functionFragment: "entryFee", values?: undefined): string;
+  encodeFunctionData(functionFragment: "payEntryFee", values: [string]): string;
   encodeFunctionData(
     functionFragment: "paymentHub",
     values?: undefined
@@ -57,6 +62,10 @@ export interface SeasonManagerInterface extends Interface {
   decodeFunctionResult(functionFragment: "deactivate", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "enroll", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "entryFee", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "payEntryFee",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "paymentHub", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "squads", data: BytesLike): Result;
   decodeFunctionResult(
@@ -83,6 +92,24 @@ export namespace SquadEnrolledEvent {
   export interface OutputObject {
     squad: string;
     agentWallet: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace X402PaymentReceivedEvent {
+  export type InputTuple = [
+    agent: AddressLike,
+    amount: BigNumberish,
+    seasonId: string
+  ];
+  export type OutputTuple = [agent: string, amount: bigint, seasonId: string];
+  export interface OutputObject {
+    agent: string;
+    amount: bigint;
+    seasonId: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -139,6 +166,8 @@ export interface SeasonManager extends BaseContract {
 
   entryFee: TypedContractMethod<[], [bigint], "view">;
 
+  payEntryFee: TypedContractMethod<[seasonId: string], [void], "payable">;
+
   paymentHub: TypedContractMethod<[], [string], "view">;
 
   squads: TypedContractMethod<
@@ -173,6 +202,9 @@ export interface SeasonManager extends BaseContract {
     nameOrSignature: "entryFee"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
+    nameOrSignature: "payEntryFee"
+  ): TypedContractMethod<[seasonId: string], [void], "payable">;
+  getFunction(
     nameOrSignature: "paymentHub"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
@@ -206,6 +238,13 @@ export interface SeasonManager extends BaseContract {
     SquadEnrolledEvent.OutputTuple,
     SquadEnrolledEvent.OutputObject
   >;
+  getEvent(
+    key: "X402PaymentReceived"
+  ): TypedContractEvent<
+    X402PaymentReceivedEvent.InputTuple,
+    X402PaymentReceivedEvent.OutputTuple,
+    X402PaymentReceivedEvent.OutputObject
+  >;
 
   filters: {
     "SquadDeactivated(address)": TypedContractEvent<
@@ -228,6 +267,17 @@ export interface SeasonManager extends BaseContract {
       SquadEnrolledEvent.InputTuple,
       SquadEnrolledEvent.OutputTuple,
       SquadEnrolledEvent.OutputObject
+    >;
+
+    "X402PaymentReceived(address,uint256,string)": TypedContractEvent<
+      X402PaymentReceivedEvent.InputTuple,
+      X402PaymentReceivedEvent.OutputTuple,
+      X402PaymentReceivedEvent.OutputObject
+    >;
+    X402PaymentReceived: TypedContractEvent<
+      X402PaymentReceivedEvent.InputTuple,
+      X402PaymentReceivedEvent.OutputTuple,
+      X402PaymentReceivedEvent.OutputObject
     >;
   };
 }

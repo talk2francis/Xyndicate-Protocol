@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Xyndicate Protocol</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" defer></script>
   </head>
   <body>
     <header class="nav">
@@ -44,6 +45,7 @@
           <p>Each squad posts reasoning first, trades second. x402 entry fee gates every attempt.</p>
         </div>
         <div class="arena-grid">
+        <div id="live-decisions">Loading live agent decisions...</div>
           <article>
             <h3>Squad Alpha</h3>
             <p class="status">Oracle drift signal • Strategist hash confirmed</p>
@@ -130,5 +132,50 @@
         </ul>
       </section>
     </main>
+
+    <script>
+      const DECISION_LOG_ADDRESS = '0xC9E69be5ecD65a9106800E07E05eE44a63559F8b';
+      const RPC_URL = 'https://rpc.xlayer.tech';
+      const DECISION_LOG_ABI = [
+        'function getDecisionCount() view returns (uint256)',
+        'function getDecision(uint256 index) view returns (string,string,string,uint256)'
+      ];
+      async function loadLiveDecisions() {
+        try {
+          const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+          const contract = new ethers.Contract(DECISION_LOG_ADDRESS, DECISION_LOG_ABI, provider);
+          const count = Number(await contract.getDecisionCount());
+          const start = Math.max(0, count - 3);
+          const results = [];
+          for (let i = start; i < count; i++) {
+            const [squadId, agentChain, rationale, timestamp] = await contract.getDecision(i);
+            results.push({
+              squadId,
+              agentChain,
+              rationale,
+              time: new Date(Number(timestamp) * 1000).toLocaleString()
+            });
+          }
+          const container = document.getElementById('live-decisions');
+          if (!container) return;
+          if (!results.length) {
+            container.innerHTML = '<p>No on-chain decisions yet.</p>';
+            return;
+          }
+          container.innerHTML = results.reverse().map((d) => `
+            <div class="decision-card">
+              <strong>${d.squadId}</strong>
+              <p>${d.agentChain}</p>
+              <p>${d.rationale}</p>
+              <span>${d.time}</span>
+            </div>
+          `).join('');
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      loadLiveDecisions();
+      setInterval(loadLiveDecisions, 30000);
+    </script>
   </body>
 </html>
