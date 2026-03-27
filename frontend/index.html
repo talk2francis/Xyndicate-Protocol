@@ -239,6 +239,8 @@ Chain: ${agentChain}
           btn.textContent = 'Unlocked via x402';
         });
       }
+      renderLeaderboard(FALLBACK_DECISIONS);
+      renderDecisions(FALLBACK_DECISIONS.slice(-2));
       loadArena();
       setInterval(loadArena, 30000);
       loadNarratorOutput();
