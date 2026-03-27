@@ -2,7 +2,8 @@ const { ethers } = require('ethers');
 const CryptoJS = require('crypto-js');
 require('dotenv').config();
 
-const BASE_URL = 'https://www.okx.com';
+const BASE_URL = 'https://web3.okx.com';
+const API_VERSION = '/api/v6/dex/aggregator';
 const CHAIN_INDEX = '196';
 const OKB_NATIVE = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
 const USDC_XLAYER = '0x74b7F16337b8972027F6196A17a631aC6dE26d22';
@@ -28,11 +29,11 @@ async function httpGet(path, params) {
     method: 'GET',
     headers: getHeaders('GET', path, qs),
   });
+  const text = await res.text();
   if (!res.ok) {
-    const text = await res.text();
     throw new Error(`HTTP ${res.status} ${path}: ${text}`);
   }
-  return res.json();
+  return JSON.parse(text);
 }
 
 async function main() {
@@ -40,45 +41,43 @@ async function main() {
   const wallet = new ethers.Wallet(process.env.EVM_PRIVATE_KEY, provider);
   console.log('Wallet:', wallet.address);
 
-  console.log('Checking chain support...');
-  const chainData = await httpGet('/api/v5/dex/aggregator/all-chain', { chainIndex: CHAIN_INDEX });
-  console.log('Chain response:', chainData);
-
-  console.log('Fetching quote...');
-  const quoteData = await httpGet('/api/v5/dex/aggregator/quote', {
+  const quoteData = await httpGet(`${API_VERSION}/quote`, {
     chainIndex: CHAIN_INDEX,
     fromTokenAddress: OKB_NATIVE,
     toTokenAddress: USDC_XLAYER,
     amount: '1000000000000000',
   });
-  console.log('Quote:', quoteData?.data?.[0]);
+  console.log('Quote OK (code):', quoteData.code);
 
-  console.log('Requesting swap payload...');
-  const swapData = await httpGet('/api/v5/dex/aggregator/swap', {
+  const swapData = await httpGet(`${API_VERSION}/swap`, {
     chainIndex: CHAIN_INDEX,
     fromTokenAddress: OKB_NATIVE,
     toTokenAddress: USDC_XLAYER,
     amount: '1000000000000000',
     userWalletAddress: wallet.address,
-    slippage: '0.05',
+    slippagePercent: '0.5',
   });
+  console.log('Swap response code:', swapData.code);
   const txPayload = swapData?.data?.[0]?.tx;
   if (!txPayload) {
     console.error('Swap payload missing:', swapData);
     return;
   }
 
-  console.log('Broadcasting swap...');
+  const gasLimit = txPayload.gas ? BigInt(txPayload.gas) : undefined;
+  const gasPrice = txPayload.gasPrice ? BigInt(txPayload.gasPrice) : undefined;
+
   const tx = await wallet.sendTransaction({
     to: txPayload.to,
     data: txPayload.data,
     value: txPayload.value ? BigInt(txPayload.value) : 0n,
-    gasLimit: txPayload.gas ? BigInt(txPayload.gas) : undefined,
-    gasPrice: txPayload.gasPrice ? BigInt(txPayload.gasPrice) : undefined,
+    gasLimit,
+    gasPrice,
   });
   console.log('TX submitted:', tx.hash);
   await tx.wait();
   console.log('TX confirmed:', tx.hash);
+  console.log('Explorer:', `https://www.oklink.com/xlayer/tx/${tx.hash}`);
 }
 
 main().catch((err) => {
