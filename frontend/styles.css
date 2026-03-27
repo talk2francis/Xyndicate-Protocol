@@ -231,3 +231,30 @@ nav a {
   font-size: 0.85rem;
   color: #6b6e78;
 }
+
+.leaderboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.leaderboard-card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.2rem;
+  box-shadow: 0 16px 30px rgba(7, 10, 22, 0.08);
+}
+.leaderboard-card .rank {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+.leaderboard-card .squad {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.leaderboard-card .meta {
+  color: #6b6f7a;
+  margin-bottom: 0.5rem;
+}
+.decision-stream {
+  margin-top: 2rem;
+}

@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { fetchMarketSnapshot } from './agents/oracle';
+import { runAnalyst } from './agents/analyst';
 import { craftStrategy, logDecision } from './agents/strategist';
 import { executeSwap } from './agents/executor';
 
@@ -7,6 +8,10 @@ async function run() {
   console.log('> Oracle: fetching market data');
   const snapshot = await fetchMarketSnapshot();
   console.log(snapshot);
+
+  console.log('> Analyst: scoring opportunities');
+  const assessment = await runAnalyst(snapshot);
+  console.log(assessment);
 
   console.log('> Strategist: crafting plan');
   const decision = await craftStrategy(snapshot);
@@ -17,7 +22,7 @@ async function run() {
   console.log('  DecisionLog tx:', txHash);
 
   console.log('> Executor: triggering Trade API swap');
-  const swap = await executeSwap({ from: 'USDC', to: 'ETH', amount: '10' });
+  const swap = await executeSwap({ from: 'OKB', to: 'USDC', amount: '0.001' });
   console.log('  Swap response:', swap);
 }
 

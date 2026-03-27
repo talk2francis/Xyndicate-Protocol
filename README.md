@@ -83,6 +83,8 @@ SYNDICATE_PRIVATE_KEY=0x... DECISION_LOG_ADDRESS=0x... X_LAYER_RPC=https://rpc.x
 `agents/src/index.ts` wires the 3-agent loop; swap execution is paused until the Wallet API returns walletId metadata. Decision hashes are already logged on-chain via the Strategist (proof above).
 
 ## Wallet/x402 Status
+> Note: OKX WaaS wallet endpoints currently return 404/405 for this account (whitelist required). The DEX SDK path delivers the swap proof and serves as the Trade API equivalent until WaaS access is granted.
+
 - `agents/src/lib/onchainOs.ts` – signed OKX client (API key + secret + passphrase).
 - `agents/src/services/wallet.ts` – wallet creation + x402 payment helpers.
 - `agents/src/scripts/enrollSquad.ts` – CLI: create wallet → pay entry → call `SeasonManager.enroll`.
