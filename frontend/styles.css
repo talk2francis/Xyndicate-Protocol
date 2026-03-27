@@ -258,3 +258,41 @@ nav a {
 .decision-stream {
   margin-top: 2rem;
 }
+
+.gate-card {
+  background: #0b0c10;
+  color: white;
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+}
+.gate-card .price {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.gated.hidden {
+  display: none;
+}
+.gated {
+  margin-top: 1rem;
+  background: rgba(255,255,255,0.05);
+  padding: 1rem;
+  border-radius: 12px;
+}
+.narrator-card {
+  background: #0b0c10;
+  color: #e6ffe6;
+  padding: 1.5rem;
+  border-radius: 16px;
+  font-family: 'Courier New', monospace;
+  white-space: pre-line;
+}
+.copy-btn {
+  background: #1da1f2;
+  color: white;
+  border: none;
+  margin-top: 1rem;
+}
+.hidden {
+  display: none;
+}

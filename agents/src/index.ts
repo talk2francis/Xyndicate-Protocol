@@ -3,6 +3,7 @@ import { fetchMarketSnapshot } from './agents/oracle';
 import { runAnalyst } from './agents/analyst';
 import { craftStrategy, logDecision } from './agents/strategist';
 import { executeSwap } from './agents/executor';
+import { runNarrator } from './agents/narrator';
 
 async function run() {
   console.log('> Oracle: fetching market data');
@@ -24,6 +25,10 @@ async function run() {
   console.log('> Executor: triggering Trade API swap');
   const swap = await executeSwap({ from: 'OKB', to: 'USDC', amount: '0.001' });
   console.log('  Swap response:', swap);
+
+  console.log('> Narrator: summarizing for spectators');
+  const narratorDispatch = await runNarrator({ executorResult: swap, strategistDecision: decision });
+  console.log(narratorDispatch);
 }
 
 run().catch((err) => {

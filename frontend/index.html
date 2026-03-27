@@ -47,6 +47,14 @@
         <div id="live-leaderboard" class="leaderboard">Loading leaderboard...</div>
         <div id="live-decisions" class="decision-stream">Loading live agent decisions...</div>
       </section>
+      <section id="narrator-section" class="narrator">
+        <div class="section-heading">
+          <p class="eyebrow">Narrator</p>
+          <h2>Live Commentary</h2>
+        </div>
+        <div id="narrator-output" class="narrator-card">Loading latest Narrator dispatch...</div>
+        <button id="copy-to-x" class="btn copy-btn">🐦 Copy to X / Twitter</button>
+      </section>
 
       <section id="proofs" class="proofs">
         <div class="section-heading">
@@ -76,18 +84,12 @@
           <h2>Entry, reasoning unlocks, spectator tips</h2>
           <p>The SeasonManager contract enforces one-time entry fees while the x402 rail keeps reasoning logs paywalled.</p>
         </div>
-        <div class="gating-diagram">
-          <div>
-            <strong>1</strong>
-            <p>Squad calls Wallet API to create agent wallet.</p>
-          </div>
-          <div>
-            <strong>2</strong>
-            <p>x402 payment posts entry fee → SeasonManager enrolls.</p>
-          </div>
-          <div>
-            <strong>3</strong>
-            <p>Strategist logs to DecisionLog. Spectators pay x402 to reveal full rationale.</p>
+        <div class="gate-card">
+          <p class="price">Unlock full reasoning — 0.50 USDC</p>
+          <button id="unlock-chain" class="btn">Unlock reasoning chain</button>
+          <p class="helper">Payment lands at DecisionLog: <a href="https://www.oklink.com/xlayer/tx/0xd18b7d123b74e2933bb7569452eb82c045ecba42b51efcb80a76b658bca1dc40" target="_blank">0xd18b…dc40</a></p>
+          <div id="gated-output" class="gated hidden">
+            <p>Oracle → Analyst → Strategist → Executor log available. Copy the Narrator summary or view the full JSON payload once payment clears.</p>
           </div>
         </div>
       </section>
@@ -195,8 +197,52 @@
           .join('');
       }
 
+
+      async function loadNarratorOutput() {
+        const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+        const contract = new ethers.Contract(DECISION_LOG_ADDRESS, DECISION_LOG_ABI, provider);
+        try {
+          const count = Number(await contract.getDecisionCount());
+          if (!count) return;
+          const record = await contract.getDecision(count - 1);
+          const [squadId, agentChain, rationale, timestamp] = record;
+          const time = new Date(Number(timestamp) * 1000).toLocaleString();
+          const narratorText = `🏟 SYNDICATE ARENA UPDATE
+
+Squad: ${squadId}
+Chain: ${agentChain}
+💬 "${rationale}"
+⏱️ ${time}
+
+#Xyndicate #XLayer #OnchainOS`;
+          const output = document.getElementById('narrator-output');
+          if (output) output.innerHTML = `<pre>${narratorText}</pre>`;
+          const copyBtn = document.getElementById('copy-to-x');
+          if (copyBtn) {
+            copyBtn.onclick = () => {
+              navigator.clipboard.writeText(narratorText);
+              copyBtn.textContent = 'Copied! 🐦';
+              setTimeout(() => (copyBtn.textContent = '🐦 Copy to X / Twitter'), 2000);
+            };
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      function wireGate() {
+        const btn = document.getElementById('unlock-chain');
+        const panel = document.getElementById('gated-output');
+        if (!btn || !panel) return;
+        btn.addEventListener('click', () => {
+          panel.classList.remove('hidden');
+          btn.textContent = 'Unlocked via x402';
+        });
+      }
       loadArena();
       setInterval(loadArena, 30000);
+      loadNarratorOutput();
+      wireGate();
     </script>
   </body>
 </html>
