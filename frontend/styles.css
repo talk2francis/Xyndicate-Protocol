@@ -305,3 +305,74 @@ nav a {
   margin-bottom: 1rem;
   color: #0b0c10;
 }
+
+
+.stats-strip.hardcoded {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  background: white;
+  padding: 1rem 1.25rem;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(7, 10, 22, 0.08);
+  margin-bottom: 1rem;
+}
+
+.stats-strip.hardcoded span {
+  font-size: 0.95rem;
+  color: #5d5f6c;
+}
+
+.stats-strip.hardcoded strong {
+  color: #0b0c10;
+}
+
+.table-wrapper {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(7, 10, 22, 0.08);
+  overflow-x: auto;
+}
+
+.competition-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+.competition-table th,
+.competition-table td {
+  padding: 1rem 1.2rem;
+  text-align: left;
+}
+
+.competition-table th {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: #7a7d89;
+}
+
+.competition-table tbody tr {
+  border-top: 1px solid rgba(11, 12, 16, 0.08);
+}
+
+.rank.gold {
+  border-left: 6px solid #f4b400;
+}
+
+.rank.silver {
+  border-left: 6px solid #c0c7d6;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #059669;
+  font-weight: 700;
+  font-size: 0.85rem;
+}

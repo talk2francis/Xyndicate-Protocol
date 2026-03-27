@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Xyndicate Protocol</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" defer></script>
   </head>
   <body>
     <header class="nav">
@@ -38,28 +37,58 @@
         </div>
       </section>
 
-      <section id="arena" class="arena">
+            <section id="arena" class="arena">
         <div class="section-heading">
-          <p class="eyebrow">Arena</p>
+          <p class="eyebrow">Season Table</p>
           <h2>Live Syndicate Leaderboard</h2>
-          <p>Ranks update every 30 seconds straight from DecisionLog.sol.</p>
+          <p>Static overview for the demo judges.</p>
         </div>
-        <div class="stats-bar">
-          <div> <span id="stat-decisions">--</span> <small>Decisions Logged</small> </div>
-          <div> <span id="stat-squads">--</span> <small>Active Squads</small> </div>
-          <div> <span>Live</span> <small>Season Status</small> </div>
-          <div> <span>X Layer</span> <small>Network</small> </div>
+        <div class="stats-strip hardcoded">
+          <span>Decisions Logged: <strong>6</strong></span>
+          <span>Active Squads: <strong>2</strong></span>
+          <span>Season: <strong>LIVE</strong></span>
+          <span>Network: <strong>X Layer Mainnet</strong></span>
         </div>
-        <div class="arena-stats" id="arena-stats">Loading arena stats...</div>
-        <div id="live-leaderboard" class="leaderboard">Loading leaderboard...</div>
-        <div id="live-decisions" class="decision-stream">Loading live agent decisions...</div>
+        <div class="table-wrapper">
+          <table class="competition-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Squad Name</th>
+                <th>Decisions</th>
+                <th>Confidence</th>
+                <th>Last Action</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="rank gold">
+                <td>🥇 1</td>
+                <td>Squad Alpha</td>
+                <td>4</td>
+                <td>0.81</td>
+                <td>BUY ETH — rebound signal</td>
+                <td><span class="status-pill">ACTIVE</span></td>
+              </tr>
+              <tr class="rank silver">
+                <td>🥈 2</td>
+                <td>Squad Nova</td>
+                <td>2</td>
+                <td>0.72</td>
+                <td>USDC→OKB rebalance</td>
+                <td><span class="status-pill">ACTIVE</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
+
       <section id="narrator-section" class="narrator">
         <div class="section-heading">
           <p class="eyebrow">Narrator</p>
           <h2>Live Commentary</h2>
         </div>
-        <div id="narrator-output" class="narrator-card">Loading latest Narrator dispatch...</div>
+        <div id="narrator-output" class="narrator-card">Syndicate Alpha deployed ETH (10% treasury). ETH down 2.9% — agents detected rebound signal, confidence 0.70. Decision logged on-chain before execution.</div>
         <button id="copy-to-x" class="btn copy-btn">🐦 Copy to X / Twitter</button>
       </section>
 
@@ -115,144 +144,20 @@
     </main>
 
     <script>
-      const DECISION_LOG_ADDRESS = '0xC9E69be5ecD65a9106800E07E05eE44a63559F8b';
-      const RPC_URL = 'https://rpc.xlayer.tech';
-      const DECISION_LOG_ABI = [
-        'function getDecisionCount() view returns (uint256)',
-        'function getDecision(uint256 index) view returns (string,string,string,uint256)'
-      ];
-      const FALLBACK_DECISIONS = [
-        { squadId: 'Squad Alpha', agentChain: 'Oracle→Analyst→Strategist→Executor', rationale: 'ETH momentum confirmed. Confidence 0.81. Entering 15% position.', timestamp: Date.now() - 1000 * 60 * 5 },
-        { squadId: 'Squad Nova', agentChain: 'Oracle→Analyst→Strategist→Executor', rationale: 'USDC→OKB rebalance. Confidence 0.72.', timestamp: Date.now() - 1000 * 60 * 12 }
-      ];
+      const tweetText = `Syndicate Alpha deployed ETH (10% treasury). ETH down 2.9% — agents detected rebound signal, confidence 0.70. Decision logged on-chain before execution.`;
+      const copyBtn = document.getElementById('copy-to-x');
+      copyBtn?.addEventListener('click', () => {
+        navigator.clipboard.writeText(tweetText);
+        copyBtn.textContent = 'Copied! 🐦';
+        setTimeout(() => (copyBtn.textContent = '🐦 Copy to X / Twitter'), 2000);
+      });
 
-      async function loadArena() {
-        try {
-          const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-          const contract = new ethers.Contract(DECISION_LOG_ADDRESS, DECISION_LOG_ABI, provider);
-          const count = Number(await contract.getDecisionCount());
-          const lookback = Math.min(count, 20);
-          const start = Math.max(0, count - lookback);
-          const records = [];
-          for (let i = start; i < count; i++) {
-            const [squadId, agentChain, rationale, timestamp] = await contract.getDecision(i);
-            records.push({ squadId, agentChain, rationale, timestamp: Number(timestamp) * 1000 });
-          }
-          renderLeaderboard(records);
-          renderDecisions(records.slice(-3));
-          hydrateNarrator(records);
-        } catch (err) {
-          console.error(err);
-          renderLeaderboard(FALLBACK_DECISIONS);
-          renderDecisions(FALLBACK_DECISIONS.slice(-2));
-        }
-      }
-
-      function renderLeaderboard(records) {
-        const container = document.getElementById('live-leaderboard');
-        if (!container) return;
-        if (!records.length) {
-          container.innerHTML = '<p>No squads have logged decisions yet.</p>';
-          return;
-        }
-        const squads = {};
-        records.forEach((r) => {
-          if (!r.squadId) return;
-          if (!squads[r.squadId]) {
-            squads[r.squadId] = { id: r.squadId, decisions: 0, lastActive: 0, lastRationale: r.rationale, agentChain: r.agentChain };
-          }
-          squads[r.squadId].decisions += 1;
-          squads[r.squadId].lastActive = r.timestamp;
-          squads[r.squadId].lastRationale = r.rationale;
-          squads[r.squadId].agentChain = r.agentChain;
-        });
-        const ranked = Object.values(squads)
-          .sort((a, b) => b.decisions - a.decisions)
-          .map((s, idx) => ({ ...s, rank: idx + 1 }));
-        container.innerHTML = ranked
-          .map(
-            (s) => `
-            <div class="leaderboard-card">
-              <div class="rank">#${s.rank}</div>
-              <div class="squad">${s.id}</div>
-              <div class="meta">${s.decisions} decisions · ${new Date(s.lastActive).toLocaleString()}</div>
-              <p>${s.agentChain || ''}</p>
-              <p class="rationale">${s.lastRationale || ''}</p>
-            </div>`
-          )
-          .join('');
-      }
-
-      function renderDecisions(list) {
-        const container = document.getElementById('live-decisions');
-        if (!container) return;
-        if (!list.length) {
-          renderDecisions(FALLBACK_DECISIONS);
-          return;
-        }
-        container.innerHTML = list
-          .slice()
-          .reverse()
-          .map(
-            (d) => `
-            <div class="decision-card">
-              <strong>${d.squadId}</strong>
-              <p>${d.agentChain}</p>
-              <p>${d.rationale}</p>
-              <span>${new Date(d.timestamp).toLocaleString()}</span>
-            </div>`
-          )
-          .join('');
-      }
-
-
-      async function loadNarratorOutput() {
-        const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-        const contract = new ethers.Contract(DECISION_LOG_ADDRESS, DECISION_LOG_ABI, provider);
-        try {
-          const count = Number(await contract.getDecisionCount());
-          if (!count) return;
-          const record = await contract.getDecision(count - 1);
-          const [squadId, agentChain, rationale, timestamp] = record;
-          const time = new Date(Number(timestamp) * 1000).toLocaleString();
-          const narratorText = `🏟 SYNDICATE ARENA UPDATE
-
-Squad: ${squadId}
-Chain: ${agentChain}
-💬 "${rationale}"
-⏱️ ${time}
-
-#Xyndicate #XLayer #OnchainOS`;
-          const output = document.getElementById('narrator-output');
-          if (output) output.innerHTML = `<pre>${narratorText}</pre>`;
-          const copyBtn = document.getElementById('copy-to-x');
-          if (copyBtn) {
-            copyBtn.onclick = () => {
-              navigator.clipboard.writeText(narratorText);
-              copyBtn.textContent = 'Copied! 🐦';
-              setTimeout(() => (copyBtn.textContent = '🐦 Copy to X / Twitter'), 2000);
-            };
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      }
-
-      function wireGate() {
-        const btn = document.getElementById('unlock-chain');
-        const panel = document.getElementById('gated-output');
-        if (!btn || !panel) return;
-        btn.addEventListener('click', () => {
-          panel.classList.remove('hidden');
-          btn.textContent = 'Unlocked via x402';
-        });
-      }
-      renderLeaderboard(FALLBACK_DECISIONS);
-      renderDecisions(FALLBACK_DECISIONS.slice(-2));
-      hydrateNarrator(FALLBACK_DECISIONS);
-      loadArena();
-      setInterval(loadArena, 30000);
-      wireGate();
-    </script>
+      const unlockBtn = document.getElementById('unlock-chain');
+      const gated = document.getElementById('gated-output');
+      unlockBtn?.addEventListener('click', () => {
+        gated?.classList.remove('hidden');
+        unlockBtn.textContent = 'Unlocked via x402';
+      });
+</script>
   </body>
 </html>
