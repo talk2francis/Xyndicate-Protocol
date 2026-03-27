@@ -376,3 +376,155 @@ nav a {
   font-weight: 700;
   font-size: 0.85rem;
 }
+
+
+.arena-live {
+  margin-top: 2rem;
+  background: white;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 20px 45px rgba(7, 10, 22, 0.1);
+}
+
+.arena-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(244, 63, 94, 0.15);
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.live-pill::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: pulse 1.5s infinite;
+}
+
+.match-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.squad-block {
+  background: #f7f7fb;
+  border-radius: 18px;
+  padding: 1.2rem;
+}
+
+.squad-block .label {
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  color: #6b6f7a;
+}
+
+.vs-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #6b6f7a;
+}
+
+.vs-block .bolt {
+  font-size: 1.8rem;
+}
+
+.round-progress {
+  margin-top: 1.25rem;
+}
+
+.progress-shell {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(11, 12, 16, 0.08);
+  overflow: hidden;
+}
+
+.progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff7a18, #ffd700);
+}
+
+.pipeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px dashed rgba(11,12,16,0.2);
+  border-radius: 18px;
+}
+
+.pipeline span {
+  text-align: center;
+  padding: 0.5rem 0.75rem;
+  background: #f7f7fb;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.pipeline-dot {
+  position: absolute;
+  top: calc(50% - 6px);
+  left: 5%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffb703;
+  animation: traverse 4s infinite linear;
+}
+
+@keyframes traverse {
+  0% { left: 5%; }
+  100% { left: 90%; }
+}
+
+.decision-feed ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.decision-feed li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  background: #f4f5fb;
+}
+
+.decision-feed a {
+  text-decoration: none;
+  color: #2563eb;
+  font-family: 'Courier New', monospace;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
