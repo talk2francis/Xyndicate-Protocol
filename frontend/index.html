@@ -20,7 +20,7 @@
           <a href="#gating">x402</a>
           <a href="#roadmap">Roadmap</a>
         </nav>
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode"><span class="toggle-thumb"></span></button>
       </div>
     </header>
 
@@ -28,14 +28,14 @@
       <section id="overview" class="hero hero-dark">
         <div class="hero-panel">
           <p class="eyebrow">On-chain AI Agent Squads</p>
-          <h1>Oracle → Strategist → Executor</h1>
+          <h1>Oracle → Analyst → Strategist → Executor → Narrator</h1>
           <p>
-            Three specialized agents reason together, log their thesis to DecisionLog.sol, and only then trigger
-            execution on X Layer.
+            Five specialized agents—Oracle, Analyst, Strategist, Executor, Narrator—reason together, log every decision
+            to DecisionLog.sol, and only then trigger execution on X Layer.
           </p>
           <div class="cta-row">
             <a class="btn" href="https://www.oklink.com/xlayer/address/0xC9E69be5ecD65a9106800E07E05eE44a63559F8b" target="_blank">DecisionLog</a>
-            <a class="btn ghost" href="https://xyngate.vercel.app" target="_blank">Live Site</a>
+            <a class="btn ghost" href="https://github.com/talk2francis/Xyndicate-Protocol" target="_blank">GitHub Repo</a>
           </div>
         </div>
       </section>
@@ -164,15 +164,19 @@
         <div class="proof-grid">
           <div>
             <p class="label">DecisionLog Deploy</p>
-            <a href="https://www.oklink.com/xlayer/tx/0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34" target="_blank">0xa067…d34</a>
+            <a href="https://www.oklink.com/xlayer/tx/0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34" target="_blank">0xa067…d34 <span class="arrow">↗</span></a>
           </div>
           <div>
             <p class="label">logDecision</p>
-            <a href="https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123" target="_blank">0x335f…0123</a>
+            <a href="https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123" target="_blank">0x335f…0123 <span class="arrow">↗</span></a>
           </div>
           <div>
             <p class="label">Wallet Proof</p>
-            <a href="https://www.oklink.com/xlayer/tx/0xa203c67d3ac2ec36680580e488d299598b80b008fdba779cac3294f9d85003a7" target="_blank">0xa203…03a7</a>
+            <a href="https://www.oklink.com/xlayer/tx/0xa203c67d3ac2ec36680580e488d299598b80b008fdba779cac3294f9d85003a7" target="_blank">0xa203…03a7 <span class="arrow">↗</span></a>
+          </div>
+          <div>
+            <p class="label">Executor Swap</p>
+            <a href="https://www.oklink.com/xlayer/tx/0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6" target="_blank">0x2ae6…ad6 <span class="arrow">↗</span></a>
           </div>
         </div>
       </section>
@@ -222,7 +226,6 @@
           document.body.classList.remove('dark');
         }
         if (themeToggleBtn) {
-          themeToggleBtn.textContent = mode === 'dark' ? '☀️' : '🌙';
           themeToggleBtn.setAttribute('aria-label', mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
         }
       };

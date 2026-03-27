@@ -60,19 +60,34 @@ nav a {
 }
 
 .theme-toggle {
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 18px;
   border-radius: 999px;
-  border: 1px solid rgba(11, 12, 16, 0.15);
-  background: transparent;
-  font-size: 1.2rem;
+  border: none;
+  background: #e5e7eb;
+  position: relative;
+  padding: 0;
   cursor: pointer;
 }
 
+.theme-toggle .toggle-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #0b0c10;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
 body.dark .theme-toggle {
-  border-color: #2A2D3A;
-  background: #1A1D27;
-  color: #F0F0F0;
+  background: #2A2D3A;
+}
+
+body.dark .theme-toggle .toggle-thumb {
+  background: #F0F0F0;
+  transform: translateX(14px);
 }
 
 .hero {
@@ -182,9 +197,16 @@ body.dark .theme-toggle {
 }
 
 .proof-grid a {
-  font-family: 'Courier New', monospace;
+  font-family: ''Courier New'', monospace;
   text-decoration: none;
   color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.proof-grid a .arrow {
+  font-size: 0.85rem;
 }
 
 .label {
