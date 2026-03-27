@@ -53,6 +53,28 @@ nav a {
   font-weight: 600;
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.theme-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(11, 12, 16, 0.15);
+  background: transparent;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+body.dark .theme-toggle {
+  border-color: #2A2D3A;
+  background: #1A1D27;
+  color: #F0F0F0;
+}
+
 .hero {
   margin-top: 2.5rem;
   border-radius: 28px;
@@ -205,7 +227,7 @@ nav a {
 }
 
 @media (max-width: 640px) {
-  nav {
+  .nav-actions nav {
     display: none;
   }
   .hero-panel {
@@ -529,4 +551,113 @@ nav a {
   0% { opacity: 0.4; }
   50% { opacity: 1; }
   100% { opacity: 0.4; }
+}
+
+
+body.dark {
+  background: #0F1117;
+  color: #F0F0F0;
+}
+
+body.dark .stat-strip.hardcoded,
+body.dark .table-wrapper,
+body.dark .arena-live,
+body.dark .narrator,
+body.dark .proofs,
+body.dark .leaderboard,
+body.dark .gating,
+body.dark .roadmap,
+body.dark .reasoning {
+  color: #F0F0F0;
+}
+
+body.dark .stat-strip.hardcoded,
+body.dark .table-wrapper,
+body.dark .arena-live,
+body.dark .proof-grid div,
+body.dark .decision-feed li,
+body.dark .leaderboard-card,
+body.dark .decision-card,
+body.dark .gate-card,
+body.dark .narrator,
+body.dark .narrator-card,
+body.dark .reasoning,
+body.dark #reasoning-body,
+body.dark .gated,
+body.dark .proofs .proof-grid div,
+body.dark .stat-strip.hardcoded,
+body.dark .gating-diagram div {
+  background: #1A1D27;
+  border-color: #2A2D3A;
+  box-shadow: none;
+}
+
+body.dark .squad-block,
+body.dark .pipeline span,
+body.dark .stat-strip.hardcoded span,
+body.dark .stat-strip.hardcoded strong,
+body.dark .label,
+body.dark .meta,
+body.dark .status {
+  color: #F0F0F0;
+}
+
+body.dark .stat-strip.hardcoded span {
+  color: #9095A8;
+}
+
+body.dark .stat-strip.hardcoded strong {
+  color: #F0F0F0;
+}
+
+body.dark .competition-table th {
+  color: #9095A8;
+}
+
+body.dark .competition-table td {
+  color: #F0F0F0;
+}
+
+body.dark .competition-table tbody tr {
+  border-color: #2A2D3A;
+}
+
+body.dark .decision-feed a,
+body.dark .proof-grid a {
+  color: #7dd3fc;
+}
+
+body.dark .pipeline {
+  border-color: #2A2D3A;
+}
+
+body.dark .pipeline span {
+  background: #111318;
+}
+
+body.dark .progress-shell {
+  background: #2A2D3A;
+}
+
+body.dark .live-pill {
+  background: rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}
+
+body.dark .narrator-card {
+  background: #111318;
+  color: #F0F0F0;
+}
+
+body.dark .gated {
+  background: #111318;
+}
+
+body.dark #reasoning-body {
+  background: #111318;
+  border-color: #2A2D3A;
+}
+
+body.dark .brand img {
+  border-color: #2A2D3A;
 }

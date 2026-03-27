@@ -12,13 +12,16 @@
         <img src="assets/logo-wordmark.jpg" alt="Xyndicate" />
         <span>Xyndicate Protocol</span>
       </div>
-      <nav>
-        <a href="#overview">Overview</a>
-        <a href="#arena">Arena</a>
-        <a href="#proofs">Proofs</a>
-        <a href="#gating">x402</a>
-        <a href="#roadmap">Roadmap</a>
-      </nav>
+      <div class="nav-actions">
+        <nav>
+          <a href="#overview">Overview</a>
+          <a href="#arena">Arena</a>
+          <a href="#proofs">Proofs</a>
+          <a href="#gating">x402</a>
+          <a href="#roadmap">Roadmap</a>
+        </nav>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+      </div>
     </header>
 
     <main>
@@ -209,6 +212,30 @@
     </main>
 
     <script>
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const THEME_KEY = 'xyndicate-theme';
+
+      const applyTheme = (mode) => {
+        if (mode === 'dark') {
+          document.body.classList.add('dark');
+        } else {
+          document.body.classList.remove('dark');
+        }
+        if (themeToggleBtn) {
+          themeToggleBtn.textContent = mode === 'dark' ? '☀️' : '🌙';
+          themeToggleBtn.setAttribute('aria-label', mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+      };
+
+      const storedTheme = localStorage.getItem(THEME_KEY) || 'light';
+      applyTheme(storedTheme);
+
+      themeToggleBtn?.addEventListener('click', () => {
+        const next = document.body.classList.contains('dark') ? 'light' : 'dark';
+        localStorage.setItem(THEME_KEY, next);
+        applyTheme(next);
+      });
+
       const tweetText = `Xyndicate Alpha: BUY ETH 10% treasury. Rebound signal detected, confidence 0.70. Decision logged on-chain before execution. TX: 0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef #XLayer #OnchainOS @XLayer_Official`;
       const copyBtn = document.getElementById('copy-to-x');
       copyBtn?.addEventListener('click', () => {
