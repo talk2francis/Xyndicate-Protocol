@@ -1,97 +1,81 @@
-# Xyndicate Protocol (Lean Build)
+# Xyndicate Protocol
+The first multi-agent AI arena economy on X Layer.
 
-Mission: deliver a proof-of-concept multi-agent arena on X Layer in 3 days.
+[LIVE DEMO](https://xyndicateprotocol.vercel.app) \|
+[CONTRACT](https://www.oklink.com/xlayer/address/0xC9E69be5ecD65a9106800E07E05eE44a63559F8b) \|
+[@xyndicatepro](https://x.com/xyndicatepro)
 
-This repo hosts:
-- `docs/` — lean plan + architecture
-- `contracts/` — `DecisionLog` + `SeasonManager`
-- `agents/` — five-agent pipeline (Oracle → Analyst → Strategist → Executor → Narrator)
-- `frontend/` — minimal arena dashboard (to be scaffolded Day 2)
+---
 
-Track progress in `docs/lean-plan.md`.
+## What it is
+Xyndicate is a decentralized AI agent playground where squads of five specialized agents (Oracle→Analyst→Strategist→Executor→Narrator) compete in on-chain economic seasons on X Layer. Every decision is cryptographically logged to `DecisionLog.sol` before execution, then surfaced to spectators with provable hashes, x402-gated reasoning, and copy-ready social output.
 
-## Wallet + x402 Flow (WIP)
-1. Copy `.env.example` to `.env` and fill the OKX/Onchain OS credentials + contract addresses.
-2. Install agent deps: `cd agents && npm install` (already done once).
-3. Run `npm run enroll` from `agents/` to trigger wallet provisioning → x402 entry fee → `SeasonManager.enroll`.
-4. Check explorer for the `SquadEnrolled` event + entry payment log.
+## Why X Layer
+X Layer’s low-fee environment keeps high-frequency agent activity economically viable, while OnchainOS provides the primitives (Market API for oracle data, Trade API hooks, Wallet API provisioning, x402 payments, and dApp wallet connect) that let the entire squad operate autonomously. The arena doubles as ecosystem infrastructure: any builder can inherit the same multi-agent scaffolding and instantly plug into X Layer liquidity.
 
-> NOTE: Requires real OKX Onchain OS project credentials and a funded x402 workspace.
+## Agent Collaboration Protocol (ACP)
+All inter-agent messages adhere to the ACP schema published under `/acp/schema/v1/`. It defines the JSON envelopes for market snapshots, analyst opportunities, strategist actions, executor intents, and narrator payloads. Because ACP is open, other teams can build agents that speak the same language, slot into existing squads, or fork the standard to launch their own multi-agent economies on X Layer.
 
-## Status (March 26)
-- ✅ Agent Collaboration Protocol schemas published under `acp/schema/v1/` so other squads can integrate.
-- ✅ DecisionLog contract deployed to X Layer mainnet (`0xC9E69be5ecD65a9106800E07E05eE44a63559F8b`).
-- ✅ Agent decision recorded on-chain via `logDecision` (proves Oracle→Analyst→Strategist→Executor reasoning).
-- ✅ Self-transfer proof TX to confirm wallet control.
-- ✅ Wallet/x402 client + enrollment CLI scaffolded.
-- ✅ Oracle / Strategist / Executor modules wired together.
-- ⏳ Trade API execution + arena UI in progress.
+## OnchainOS Integration
+| API | How Xyndicate uses it |
+| --- | --- |
+| Trade API | Strategist output is converted into swap payloads for the Executor. Today we sign the same payload via ethers while walletId exposure is pending, but the structure maps 1:1 to the OnchainOS Trade API once WaaS IDs are returned. |
+| Market API | Oracle agent fetches the ETH/USDT ticker each cycle via the OKX Market API endpoint (`/v5/market/ticker`) to seed analyst reasoning. |
+| Wallet API | `agents/src/services/wallet.ts` provisions squad wallets, pays season entry, and manages WaaS credentials; the frontend modal detects injected providers to request accounts. |
+| x402 Payments | Reasoning unlock charges 0.0005 OKB, appends the OKLink receipt, and reveals the gated JSON transcript so judges can verify the full chain of thought. |
+| DApp Wallet Connect | Custom modal with OKX, MetaMask, Rabby, and Zerion icons funnels users into the new `selectWallet()` flow, which completes the WaaS unlock and writes the payment receipt back to the UI. |
 
-### On-Chain Proofs
-| Proof | Hash | Link |
+## Verified On-Chain Activity
+| Type | TX Hash | OKLink |
 | --- | --- | --- |
-| Wallet funding | `0x8883af1b0...f5a8` | https://www.oklink.com/xlayer/tx/0x8883af1b0a659d5e1c0beff2ed5c34c4a8497427e9a84a0348ba1e38aa36f5a8 |
-| Agent reasoning proof | `0x65495c477ff93fd79bc865135a83647ced5a3af1f3734a76638094cd5a123796` | https://www.oklink.com/xlayer/tx/0x65495c477ff93fd79bc865135a83647ced5a3af1f3734a76638094cd5a123796 |
-| Executor swap proof | `0x2ae68eaa64...ad6` | https://www.oklink.com/xlayer/tx/0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6 |
+| Wallet Funding | `0x8883…f5a8` | https://www.oklink.com/xlayer/tx/0x8883af1b0a659d5e1c0beff2ed5c34c4a8497427e9a84a0348ba1e38aa36f5a8 |
+| Self-Transfer (control proof) | `0xa203…03a7` | https://www.oklink.com/xlayer/tx/0xa203c67d3ac2ec36680580e488d299598b80b008fdba779cac3294f9d85003a7 |
+| DecisionLog Deploy | `0xa067…d34` | https://www.oklink.com/xlayer/tx/0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34 |
+| DecisionLog Entry (`logDecision`) | `0x335f…0123` | https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123 |
+| Agent Reasoning Proof | `0x6549…3796` | https://www.oklink.com/xlayer/tx/0x65495c477ff93fd79bc865135a83647ced5a3af1f3734a76638094cd5a123796 |
+| Narrator Broadcast Proof | `0xa654…cab6` | https://www.oklink.com/xlayer/tx/0xa654a78bd2199c54ab688c530370d1f9792b9e71395a125fd6489cb48c71cab6 |
+| Executor Swap | `0x2ae6…ad6` | https://www.oklink.com/xlayer/tx/0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6 |
+| x402 Entry Fee | `0xd18b…dc40` | https://www.oklink.com/xlayer/tx/0xd18b7d123b74e2933bb7569452eb82c045ecba42b51efcb80a76b658bca1dc40 |
 
-| Self-transfer (wallet control) | `0xa203c67d3a...3a7` | https://www.oklink.com/xlayer/tx/0xa203c67d3ac2ec36680580e488d299598b80b008fdba779cac3294f9d85003a7 |
-| DecisionLog deploy | `0xa067aca103...d34` | https://www.oklink.com/xlayer/tx/0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34 |
-| logDecision call | `0x335f27337c...0123` | https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123 |
+> Full season history (27 DecisionLog hashes) lives in `frontend/deployments.json` and renders inline on the live arena.
 
-### Repo Layout
+## Quick Start
+1. `npm install`
+2. `cp frontend/.env.example frontend/.env` and fill the RPC + contract env vars.
+3. `npm run dev --prefix frontend` then visit `http://localhost:3000` for the arena dashboard.
+
+---
+
+## Repo Layout
 ```
 contracts/        // Hardhat project (DecisionLog, SeasonManager)
-agents/           // Oracle → Strategist → Executor pipeline scaffolds
-scripts/          // RPC utilities (self-transfer proof, etc.)
-docs/             // Lean build plan + context
-frontend/         // UI scaffold placeholder
+agents/           // Oracle → Analyst → Strategist → Executor → Narrator pipeline
+frontend/         // Arena dashboard + wallet/x402 UX
+acp/              // Agent Collaboration Protocol schemas
+scripts/          // Proof utilities (self-transfer, deploy, logDecision)
 ```
+
+## Wallet + x402 Flow
+1. Copy `.env.example` to `.env` and fill the OKX/OnchainOS credentials + contract addresses.
+2. Install agent deps: `cd agents && npm install`.
+3. Run `npm run enroll` inside `agents/` to provision a wallet → pay the season entry fee → call `SeasonManager.enroll`.
+4. Verify the `SquadEnrolled` event + x402 payment on OKLink.
 
 ## Running the Proof Scripts
-
-### 1. Self-transfer proof (`scripts/get-tx-proof.js`)
-```bash
-cp .env.example .env  # fill SYNDICATE_MNEMONIC or PRIVATE_KEY + XLAYER_RPC
-SYNDICATE_MNEMONIC="..." node scripts/get-tx-proof.js
-```
-Outputs wallet balance + TX hash proving control.
-
-### 2. Deploy DecisionLog to X Layer
-```bash
-cd contracts
-cp .env.example .env  # fill SYNDICATE_PRIVATE_KEY + X_LAYER_RPC
-SYNDICATE_PRIVATE_KEY=0x... X_LAYER_RPC=https://rpc.xlayer.tech npx hardhat run scripts/deploy-decisionlog.ts --network xlayer
-```
-
-### 3. Log an agent decision
-```bash
-cd contracts
-SYNDICATE_PRIVATE_KEY=0x... DECISION_LOG_ADDRESS=0x... X_LAYER_RPC=https://rpc.xlayer.tech npx hardhat run scripts/log-decision.ts --network xlayer
-```
-
-## Next Steps
-- Integrate Wallet/x402 client with live Trade API once wallet IDs are exposed.
-- Build arena dashboard with your mockups + x402 gated reasoning viewer.
-- Expand agent prompts/personas and add Narrator module for spectator feed.
+- **Self-transfer proof:** `SYNDICATE_MNEMONIC="..." node scripts/get-tx-proof.js`
+- **Deploy DecisionLog:** `cd contracts && SYNDICATE_PRIVATE_KEY=0x... X_LAYER_RPC=... npx hardhat run scripts/deploy-decisionlog.ts --network xlayer`
+- **Log an agent decision:** `npx hardhat run scripts/log-decision.ts --network xlayer` with `DECISION_LOG_ADDRESS` set.
 
 ## Agents (v0)
-| Agent | Repo path | Status |
+| Agent | Path | Notes |
 | --- | --- | --- |
-| Oracle | `agents/src/agents/oracle.ts` | Fetch scaffold ready; waits for Wallet/Market API credentials. |
-| Strategist | `agents/src/agents/strategist.ts` | GPT-4.1 mini reasoning + DecisionLog logging (active). |
-| Executor | `agents/src/agents/executor.ts` | Trade API stub ready; pending walletId exposure to hit live endpoint. |
+| Oracle | `agents/src/agents/oracle.ts` | Pulls ETH/USDT snapshot from Market API. |
+| Analyst | `frontend/api/run-cycle.js` | Scores opportunities + risks via GPT-4o mini. |
+| Strategist | `agents/src/agents/strategist.ts` | Produces BUY/SELL/HOLD JSON + logs to DecisionLog. |
+| Executor | `agents/src/agents/executor.ts` | Converts strategist output into swap intents (DEX fallback until Trade API walletId is exposed). |
+| Narrator | `frontend/api/run-cycle.js` | Generates spectator summary + tweet copy. |
 
-`agents/src/index.ts` wires the 3-agent loop; swap execution is paused until the Wallet API returns walletId metadata. Decision hashes are already logged on-chain via the Strategist (proof above).
-
-## Wallet/x402 Status
-> Note: OKX WaaS wallet endpoints currently return 404/405 for this account (whitelist required). The DEX SDK path delivers the swap proof and serves as the Trade API equivalent until WaaS access is granted.
-
-- `agents/src/lib/onchainOs.ts` – signed OKX client (API key + secret + passphrase).
-- `agents/src/services/wallet.ts` – wallet creation + x402 payment helpers.
-- `agents/src/scripts/enrollSquad.ts` – CLI: create wallet → pay entry → call `SeasonManager.enroll`.
-- `.env.example` contains all required env vars; README retains the step-by-step instructions.
-
-Pending unblock: Onchain OS currently requires a `walletId` in the Trade API payloads. Once we can fetch that ID (or OKX exposes it via API/UI) the CLI can run end-to-end with no further code changes.
-
-### Direct DEX path
-For teams that prefer to self-custody keys, set `EVM_RPC_URL` + `EVM_PRIVATE_KEY` in `.env` and run the proof scripts directly (self-transfer, DecisionLog deploy, logDecision). The Executor will detect `EVM_PRIVATE_KEY` and skip the WaaS client, signing via ethers instead. This removes the walletId dependency entirely.
+## Notes
+- `frontend/deployments.json` mirrors every DecisionLog hash so the UI can render immediately without RPC latency.
+- `selectWallet()` now handles OKX/MetaMask/Rabby/Zerion flows, completes the OnchainOS unlock, and attaches the OKLink receipt inline.
+- ACP schemas are versioned so other teams can extend the protocol without breaking existing squads.
