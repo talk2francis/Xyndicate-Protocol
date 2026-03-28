@@ -139,29 +139,8 @@
         </div>
         <div class="decision-feed">
           <h3>Latest Decisions</h3>
-          <ul>
-            <li>
-              <div>
-                <p>28/03/2026 00:16 UTC · Xyndicate Alpha · Oracle→Analyst→Strategist→Executor</p>
-                <strong>BUY ETH — 10% treasury</strong>
-              </div>
-              <a href="https://www.oklink.com/xlayer/tx/0xc7d1a35ba2e57addc716a8643a72a6b82fc3a1a312ab437e0af6864feef28169" target="_blank" rel="noreferrer">0xc7d1…8169 ↗</a>
-            </li>
-            <li>
-              <div>
-                <p>28/03/2026 00:17 UTC · Xyndicate Alpha · Oracle→Analyst→Strategist→Executor</p>
-                <strong>HOLD — waiting for stabilization</strong>
-              </div>
-              <a href="https://www.oklink.com/xlayer/tx/0x5f3f47096d0fadf067f523fcff90af1dfdbcd4b7b99228fa1208aeaa20a969ce" target="_blank" rel="noreferrer">0x5f3f…69ce ↗</a>
-            </li>
-            <li>
-              <div>
-                <p>28/03/2026 00:18 UTC · Xyndicate Alpha · Oracle→Analyst→Strategist→Executor</p>
-                <strong>BUY ETH — 10% treasury</strong>
-              </div>
-              <a href="https://www.oklink.com/xlayer/tx/0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3" target="_blank" rel="noreferrer">0xa0b8…cdb3 ↗</a>
-            </li>
-          </ul>
+          <ul id="decision-list" class="decision-list"></ul>
+          <button id="decision-load-more" class="btn secondary hidden">Show 10 more decisions ↓</button>
         </div>
       </section>
       <section id="narrator-section" class="narrator">
