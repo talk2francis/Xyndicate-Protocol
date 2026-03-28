@@ -718,6 +718,7 @@ body.dark .btn.secondary {
 
 body.dark, html.dark {
   background: #0F1117;
+  background-color: #0F1117;
   color: #F0F0F0;
 }
 
@@ -987,7 +988,9 @@ body.dark .wallet-icon {
 }
 
 .wallet-modal__actions {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
 }
 
 .wallet-cancel {
@@ -996,6 +999,8 @@ body.dark .wallet-icon {
   color: #2563eb;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.95rem;
 }
 
 body.dark .wallet-cancel {
