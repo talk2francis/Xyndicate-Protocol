@@ -209,6 +209,7 @@
           <p class="price">Unlock full reasoning — 0.50 USDC</p>
           <button id="unlock-chain" class="btn">Unlock reasoning chain</button>
           <p class="helper">Payment lands at DecisionLog: <a href="https://www.oklink.com/xlayer/tx/0xd18b7d123b74e2933bb7569452eb82c045ecba42b51efcb80a76b658bca1dc40" target="_blank">0xd18b…dc40</a></p>
+          <p class="helper status" id="reasoning-status"></p>
           <div id="gated-output" class="gated hidden">
             <pre>{
   "oracle": { "pair": "ETH-USDT", "price": 1983.65, "change24h": -4.26 },
@@ -216,6 +217,7 @@
   "strategist": { "action": "BUY", "asset": "ETH", "sizePercent": 10, "rationale": "ETH down ~4%, rebound signal detected" },
   "executor": { "txHash": "0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6", "status": "confirmed" }
 }</pre>
+            <p id="payment-receipt" class="payment-receipt"></p>
           </div>
         </div>
       </section>
@@ -233,6 +235,7 @@
       </section>
     </main>
 
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
     <script>
       const themeToggleBtn = document.getElementById('theme-toggle');
       const THEME_KEY = 'xyndicate-theme';
@@ -330,10 +333,71 @@
 
       const unlockBtn = document.getElementById('unlock-chain');
       const gated = document.getElementById('gated-output');
-      unlockBtn?.addEventListener('click', () => {
-        gated?.classList.remove('hidden');
-        unlockBtn.textContent = 'Unlocked via x402';
-      });
+      const reasoningStatus = document.getElementById('reasoning-status');
+      const paymentReceipt = document.getElementById('payment-receipt');
+      const PAYMENT_DEST = '0xc9955733f8f16872a6c8df375E9D13d79A43a4dc';
+      const PAYMENT_AMOUNT = '0.0005';
+      const XLAYER_PARAMS = {
+        chainId: '0xC4',
+        chainName: 'X Layer Mainnet',
+        nativeCurrency: { name: 'OKB', symbol: 'OKB', decimals: 18 },
+        rpcUrls: ['https://rpc.xlayer.tech'],
+        blockExplorerUrls: ['https://www.oklink.com/xlayer']
+      };
+
+      const ensureXLayerNetwork = async () => {
+        if (!window.ethereum) throw new Error('Install OKX Wallet or MetaMask to unlock');
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: XLAYER_PARAMS.chainId }]
+          });
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [XLAYER_PARAMS]
+            });
+          } else {
+            throw switchError;
+          }
+        }
+      };
+
+      const handleUnlock = async () => {
+        if (!window.ethereum || !window.ethers) {
+          reasoningStatus.textContent = 'Install OKX Wallet or MetaMask to unlock';
+          return;
+        }
+        try {
+          unlockBtn.disabled = true;
+          unlockBtn.textContent = 'Processing payment...';
+          reasoningStatus.textContent = '';
+          const provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+          await provider.send('eth_requestAccounts', []);
+          await ensureXLayerNetwork();
+          const signer = provider.getSigner();
+          const tx = await signer.sendTransaction({
+            to: PAYMENT_DEST,
+            value: ethers.utils.parseEther(PAYMENT_AMOUNT)
+          });
+          reasoningStatus.textContent = 'Waiting for confirmation...';
+          await tx.wait(1);
+          gated?.classList.remove('hidden');
+          if (paymentReceipt) {
+            paymentReceipt.innerHTML = `Payment confirmed · TX: <a href="https://www.oklink.com/xlayer/tx/${tx.hash}" target="_blank" rel="noreferrer">${tx.hash.slice(0, 10)}…</a>`;
+          }
+          reasoningStatus.textContent = '';
+          unlockBtn.textContent = 'Unlocked via x402';
+        } catch (err) {
+          console.error(err);
+          reasoningStatus.textContent = err?.message || 'Payment failed. Please try again.';
+          unlockBtn.disabled = false;
+          unlockBtn.textContent = 'Unlock reasoning chain';
+        }
+      };
+
+      unlockBtn?.addEventListener('click', handleUnlock);
 </script>
   </body>
 </html>
