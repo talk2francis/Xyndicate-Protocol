@@ -152,8 +152,34 @@
         </div>
         <div class="decision-feed">
           <h3>Latest Decisions</h3>
-          <ul id="decision-list" class="decision-list"></ul>
-          <button id="decision-load-more" class="btn secondary hidden">Show 10 more decisions ↓</button>
+          <div id="decision-list">
+            <div class="decision-card">
+              <div class="decision-meta"><span>28/03/2026, 00:13 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3" target="_blank">0xa0b8…cdb3 ↗️</a></div>
+              <div class="decision-title">HOLD ETH — 0% treasury</div>
+              <div class="decision-detail">ETH down 3.73% — bearish signal, holding for reassessment.</div>
+            </div>
+            <div class="decision-card">
+              <div class="decision-meta"><span>28/03/2026, 00:08 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x5f3f47096d0fadf067f523fcff90af1dfdbcd4b7b99228fa1208aeaa20a969ce" target="_blank">0x5f3f…69ce ↗️</a></div>
+              <div class="decision-title">HOLD ETH — 0% treasury</div>
+              <div class="decision-detail">ETH down 3.49% — prudent to wait for trend reversal.</div>
+            </div>
+            <div class="decision-card">
+              <div class="decision-meta"><span>28/03/2026, 00:07 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xc7d1a35ba2e57addc716a8643a72a6b82fc3a1a312ab437e0af6864feef28169" target="_blank">0xc7d1…8169 ↗️</a></div>
+              <div class="decision-title">BUY ETH — 10% treasury</div>
+              <div class="decision-detail">Rebound signal detected, confidence 0.70.</div>
+            </div>
+            <div class="decision-card" style="opacity:0.5">
+              <div class="decision-meta"><span>28/03/2026, 00:06 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xb0f91a2757a64b3783d48ba1528f31ddf40cea175cd38ea2d17284bdc268e6ba" target="_blank">0xb0f9…e6ba ↗️</a></div>
+              <div class="decision-title">HOLD ETH — 0% treasury</div>
+              <div class="decision-detail">ETH down 3.48% — stabilization wait.</div>
+            </div>
+            <div class="decision-card" style="opacity:0.2">
+              <div class="decision-meta"><span>28/03/2026, 00:06 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xdf84640c2d5180adb97dc4fc8e487553167ea80973dc0117d542f56aeb7c1b32" target="_blank">0xdf84…1b32 ↗️</a></div>
+              <div class="decision-title">HOLD ETH — 100% treasury</div>
+              <div class="decision-detail">Bearish sentiment confirmed — holding all positions.</div>
+            </div>
+          </div>
+          <button onclick="this.style.display='none'; document.querySelectorAll('.decision-card').forEach(function(c){c.style.opacity='1'})">Show more decisions ↓</button>
         </div>
       </section>
       <section id="narrator-section" class="narrator">
@@ -316,7 +342,6 @@ window.DECISIONS = [
 ];
 
       window.addEventListener('load', function() {
-        renderDecisions();
         startPipelineAnimation();
       });
 
@@ -451,7 +476,6 @@ const decisionListEl = document.getElementById('decision-list');
         updateDecisionButton();
       };
 
-      function renderDecisions() {\n        if (!decisionListEl) return;\n        const source = Array.isArray(window.DECISIONS) ? window.DECISIONS.slice(0, 27) : [];\n        decisionEntries = source.map((entry) => ({\n          txHash: entry.hash,\n          squadId: entry.squad,\n          agentChain: entry.chain,\n          time: entry.time,\n          display: entry.decision,\n          detail: entry.rationale,\n          url: entry.url\n        }));\n        renderInitialDecisions();\n      };\n\n      decisionLoadBtn?.addEventListener('click', () => {\n        if (!decisionEntries.length) return;\n        if (decisionPhase === 0) {\n          revealNextDecisions(Math.min(10, decisionEntries.length - visibleDecisions));\n          decisionPhase = 1;\n        } else if (decisionPhase === 1) {\n          revealNextDecisions(decisionEntries.length - visibleDecisions);\n          decisionPhase = 2;\n        }\n        updateDecisionButton();\n      });\n\n      renderDecisions();\n
       let runCycleBtn = document.getElementById('run-cycle-btn');
       function injectNewDecision(payload) {\n        const display = `${payload.action} ${payload.asset} — ${payload.action === 'HOLD' ? '0% treasury' : `${payload.sizePercent || 0}% treasury`}`;\n        const entry = {\n          txHash: payload.txHash,\n          squadId: SQUAD_DISPLAY,\n          agentChain: 'Oracle→Analyst→Strategist→Executor',\n          time: formatDecisionTimestamp(),\n          display,\n          detail: payload.rationale || payload.narratorSummary || '',\n          url: `https://www.oklink.com/xlayer/tx/${payload.txHash}`\n        };\n        decisionEntries.unshift(entry);\n        decisionEntries = decisionEntries.slice(0, 27);\n        renderInitialDecisions();\n      };\n
       async function handleRunCycle() {
@@ -653,10 +677,8 @@ const decisionListEl = document.getElementById('decision-list');
       window.openWalletModal = openWalletModal;
       window.handleCopyToX = handleCopyToX;
       window.handleUnlock = handleUnlock;
-      window.renderDecisions = renderDecisions;
       window.startPipelineAnimation = startPipelineAnimation;
 
-      renderDecisions();
       startPipelineAnimation();
     </script>
     <script>
@@ -679,12 +701,7 @@ const decisionListEl = document.getElementById('decision-list');
       animate();
       setInterval(animate, 2500);
 
-      if (typeof renderDecisions === 'function') renderDecisions();
 
-      var listEl = document.getElementById('decision-list');
-      if (listEl) {
-        listEl.innerHTML = '<p>' + (window.DECISIONS ? window.DECISIONS.length + ' entries' : 'NO DATA') + '</p>';
-      }
     });
     </script>
 
