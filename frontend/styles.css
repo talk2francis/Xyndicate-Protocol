@@ -531,10 +531,6 @@ body.dark .btn.secondary {
   color: #6b6f7a;
 }
 
-.vs-block .bolt {
-  font-size: 1.8rem;
-}
-
 .round-progress {
   margin-top: 1.25rem;
 }
@@ -1037,4 +1033,35 @@ body.dark .wallet-cancel {
   height: 40px;
   border-radius: 8px;
   object-fit: cover;
+}
+
+.agent-stack {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.agent-stack span {
+  display: block;
+}
+
+.vs-icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+.vs-icon svg circle {
+  stroke: #E2E8F0;
+}
+
+.vs-icon svg text {
+  fill: #1A202C;
+}
+
+body.dark .vs-icon svg circle {
+  stroke: #2D3748;
+}
+
+body.dark .vs-icon svg text {
+  fill: #F7FAFC;
 }
