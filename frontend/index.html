@@ -235,25 +235,25 @@
         <h4>Select a wallet</h4>
         <p>Choose how to unlock the reasoning chain.</p>
         <div class="wallet-options">
-          <button class="wallet-option" data-wallet="okx" data-label="OKX Wallet">
+          <button class="wallet-option" data-wallet="okx" data-label="OKX Wallet" onclick="document.getElementById('wallet-modal').style.display='none'; document.getElementById('reasoning-chain').style.display='block'">
             <span class="wallet-icon">
               <img src="assets/wallet-okx.jpg" alt="OKX Wallet" width="40" height="40" class="wallet-logo"/>
             </span>
             <span>OKX Wallet</span>
           </button>
-          <button class="wallet-option" data-wallet="metamask" data-label="MetaMask">
+          <button class="wallet-option" data-wallet="metamask" data-label="MetaMask" onclick="document.getElementById('wallet-modal').style.display='none'; document.getElementById('reasoning-chain').style.display='block'">
             <span class="wallet-icon">
               <img src="assets/wallet-metamask.jpg" alt="MetaMask Wallet" width="40" height="40" class="wallet-logo"/>
             </span>
             <span>MetaMask</span>
           </button>
-          <button class="wallet-option" data-wallet="rabby" data-label="Rabby Wallet">
+          <button class="wallet-option" data-wallet="rabby" data-label="Rabby Wallet" onclick="document.getElementById('wallet-modal').style.display='none'; document.getElementById('reasoning-chain').style.display='block'">
             <span class="wallet-icon">
               <img src="assets/wallet-rabby.jpg" alt="Rabby Wallet" width="40" height="40" class="wallet-logo"/>
             </span>
             <span>Rabby Wallet</span>
           </button>
-          <button class="wallet-option" data-wallet="zerion" data-label="Zerion Wallet">
+          <button class="wallet-option" data-wallet="zerion" data-label="Zerion Wallet" onclick="document.getElementById('wallet-modal').style.display='none'; document.getElementById('reasoning-chain').style.display='block'">
             <span class="wallet-icon">
               <img src="assets/wallet-zerion.jpg" alt="Zerion Wallet" width="40" height="40" class="wallet-logo"/>
             </span>
@@ -263,7 +263,7 @@
         </div>
         <p class="wallet-modal__message" id="wallet-modal-message"></p>
         <div class="wallet-modal__actions">
-          <button class="wallet-cancel" id="wallet-cancel">Cancel</button>
+          <button class="wallet-cancel" id="wallet-cancel" onclick="document.getElementById('wallet-modal').style.display='none'">Cancel</button>
         </div>
       </div>
     </div>
@@ -662,8 +662,25 @@ const decisionListEl = document.getElementById('decision-list');
     </script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+      var boxes = document.querySelectorAll('.agent-box');
+      var idx = 0;
+      function animate() {
+        boxes.forEach(function(b, i) {
+          b.classList.remove('active','done');
+          var s = b.querySelector('.status-text');
+          if (s) s.textContent = b.dataset.status || '';
+          if (i < idx) {
+            b.classList.add('done');
+            if (s) s.textContent = '✓ Complete';
+          }
+          if (i === idx) b.classList.add('active');
+        });
+        idx = (idx + 1) % (boxes.length + 1);
+      }
+      animate();
+      setInterval(animate, 2500);
+
       if (typeof renderDecisions === 'function') renderDecisions();
-      if (typeof startPipelineAnimation === 'function') startPipelineAnimation();
     });
     </script>
 
