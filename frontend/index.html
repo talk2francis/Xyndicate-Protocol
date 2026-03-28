@@ -212,6 +212,32 @@
           <li>Open ACP standard for other X Layer teams to build on.</li>
         </ul>
       </section>
+
+    <div id="wallet-modal" class="wallet-modal hidden">
+      <div class="wallet-modal__panel">
+        <h4>Select a wallet</h4>
+        <p>Choose how to unlock the reasoning chain.</p>
+        <div class="wallet-options">
+          <button class="wallet-option" data-wallet="okx" data-label="OKX Wallet">
+            <span class="wallet-icon">OKX</span>
+            <span>OKX Wallet</span>
+          </button>
+          <button class="wallet-option" data-wallet="metamask" data-label="MetaMask">
+            <span class="wallet-icon">🦊</span>
+            <span>MetaMask</span>
+          </button>
+          <button class="wallet-option" data-wallet="rabby" data-label="Rabby Wallet">
+            <span class="wallet-icon">R</span>
+            <span>Rabby Wallet</span>
+          </button>
+        </div>
+        <p class="wallet-modal__message" id="wallet-modal-message"></p>
+        <div class="wallet-modal__actions">
+          <button class="wallet-cancel" id="wallet-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
@@ -492,6 +518,12 @@
         rpcUrls: ['https://rpc.xlayer.tech'],
         blockExplorerUrls: ['https://www.oklink.com/xlayer']
       };
+      const PLATFORM_WALLET = window.ethers ? ethers.getAddress('0xc9955733f8f16872a6c8df375e9d13d79a43a4dc') : '0xc9955733f8f16872a6c8df375e9d13d79a43a4dc';
+
+      const walletModal = document.getElementById('wallet-modal');
+      const walletOptions = walletModal?.querySelectorAll('[data-wallet]');
+      const walletMessage = document.getElementById('wallet-modal-message');
+      const walletCancel = document.getElementById('wallet-cancel');
 
       const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       const getInjectedProvider = () => window.ethereum || window.okxwallet || window.web3?.currentProvider || null;
@@ -522,6 +554,27 @@
         }
       };
 
+      const getProviderByType = (type) => {
+        if (type === 'okx') return window.okxwallet || null;
+        if (type === 'metamask') return window.ethereum?.isMetaMask ? window.ethereum : null;
+        if (type === 'rabby') return window.ethereum?.isRabby ? window.ethereum : null;
+        return getInjectedProvider();
+      };
+
+      const openWalletModal = () => {
+        if (!walletModal) {
+          handleUnlock();
+          return;
+        }
+        walletModal.classList.remove('hidden');
+        if (walletMessage) walletMessage.textContent = '';
+      };
+
+      const closeWalletModal = () => {
+        walletModal?.classList.add('hidden');
+        if (walletMessage) walletMessage.textContent = '';
+      };
+
       const setButtonState = (label, disabled = true) => {
         if (!unlockBtn) return;
         unlockBtn.textContent = label;
@@ -539,17 +592,18 @@
         paymentReceipt.innerHTML = `Payment confirmed · TX: <a href="https://www.oklink.com/xlayer/tx/${hash}" target="_blank" rel="noreferrer">${hash.slice(0, 10)}…</a>`;
       };
 
-      const handleUnlock = async () => {
+      const handleUnlock = async (selectedProvider) => {
         if (!window.ethers) {
           showMessage('Wallet provider unavailable.');
           return;
         }
-        const provider = await resolveProvider();
+        const provider = selectedProvider || (await resolveProvider());
         if (!provider) {
           showMessage('Install OKX Wallet or MetaMask to unlock');
+          setButtonState('Unlock reasoning chain', false);
           return;
         }
-        const activeProvider = window.ethereum || window.okxwallet || window.web3?.currentProvider || provider;
+        const activeProvider = selectedProvider || window.ethereum || window.okxwallet || window.web3?.currentProvider || provider;
         try {
           setButtonState('Processing payment...');
           showMessage('');
@@ -558,7 +612,7 @@
           const browserProvider = new ethers.BrowserProvider(activeProvider);
           const signer = await browserProvider.getSigner();
           const tx = await signer.sendTransaction({
-            to: PAYMENT_DEST,
+            to: PLATFORM_WALLET,
             value: ethers.parseEther(PAYMENT_AMOUNT)
           });
           setButtonState('Waiting for confirmation...');
@@ -577,7 +631,25 @@
         }
       };
 
-      unlockBtn?.addEventListener('click', handleUnlock);
+      if (walletOptions?.length) {
+        unlockBtn?.addEventListener('click', openWalletModal);
+        walletOptions.forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const type = btn.dataset.wallet;
+            const label = btn.dataset.label || 'Wallet';
+            const provider = getProviderByType(type);
+            if (!provider) {
+              if (walletMessage) walletMessage.textContent = `${label} not detected — install it first`;
+              return;
+            }
+            closeWalletModal();
+            await handleUnlock(provider);
+          });
+        });
+        walletCancel?.addEventListener('click', closeWalletModal);
+      } else {
+        unlockBtn?.addEventListener('click', () => handleUnlock());
+      }
     </script>
   </body>
 </html>
