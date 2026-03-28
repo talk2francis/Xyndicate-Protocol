@@ -22,7 +22,9 @@ async function main() {
     });
   }
   data.decisionLogEntries = entries;
-  fs.writeFileSync('deployments.json', JSON.stringify(data, null, 2));
+  const payload = JSON.stringify(data, null, 2);
+  fs.writeFileSync('deployments.json', payload);
+  fs.writeFileSync('frontend/deployments.json', payload);
   console.log(`Exported ${entries.length} decisions.`);
 }
 
