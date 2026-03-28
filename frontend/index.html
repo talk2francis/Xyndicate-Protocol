@@ -617,62 +617,70 @@ const DECISIONS = [
         }
       };
 
-      const initApp = () => {
-        themeToggleBtn = document.getElementById('theme-toggle');
-        runCycleBtn = document.getElementById('run-cycle-btn');
-        copyBtn = document.getElementById('copy-to-x');
-        unlockBtn = document.getElementById('unlock-chain');
-        gated = document.getElementById('gated-output');
-        reasoningStatus = document.getElementById('reasoning-status');
-        paymentReceipt = document.getElementById('payment-receipt');
-        walletModal = document.getElementById('wallet-modal');
-        walletOptions = walletModal ? walletModal.querySelectorAll('[data-wallet]') : [];
-        walletMessage = document.getElementById('wallet-modal-message');
-        walletCancel = document.getElementById('wallet-cancel');
-        connectBtn = document.getElementById('connect-wallet');
 
-        if (themeToggleBtn) themeToggleBtn.addEventListener('click', handleThemeToggle);
-        if (runCycleBtn) runCycleBtn.addEventListener('click', handleRunCycle);
-        if (copyBtn) copyBtn.addEventListener('click', handleCopyToX);
-        if (unlockBtn) {
-          unlockBtn.addEventListener('click', () => {
-            walletAction = 'unlock';
-            openWalletModal();
-          });
-        }
-        if (connectBtn) {
-          connectBtn.addEventListener('click', () => {
+    <script>
+      (function() {
+        function init() {
+          themeToggleBtn = document.getElementById('theme-toggle');
+          runCycleBtn = document.getElementById('run-cycle-btn');
+          copyBtn = document.getElementById('copy-to-x');
+          unlockBtn = document.getElementById('unlock-chain');
+          gated = document.getElementById('gated-output');
+          reasoningStatus = document.getElementById('reasoning-status');
+          paymentReceipt = document.getElementById('payment-receipt');
+          walletModal = document.getElementById('wallet-modal');
+          walletOptions = walletModal ? walletModal.querySelectorAll('[data-wallet]') : [];
+          walletMessage = document.getElementById('wallet-modal-message');
+          walletCancel = document.getElementById('wallet-cancel');
+          connectBtn = document.getElementById('connect-wallet');
+
+          var themeToggle = document.getElementById('theme-toggle');
+          if (themeToggle) themeToggle.onclick = handleThemeToggle;
+          if (localStorage.getItem(THEME_KEY) === 'dark') applyTheme('dark');
+
+          if (connectBtn) connectBtn.onclick = function() {
             walletAction = 'connect';
             openWalletModal();
-          });
-        }
-        if (walletOptions && walletOptions.length) {
-          walletOptions.forEach((btn) => {
-            btn.addEventListener('click', async () => {
-              const type = btn.dataset.wallet;
-              const label = btn.dataset.label || 'Wallet';
-              const provider = getProviderByType(type);
-              if (!provider) {
-                if (walletMessage) walletMessage.textContent = `${label} not detected — install it first`;
-                return;
-              }
-              closeWalletModal();
-              if (walletAction === 'connect') {
-                await connectWallet(provider);
-              } else {
-                await handleUnlock(provider);
-              }
+          };
+
+          if (unlockBtn) unlockBtn.onclick = function() {
+            walletAction = 'unlock';
+            openWalletModal();
+          };
+
+          if (copyBtn) copyBtn.onclick = handleCopyToX;
+          if (runCycleBtn) runCycleBtn.onclick = handleRunCycle;
+
+          if (walletOptions && walletOptions.length) {
+            walletOptions.forEach(function(btn) {
+              btn.onclick = async function() {
+                const type = btn.dataset.wallet;
+                const label = btn.dataset.label || 'Wallet';
+                const provider = getProviderByType(type);
+                if (!provider) {
+                  if (walletMessage) walletMessage.textContent = `${label} not detected — install it first`;
+                  return;
+                }
+                closeWalletModal();
+                if (walletAction === 'connect') {
+                  await connectWallet(provider);
+                } else {
+                  await handleUnlock(provider);
+                }
+              };
             });
-          });
+          }
+          if (walletCancel) walletCancel.onclick = closeWalletModal;
+
+          renderDecisions();
+          startPipelineAnimation();
         }
-        walletCancel?.addEventListener('click', closeWalletModal);
-        renderDecisions();
-        startPipelineAnimation();
-      };
-
-      document.addEventListener('DOMContentLoaded', initApp);
-      initApp();
-
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else {
+          init();
+        }
+      })();
     </script>
   </body>
 </html>
