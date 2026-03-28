@@ -21,6 +21,7 @@
           <a href="#roadmap">Roadmap</a>
         </nav>
         <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode"><span class="toggle-thumb"></span></button>
+        <button id="connect-wallet" class="connect-wallet-btn">Connect Wallet</button>
       </div>
     </header>
 
@@ -47,7 +48,7 @@
           <p>Season 1 — Live competition on X Layer Mainnet.</p>
         </div>
         <div class="stats-strip hardcoded">
-          <span>Decisions Logged: <strong>6</strong></span>
+          <span>Decisions Logged: <strong>27</strong></span>
           <span>Active Squads: <strong>2</strong></span>
           <span>Season: <strong>LIVE</strong></span>
           <span>Network: <strong>X Layer Mainnet</strong></span>
@@ -67,8 +68,8 @@
             <tbody>
               <tr class="rank gold">
                 <td>🥇 1</td>
-                <td>Squad Alpha</td>
-                <td>4</td>
+                <td>XYNDICATE_ALPHA</td>
+                <td>18</td>
                 <td>0.81</td>
                 <td>BUY ETH — rebound signal</td>
                 <td><span class="status-pill">ACTIVE</span></td>
@@ -76,7 +77,7 @@
               <tr class="rank silver">
                 <td>🥈 2</td>
                 <td>Squad Nova</td>
-                <td>2</td>
+                <td>9</td>
                 <td>0.72</td>
                 <td>USDC→OKB rebalance</td>
                 <td><span class="status-pill">ACTIVE</span></td>
@@ -93,7 +94,7 @@
         </div>
         <div class="match-card">
           <div class="squad-block">
-            <p class="label">Squad Alpha</p>
+            <p class="label">XYNDICATE_ALPHA</p>
             <h3>Confidence 0.81</h3>
             <p class="meta">Last action: BUY ETH</p>
           </div>
@@ -108,8 +109,8 @@
           </div>
         </div>
         <div class="round-progress">
-          <p>Decisions logged this round: 6</p>
-          <div class="progress-shell"><span class="progress-fill" style="width:65%"></span></div>
+          <p>Decisions logged this round: 27</p>
+          <div class="progress-shell"><span class="progress-fill" style="width:100%"></span></div>
         </div>
         <div class="agent-pipeline" id="agent-pipeline">
           <div class="agent-box" data-agent="oracle" data-status="Fetching market data">
@@ -219,16 +220,40 @@
         <p>Choose how to unlock the reasoning chain.</p>
         <div class="wallet-options">
           <button class="wallet-option" data-wallet="okx" data-label="OKX Wallet">
-            <span class="wallet-icon">OKX</span>
+            <span class="wallet-icon">
+              <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="8" fill="#000000"/>
+                <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="bold">OKX</text>
+              </svg>
+            </span>
             <span>OKX Wallet</span>
           </button>
           <button class="wallet-option" data-wallet="metamask" data-label="MetaMask">
-            <span class="wallet-icon">🦊</span>
+            <span class="wallet-icon">
+              <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="8" fill="#F6851B"/>
+                <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="18" font-weight="bold">M</text>
+              </svg>
+            </span>
             <span>MetaMask</span>
           </button>
           <button class="wallet-option" data-wallet="rabby" data-label="Rabby Wallet">
-            <span class="wallet-icon">R</span>
+            <span class="wallet-icon">
+              <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="8" fill="#7B3FE4"/>
+                <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="20" font-weight="bold">R</text>
+              </svg>
+            </span>
             <span>Rabby Wallet</span>
+          </button>
+          <button class="wallet-option" data-wallet="zerion" data-label="Zerion Wallet">
+            <span class="wallet-icon">
+              <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="8" fill="#2962EF"/>
+                <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="20" font-weight="bold">Z</text>
+              </svg>
+            </span>
+            <span>Zerion Wallet</span>
           </button>
         </div>
         <p class="wallet-modal__message" id="wallet-modal-message"></p>
@@ -361,7 +386,7 @@
         if (animate) li.classList.add('collapsing');
         li.innerHTML = `
               <div>
-                <p>${formatUtc(entry.timestamp)} · ${entry.squadId || 'Xyndicate Alpha'} · ${entry.agentChain || 'Oracle→Analyst→Strategist→Executor'}</p>
+                <p>${formatUtc(entry.timestamp)} · ${SQUAD_DISPLAY} · ${entry.agentChain || 'Oracle→Analyst→Strategist→Executor'}</p>
                 <strong>${entry.display}</strong>
                 <p>${entry.detail}</p>
               </div>
@@ -465,7 +490,7 @@
         const display = `${payload.action} ${payload.asset} — ${payload.action === 'HOLD' ? '0% treasury' : `${payload.sizePercent || 0}% treasury`}`;
         const entry = {
           txHash: payload.txHash,
-          squadId: 'Xyndicate Alpha',
+          squadId: SQUAD_DISPLAY,
           agentChain: 'Oracle→Analyst→Strategist→Executor',
           timestamp: Date.now(),
           display,
@@ -524,6 +549,8 @@
       const walletOptions = walletModal?.querySelectorAll('[data-wallet]');
       const walletMessage = document.getElementById('wallet-modal-message');
       const walletCancel = document.getElementById('wallet-cancel');
+      const connectBtn = document.getElementById('connect-wallet');
+      let walletAction = null;
 
       const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
       const getInjectedProvider = () => window.ethereum || window.okxwallet || window.web3?.currentProvider || null;
@@ -558,12 +585,17 @@
         if (type === 'okx') return window.okxwallet || null;
         if (type === 'metamask') return window.ethereum?.isMetaMask ? window.ethereum : null;
         if (type === 'rabby') return window.ethereum?.isRabby ? window.ethereum : null;
+        if (type === 'zerion') return window.ethereum?.isZerion ? window.ethereum : null;
         return getInjectedProvider();
       };
 
       const openWalletModal = () => {
         if (!walletModal) {
-          handleUnlock();
+          if (walletAction === 'connect') {
+            connectWallet();
+          } else {
+            handleUnlock();
+          }
           return;
         }
         walletModal.classList.remove('hidden');
@@ -573,6 +605,7 @@
       const closeWalletModal = () => {
         walletModal?.classList.add('hidden');
         if (walletMessage) walletMessage.textContent = '';
+        walletAction = null;
       };
 
       const setButtonState = (label, disabled = true) => {
@@ -592,6 +625,36 @@
         paymentReceipt.innerHTML = `Payment confirmed · TX: <a href="https://www.oklink.com/xlayer/tx/${hash}" target="_blank" rel="noreferrer">${hash.slice(0, 10)}…</a>`;
       };
 
+
+      const setConnectLabel = (address) => {
+        if (!connectBtn || !address) return;
+        connectBtn.textContent = `${address.slice(0, 6)}...${address.slice(-4)}`;
+      };
+
+      const connectWallet = async (selectedProvider) => {
+        if (!window.ethers) return;
+        const provider = selectedProvider || (await resolveProvider());
+        if (!provider) {
+          if (walletMessage) walletMessage.textContent = 'Install a wallet to connect';
+          return;
+        }
+        try {
+          if (connectBtn) {
+            connectBtn.disabled = true;
+            connectBtn.textContent = 'Connecting...';
+          }
+          await provider.request({ method: 'eth_requestAccounts' });
+          const browserProvider = new ethers.BrowserProvider(provider);
+          const signer = await browserProvider.getSigner();
+          const address = await signer.getAddress();
+          setConnectLabel(address);
+        } catch (error) {
+          console.error(error);
+          if (connectBtn) connectBtn.textContent = 'Connect Wallet';
+        } finally {
+          if (connectBtn) connectBtn.disabled = false;
+        }
+      };
       const handleUnlock = async (selectedProvider) => {
         if (!window.ethers) {
           showMessage('Wallet provider unavailable.');

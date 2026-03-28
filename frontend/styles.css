@@ -1005,3 +1005,21 @@ body.dark .wallet-icon {
 body.dark .wallet-cancel {
   color: #7aa2ff;
 }
+
+.connect-wallet-btn {
+  margin-left: 0.75rem;
+  padding: 0.35rem 0.9rem;
+  border: 1.5px solid currentColor;
+  background: transparent;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.connect-wallet-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
