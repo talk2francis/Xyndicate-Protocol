@@ -17,7 +17,7 @@ const fetchMarketSnapshot = async () => {
 };
 
 const callOpenAI = async (systemPrompt, payload) => {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = (process.env.OPENAI_API_KEY || "").trim();
   if (!apiKey) throw new Error('OPENAI_API_KEY missing');
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -45,9 +45,9 @@ const callOpenAI = async (systemPrompt, payload) => {
 };
 
 const logDecisionOnChain = async (strategistDecision) => {
-  const privateKey = process.env.STRATEGIST_KEY;
-  const logAddress = process.env.DECISION_LOG_ADDRESS;
-  const rpcUrl = process.env.XLAYER_RPC || 'https://rpc.xlayer.tech';
+  const privateKey = (process.env.STRATEGIST_KEY || "").trim();
+  const logAddress = (process.env.DECISION_LOG_ADDRESS || "").trim();
+  const rpcUrl = (process.env.XLAYER_RPC || "https://rpc.xlayer.tech").trim();
   if (!privateKey || !logAddress) throw new Error('Missing chain credentials');
   const provider = new ethers.JsonRpcProvider(rpcUrl);
   const wallet = new ethers.Wallet(privateKey, provider);
