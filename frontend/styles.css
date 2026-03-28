@@ -665,7 +665,7 @@ body.dark .btn.secondary {
   }
 }
 
-.decision-feed ul {
+.decision-list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -674,13 +674,37 @@ body.dark .btn.secondary {
   gap: 0.8rem;
 }
 
-.decision-feed li {
+.decision-card {
+  position: relative;
   display: flex;
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.2rem;
   border-radius: 16px;
   background: #f4f5fb;
+  overflow: hidden;
+}
+
+.decision-card.collapsing {
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+}
+
+.decision-card.collapsing.is-visible {
+  max-height: 420px;
+  opacity: 1;
+}
+
+.decision-card.fade-tail::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), #ffffff);
+  pointer-events: none;
 }
 
 .decision-feed a {
@@ -717,7 +741,7 @@ body.dark .stat-strip.hardcoded,
 body.dark .table-wrapper,
 body.dark .arena-live,
 body.dark .proof-grid div,
-body.dark .decision-feed li,
+body.dark .decision-card,
 body.dark .leaderboard-card,
 body.dark .decision-card,
 body.dark .gate-card,
@@ -877,4 +901,12 @@ body.dark .pipeline-arrow {
 .payment-receipt a {
   color: #2563eb;
   text-decoration: none;
+}
+
+body.dark .decision-card.fade-tail::after {
+  background: linear-gradient(180deg, rgba(15, 17, 23, 0), #0F1117);
+}
+
+.hidden {
+  display: none;
 }

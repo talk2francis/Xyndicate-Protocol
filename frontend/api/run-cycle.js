@@ -76,6 +76,7 @@ module.exports = async (req, res) => {
       txHash,
       action: strategist.action,
       asset: strategist.asset,
+      sizePercent: strategist.sizePercent,
       rationale: strategist.rationale,
       narratorSummary,
       analyst,
