@@ -183,6 +183,17 @@ body.dark .hero::after {
   color: white;
 }
 
+.btn.secondary {
+  background: transparent;
+  border: 1px solid rgba(11, 12, 16, 0.2);
+  color: #0b0c10;
+}
+
+body.dark .btn.secondary {
+  border-color: #2A2D3A;
+  color: #F0F0F0;
+}
+
 .section-heading {
   margin-bottom: 1.4rem;
 }

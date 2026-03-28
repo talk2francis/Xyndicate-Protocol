@@ -323,6 +323,48 @@
         runPipelineLoop();
       }
 
+      const runCycleBtn = document.getElementById('run-cycle-btn');
+      const decisionList = document.querySelector('.decision-feed ul');
+      const formatUtc = () => new Intl.DateTimeFormat('en-GB', { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }).format(new Date());
+
+      const prependDecision = (entry) => {
+        if (!decisionList || !entry?.txHash) return;
+        const shortHash = `${entry.txHash.slice(0, 6)}…${entry.txHash.slice(-4)}`;
+        const li = document.createElement('li');
+        li.innerHTML = `
+              <div>
+                <p>${formatUtc()} · Xyndicate Alpha · Oracle→Analyst→Strategist→Executor</p>
+                <strong>${entry.action} ${entry.asset} — ${entry.action === 'HOLD' ? '0% treasury' : `${entry.sizePercent || 0}% treasury`}</strong>
+                <p>${entry.rationale || entry.narratorSummary || ''}</p>
+              </div>
+              <a href="https://www.oklink.com/xlayer/tx/${entry.txHash}" target="_blank" rel="noreferrer">${shortHash} ↗</a>`;
+        decisionList.prepend(li);
+        while (decisionList.children.length > 5) {
+          decisionList.removeChild(decisionList.lastElementChild);
+        }
+      };
+
+      runCycleBtn?.addEventListener('click', async () => {
+        if (!runCycleBtn) return;
+        runCycleBtn.disabled = true;
+        const originalText = runCycleBtn.textContent;
+        runCycleBtn.textContent = 'Running cycle...';
+        try {
+          const response = await fetch('/api/run-cycle', { method: 'POST' });
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Cycle failed');
+          }
+          const payload = await response.json();
+          prependDecision(payload);
+        } catch (err) {
+          alert(err?.message || 'Unable to run agent cycle');
+        } finally {
+          runCycleBtn.disabled = false;
+          runCycleBtn.textContent = originalText;
+        }
+      });
+
       const tweetText = `Xyndicate Alpha: BUY ETH 10% treasury. Rebound signal detected, confidence 0.70. Decision logged on-chain before execution. TX: 0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef #XLayer #OnchainOS @XLayer_Official`;
       const copyBtn = document.getElementById('copy-to-x');
       copyBtn?.addEventListener('click', () => {
