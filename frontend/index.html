@@ -350,66 +350,7 @@ const DECISIONS = [
         }
       });
 
-      const pipeline = document.getElementById('agent-pipeline');
-      if (pipeline) {
-        const agentBoxes = Array.from(pipeline.querySelectorAll('.agent-box'));
-        const pipelineArrows = Array.from(pipeline.querySelectorAll('.pipeline-arrow'));
-        const totalAgents = agentBoxes.length;
-        let pipelineStep = 0;
-
-        const flashArrow = (idx) => {
-          const arrow = pipelineArrows[idx];
-          if (!arrow) return;
-          arrow.classList.add('arrow-transfer');
-          setTimeout(() => arrow.classList.remove('arrow-transfer'), 1000);
-        };
-
-        const setPipelineState = (step) => {
-          agentBoxes.forEach((box) => {
-            box.classList.remove('is-active', 'is-done');
-            const statusText = box.querySelector('.status-text');
-            if (statusText && box.dataset.status) {
-              statusText.textContent = box.dataset.status;
-            }
-          });
-
-          if (step === totalAgents) {
-            agentBoxes.forEach((box) => {
-              box.classList.add('is-done');
-              const statusText = box.querySelector('.status-text');
-              if (statusText) statusText.textContent = '✓ Complete';
-            });
-            return;
-          }
-
-          agentBoxes.forEach((box, idx) => {
-            if (idx < step) {
-              box.classList.add('is-done');
-              const statusText = box.querySelector('.status-text');
-              if (statusText) statusText.textContent = '✓ Complete';
-            }
-          });
-
-          const activeBox = agentBoxes[step];
-          if (activeBox) {
-            activeBox.classList.add('is-active');
-          }
-
-          if (step > 0 && step <= totalAgents) {
-            flashArrow(step - 1);
-          }
-        };
-
-        const runPipelineLoop = () => {
-          setPipelineState(pipelineStep);
-          const delay = pipelineStep === totalAgents ? 1500 : 2500;
-          pipelineStep = (pipelineStep + 1) % (totalAgents + 1);
-          setTimeout(runPipelineLoop, delay);
-        };
-
-        runPipelineLoop();
-      }
-
+      const pipeline = document.getElementById('agent-pipeline');\n      if (pipeline) {\n        const agentBoxes = Array.from(pipeline.querySelectorAll('.agent-box'));\n        let pipelineIndex = 0;\n\n        const advancePipeline = () => {\n          agentBoxes.forEach((box) => {\n            box.classList.remove('active', 'done');\n            const statusText = box.querySelector('.status-text');\n            if (statusText && box.dataset.status) {\n              statusText.textContent = box.dataset.status;\n            }\n          });\n\n          agentBoxes.forEach((box, idx) => {\n            if (idx < pipelineIndex) {\n              box.classList.add('done');\n              const statusText = box.querySelector('.status-text');\n              if (statusText) statusText.textContent = '✓ Complete';\n            }\n          });\n\n          if (pipelineIndex < agentBoxes.length) {\n            const activeBox = agentBoxes[pipelineIndex];\n            if (activeBox) activeBox.classList.add('active');\n          }\n\n          pipelineIndex = (pipelineIndex + 1) % (agentBoxes.length + 1);\n        };\n\n        advancePipeline();\n        setInterval(advancePipeline, 2500);\n      }\n
       const decisionListEl = document.getElementById('decision-list');
       const decisionLoadBtn = document.getElementById('decision-load-more');
       let decisionEntries = [];
@@ -480,7 +421,7 @@ const DECISIONS = [
         updateDecisionButton();
       };
 
-      const hydrateDecisionData = () => {\n        if (!decisionListEl) return;\n        const source = Array.isArray(window.DECISIONS) ? window.DECISIONS.slice(0, 27) : [];\n        decisionEntries = source.map((entry) => ({\n          txHash: entry.hash,\n          squadId: entry.squad,\n          agentChain: entry.chain,\n          time: entry.time,\n          display: entry.decision,\n          detail: entry.rationale,\n          url: entry.url\n        }));\n        renderInitialDecisions();\n      };\n\n      decisionLoadBtn?.addEventListener('click', () => {\n        if (!decisionEntries.length) return;\n        if (decisionPhase === 0) {\n          revealNextDecisions(Math.min(10, decisionEntries.length - visibleDecisions));\n          decisionPhase = 1;\n        } else if (decisionPhase === 1) {\n          revealNextDecisions(decisionEntries.length - visibleDecisions);\n          decisionPhase = 2;\n        }\n        updateDecisionButton();\n      });\n\n      hydrateDecisionData();\n
+      const renderDecisions = () => {\n        if (!decisionListEl) return;\n        const source = Array.isArray(window.DECISIONS) ? window.DECISIONS.slice(0, 27) : [];\n        decisionEntries = source.map((entry) => ({\n          txHash: entry.hash,\n          squadId: entry.squad,\n          agentChain: entry.chain,\n          time: entry.time,\n          display: entry.decision,\n          detail: entry.rationale,\n          url: entry.url\n        }));\n        renderInitialDecisions();\n      };\n\n      decisionLoadBtn?.addEventListener('click', () => {\n        if (!decisionEntries.length) return;\n        if (decisionPhase === 0) {\n          revealNextDecisions(Math.min(10, decisionEntries.length - visibleDecisions));\n          decisionPhase = 1;\n        } else if (decisionPhase === 1) {\n          revealNextDecisions(decisionEntries.length - visibleDecisions);\n          decisionPhase = 2;\n        }\n        updateDecisionButton();\n      });\n\n      renderDecisions();\n
       const runCycleBtn = document.getElementById('run-cycle-btn');
       const injectNewDecision = (payload) => {\n        const display = `${payload.action} ${payload.asset} — ${payload.action === 'HOLD' ? '0% treasury' : `${payload.sizePercent || 0}% treasury`}`;\n        const entry = {\n          txHash: payload.txHash,\n          squadId: SQUAD_DISPLAY,\n          agentChain: 'Oracle→Analyst→Strategist→Executor',\n          time: formatDecisionTimestamp(),\n          display,\n          detail: payload.rationale || payload.narratorSummary || '',\n          url: `https://www.oklink.com/xlayer/tx/${payload.txHash}`\n        };\n        decisionEntries.unshift(entry);\n        decisionEntries = decisionEntries.slice(0, 27);\n        renderInitialDecisions();\n      };\n
       runCycleBtn?.addEventListener('click', async () => {
@@ -695,6 +636,7 @@ const DECISIONS = [
       } else {
         unlockBtn?.addEventListener('click', () => handleUnlock());
       }
+      document.addEventListener('DOMContentLoaded', renderDecisions);
     </script>
   </body>
 </html>

@@ -589,34 +589,34 @@ body.dark .btn.secondary {
   animation: blink 1s steps(2, start) infinite;
 }
 
-.agent-box.is-active {
+.agent-box.active {
   background: #0F1117;
   border: 2px solid #4F8EF7;
   box-shadow: 0 0 12px rgba(79, 142, 247, 0.4);
 }
 
-.agent-box.is-active .agent-name {
+.agent-box.active .agent-name {
   color: #ffffff;
 }
 
-.agent-box.is-active .status-text {
+.agent-box.active .status-text {
   color: #4F8EF7;
 }
 
-.agent-box.is-active .cursor {
+.agent-box.active .cursor {
   opacity: 1;
 }
 
-.agent-box.is-done {
+.agent-box.done {
   background: #F0FFF4;
   border: 1px solid #22C55E;
 }
 
-.agent-box.is-done .status-text {
+.agent-box.done .status-text {
   color: #22C55E;
 }
 
-.agent-box.is-done .cursor {
+.agent-box.done .cursor {
   opacity: 0;
 }
 
@@ -872,11 +872,11 @@ body.dark .agent-status {
   color: #9095A8;
 }
 
-body.dark .agent-box.is-active {
+body.dark .agent-box.active {
   background: #2A2D3A;
 }
 
-body.dark .agent-box.is-done {
+body.dark .agent-box.done {
   background: #0D1F14;
 }
 
