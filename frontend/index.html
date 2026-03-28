@@ -350,8 +350,35 @@ const DECISIONS = [
         }
       });
 
-      const pipeline = document.getElementById('agent-pipeline');\n      if (pipeline) {\n        const agentBoxes = Array.from(pipeline.querySelectorAll('.agent-box'));\n        let pipelineIndex = 0;\n\n        const advancePipeline = () => {\n          agentBoxes.forEach((box) => {\n            box.classList.remove('active', 'done');\n            const statusText = box.querySelector('.status-text');\n            if (statusText && box.dataset.status) {\n              statusText.textContent = box.dataset.status;\n            }\n          });\n\n          agentBoxes.forEach((box, idx) => {\n            if (idx < pipelineIndex) {\n              box.classList.add('done');\n              const statusText = box.querySelector('.status-text');\n              if (statusText) statusText.textContent = '✓ Complete';\n            }\n          });\n\n          if (pipelineIndex < agentBoxes.length) {\n            const activeBox = agentBoxes[pipelineIndex];\n            if (activeBox) activeBox.classList.add('active');\n          }\n\n          pipelineIndex = (pipelineIndex + 1) % (agentBoxes.length + 1);\n        };\n\n        advancePipeline();\n        setInterval(advancePipeline, 2500);\n      }\n
-      const decisionListEl = document.getElementById('decision-list');
+      const pipeline = document.getElementById('agent-pipeline');
+if (pipeline) {
+  const agentBoxes = Array.from(pipeline.querySelectorAll('.agent-box'));
+  let pipelineIndex = 0;
+  function advancePipeline() {
+    agentBoxes.forEach(function(box) {
+      box.classList.remove('active', 'done');
+      const statusText = box.querySelector('.status-text');
+      if (statusText && box.dataset.status) {
+        statusText.textContent = box.dataset.status;
+      }
+    });
+    agentBoxes.forEach(function(box, idx) {
+      if (idx < pipelineIndex) {
+        box.classList.add('done');
+        const st = box.querySelector('.status-text');
+        if (st) st.textContent = '✓ Complete';
+      }
+    });
+    if (pipelineIndex < agentBoxes.length) {
+      const activeBox = agentBoxes[pipelineIndex];
+      if (activeBox) activeBox.classList.add('active');
+    }
+    pipelineIndex = (pipelineIndex + 1) % (agentBoxes.length + 1);
+  }
+  advancePipeline();
+  setInterval(advancePipeline, 2500);
+}
+const decisionListEl = document.getElementById('decision-list');
       const decisionLoadBtn = document.getElementById('decision-load-more');
       let decisionEntries = [];
       let visibleDecisions = 0;
