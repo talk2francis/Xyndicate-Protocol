@@ -317,7 +317,7 @@ const DECISIONS = [
 
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
     <script>
-      let themeToggleBtn;
+      let themeToggleBtn = document.getElementById('theme-toggle');
       const THEME_KEY = 'xyndicate-theme';
       const root = document.documentElement;
 
@@ -422,7 +422,7 @@ const DECISIONS = [
       };
 
       const renderDecisions = () => {\n        if (!decisionListEl) return;\n        const source = Array.isArray(window.DECISIONS) ? window.DECISIONS.slice(0, 27) : [];\n        decisionEntries = source.map((entry) => ({\n          txHash: entry.hash,\n          squadId: entry.squad,\n          agentChain: entry.chain,\n          time: entry.time,\n          display: entry.decision,\n          detail: entry.rationale,\n          url: entry.url\n        }));\n        renderInitialDecisions();\n      };\n\n      decisionLoadBtn?.addEventListener('click', () => {\n        if (!decisionEntries.length) return;\n        if (decisionPhase === 0) {\n          revealNextDecisions(Math.min(10, decisionEntries.length - visibleDecisions));\n          decisionPhase = 1;\n        } else if (decisionPhase === 1) {\n          revealNextDecisions(decisionEntries.length - visibleDecisions);\n          decisionPhase = 2;\n        }\n        updateDecisionButton();\n      });\n\n      renderDecisions();\n
-      let runCycleBtn;
+      let runCycleBtn = document.getElementById('run-cycle-btn');
       const injectNewDecision = (payload) => {\n        const display = `${payload.action} ${payload.asset} — ${payload.action === 'HOLD' ? '0% treasury' : `${payload.sizePercent || 0}% treasury`}`;\n        const entry = {\n          txHash: payload.txHash,\n          squadId: SQUAD_DISPLAY,\n          agentChain: 'Oracle→Analyst→Strategist→Executor',\n          time: formatDecisionTimestamp(),\n          display,\n          detail: payload.rationale || payload.narratorSummary || '',\n          url: `https://www.oklink.com/xlayer/tx/${payload.txHash}`\n        };\n        decisionEntries.unshift(entry);\n        decisionEntries = decisionEntries.slice(0, 27);\n        renderInitialDecisions();\n      };\n
       const handleRunCycle = async () => {
         if (!runCycleBtn) return;
@@ -446,17 +446,17 @@ const DECISIONS = [
       };
 
       const tweetText = `Xyndicate Alpha: BUY ETH 10% treasury. Rebound signal detected, confidence 0.70. Decision logged on-chain before execution. TX: 0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef #XLayer #OnchainOS @XLayer_Official`;
-      let copyBtn;
+      let copyBtn = document.getElementById('copy-to-x');
       copyBtn?.addEventListener('click', () => {
         navigator.clipboard.writeText(tweetText);
         copyBtn.textContent = 'Copied! 🐦';
         setTimeout(() => (copyBtn.textContent = '🐦 Copy to X / Twitter'), 2000);
       });
 
-      let unlockBtn;
-      let gated;
-      let reasoningStatus;
-      let paymentReceipt;
+      let unlockBtn = document.getElementById('unlock-chain');
+      let gated = document.getElementById('gated-output');
+      let reasoningStatus = document.getElementById('reasoning-status');
+      let paymentReceipt = document.getElementById('payment-receipt');
       const PAYMENT_DEST = '0xc9955733f8f16872a6c8df375E9D13d79A43a4dc';
       const PAYMENT_AMOUNT = '0.0005';
       const XLAYER_PARAMS = {
@@ -468,11 +468,11 @@ const DECISIONS = [
       };
       const PLATFORM_WALLET = window.ethers ? ethers.getAddress('0xc9955733f8f16872a6c8df375e9d13d79a43a4dc') : '0xc9955733f8f16872a6c8df375e9d13d79a43a4dc';
 
-      let walletModal;
-      let walletOptions;
-      let walletMessage;
-      let walletCancel;
-      let connectBtn;
+      let walletModal = document.getElementById('wallet-modal');
+      let walletOptions = walletModal ? walletModal.querySelectorAll('[data-wallet]') : [];
+      let walletMessage = document.getElementById('wallet-modal-message');
+      let walletCancel = document.getElementById('wallet-cancel');
+      let connectBtn = document.getElementById('connect-wallet');
       let walletAction = null;
 
       const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -619,68 +619,29 @@ const DECISIONS = [
 
 
     <script>
-      (function() {
-        function init() {
-          themeToggleBtn = document.getElementById('theme-toggle');
-          runCycleBtn = document.getElementById('run-cycle-btn');
-          copyBtn = document.getElementById('copy-to-x');
-          unlockBtn = document.getElementById('unlock-chain');
-          gated = document.getElementById('gated-output');
-          reasoningStatus = document.getElementById('reasoning-status');
-          paymentReceipt = document.getElementById('payment-receipt');
-          walletModal = document.getElementById('wallet-modal');
-          walletOptions = walletModal ? walletModal.querySelectorAll('[data-wallet]') : [];
-          walletMessage = document.getElementById('wallet-modal-message');
-          walletCancel = document.getElementById('wallet-cancel');
-          connectBtn = document.getElementById('connect-wallet');
+(function() {
+ function init() {
+ var t = document.getElementById('theme-toggle');
+ if (t) t.onclick = handleThemeToggle;
 
-          var themeToggle = document.getElementById('theme-toggle');
-          if (themeToggle) themeToggle.onclick = handleThemeToggle;
-          if (localStorage.getItem(THEME_KEY) === 'dark') applyTheme('dark');
+ var cw = document.getElementById('connect-wallet');
+ if (cw) cw.onclick = openWalletModal;
 
-          if (connectBtn) connectBtn.onclick = function() {
-            walletAction = 'connect';
-            openWalletModal();
-          };
+ var ul = document.getElementById('unlock-chain');
+ if (ul) ul.onclick = handleUnlock;
 
-          if (unlockBtn) unlockBtn.onclick = function() {
-            walletAction = 'unlock';
-            openWalletModal();
-          };
+ var cx = document.getElementById('copy-to-x');
+ if (cx) cx.onclick = handleCopyToX;
 
-          if (copyBtn) copyBtn.onclick = handleCopyToX;
-          if (runCycleBtn) runCycleBtn.onclick = handleRunCycle;
-
-          if (walletOptions && walletOptions.length) {
-            walletOptions.forEach(function(btn) {
-              btn.onclick = async function() {
-                const type = btn.dataset.wallet;
-                const label = btn.dataset.label || 'Wallet';
-                const provider = getProviderByType(type);
-                if (!provider) {
-                  if (walletMessage) walletMessage.textContent = `${label} not detected — install it first`;
-                  return;
-                }
-                closeWalletModal();
-                if (walletAction === 'connect') {
-                  await connectWallet(provider);
-                } else {
-                  await handleUnlock(provider);
-                }
-              };
-            });
-          }
-          if (walletCancel) walletCancel.onclick = closeWalletModal;
-
-          renderDecisions();
-          startPipelineAnimation();
-        }
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', init);
-        } else {
-          init();
-        }
-      })();
-    </script>
+ renderDecisions();
+ startPipelineAnimation();
+ }
+ if (document.readyState === 'loading') {
+ document.addEventListener('DOMContentLoaded', init);
+ } else {
+ init();
+ }
+})();
+</script>
   </body>
 </html>
