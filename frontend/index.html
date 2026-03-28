@@ -261,25 +261,25 @@
         <h4>Select a wallet</h4>
         <p>Choose how to unlock the reasoning chain.</p>
         <div class="wallet-options">
-          <button class="wallet-option" data-wallet="okx" data-label="OKX Wallet" onclick="document.getElementById('wallet-modal').style.display='none'; document.getElementById('reasoning-chain').style.display='block'">
+          <button class="wallet-option" data-wallet="okx" data-label="OKX Wallet" onclick="selectWallet('okx')">
             <span class="wallet-icon">
               <img src="assets/wallet-okx.jpg" alt="OKX Wallet" width="40" height="40" class="wallet-logo"/>
             </span>
             <span>OKX Wallet</span>
           </button>
-          <button class="wallet-option" data-wallet="metamask" data-label="MetaMask" onclick="document.getElementById('wallet-modal').style.display='none'; document.getElementById('reasoning-chain').style.display='block'">
+          <button class="wallet-option" data-wallet="metamask" data-label="MetaMask" onclick="selectWallet('metamask')">
             <span class="wallet-icon">
               <img src="assets/wallet-metamask.jpg" alt="MetaMask Wallet" width="40" height="40" class="wallet-logo"/>
             </span>
             <span>MetaMask</span>
           </button>
-          <button class="wallet-option" data-wallet="rabby" data-label="Rabby Wallet" onclick="document.getElementById('wallet-modal').style.display='none'; document.getElementById('reasoning-chain').style.display='block'">
+          <button class="wallet-option" data-wallet="rabby" data-label="Rabby Wallet" onclick="selectWallet('rabby')">
             <span class="wallet-icon">
               <img src="assets/wallet-rabby.jpg" alt="Rabby Wallet" width="40" height="40" class="wallet-logo"/>
             </span>
             <span>Rabby Wallet</span>
           </button>
-          <button class="wallet-option" data-wallet="zerion" data-label="Zerion Wallet" onclick="document.getElementById('wallet-modal').style.display='none'; document.getElementById('reasoning-chain').style.display='block'">
+          <button class="wallet-option" data-wallet="zerion" data-label="Zerion Wallet" onclick="selectWallet('zerion')">
             <span class="wallet-icon">
               <img src="assets/wallet-zerion.jpg" alt="Zerion Wallet" width="40" height="40" class="wallet-logo"/>
             </span>
@@ -703,6 +703,73 @@ const decisionListEl = document.getElementById('decision-list');
 
 
     });
+    </script>
+
+    <script>
+async function selectWallet(walletType) {
+  document.getElementById('wallet-modal').style.display = 'none';
+
+  var provider = null;
+  if (walletType === 'okx' && window.okxwallet) provider = window.okxwallet;
+  else if (walletType === 'metamask' && window.ethereum) provider = window.ethereum;
+  else if (walletType === 'rabby' && window.ethereum) provider = window.ethereum;
+  else if (walletType === 'zerion' && window.ethereum) provider = window.ethereum;
+  else { alert(walletType + ' wallet not detected. Please install it first.'); return; }
+
+  try {
+    var unlockBtn = document.getElementById('unlock-chain');
+    unlockBtn.textContent = 'Connecting...';
+    unlockBtn.disabled = true;
+
+    await provider.request({ method: 'eth_requestAccounts' });
+
+    try {
+      await provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0xC4' }]
+      });
+    } catch(sw) {
+      if (sw.code === 4902) {
+        await provider.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: '0xC4',
+            chainName: 'X Layer Mainnet',
+            nativeCurrency: { name: 'OKB', symbol: 'OKB', decimals: 18 },
+            rpcUrls: ['https://rpc.xlayer.tech'],
+            blockExplorerUrls: ['https://www.oklink.com/xlayer']
+          }]
+        });
+      }
+    }
+
+    unlockBtn.textContent = 'Sending payment...';
+
+    var ethersProvider = new ethers.BrowserProvider(provider);
+    var signer = await ethersProvider.getSigner();
+    var tx = await signer.sendTransaction({
+      to: ethers.getAddress('0xc9955733f8f16872a6c8df375e9d13d79a43a4dc'),
+      value: ethers.parseEther('0.0005')
+    });
+
+    unlockBtn.textContent = 'Confirming...';
+    await tx.wait(1);
+
+    document.getElementById('reasoning-chain').style.display = 'block';
+    unlockBtn.textContent = 'Unlocked ✓';
+
+    var confirmed = document.createElement('p');
+    confirmed.style.cssText = 'color:#22c55e;font-size:13px;margin-top:8px';
+    confirmed.innerHTML = 'Payment confirmed · <a href="https://www.oklink.com/xlayer/tx/' + tx.hash + '" target="_blank">View TX ↗️</a>';
+    unlockBtn.parentNode.appendChild(confirmed);
+
+  } catch(err) {
+    var unlockBtn2 = document.getElementById('unlock-chain');
+    unlockBtn2.textContent = 'Unlock reasoning chain';
+    unlockBtn2.disabled = false;
+    if (err.code !== 4001) alert('Error: ' + err.message);
+  }
+}
     </script>
 
   </body>
