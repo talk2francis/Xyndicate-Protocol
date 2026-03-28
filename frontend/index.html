@@ -6,6 +6,7 @@
     <title>Xyndicate Protocol</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/png" href="assets/favicon.jpg" />
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
   </head>
   <body>
     <header class="nav">
@@ -315,19 +316,11 @@ window.DECISIONS = [
  url: "https://www.oklink.com/xlayer/tx/0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3" }
 ];
 
-    window.addEventListener('load', function() {
-      if (typeof renderDecisions === 'function') renderDecisions();
-      if (typeof startPipelineAnimation === 'function') startPipelineAnimation();
-    });
       window.addEventListener('load', function() {
         renderDecisions();
         startPipelineAnimation();
       });
 
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
-    <script>
       let themeToggleBtn = document.getElementById('theme-toggle');
       const THEME_KEY = 'xyndicate-theme';
       const root = document.documentElement;
