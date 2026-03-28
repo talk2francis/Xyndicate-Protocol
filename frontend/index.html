@@ -21,8 +21,8 @@
           <a href="#gating">x402</a>
           <a href="#roadmap">Roadmap</a>
         </nav>
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode"><span class="toggle-thumb"></span></button>
-        <button id="connect-wallet" class="connect-wallet-btn">Connect Wallet</button>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" onclick="handleThemeToggle()"><span class="toggle-thumb"></span></button>
+        <button id="connect-wallet" class="connect-wallet-btn" onclick="openWalletModal()">Connect Wallet</button>
       </div>
     </header>
 
@@ -161,7 +161,7 @@
           <h2>Live Commentary</h2>
         </div>
         <div id="narrator-output" class="narrator-card">Xyndicate Alpha deployed ETH (10% treasury). ETH down 2.9% — rebound signal detected, confidence 0.70. Decision logged on-chain before execution.</div>
-        <button id="copy-to-x" class="btn copy-btn">🐦 Copy to X / Twitter</button>
+        <button id="copy-to-x" class="btn copy-btn" onclick="handleCopyToX()">🐦 Copy to X / Twitter</button>
       </section>
 
       <section id="proofs" class="proofs">
@@ -202,7 +202,7 @@
         </div>
         <div class="gate-card">
           <p class="price">Unlock full reasoning — 0.50 USDC</p>
-          <button id="unlock-chain" class="btn">Unlock reasoning chain</button>
+          <button id="unlock-chain" class="btn" onclick="handleUnlock()">Unlock reasoning chain</button>
           <p class="helper">Payment lands at DecisionLog: <a href="https://www.oklink.com/xlayer/tx/0xd18b7d123b74e2933bb7569452eb82c045ecba42b51efcb80a76b658bca1dc40" target="_blank">0xd18b…dc40</a></p>
           <p class="helper status" id="reasoning-status"></p>
           <div id="gated-output" class="gated hidden">
@@ -337,7 +337,7 @@ const DECISIONS = [
       const storedTheme = localStorage.getItem(THEME_KEY) || 'light';
       applyTheme(storedTheme);
 
-      const handleThemeToggle = () => {
+      function handleThemeToggle() {
         const next = document.body.classList.contains('dark') ? 'light' : 'dark';
         localStorage.setItem(THEME_KEY, next);
         applyTheme(next);
@@ -360,7 +360,7 @@ const DECISIONS = [
       const formatDecisionTimestamp = () =>
         new Intl.DateTimeFormat('en-GB', { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }).format(new Date());
 
-      const parseDecisionCopy = (rationale = '') => {
+      function parseDecisionCopy(rationale = '') {
         const [headline = '', detail = ''] = rationale.split('·').map((chunk) => chunk.trim());
         const display = headline.replace('(', ' — ').replace(')', '').trim();
         return {
@@ -369,13 +369,13 @@ const DECISIONS = [
         };
       };
 
-      const createDecisionCard = (entry, animate = false) => {\n        const shortHash = `${entry.txHash.slice(0, 6)}…${entry.txHash.slice(-4)}`;\n        const txLink = entry.url || `https://www.oklink.com/xlayer/tx/${entry.txHash}`;\n        const li = document.createElement('li');\n        li.className = 'decision-card';\n        if (animate) li.classList.add('collapsing');\n        li.innerHTML = `\n              <div>\n                <p>${entry.time} · ${SQUAD_DISPLAY} · ${entry.agentChain || 'Oracle→Analyst→Strategist→Executor'}</p>\n                <strong>${entry.display}</strong>\n                <p>${entry.detail}</p>\n              </div>\n              <a href="${txLink}" target="_blank" rel="noreferrer">${shortHash} ↗</a>`;\n        if (animate) requestAnimationFrame(() => li.classList.add('is-visible'));\n        return li;\n      };\n
-      const clearFadeClasses = () => {
+      function createDecisionCard(entry, animate = false) {\n        const shortHash = `${entry.txHash.slice(0, 6)}…${entry.txHash.slice(-4)}`;\n        const txLink = entry.url || `https://www.oklink.com/xlayer/tx/${entry.txHash}`;\n        const li = document.createElement('li');\n        li.className = 'decision-card';\n        if (animate) li.classList.add('collapsing');\n        li.innerHTML = `\n              <div>\n                <p>${entry.time} · ${SQUAD_DISPLAY} · ${entry.agentChain || 'Oracle→Analyst→Strategist→Executor'}</p>\n                <strong>${entry.display}</strong>\n                <p>${entry.detail}</p>\n              </div>\n              <a href="${txLink}" target="_blank" rel="noreferrer">${shortHash} ↗</a>`;\n        if (animate) requestAnimationFrame(() => li.classList.add('is-visible'));\n        return li;\n      };\n
+      function clearFadeClasses() {
         if (!decisionListEl) return;
         Array.from(decisionListEl.children).forEach((card) => card.classList.remove('fade-tail'));
       };
 
-      const applyFadeHint = () => {
+      function applyFadeHint() {
         if (!decisionListEl) return;
         clearFadeClasses();
         if (visibleDecisions >= decisionEntries.length) return;
@@ -386,7 +386,7 @@ const DECISIONS = [
         }
       };
 
-      const revealNextDecisions = (count, animate = true) => {
+      function revealNextDecisions(count, animate = true) {
         if (!decisionListEl) return;
         const end = Math.min(visibleDecisions + count, decisionEntries.length);
         for (let i = visibleDecisions; i < end; i += 1) {
@@ -397,7 +397,7 @@ const DECISIONS = [
         applyFadeHint();
       };
 
-      const updateDecisionButton = () => {
+      function updateDecisionButton() {
         if (!decisionLoadBtn) return;
         if (visibleDecisions >= decisionEntries.length) {
           decisionLoadBtn.classList.add('hidden');
@@ -411,7 +411,7 @@ const DECISIONS = [
         }
       };
 
-      const renderInitialDecisions = () => {
+      function renderInitialDecisions() {
         if (!decisionListEl) return;
         decisionListEl.innerHTML = '';
         visibleDecisions = 0;
@@ -421,10 +421,10 @@ const DECISIONS = [
         updateDecisionButton();
       };
 
-      const renderDecisions = () => {\n        if (!decisionListEl) return;\n        const source = Array.isArray(window.DECISIONS) ? window.DECISIONS.slice(0, 27) : [];\n        decisionEntries = source.map((entry) => ({\n          txHash: entry.hash,\n          squadId: entry.squad,\n          agentChain: entry.chain,\n          time: entry.time,\n          display: entry.decision,\n          detail: entry.rationale,\n          url: entry.url\n        }));\n        renderInitialDecisions();\n      };\n\n      decisionLoadBtn?.addEventListener('click', () => {\n        if (!decisionEntries.length) return;\n        if (decisionPhase === 0) {\n          revealNextDecisions(Math.min(10, decisionEntries.length - visibleDecisions));\n          decisionPhase = 1;\n        } else if (decisionPhase === 1) {\n          revealNextDecisions(decisionEntries.length - visibleDecisions);\n          decisionPhase = 2;\n        }\n        updateDecisionButton();\n      });\n\n      renderDecisions();\n
+      function renderDecisions() {\n        if (!decisionListEl) return;\n        const source = Array.isArray(window.DECISIONS) ? window.DECISIONS.slice(0, 27) : [];\n        decisionEntries = source.map((entry) => ({\n          txHash: entry.hash,\n          squadId: entry.squad,\n          agentChain: entry.chain,\n          time: entry.time,\n          display: entry.decision,\n          detail: entry.rationale,\n          url: entry.url\n        }));\n        renderInitialDecisions();\n      };\n\n      decisionLoadBtn?.addEventListener('click', () => {\n        if (!decisionEntries.length) return;\n        if (decisionPhase === 0) {\n          revealNextDecisions(Math.min(10, decisionEntries.length - visibleDecisions));\n          decisionPhase = 1;\n        } else if (decisionPhase === 1) {\n          revealNextDecisions(decisionEntries.length - visibleDecisions);\n          decisionPhase = 2;\n        }\n        updateDecisionButton();\n      });\n\n      renderDecisions();\n
       let runCycleBtn = document.getElementById('run-cycle-btn');
-      const injectNewDecision = (payload) => {\n        const display = `${payload.action} ${payload.asset} — ${payload.action === 'HOLD' ? '0% treasury' : `${payload.sizePercent || 0}% treasury`}`;\n        const entry = {\n          txHash: payload.txHash,\n          squadId: SQUAD_DISPLAY,\n          agentChain: 'Oracle→Analyst→Strategist→Executor',\n          time: formatDecisionTimestamp(),\n          display,\n          detail: payload.rationale || payload.narratorSummary || '',\n          url: `https://www.oklink.com/xlayer/tx/${payload.txHash}`\n        };\n        decisionEntries.unshift(entry);\n        decisionEntries = decisionEntries.slice(0, 27);\n        renderInitialDecisions();\n      };\n
-      const handleRunCycle = async () => {
+      function injectNewDecision(payload) {\n        const display = `${payload.action} ${payload.asset} — ${payload.action === 'HOLD' ? '0% treasury' : `${payload.sizePercent || 0}% treasury`}`;\n        const entry = {\n          txHash: payload.txHash,\n          squadId: SQUAD_DISPLAY,\n          agentChain: 'Oracle→Analyst→Strategist→Executor',\n          time: formatDecisionTimestamp(),\n          display,\n          detail: payload.rationale || payload.narratorSummary || '',\n          url: `https://www.oklink.com/xlayer/tx/${payload.txHash}`\n        };\n        decisionEntries.unshift(entry);\n        decisionEntries = decisionEntries.slice(0, 27);\n        renderInitialDecisions();\n      };\n
+      async function handleRunCycle() {
         if (!runCycleBtn) return;
         const originalText = runCycleBtn.textContent;
         runCycleBtn.disabled = true;
@@ -447,11 +447,12 @@ const DECISIONS = [
 
       const tweetText = `Xyndicate Alpha: BUY ETH 10% treasury. Rebound signal detected, confidence 0.70. Decision logged on-chain before execution. TX: 0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef #XLayer #OnchainOS @XLayer_Official`;
       let copyBtn = document.getElementById('copy-to-x');
-      copyBtn?.addEventListener('click', () => {
+      function handleCopyToX() {
+        if (!copyBtn) return;
         navigator.clipboard.writeText(tweetText);
         copyBtn.textContent = 'Copied! 🐦';
         setTimeout(() => (copyBtn.textContent = '🐦 Copy to X / Twitter'), 2000);
-      });
+      }
 
       let unlockBtn = document.getElementById('unlock-chain');
       let gated = document.getElementById('gated-output');
@@ -476,9 +477,9 @@ const DECISIONS = [
       let walletAction = null;
 
       const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-      const getInjectedProvider = () => window.ethereum || window.okxwallet || window.web3?.currentProvider || null;
+      function getInjectedProvider() { return window.ethereum || window.okxwallet || window.web3?.currentProvider || null; }
 
-      const resolveProvider = async () => {
+      async function resolveProvider() {
         let provider = getInjectedProvider();
         if (provider) return provider;
         await wait(2000);
@@ -486,7 +487,7 @@ const DECISIONS = [
         return provider;
       };
 
-      const ensureXLayerNetwork = async (provider) => {
+      async function ensureXLayerNetwork(provider) {
         try {
           await provider.request({
             method: 'wallet_switchEthereumChain',
@@ -504,7 +505,7 @@ const DECISIONS = [
         }
       };
 
-      const getProviderByType = (type) => {
+      function getProviderByType(type) {
         if (type === 'okx') return window.okxwallet || null;
         if (type === 'metamask') return window.ethereum?.isMetaMask ? window.ethereum : null;
         if (type === 'rabby') return window.ethereum?.isRabby ? window.ethereum : null;
@@ -512,7 +513,7 @@ const DECISIONS = [
         return getInjectedProvider();
       };
 
-      const openWalletModal = () => {
+      function openWalletModal() {
         if (!walletModal) {
           if (walletAction === 'connect') {
             connectWallet();
@@ -531,19 +532,19 @@ const DECISIONS = [
         walletAction = null;
       };
 
-      const setButtonState = (label, disabled = true) => {
+      function setButtonState(label, disabled = true) {
         if (!unlockBtn) return;
         unlockBtn.textContent = label;
         unlockBtn.disabled = disabled;
       };
 
-      const showMessage = (text) => {
+      function showMessage(text) {
         if (reasoningStatus) reasoningStatus.textContent = text;
       };
 
-      const revealReasoningChain = () => gated?.classList.remove('hidden');
+      function revealReasoningChain() { gated?.classList.remove('hidden'); }
 
-      const showPaymentConfirmed = (hash) => {
+      function showPaymentConfirmed(hash) {
         if (!paymentReceipt) return;
         paymentReceipt.innerHTML = `Payment confirmed · TX: <a href="https://www.oklink.com/xlayer/tx/${hash}" target="_blank" rel="noreferrer">${hash.slice(0, 10)}…</a>`;
       };
@@ -578,7 +579,7 @@ const DECISIONS = [
           if (connectBtn) connectBtn.disabled = false;
         }
       };
-      const handleUnlock = async (selectedProvider) => {
+      async function handleUnlock(selectedProvider) {
         if (!window.ethers) {
           showMessage('Wallet provider unavailable.');
           return;
@@ -618,30 +619,8 @@ const DECISIONS = [
       };
 
 
-    <script>
-(function() {
- function init() {
- var t = document.getElementById('theme-toggle');
- if (t) t.onclick = handleThemeToggle;
-
- var cw = document.getElementById('connect-wallet');
- if (cw) cw.onclick = openWalletModal;
-
- var ul = document.getElementById('unlock-chain');
- if (ul) ul.onclick = handleUnlock;
-
- var cx = document.getElementById('copy-to-x');
- if (cx) cx.onclick = handleCopyToX;
-
- renderDecisions();
- startPipelineAnimation();
- }
- if (document.readyState === 'loading') {
- document.addEventListener('DOMContentLoaded', init);
- } else {
- init();
- }
-})();
-</script>
+      renderDecisions();
+      startPipelineAnimation();
+    </script>
   </body>
 </html>
