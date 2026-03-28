@@ -258,7 +258,8 @@
             </span>
             <span>Zerion Wallet</span>
           </button>
-        </div>/div>
+        </div>
+        </div>
         <p class="wallet-modal__message" id="wallet-modal-message"></p>
         <div class="wallet-modal__actions">
           <button class="wallet-cancel" id="wallet-cancel">Cancel</button>
@@ -313,6 +314,11 @@ const DECISIONS = [
  hash: "0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3",
  url: "https://www.oklink.com/xlayer/tx/0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3" }
 ];
+
+    window.addEventListener('load', function() {
+      if (typeof renderDecisions === 'function') renderDecisions();
+      if (typeof startPipelineAnimation === 'function') startPipelineAnimation();
+    });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
