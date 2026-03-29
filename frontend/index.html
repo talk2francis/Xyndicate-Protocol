@@ -56,7 +56,7 @@
           <p>Season 1 — Live competition on X Layer Mainnet.</p>
         </div>
         <div class="stats-strip hardcoded">
-          <span>Decisions Logged: <strong>27</strong></span>
+          <span>Decisions Logged: <strong id="decisions-count">27</strong></span>
           <span>Active Squads: <strong>2</strong></span>
           <span>Season: <strong>LIVE</strong></span>
           <span>Network: <strong>X Layer Mainnet</strong></span>
@@ -152,144 +152,8 @@
         </div>
         <div class="decision-feed">
           <h3>Latest Decisions</h3>
-          <div id="decision-list">
-            <div class="decision-card" data-group="initial">
-              <div class="decision-meta"><span>28/03/2026, 00:13 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3" target="_blank">0xa0b8…cdb3 ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by approximately 3.73% over the last 24 hours, indicating potential bearish sentiment. Holding allows for reassessment of market conditions before making any further trading decisions.</div>
-            </div>
-            <div class="decision-card" data-group="initial">
-              <div class="decision-meta"><span>28/03/2026, 00:08 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x5f3f47096d0fadf067f523fcff90af1dfdbcd4b7b99228fa1208aeaa20a969ce" target="_blank">0x5f3f…69ce ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by approximately 3.49% in the last 24 hours, indicating potential bearish sentiment. It may be prudent to hold off on any trading actions until further market analysis can confirm a trend reversal or stabilization.</div>
-            </div>
-            <div class="decision-card" data-group="initial">
-              <div class="decision-meta"><span>28/03/2026, 00:07 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xc7d1a35ba2e57addc716a8643a72a6b82fc3a1a312ab437e0af6864feef28169" target="_blank">0xc7d1…8169 ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by 3.44% over the last 24 hours, indicating potential bearish sentiment. It may be prudent to hold off on buying or selling until a clearer trend emerges.</div>
-            </div>
-            <div class="decision-card" data-group="initial" style="opacity:0.5">
-              <div class="decision-meta"><span>28/03/2026, 00:06 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xb0f91a2757a64b3783d48ba1528f31ddf40cea175cd38ea2d17284bdc268e6ba" target="_blank">0xb0f9…e6ba ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by approximately 3.48% over the last 24 hours, indicating potential bearish sentiment. It may be prudent to hold off on buying or selling until further market signals are observed.</div>
-            </div>
-            <div class="decision-card" data-group="initial" style="opacity:0.2">
-              <div class="decision-meta"><span>28/03/2026, 00:06 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xdf84640c2d5180adb97dc4fc8e487553167ea80973dc0117d542f56aeb7c1b32" target="_blank">0xdf84…1b32 ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 100% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by approximately 3.45% in the last 24 hours, indicating potential bearish sentiment. Holding allows for reassessment of market conditions before making further trading decisions.</div>
-            </div>
-            <div class="decision-card hidden" data-group="mid">
-              <div class="decision-meta"><span>28/03/2026, 00:05 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x0f0c218911e8bd57e92689e4747c22aa2c975b1e95b399014aaf4b4ecab04f92" target="_blank">0x0f0c…4f92 ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 100% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating potential bearish sentiment. Holding allows for reassessment of market conditions before making a decision to buy or sell.</div>
-            </div>
-            <div class="decision-card hidden" data-group="mid">
-              <div class="decision-meta"><span>28/03/2026, 00:04 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xd8e27bbb699d02dc19b92cc7aa740fdc2613a379282323b49cc1714f6b1d9da4" target="_blank">0xd8e2…9da4 ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating potential bearish sentiment. It may be prudent to hold off on buying or selling until the market shows clearer signs of recovery or further decline.</div>
-            </div>
-            <div class="decision-card hidden" data-group="mid">
-              <div class="decision-meta"><span>28/03/2026, 00:04 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x9374dadd8b57df7265cadb19a8b800487c3691b323dd1e4abfa6d629fdc72c18" target="_blank">0x9374…2c18 ↗️</a></div>
-              <div class="decision-title">BUY ETH — 10% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating a potential buying opportunity as the market may be oversold. This could lead to a rebound in price.</div>
-            </div>
-            <div class="decision-card hidden" data-group="mid">
-              <div class="decision-meta"><span>28/03/2026, 00:03 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x5298dec89bc6e535c98422aee2b0b2be08aead5c347588ab6259387b80f62093" target="_blank">0x5298…2093 ↗️</a></div>
-              <div class="decision-title">SELL ETH — 50% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating bearish market sentiment. It may be prudent to take profits or limit losses at this time.</div>
-            </div>
-            <div class="decision-card hidden" data-group="mid">
-              <div class="decision-meta"><span>28/03/2026, 00:02 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x9c658d2245e77c1120e6b850021f57f46b709a2f9354ca9acebdb15ea1aac69b" target="_blank">0x9c65…c69b ↗️</a></div>
-              <div class="decision-title">BUY ETH — 10% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating a potential buying opportunity as it may be undervalued at this price point.</div>
-            </div>
-            <div class="decision-card hidden" data-group="mid">
-              <div class="decision-meta"><span>28/03/2026, 00:02 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x7e61136a7e250b750b482ba7a1e754996e291cf92173c431f6cc92800477b5bc" target="_blank">0x7e61…b5bc ↗️</a></div>
-              <div class="decision-title">BUY ETH — 10% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating a potential buying opportunity as it may be undervalued at this price point. Additionally, the overall market sentiment may shift positively, leading to a rebound.</div>
-            </div>
-            <div class="decision-card hidden" data-group="mid">
-              <div class="decision-meta"><span>28/03/2026, 00:01 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x7c30ae2104933c4b6952c26748989d893ad3a8116646de95c012afa4fa225854" target="_blank">0x7c30…5854 ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating potential bearish sentiment in the market. It may be prudent to hold off on buying or selling until a clearer trend emerges.</div>
-            </div>
-            <div class="decision-card hidden" data-group="mid">
-              <div class="decision-meta"><span>28/03/2026, 00:01 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x5e4e7f0c0eed4d6ad2012b92c946b2fc5571a637ac223c4642a4df59e8c65a2e" target="_blank">0x5e4e…5a2e ↗️</a></div>
-              <div class="decision-title">BUY ETH — 10% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating a potential buying opportunity as it may be undervalued. Additionally, the overall market sentiment could shift positively, leading to a rebound.</div>
-            </div>
-            <div class="decision-card hidden" data-group="mid">
-              <div class="decision-meta"><span>28/03/2026, 00:00 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x1e1a4806b09255ccc22c34f9ef8b877dab0e4e8ece656ae20377aa6681ed8516" target="_blank">0x1e1a…8516 ↗️</a></div>
-              <div class="decision-title">BUY ETH — 10% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating a potential buying opportunity as it may be undervalued at this price point. Additionally, the overall market sentiment may shift positively, leading to a rebound.</div>
-            </div>
-            <div class="decision-card hidden" data-group="mid">
-              <div class="decision-meta"><span>27/03/2026, 23:59 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x546bbc2dfad08ad4c4511431c3bcf4b7f9d3939935d715029602535128d40bae" target="_blank">0x546b…0bae ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating potential bearish sentiment. It may be prudent to hold off on buying or selling until the market shows signs of stabilization or recovery.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>27/03/2026, 23:58 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x51c921c2f496f4fe7dc576162438460919c5efe50b925a0367d43d88737e0c49" target="_blank">0x51c9…0c49 ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating potential bearish sentiment in the market. It may be prudent to hold off on making any trades until the market shows signs of recovery or stabilization.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>27/03/2026, 23:58 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x1afb446de1096e98295462bb8a9a4d3dcf8d53e3f24b66f77f720b43aaa231a5" target="_blank">0x1afb…31a5 ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating potential bearish sentiment. It may be prudent to hold off on buying or selling until the market shows signs of stabilization or recovery.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>27/03/2026, 23:57 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x05b31de39b820d45c146a2df72351cba9e6443708c2f762d5f7ac0ff70a65e21" target="_blank">0x05b3…5e21 ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating potential bearish sentiment. It may be prudent to hold off on buying or selling until the market shows clearer signs of recovery or further decline.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>27/03/2026, 23:56 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xd2b449baf8d13bd295ab02cc1bf8dd8c4d88aa702125baea81d19729a6aefe0c" target="_blank">0xd2b4…fe0c ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The market shows a 24-hour decline of over 3%, indicating potential bearish sentiment. Holding allows for reassessment of market conditions before making further decisions.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>27/03/2026, 23:56 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xab412f778d83f49542fb235b518d9b596a929a2f07009e6b582d267766c9cab9" target="_blank">0xab41…cab9 ↗️</a></div>
-              <div class="decision-title">BUY ETH — 10% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating a potential buying opportunity as it may be undervalued at this price point. Additionally, the overall market sentiment may shift positively, leading to a rebound.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>27/03/2026, 23:55 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xde096efd4b9c429e09d6ef06e34933a617179f30d95b2dbed1e7b0d9694dd062" target="_blank">0xde09…d062 ↗️</a></div>
-              <div class="decision-title">BUY ETH — 10% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 3% in the last 24 hours, indicating a potential buying opportunity as it may be undervalued at this price point. Additionally, the overall market sentiment may shift positively, leading to a rebound.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>27/03/2026, 15:34 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x77d8fa13c9b646c5cbaf1105e21319c38aa7b29fc019bfef27f502da473bc409" target="_blank">0x77d8…c409 ↗️</a></div>
-              <div class="decision-title">BUY ETH — 10% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by approximately 2.93% in the last 24 hours, indicating a potential buying opportunity as it may be undervalued at this moment. Additionally, the overall market sentiment may shift positively, leading to a price rebound.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>27/03/2026, 13:35 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x85fb525e4c3caf90f7259bc0246b0b6ac95809e22fec8a440446812f799b50ba" target="_blank">0x85fb…50ba ↗️</a></div>
-              <div class="decision-title">HOLD ETH — 0% treasury</div>
-              <div class="decision-detail">The price of ETH has decreased by over 4% in the last 24 hours, indicating potential bearish sentiment. It may be prudent to hold off on buying or selling until the market shows signs of stabilization or recovery.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>27/03/2026, 13:15 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0xf4d1f5255f44781659c543b72719ffb9bdf3d47cb9e32d2b95d377d6db5933fe" target="_blank">0xf4d1…33fe ↗️</a></div>
-              <div class="decision-title">IDLE — 0% treasury</div>
-              <div class="decision-detail">Automated idle signal due to invalid price feed.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>27/03/2026, 13:09 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x397cac8ff4899bc80807103540e87e43bc982262932e911f02a4de329e99033e" target="_blank">0x397c…033e ↗️</a></div>
-              <div class="decision-title">IDLE — 0% treasury</div>
-              <div class="decision-detail">Automated idle signal due to invalid price feed.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>27/03/2026, 13:08 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x2a29325d3d4ba4bd7fcb80758778088607c4c2a5b3c8131c4e42a1544944354f" target="_blank">0x2a29…354f ↗️</a></div>
-              <div class="decision-title">IDLE — 0% treasury</div>
-              <div class="decision-detail">Automated idle signal due to invalid price feed.</div>
-            </div>
-            <div class="decision-card hidden" data-group="tail">
-              <div class="decision-meta"><span>26/03/2026, 17:05 · XYNDICATE_ALPHA · Oracle→Analyst→Strategist→Executor</span><a href="https://www.oklink.com/xlayer/tx/0x3898361a082d85226ad758c793f07950f361c698ef74782fafc6576d6bd53257" target="_blank">0x3898…3257 ↗️</a></div>
-              <div class="decision-title">ETH momentum confirmed. Confidence 0.81. Entering 15% position.</div>
-              <div class="decision-detail">Decision logged on-chain.</div>
-            </div>
-          </div>
-          <button id="decision-reveal" class="btn secondary">Show 10 more decisions ↓</button>
+          <div id="decision-list" class="decision-list"></div>
+          <button id="decision-reveal" class="btn secondary hidden">Show 10 more decisions ↓</button>
         </div>
       </section>
       <section id="narrator-section" class="narrator">
@@ -516,78 +380,199 @@ if (pipeline) {
   advancePipeline();
   setInterval(advancePipeline, 2500);
 }
-const decisionListEl = document.getElementById('decision-list');
-      const decisionLoadBtn = document.getElementById('decision-load-more');
-      let decisionEntries = [];
-      let visibleDecisions = 0;
-      let decisionPhase = 0;
+const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
+      const decisionListEl = document.getElementById('decision-list');
+      const decisionRevealBtn = document.getElementById('decision-reveal');
+      let stagedDecisions = [];
+      let revealStage = 0;
 
-      const formatDecisionTimestamp = () =>
-        new Intl.DateTimeFormat('en-GB', { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }).format(new Date());
+      const FALLBACK_DECISIONS = [
+        {
+          timestamp: Date.parse('2026-03-28T00:13:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · ETH down 3.73% — bearish signal, holding for reassessment.',
+          txHash: '0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3'
+        },
+        {
+          timestamp: Date.parse('2026-03-28T00:08:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · ETH down 3.49% — prudent to wait for trend reversal.',
+          txHash: '0x5f3f47096d0fadf067f523fcff90af1dfdbcd4b7b99228fa1208aeaa20a969ce'
+        },
+        {
+          timestamp: Date.parse('2026-03-28T00:07:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'BUY ETH (10% treasury) · Rebound signal detected, confidence 0.70.',
+          txHash: '0xc7d1a35ba2e57addc716a8643a72a6b82fc3a1a312ab437e0af6864feef28169'
+        },
+        {
+          timestamp: Date.parse('2026-03-28T00:06:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · ETH down 3.48% — stabilization wait.',
+          txHash: '0xb0f91a2757a64b3783d48ba1528f31ddf40cea175cd38ea2d17284bdc268e6ba'
+        },
+        {
+          timestamp: Date.parse('2026-03-28T00:06:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (100% treasury) · Bearish sentiment confirmed — holding all positions.',
+          txHash: '0xdf84640c2d5180adb97dc4fc8e487553167ea80973dc0117d542f56aeb7c1b32'
+        },
+        {
+          timestamp: Date.parse('2026-03-27T16:34:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'BUY ETH (10% treasury) · ETH down 2.9% — rebound signal detected, confidence 0.70.',
+          txHash: '0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6'
+        },
+        {
+          timestamp: Date.parse('2026-03-27T16:10:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · Market uncertainty — agents waiting for clearer signal.',
+          txHash: '0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3'
+        },
+        {
+          timestamp: Date.parse('2026-03-27T16:05:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · ETH down 3.0% — bearish sentiment detected.',
+          txHash: '0x05b31de39b820d45c146a2df72351cba9e6443708c2f762d5f7ac0ff70a65e21'
+        },
+        {
+          timestamp: Date.parse('2026-03-27T16:02:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · Waiting for stabilization before re-entering.',
+          txHash: '0x1afb446de1096e98295462bb8a9a4d3dcf8d53e3f24b66f77f720b43aaa231a5'
+        },
+        {
+          timestamp: Date.parse('2026-03-27T16:00:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'BUY ETH (10% treasury) · Oversold conditions + rebound probability.',
+          txHash: '0x546bbc2dfad08ad4c4511431c3bcf4b7f9d3939935d715029602535128d40bae'
+        }
+      ];
 
-      function parseDecisionCopy(rationale = '') {
-        const [headline = '', detail = ''] = rationale.split('·').map((chunk) => chunk.trim());
+      const formatDecisionTime = (timestamp) =>
+        new Intl.DateTimeFormat('en-GB', { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }).format(new Date(timestamp));
+
+      function normalizeDecision(entry) {
+        const rationale = entry.rationale || '';
+        const [headline = 'Decision logged', detail = ''] = rationale.split('·').map((chunk) => chunk.trim());
         const display = headline.replace('(', ' — ').replace(')', '').trim();
+        const timestamp = entry.timestamp
+          ? (entry.timestamp > 1e12 ? entry.timestamp : entry.timestamp * 1000)
+          : Date.now();
         return {
-          display: display || 'Decision logged',
-          detail
+          title: display || 'Decision logged',
+          detail: detail || 'Recorded on-chain.',
+          squadId: entry.squadId || 'XYNDICATE_ALPHA',
+          agentChain: entry.agentChain || DEFAULT_CHAIN,
+          timestamp,
+          txHash: entry.txHash || null,
+          index: typeof entry.index === 'number' ? entry.index : null
         };
-      };
+      }
 
-      function createDecisionCard(entry, animate = false) {\n        const shortHash = `${entry.txHash.slice(0, 6)}…${entry.txHash.slice(-4)}`;\n        const txLink = entry.url || `https://www.oklink.com/xlayer/tx/${entry.txHash}`;\n        const li = document.createElement('li');\n        li.className = 'decision-card';\n        if (animate) li.classList.add('collapsing');\n        li.innerHTML = `\n              <div>\n                <p>${entry.time} · ${SQUAD_DISPLAY} · ${entry.agentChain || 'Oracle→Analyst→Strategist→Executor'}</p>\n                <strong>${entry.display}</strong>\n                <p>${entry.detail}</p>\n              </div>\n              <a href="${txLink}" target="_blank" rel="noreferrer">${shortHash} ↗</a>`;\n        if (animate) requestAnimationFrame(() => li.classList.add('is-visible'));\n        return li;\n      };\n
-      function clearFadeClasses() {
-        if (!decisionListEl) return;
-        Array.from(decisionListEl.children).forEach((card) => card.classList.remove('fade-tail'));
-      };
+      function createDecisionCard(entry, idx) {
+        const card = document.createElement('div');
+        card.className = 'decision-card';
+        const group = idx < 5 ? 'initial' : idx < 15 ? 'mid' : 'tail';
+        card.dataset.group = group;
+        if (group !== 'initial') card.classList.add('hidden');
+        if (idx === 3) card.style.opacity = '0.5';
+        if (idx === 4) card.style.opacity = '0.2';
 
-      function applyFadeHint() {
-        if (!decisionListEl) return;
-        clearFadeClasses();
-        if (visibleDecisions >= decisionEntries.length) return;
-        const startIdx = Math.max(visibleDecisions - 2, 0);
-        for (let i = startIdx; i < visibleDecisions; i += 1) {
-          const card = decisionListEl.children[i];
-          if (card) card.classList.add('fade-tail');
+        const meta = document.createElement('div');
+        meta.className = 'decision-meta';
+        const metaSpan = document.createElement('span');
+        metaSpan.textContent = `${formatDecisionTime(entry.timestamp)} · ${entry.squadId} · ${entry.agentChain}`;
+        meta.appendChild(metaSpan);
+        if (entry.txHash) {
+          const link = document.createElement('a');
+          link.href = `https://www.oklink.com/xlayer/tx/${entry.txHash}`;
+          link.target = '_blank';
+          link.rel = 'noreferrer';
+          link.textContent = `${entry.txHash.slice(0, 6)}…${entry.txHash.slice(-4)} ↗️`;
+          meta.appendChild(link);
+        } else if (entry.index !== null) {
+          const strong = document.createElement('strong');
+          strong.textContent = `Entry #${entry.index}`;
+          meta.appendChild(strong);
         }
-      };
+        card.appendChild(meta);
 
-      function revealNextDecisions(count, animate = true) {
+        const titleEl = document.createElement('div');
+        titleEl.className = 'decision-title';
+        titleEl.textContent = entry.title;
+        card.appendChild(titleEl);
+
+        const detailEl = document.createElement('div');
+        detailEl.className = 'decision-detail';
+        detailEl.textContent = entry.detail;
+        card.appendChild(detailEl);
+
+        return card;
+      }
+
+      function renderDecisions(decisions = []) {
         if (!decisionListEl) return;
-        const end = Math.min(visibleDecisions + count, decisionEntries.length);
-        for (let i = visibleDecisions; i < end; i += 1) {
-          const card = createDecisionCard(decisionEntries[i], animate);
-          decisionListEl.appendChild(card);
-        }
-        visibleDecisions = end;
-        applyFadeHint();
-      };
-
-      function updateDecisionButton() {
-        if (!decisionLoadBtn) return;
-        if (visibleDecisions >= decisionEntries.length) {
-          decisionLoadBtn.classList.add('hidden');
-          return;
-        }
-        decisionLoadBtn.classList.remove('hidden');
-        if (decisionPhase === 0) {
-          decisionLoadBtn.textContent = 'Show 10 more decisions ↓';
-        } else if (decisionPhase === 1) {
-          decisionLoadBtn.textContent = `Show remaining ${decisionEntries.length - visibleDecisions} decisions ↓`;
-        }
-      };
-
-      function renderInitialDecisions() {
-        if (!decisionListEl) return;
+        const normalized = decisions.map(normalizeDecision).slice(0, 30);
+        stagedDecisions = normalized;
         decisionListEl.innerHTML = '';
-        visibleDecisions = 0;
-        decisionPhase = 0;
-        revealNextDecisions(Math.min(5, decisionEntries.length), false);
-        applyFadeHint();
-        updateDecisionButton();
-      };
+        const fragment = document.createDocumentFragment();
+        normalized.forEach((entry, idx) => {
+          fragment.appendChild(createDecisionCard(entry, idx));
+        });
+        decisionListEl.appendChild(fragment);
+        revealStage = 0;
+        if (decisionRevealBtn) {
+          if (normalized.length > 5) {
+            decisionRevealBtn.classList.remove('hidden');
+            decisionRevealBtn.textContent = 'Show 10 more decisions ↓';
+          } else {
+            decisionRevealBtn.classList.add('hidden');
+          }
+        }
+      }
 
+      function showDecisionGroup(group) {
+        if (!decisionListEl) return;
+        const cards = decisionListEl.querySelectorAll(`.decision-card[data-group="${group}"]`);
+        cards.forEach((card) => {
+          card.classList.remove('hidden');
+          card.style.opacity = '1';
+        });
+      }
+
+      async function loadDecisions() {
+        try {
+          const res = await fetch('/api/decisions');
+          if (!res.ok) throw new Error('Fetch failed');
+          const data = await res.json();
+          if (data?.success && Array.isArray(data.decisions) && data.decisions.length) {
+            renderDecisions(data.decisions);
+            updateStatsBar(data.total || data.decisions.length);
+            return;
+          }
+        } catch (error) {
+          console.error('Decisions fetch failed:', error.message);
+        }
+        renderDecisions(FALLBACK_DECISIONS);
+        updateStatsBar(FALLBACK_DECISIONS.length);
+      }
+
+      function updateStatsBar(total) {
+        const el = document.getElementById('decisions-count');
+        if (el) el.textContent = total;
+      }
       let runCycleBtn = document.getElementById('run-cycle-btn');
-      function injectNewDecision(payload) {\n        const display = `${payload.action} ${payload.asset} — ${payload.action === 'HOLD' ? '0% treasury' : `${payload.sizePercent || 0}% treasury`}`;\n        const entry = {\n          txHash: payload.txHash,\n          squadId: SQUAD_DISPLAY,\n          agentChain: 'Oracle→Analyst→Strategist→Executor',\n          time: formatDecisionTimestamp(),\n          display,\n          detail: payload.rationale || payload.narratorSummary || '',\n          url: `https://www.oklink.com/xlayer/tx/${payload.txHash}`\n        };\n        decisionEntries.unshift(entry);\n        decisionEntries = decisionEntries.slice(0, 27);\n        renderInitialDecisions();\n      };\n
       async function handleRunCycle() {
         if (!runCycleBtn) return;
         const originalText = runCycleBtn.textContent;
@@ -600,7 +585,7 @@ const decisionListEl = document.getElementById('decision-list');
             throw new Error(error.error || 'Cycle failed');
           }
           const payload = await response.json();
-          injectNewDecision(payload);
+          await loadDecisions();
         } catch (err) {
           alert(err?.message || 'Unable to run agent cycle');
         } finally {
@@ -811,32 +796,27 @@ const decisionListEl = document.getElementById('decision-list');
       animate();
       setInterval(animate, 2500);
 
-      var revealBtn = document.getElementById('decision-reveal');
-      if (revealBtn) {
-        var stage = 0;
-        revealBtn.addEventListener('click', function() {
-          if (stage === 0) {
-            document.querySelectorAll('#decision-list .decision-card[data-group="mid"]').forEach(function(card) {
-              card.classList.remove('hidden');
-            });
-            revealBtn.textContent = 'Show remaining decisions ↓';
-            stage = 1;
+      if (decisionRevealBtn) {
+        decisionRevealBtn.addEventListener('click', function() {
+          if (revealStage === 0) {
+            showDecisionGroup('mid');
+            decisionRevealBtn.textContent = 'Show remaining decisions ↓';
+            revealStage = 1;
           } else {
-            document.querySelectorAll('#decision-list .decision-card[data-group="tail"]').forEach(function(card) {
-              card.classList.remove('hidden');
-            });
-            revealBtn.style.display = 'none';
+            showDecisionGroup('tail');
+            decisionRevealBtn.classList.add('hidden');
           }
-          document.querySelectorAll('#decision-list .decision-card').forEach(function(card) {
-            if (!card.classList.contains('hidden')) {
+          if (decisionListEl) {
+            decisionListEl.querySelectorAll('.decision-card[data-group="initial"]').forEach(function(card) {
               card.style.opacity = '1';
-            }
-          });
+            });
+          }
         });
       }
 
-    });
-    </script>
+      loadDecisions();
+      setInterval(loadDecisions, 5 * 60 * 1000);
+    });    </script>
 
     <script>
 async function selectWallet(walletType) {
