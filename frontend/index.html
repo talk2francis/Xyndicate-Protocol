@@ -78,7 +78,7 @@
               <tr class="rank gold">
                 <td>🥇 1</td>
                 <td>XYNDICATE_ALPHA</td>
-                <td>18</td>
+                <td data-squad-count="alpha">18</td>
                 <td>0.81</td>
                 <td>BUY ETH — rebound signal</td>
                 <td><span class="status-pill">ACTIVE</span></td>
@@ -86,7 +86,7 @@
               <tr class="rank silver">
                 <td>🥈 2</td>
                 <td>Squad Nova</td>
-                <td>9</td>
+                <td data-squad-count="nova">9</td>
                 <td>0.72</td>
                 <td>USDC→OKB rebalance</td>
                 <td><span class="status-pill">ACTIVE</span></td>
@@ -460,6 +460,14 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
         }
       ];
 
+      const ALPHA_SQUAD_REGEX = /ALPHA/i;
+
+      function normalizeSquadId(value = '') {
+        if (!value) return 'XYNDICATE_ALPHA';
+        if (value.toUpperCase() === 'SYNDICATE_ALPHA') return 'XYNDICATE_ALPHA';
+        return value;
+      }
+
       const formatDecisionTime = (timestamp) =>
         new Intl.DateTimeFormat('en-GB', { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }).format(new Date(timestamp));
 
@@ -473,7 +481,7 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
         return {
           title: display || 'Decision logged',
           detail: detail || 'Recorded on-chain.',
-          squadId: entry.squadId || 'XYNDICATE_ALPHA',
+          squadId: normalizeSquadId(entry.squadId || 'XYNDICATE_ALPHA'),
           agentChain: entry.agentChain || DEFAULT_CHAIN,
           timestamp,
           txHash: entry.txHash || null,
@@ -532,6 +540,7 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
           fragment.appendChild(createDecisionCard(entry, idx));
         });
         decisionListEl.appendChild(fragment);
+        updateLeaderboard(normalized);
         revealStage = 0;
         if (decisionRevealBtn) {
           if (normalized.length > 5) {
@@ -572,6 +581,16 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
       function updateStatsBar(total) {
         const el = document.getElementById('decisions-count');
         if (el) el.textContent = total;
+      }
+
+      function updateLeaderboard(decisions = []) {
+        const alphaCell = document.querySelector('[data-squad-count="alpha"]');
+        const novaCell = document.querySelector('[data-squad-count="nova"]');
+        if (!alphaCell || !novaCell) return;
+        const alphaCount = decisions.filter((entry) => ALPHA_SQUAD_REGEX.test((entry.squadId || ''))).length;
+        const novaCount = Math.max(decisions.length - alphaCount, 0);
+        alphaCell.textContent = alphaCount;
+        novaCell.textContent = novaCount;
       }
       let runCycleBtn = document.getElementById('run-cycle-btn');
       async function handleRunCycle() {
