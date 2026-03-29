@@ -10,9 +10,14 @@ module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate');
 
   try {
-    const provider = new ethers.JsonRpcProvider(process.env.XLAYER_RPC);
+    const rpcUrl = (process.env.XLAYER_RPC || '').trim();
+  const logAddress = (process.env.DECISION_LOG_ADDRESS || '').trim();
+    if (!rpcUrl || !logAddress) {
+    throw new Error('Missing XLAYER_RPC or DECISION_LOG_ADDRESS');
+  }
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
     const contract = new ethers.Contract(
-      process.env.DECISION_LOG_ADDRESS,
+      logAddress,
       DECISION_LOG_ABI,
       provider
     );
