@@ -4,7 +4,7 @@ const { runFullPipeline } = require('./pipeline');
 
 const INTERVAL_MS = 12 * 60 * 60 * 1000;
 
-async function scheduledRun() {
+async function runAndSchedule() {
   console.log(`[${new Date().toISOString()}] Scheduled run starting...`);
   try {
     const result = await runFullPipeline();
@@ -13,12 +13,12 @@ async function scheduledRun() {
   } catch (err) {
     console.error(`[${new Date().toISOString()}] Run failed:`, err.message);
   }
-  scheduleNext();
+  const nextRun = new Date(Date.now() + INTERVAL_MS).toISOString();
+  console.log(`Next run scheduled in 12 hours at: ${nextRun}`);
+  setTimeout(runAndSchedule, INTERVAL_MS);
 }
 
-function scheduleNext() {
-  console.log(`Next run scheduled in 12 hours at: ${new Date(Date.now() + INTERVAL_MS).toISOString()}`);
-  setTimeout(scheduledRun, INTERVAL_MS);
-}
+runAndSchedule();
 
-scheduledRun();
+process.on('SIGTERM', () => process.exit(0));
+process.on('SIGINT', () => process.exit(0));
