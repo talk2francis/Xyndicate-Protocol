@@ -27,10 +27,18 @@ module.exports = async (req, res) => {
 
     try {
       const latestBlock = await provider.getBlockNumber();
-      const fromBlock = 0;
+      const step = Number(process.env.DECISION_LOG_BLOCK_STEP || 20000);
       const topic0 = ethers.id('DecisionRecorded(string,string,string,uint256)');
-      const logs = await provider.getLogs({ address: logAddress, topics: [topic0], fromBlock, toBlock: latestBlock });
-      console.log('Events found:', logs.length, 'fromBlock:', fromBlock);
+      let cursor = latestBlock;
+      const logs = [];
+      while (cursor >= 0 && logs.length < total) {
+        const fromBlock = Math.max(0, cursor - step);
+        const slice = await provider.getLogs({ address: logAddress, topics: [topic0], fromBlock, toBlock: cursor });
+        logs.unshift(...slice);
+        if (fromBlock === 0) break;
+        cursor = fromBlock - 1;
+      }
+      console.log('Events found:', logs.length, 'fromBlock:', Math.max(0, cursor + 1));
       const baseIndex = Math.max(0, total - logs.length);
       logs.forEach((log, idx) => {
         const eventIndex = baseIndex + idx;
