@@ -28,7 +28,8 @@ module.exports = async (req, res) => {
     try {
       const latestBlock = await provider.getBlockNumber();
       const fromBlock = Math.max(0, latestBlock - 100000);
-      const events = await contract.queryFilter(contract.filters.DecisionRecorded(), fromBlock, latestBlock);
+      const filter = contract.filters.DecisionRecorded(null);
+      const events = await contract.queryFilter(filter, fromBlock, latestBlock);
       console.log('Events found:', events.length, 'fromBlock:', fromBlock);
       const baseIndex = Math.max(0, total - events.length);
       events.forEach((evt, idx) => {
