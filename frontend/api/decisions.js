@@ -28,13 +28,13 @@ module.exports = async (req, res) => {
     try {
       const latestBlock = await provider.getBlockNumber();
       const fromBlock = 0;
-      const filter = contract.filters.DecisionRecorded(null);
-      const events = await contract.queryFilter(filter, fromBlock, latestBlock);
-      console.log('Events found:', events.length, 'fromBlock:', fromBlock);
-      const baseIndex = Math.max(0, total - events.length);
-      events.forEach((evt, idx) => {
-        const eventIndex = typeof evt.args?.index !== 'undefined' ? Number(evt.args.index) : baseIndex + idx;
-        hashMap[eventIndex] = evt.transactionHash;
+      const topic0 = ethers.id('DecisionRecorded(string,string,string,uint256)');
+      const logs = await provider.getLogs({ address: logAddress, topics: [topic0], fromBlock, toBlock: latestBlock });
+      console.log('Events found:', logs.length, 'fromBlock:', fromBlock);
+      const baseIndex = Math.max(0, total - logs.length);
+      logs.forEach((log, idx) => {
+        const eventIndex = baseIndex + idx;
+        hashMap[eventIndex] = log.transactionHash;
       });
     } catch (logErr) {
       console.warn('Decision log fetch failed:', logErr.message);
