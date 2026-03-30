@@ -1,7 +1,7 @@
 const { ethers } = require('ethers');
 
 const DECISION_LOG_ABI = [
-  'event DecisionRecorded(string squadId, string agentChain, string rationale, uint256 timestamp)',
+  'event DecisionRecorded(string indexed squadId, string agentChain, string rationale, uint256 timestamp)',
   'function getDecisionCount() external view returns (uint256)',
   'function getDecision(uint256 index) external view returns (string, string, string, uint256)'
 ];
@@ -23,48 +23,33 @@ module.exports = async (req, res) => {
     const count = await contract.getDecisionCount();
     const total = Number(count);
     const start = Math.max(0, total - 30);
-    const required = total - start;
+    const hashMap = {};
+
+    try {
+      const latestBlock = await provider.getBlockNumber();
+      const fromBlock = Math.max(0, latestBlock - 100000);
+      const events = await contract.queryFilter(contract.filters.DecisionRecorded(), fromBlock, latestBlock);
+      console.log('Events found:', events.length, 'fromBlock:', fromBlock);
+      const baseIndex = Math.max(0, total - events.length);
+      events.forEach((evt, idx) => {
+        const eventIndex = typeof evt.args?.index !== 'undefined' ? Number(evt.args.index) : baseIndex + idx;
+        hashMap[eventIndex] = evt.transactionHash;
+      });
+    } catch (logErr) {
+      console.warn('Decision log fetch failed:', logErr.message);
+    }
+
     const decisions = [];
-
-    if (required > 0) {
-      try {
-        const latestBlock = await provider.getBlockNumber();
-        const lookback = Number(process.env.DECISION_LOG_LOOKBACK || 500000);
-        const fromBlock = Math.max(0, latestBlock - lookback);
-        const events = await contract.queryFilter('DecisionRecorded', fromBlock, latestBlock);
-        if (events.length >= required) {
-          const relevant = events.slice(-required).reverse();
-          relevant.forEach((evt, idx) => {
-            const args = evt.args || [];
-            const [squadId, agentChain, rationale, timestamp] = args;
-            decisions.push({
-              index: total - 1 - idx,
-              squadId,
-              agentChain,
-              rationale,
-              timestamp: Number(timestamp),
-              txHash: evt.transactionHash
-            });
-          });
-        }
-      } catch (logErr) {
-        console.warn('Decision log fetch failed:', logErr.message);
-      }
-
-      if (decisions.length < required) {
-        decisions.length = 0;
-        for (let i = total - 1; i >= start; i -= 1) {
-          const record = await contract.getDecision(i);
-          decisions.push({
-            index: i,
-            squadId: record[0],
-            agentChain: record[1],
-            rationale: record[2],
-            timestamp: Number(record[3]),
-            txHash: null
-          });
-        }
-      }
+    for (let i = total - 1; i >= start; i -= 1) {
+      const record = await contract.getDecision(i);
+      decisions.push({
+        index: i,
+        squadId: record[0],
+        agentChain: record[1],
+        rationale: record[2],
+        timestamp: Number(record[3]),
+        txHash: hashMap[i] || null
+      });
     }
 
     res.json({ success: true, total, decisions });
