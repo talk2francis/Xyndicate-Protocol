@@ -504,14 +504,7 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
         const metaSpan = document.createElement('span');
         metaSpan.textContent = `${formatDecisionTime(entry.timestamp)} · ${entry.squadId} · ${entry.agentChain}`;
         meta.appendChild(metaSpan);
-        if (entry.txHash) {
-          const link = document.createElement('a');
-          link.href = `https://www.oklink.com/xlayer/tx/${entry.txHash}`;
-          link.target = '_blank';
-          link.rel = 'noreferrer';
-          link.textContent = `${entry.txHash.slice(0, 6)}…${entry.txHash.slice(-4)} ↗️`;
-          meta.appendChild(link);
-        } else if (entry.index !== null) {
+        if (!entry.txHash && entry.index !== null) {
           const strong = document.createElement('strong');
           strong.textContent = `Entry #${entry.index}`;
           meta.appendChild(strong);
@@ -527,6 +520,19 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
         detailEl.className = 'decision-detail';
         detailEl.textContent = entry.detail;
         card.appendChild(detailEl);
+
+        if (entry.txHash) {
+          const txLink = document.createElement('a');
+          txLink.href = `https://www.oklink.com/xlayer/tx/${entry.txHash}`;
+          txLink.target = '_blank';
+          txLink.rel = 'noreferrer';
+          txLink.style.fontSize = '12px';
+          txLink.style.color = '#6366f1';
+          txLink.style.textDecoration = 'none';
+          txLink.style.fontFamily = 'monospace';
+          txLink.textContent = `${entry.txHash.slice(0, 6)}…${entry.txHash.slice(-4)} ↗️`;
+          card.appendChild(txLink);
+        }
 
         return card;
       }
