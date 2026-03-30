@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const { runFullPipeline } = require('./pipeline');
 
+const INTERVAL_MS = 12 * 60 * 60 * 1000;
+
 async function scheduledRun() {
   console.log(`[${new Date().toISOString()}] Scheduled run starting...`);
   try {
@@ -15,7 +17,6 @@ async function scheduledRun() {
 }
 
 function scheduleNext() {
-  const INTERVAL_MS = 12 * 60 * 60 * 1000;
   console.log(`Next run scheduled in 12 hours at: ${new Date(Date.now() + INTERVAL_MS).toISOString()}`);
   setTimeout(scheduledRun, INTERVAL_MS);
 }
