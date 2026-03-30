@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
 
     try {
       const latestBlock = await provider.getBlockNumber();
-      const fromBlock = Math.max(0, latestBlock - 100000);
+      const fromBlock = 0;
       const filter = contract.filters.DecisionRecorded(null);
       const events = await contract.queryFilter(filter, fromBlock, latestBlock);
       console.log('Events found:', events.length, 'fromBlock:', fromBlock);
