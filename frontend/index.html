@@ -460,6 +460,8 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
         }
       ];
 
+      let latestDecisionTotal = FALLBACK_DECISIONS.length;
+
       const ALPHA_SQUAD_REGEX = /ALPHA/i;
 
       function normalizeSquadId(value = '') {
@@ -540,7 +542,7 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
           fragment.appendChild(createDecisionCard(entry, idx));
         });
         decisionListEl.appendChild(fragment);
-        updateLeaderboard(normalized);
+        updateLeaderboard(normalized, latestDecisionTotal);
         revealStage = 0;
         if (decisionRevealBtn) {
           if (normalized.length > 5) {
@@ -567,15 +569,17 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
           if (!res.ok) throw new Error('Fetch failed');
           const data = await res.json();
           if (data?.success && Array.isArray(data.decisions) && data.decisions.length) {
+            latestDecisionTotal = Number(data.total) || data.decisions.length;
             renderDecisions(data.decisions);
-            updateStatsBar(data.total || data.decisions.length);
+            updateStatsBar(latestDecisionTotal);
             return;
           }
         } catch (error) {
           console.error('Decisions fetch failed:', error.message);
         }
+        latestDecisionTotal = FALLBACK_DECISIONS.length;
         renderDecisions(FALLBACK_DECISIONS);
-        updateStatsBar(FALLBACK_DECISIONS.length);
+        updateStatsBar(latestDecisionTotal);
       }
 
       function updateStatsBar(total) {
@@ -583,12 +587,12 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
         if (el) el.textContent = total;
       }
 
-      function updateLeaderboard(decisions = []) {
+      function updateLeaderboard(decisions = [], totalCount = decisions.length) {
         const alphaCell = document.querySelector('[data-squad-count="alpha"]');
         const novaCell = document.querySelector('[data-squad-count="nova"]');
         if (!alphaCell || !novaCell) return;
         const alphaCount = decisions.filter((entry) => ALPHA_SQUAD_REGEX.test((entry.squadId || ''))).length;
-        const novaCount = Math.max(decisions.length - alphaCount, 0);
+        const novaCount = Math.max(totalCount - alphaCount, 0);
         alphaCell.textContent = alphaCount;
         novaCell.textContent = novaCount;
       }
