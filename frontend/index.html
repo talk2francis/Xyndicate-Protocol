@@ -121,7 +121,7 @@
           </div>
         </div>
         <div class="round-progress">
-          <p>Decisions logged this round: 27</p>
+          <p>Decisions logged this round: <span id="round-count">27</span></p>
           <div class="progress-shell"><span class="progress-fill" style="width:100%"></span></div>
         </div>
         <div class="agent-pipeline" id="agent-pipeline">
@@ -582,8 +582,10 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
       }
 
       function updateStatsBar(total) {
-        const el = document.getElementById('decisions-count');
-        if (el) el.textContent = total;
+        const statEl = document.getElementById('decisions-count');
+        if (statEl) statEl.textContent = total;
+        const roundEl = document.getElementById('round-count');
+        if (roundEl) roundEl.textContent = total;
       }
 
       function updateLeaderboard(decisions = [], totalCount = decisions.length) {
