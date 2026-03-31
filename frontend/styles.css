@@ -681,6 +681,28 @@ body.dark .btn.secondary {
   overflow: hidden;
 }
 
+.decision-card:nth-last-of-type(1),
+.decision-card:nth-last-of-type(2) {
+  position: relative;
+}
+
+.decision-card:nth-last-of-type(1)::after,
+.decision-card:nth-last-of-type(2)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, rgba(255, 255, 255, 0.95));
+  pointer-events: none;
+}
+
+body.dark .decision-card:nth-last-of-type(1)::after,
+body.dark .decision-card:nth-last-of-type(2)::after {
+  background: linear-gradient(transparent, rgba(15, 17, 23, 0.95));
+}
+
 .decision-card.collapsing {
   max-height: 0;
   opacity: 0;
