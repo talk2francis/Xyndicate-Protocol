@@ -557,6 +557,7 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
         visibleCount = Math.min(INITIAL_VISIBLE, normalized.length);
         updateLeaderboard(normalized, latestDecisionTotal);
         updateShowMoreButton(normalized.length);
+        updateFadeEffect();
       }
 
       function updateShowMoreButton(total) {
@@ -584,6 +585,24 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
         }
         visibleCount = Math.min(visibleCount + BATCH_SIZE, total);
         updateShowMoreButton(total);
+        updateFadeEffect();
+      }
+
+      function updateFadeEffect() {
+        const cards = Array.from(document.querySelectorAll('.decision-card'));
+        cards.forEach((card) => {
+          card.style.WebkitMaskImage = '';
+          card.style.maskImage = '';
+          card.style.opacity = '1';
+        });
+        const visibleCards = cards.filter((card) => card.style.display !== 'none');
+        const btn = document.getElementById('show-more-btn');
+        if (btn && btn.style.display !== 'none' && visibleCards.length >= 2) {
+          const secondLast = visibleCards[visibleCards.length - 2];
+          const last = visibleCards[visibleCards.length - 1];
+          if (secondLast) secondLast.style.opacity = '0.5';
+          if (last) last.style.opacity = '0.15';
+        }
       }
 
       async function loadDecisions() {
