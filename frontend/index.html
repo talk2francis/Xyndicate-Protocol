@@ -153,7 +153,7 @@
         <div class="decision-feed">
           <h3>Latest Decisions</h3>
           <div id="decision-list" class="decision-list"></div>
-          <button id="decision-reveal" class="btn secondary hidden">Show 10 more decisions ↓</button>
+          <button id="show-more-btn" class="btn secondary">Show 10 more decisions ↓</button>
         </div>
       </section>
       <section id="narrator-section" class="narrator">
@@ -382,9 +382,11 @@ if (pipeline) {
 }
 const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
       const decisionListEl = document.getElementById('decision-list');
-      const decisionRevealBtn = document.getElementById('decision-reveal');
+      const showMoreBtn = document.getElementById('show-more-btn');
+      const INITIAL_VISIBLE = 5;
+      const BATCH_SIZE = 10;
       let stagedDecisions = [];
-      let revealStage = 0;
+      let visibleCount = INITIAL_VISIBLE;
 
       const FALLBACK_DECISIONS = [
         {
@@ -493,11 +495,10 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
       function createDecisionCard(entry, idx) {
         const card = document.createElement('div');
         card.className = 'decision-card';
-        const group = idx < 5 ? 'initial' : idx < 15 ? 'mid' : 'tail';
-        card.dataset.group = group;
-        if (group !== 'initial') card.classList.add('hidden');
-        if (idx === 3) card.style.opacity = '0.5';
-        if (idx === 4) card.style.opacity = '0.2';
+        if (idx >= INITIAL_VISIBLE) {
+          card.style.display = 'none';
+          card.style.opacity = '0';
+        }
 
         const meta = document.createElement('div');
         meta.className = 'decision-meta';
@@ -547,28 +548,42 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
         decisionListEl.innerHTML = '';
         const fragment = document.createDocumentFragment();
         normalized.forEach((entry, idx) => {
-          fragment.appendChild(createDecisionCard(entry, idx));
+          const card = createDecisionCard(entry, idx);
+          card.style.display = idx < INITIAL_VISIBLE ? 'block' : 'none';
+          card.style.opacity = idx < INITIAL_VISIBLE ? '1' : '0';
+          fragment.appendChild(card);
         });
         decisionListEl.appendChild(fragment);
+        visibleCount = Math.min(INITIAL_VISIBLE, normalized.length);
         updateLeaderboard(normalized, latestDecisionTotal);
-        revealStage = 0;
-        if (decisionRevealBtn) {
-          if (normalized.length > 5) {
-            decisionRevealBtn.classList.remove('hidden');
-            decisionRevealBtn.textContent = 'Show 10 more decisions ↓';
-          } else {
-            decisionRevealBtn.classList.add('hidden');
-          }
+        updateShowMoreButton(normalized.length);
+      }
+
+      function updateShowMoreButton(total) {
+        if (!showMoreBtn) return;
+        const remaining = total - visibleCount;
+        if (remaining <= 0) {
+          showMoreBtn.style.display = 'none';
+        } else {
+          showMoreBtn.style.display = 'inline-flex';
+          const nextBatch = Math.min(remaining, BATCH_SIZE);
+          showMoreBtn.textContent = `Show ${nextBatch} more decisions ↓`;
         }
       }
 
-      function showDecisionGroup(group) {
+      function showMoreDecisions() {
         if (!decisionListEl) return;
-        const cards = decisionListEl.querySelectorAll(`.decision-card[data-group="${group}"]`);
-        cards.forEach((card) => {
-          card.classList.remove('hidden');
-          card.style.opacity = '1';
-        });
+        const allCards = decisionListEl.querySelectorAll('.decision-card');
+        const total = allCards.length;
+        for (let i = visibleCount; i < Math.min(visibleCount + BATCH_SIZE, total); i += 1) {
+          const card = allCards[i];
+          if (card) {
+            card.style.display = 'block';
+            card.style.opacity = '1';
+          }
+        }
+        visibleCount = Math.min(visibleCount + BATCH_SIZE, total);
+        updateShowMoreButton(total);
       }
 
       async function loadDecisions() {
@@ -830,22 +845,8 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
       animate();
       setInterval(animate, 2500);
 
-      if (decisionRevealBtn) {
-        decisionRevealBtn.addEventListener('click', function() {
-          if (revealStage === 0) {
-            showDecisionGroup('mid');
-            decisionRevealBtn.textContent = 'Show remaining decisions ↓';
-            revealStage = 1;
-          } else {
-            showDecisionGroup('tail');
-            decisionRevealBtn.classList.add('hidden');
-          }
-          if (decisionListEl) {
-            decisionListEl.querySelectorAll('.decision-card[data-group="initial"]').forEach(function(card) {
-              card.style.opacity = '1';
-            });
-          }
-        });
+      if (showMoreBtn) {
+        showMoreBtn.addEventListener('click', showMoreDecisions);
       }
 
       loadDecisions();
