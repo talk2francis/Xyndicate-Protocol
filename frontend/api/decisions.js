@@ -6,31 +6,7 @@ const DECISION_LOG_ABI = [
   'function getDecision(uint256 index) external view returns (string, string, string, uint256)'
 ];
 
-async function getTxHashMap(address, total) {
-  const map = {};
-  try {
-    const apiKey = (process.env.OKLINK_API_KEY || '').trim();
-    if (!apiKey) return map;
-    const url = `https://www.oklink.com/api/v5/explorer/contract/transaction-list?chainShortName=xlayer&address=${address}&limit=100`;
-    const response = await fetch(url, {
-      headers: { 'Ok-Access-Key': apiKey }
-    });
-    if (!response.ok) {
-      throw new Error('OKLink request failed');
-    }
-    const payload = await response.json();
-    const txs = payload?.data?.[0]?.transactionList || [];
-    txs.forEach((tx, idx) => {
-      const decisionIndex = total - 1 - idx;
-      if (decisionIndex >= 0 && tx?.txId) {
-        map[decisionIndex] = tx.txId;
-      }
-    });
-  } catch (err) {
-    console.warn('OKLink tx fetch failed:', err.message);
-  }
-  return map;
-}
+const TX_HASH_MAP = require('../txhashes.json');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -49,7 +25,7 @@ module.exports = async (req, res) => {
     const count = await contract.getDecisionCount();
     const total = Number(count);
     const start = Math.max(0, total - 30);
-    const hashMap = await getTxHashMap(logAddress, total);
+    const hashMap = TX_HASH_MAP || {};
 
     const decisions = [];
     for (let i = total - 1; i >= start; i -= 1) {
