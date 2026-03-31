@@ -84,7 +84,7 @@ async function recordTxHash(txHash) {
   }
 }
 
-async function runAndSchedule() {
+async function executeOnce() {
   console.log(`[${new Date().toISOString()}] Scheduled run starting...`);
   try {
     const result = await runFullPipeline();
@@ -94,12 +94,19 @@ async function runAndSchedule() {
   } catch (err) {
     console.error(`[${new Date().toISOString()}] Run failed:`, err.message);
   }
-  const nextRun = new Date(Date.now() + INTERVAL_MS).toISOString();
-  console.log(`Next run scheduled in 12 hours at: ${nextRun}`);
-  setTimeout(runAndSchedule, INTERVAL_MS);
 }
 
-runAndSchedule();
+async function main() {
+  await executeOnce();
+  console.log('Sleeping for 12 hours...');
+  await new Promise((resolve) => setTimeout(resolve, INTERVAL_MS));
+  process.exit(0);
+}
+
+main().catch((err) => {
+  console.error('Scheduler crashed:', err.message);
+  process.exit(1);
+});
 
 process.on('SIGTERM', () => process.exit(0));
 process.on('SIGINT', () => process.exit(0));

@@ -522,6 +522,8 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
         card.appendChild(detailEl);
 
         if (entry.txHash) {
+          const txWrap = document.createElement('div');
+          txWrap.style.marginTop = '8px';
           const txLink = document.createElement('a');
           txLink.href = `https://www.oklink.com/xlayer/tx/${entry.txHash}`;
           txLink.target = '_blank';
@@ -531,7 +533,8 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
           txLink.style.textDecoration = 'none';
           txLink.style.fontFamily = 'monospace';
           txLink.textContent = `${entry.txHash.slice(0, 6)}…${entry.txHash.slice(-4)} ↗️`;
-          card.appendChild(txLink);
+          txWrap.appendChild(txLink);
+          card.appendChild(txWrap);
         }
 
         return card;
