@@ -7,9 +7,11 @@ const pathLib = require('path');
 const { ethers } = require('ethers');
 
 const TX_MAP_PATH = pathLib.join(__dirname, '../frontend/txhashes.json');
+const AGENT_PAYMENTS_PATH = pathLib.join(__dirname, '../frontend/agentpayments.json');
 const DECISION_LOG_ABI = ['function getDecisionCount() view returns (uint256)'];
 const GITHUB_REPO = 'talk2francis/Xyndicate-Protocol';
 const TX_HASH_FILE = 'frontend/txhashes.json';
+const AGENT_PAYMENTS_FILE = 'frontend/agentpayments.json';
 const INTERVAL_MS = 12 * 60 * 60 * 1000;
 
 function saveTxHash(index, txHash) {
@@ -21,6 +23,71 @@ function saveTxHash(index, txHash) {
   } catch (err) {
     console.error('Failed to persist tx hash:', err.message);
   }
+}
+
+function appendAgentPaymentLocal(entry) {
+  try {
+    const current = fs.existsSync(AGENT_PAYMENTS_PATH) ? JSON.parse(fs.readFileSync(AGENT_PAYMENTS_PATH, 'utf8') || '[]') : [];
+    current.push(entry);
+    fs.writeFileSync(AGENT_PAYMENTS_PATH, JSON.stringify(current, null, 2));
+  } catch (err) {
+    console.error('Failed to persist agent payment:', err.message);
+  }
+}
+
+async function saveAgentPaymentToGitHub(entry) {
+  const token = (process.env.GITHUB_TOKEN || '').trim();
+  if (!token) return;
+  const fileUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/${AGENT_PAYMENTS_FILE}`;
+  try {
+    const getRes = await fetch(fileUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'User-Agent': 'XyndicateScheduler'
+      }
+    });
+    if (!getRes.ok) {
+      throw new Error(`GitHub payment fetch failed: ${getRes.status}`);
+    }
+    const fileData = await getRes.json();
+    const decoded = Buffer.from(fileData.content || '', 'base64').toString('utf8');
+    const current = decoded ? JSON.parse(decoded) : [];
+    current.push(entry);
+    const content = Buffer.from(JSON.stringify(current, null, 2)).toString('base64');
+    const putRes = await fetch(fileUrl, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'User-Agent': 'XyndicateScheduler',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Log narrator→oracle payment ${entry.txHash || Date.now()}`,
+        content,
+        sha: fileData.sha
+      })
+    });
+    if (!putRes.ok) {
+      const errorText = await putRes.text();
+      throw new Error(`GitHub payment update failed: ${errorText}`);
+    }
+    console.log('Logged narrator→oracle payment to GitHub');
+  } catch (err) {
+    console.error('GitHub agent payment save failed:', err.message);
+  }
+}
+
+async function recordAgentPayment(txHash) {
+  if (!txHash) return;
+  const entry = {
+    from: 'Narrator',
+    to: 'Oracle',
+    amount: '0.0001 OKB',
+    txHash,
+    timestamp: Math.floor(Date.now() / 1000)
+  };
+  appendAgentPaymentLocal(entry);
+  await saveAgentPaymentToGitHub(entry);
 }
 
 async function narratorPaysOracle() {
@@ -116,7 +183,10 @@ async function executeOnce() {
     console.log(`[${new Date().toISOString()}] Run complete. TX: ${result.txHash || 'n/a'}`);
     console.log(`Action: ${result.action || 'n/a'} | Rationale: ${result.rationale || 'n/a'}`);
     await recordTxHash(result.txHash);
-    await narratorPaysOracle();
+    const paymentHash = await narratorPaysOracle();
+    if (paymentHash) {
+      await recordAgentPayment(paymentHash);
+    }
   } catch (err) {
     console.error(`[${new Date().toISOString()}] Run failed:`, err.message);
   }

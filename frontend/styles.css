@@ -1069,4 +1069,42 @@ body.dark .vs-icon svg circle {
 
 body.dark .vs-icon svg text {
   fill: #F7FAFC;
+}.agent-economy {
+  margin: 4rem 0;
 }
+
+.agent-payment {
+  background: #f4f5fb;
+  border-radius: 18px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  box-shadow: 0 12px 30px rgba(7, 10, 22, 0.08);
+}
+
+.agent-payment span:first-child {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.agent-payment span:nth-child(2) {
+  font-size: 1.1rem;
+}
+
+.agent-payment a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+body.dark .agent-payment {
+  background: #151821;
+  color: #f2f5ff;
+}
+
+body.dark .agent-payment a {
+  color: #8ab4ff;
+}
+
+

@@ -25,6 +25,11 @@ All inter-agent messages adhere to the ACP schema published under `/acp/schema/v
 | x402 Payments | Reasoning unlock charges 0.0005 OKB, appends the OKLink receipt, and reveals the gated JSON transcript so judges can verify the full chain of thought. |
 | DApp Wallet Connect | Custom modal with OKX, MetaMask, Rabby, and Zerion icons funnels users into the new `selectWallet()` flow, which completes the WaaS unlock and writes the payment receipt back to the UI. |
 
+## Agent-to-Agent Economy
+- Narrator automatically tips the Oracle 0.0001 OKB after every cycle.
+- Payments are recorded in [`frontend/agentpayments.json`](frontend/agentpayments.json) and rendered live in the Agent Economy panel.
+- Example TX (Narrator → Oracle): [`0x1918…65c9`](https://www.oklink.com/xlayer/tx/0x1918e07af5bcf0e49ed533f70afedc4ac1c765c1dbc34ae827530705924565c9).
+
 ## Verified On-Chain Activity
 | Type | TX Hash | OKLink |
 | --- | --- | --- |

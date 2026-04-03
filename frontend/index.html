@@ -195,6 +195,19 @@
         </div>
       </section>
 
+      <section id="agent-economy" class="agent-economy">
+        <div class="section-heading">
+          <p class="eyebrow">Agent Economy</p>
+          <h2>Autonomous Narrator → Oracle Payments</h2>
+          <p>Every cycle the Narrator tips the Oracle 0.0001 OKB to keep data flowing.</p>
+        </div>
+        <div class="agent-payment">
+          <span>🤖 Narrator → Oracle</span>
+          <span id="agent-payment-amount">0.0001 OKB</span>
+          <a id="agent-payment-link" href="#" target="_blank" rel="noreferrer">Awaiting TX</a>
+        </div>
+      </section>
+
       <section id="gating" class="gating">
         <div class="section-heading">
           <p class="eyebrow">x402 Micropayments</p>
@@ -605,7 +618,27 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
         }
       }
 
-      async function loadDecisions() {
+            async function loadAgentPayment() {
+        try {
+          const res = await fetch('/agentpayments.json', { cache: 'no-store' });
+          if (!res.ok) throw new Error('Fetch failed');
+          const data = await res.json();
+          if (Array.isArray(data) && data.length) {
+            const latest = data[data.length - 1];
+            const amountEl = document.getElementById('agent-payment-amount');
+            const linkEl = document.getElementById('agent-payment-link');
+            if (amountEl && latest?.amount) amountEl.textContent = latest.amount;
+            if (linkEl && latest?.txHash) {
+              linkEl.href = `https://www.oklink.com/xlayer/tx/${latest.txHash}`;
+              linkEl.textContent = 'View TX ↗️';
+            }
+          }
+        } catch (err) {
+          console.error('Agent payment fetch failed:', err.message);
+        }
+      }
+
+async function loadDecisions() {
         try {
           const res = await fetch('/api/decisions');
           if (!res.ok) throw new Error('Fetch failed');
@@ -870,6 +903,8 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
 
       loadDecisions();
       setInterval(loadDecisions, 5 * 60 * 1000);
+      loadAgentPayment();
+      setInterval(loadAgentPayment, 5 * 60 * 1000);
     });    </script>
 
     <script>
