@@ -5,19 +5,26 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const DECISION_LOG_ABI = ['function logDecision(string,string,string)'];
 
 export type StrategyDecision = {
-  thesis: string;
+  action: string;
+  asset: string;
+  sizePercent: number;
+  rationale: string;
+  confidence: number;
 };
 
 export async function craftStrategy(snapshot: { pair: string; price: number; change24h: number }): Promise<StrategyDecision> {
-  const prompt = `Pair: ${snapshot.pair}\nPrice: ${snapshot.price}\n24h Change: ${snapshot.change24h}\nRespond with a JSON {"action":"buy|sell|idle","confidence":0-1,"thesis":"..."}`;
-  const completion = await openai.responses.create({
-    model: "gpt-4.1-mini",
-    input: prompt,
+  const prompt = `You produce JSON trading plans.\nMarket data: ${JSON.stringify(snapshot)}\n` +
+    `Schema: {"action":"BUY|SELL|HOLD","asset":"ETH","sizePercent":number,"rationale":"string","confidence":0-1}`;
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
     temperature: 0.2,
+    response_format: { type: "json_object" },
+    messages: [
+      { role: "system", content: "You are the Strategist agent for Syndicate Protocol." },
+      { role: "user", content: prompt }
+    ]
   });
-  const content = completion.output?.[0]?.content?.[0];
-  const thesis = typeof content === "string" ? content : JSON.stringify(content);
-  return { thesis };
+  return JSON.parse(completion.choices[0].message?.content || '{}');
 }
 
 export async function logDecision(decision: StrategyDecision) {
@@ -29,7 +36,8 @@ export async function logDecision(decision: StrategyDecision) {
   const contract = new ethers.Contract(logAddress, DECISION_LOG_ABI, wallet);
   const squadId = process.env.SQUAD_ID ?? "SYNDICATE_ALPHA";
   const agentChain = "Oracle→Analyst→Strategist→Executor";
-  const tx = await contract.logDecision(squadId, agentChain, decision.thesis);
+  const narrative = `${decision.action} ${decision.asset} (${decision.sizePercent}% treasury) · ${decision.rationale}`;
+  const tx = await contract.logDecision(squadId, agentChain, narrative);
   await tx.wait();
   return tx.hash;
 }
