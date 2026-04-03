@@ -23,6 +23,30 @@ function saveTxHash(index, txHash) {
   }
 }
 
+async function narratorPaysOracle() {
+  const oracle = (process.env.ORACLE_WALLET_ADDRESS || '').trim();
+  const strategistKey = (process.env.STRATEGIST_KEY || '').trim();
+  const rpcUrl = (process.env.XLAYER_RPC || '').trim();
+  if (!oracle || !strategistKey || !rpcUrl) {
+    console.warn('Skipping narrator→oracle payment: missing env vars');
+    return null;
+  }
+  try {
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    const signer = new ethers.Wallet(strategistKey, provider);
+    const tx = await signer.sendTransaction({
+      to: oracle,
+      value: ethers.parseEther('0.0001')
+    });
+    await tx.wait(1);
+    console.log('Narrator→Oracle payment TX:', tx.hash);
+    return tx.hash;
+  } catch (err) {
+    console.error('Narrator→Oracle payment failed:', err.message);
+    return null;
+  }
+}
+
 async function saveTxHashToGitHub(index, txHash) {
   const token = (process.env.GITHUB_TOKEN || '').trim();
   if (!token) return;
@@ -92,6 +116,7 @@ async function executeOnce() {
     console.log(`[${new Date().toISOString()}] Run complete. TX: ${result.txHash || 'n/a'}`);
     console.log(`Action: ${result.action || 'n/a'} | Rationale: ${result.rationale || 'n/a'}`);
     await recordTxHash(result.txHash);
+    await narratorPaysOracle();
   } catch (err) {
     console.error(`[${new Date().toISOString()}] Run failed:`, err.message);
   }
