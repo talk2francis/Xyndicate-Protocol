@@ -26,7 +26,7 @@ const callOpenAI = async (systemPrompt, payload) => {
       Authorization: `Bearer ${apiKey}`
     },
     body: JSON.stringify({
-      model: 'gpt-4o-mini',
+      model: 'gpt-3.5-turbo',
       temperature: 0.3,
       response_format: { type: 'json_object' },
       messages: [
