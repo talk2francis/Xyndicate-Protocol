@@ -42,7 +42,7 @@ All inter-agent messages adhere to the ACP schema published under `/acp/schema/v
 | Executor Swap | `0x2ae6…ad6` | https://www.oklink.com/xlayer/tx/0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6 |
 | x402 Entry Fee | `0xd18b…dc40` | https://www.oklink.com/xlayer/tx/0xd18b7d123b74e2933bb7569452eb82c045ecba42b51efcb80a76b658bca1dc40 |
 
-> Full season history (27 DecisionLog hashes) lives in `frontend/deployments.json` and renders inline on the live arena.
+> Full season history (over 90+ DecisionLog hashes) lives in `frontend/deployments.json` and renders inline on the live arena.
 
 ## Quick Start
 1. `npm install`
