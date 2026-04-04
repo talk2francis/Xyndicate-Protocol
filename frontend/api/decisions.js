@@ -13,22 +13,20 @@ module.exports = async (req, res) => {
     const count = await contract.getDecisionCount();
     const total = Number(count);
     const latest = await provider.getBlockNumber();
-    const events = await contract.queryFilter(contract.filters.DecisionRecorded(), latest - 5000, latest);
-    const txMap = {};
-    events.forEach(e => {
-      txMap[e.args.rationale + "_" + e.args.timestamp.toString()] = e.transactionHash;
-    });
+    const events = await contract.queryFilter(contract.filters.DecisionRecorded(), latest - 10000, latest);
     const decisions = [];
     const start = Math.max(0, total - 30);
     for (let i = total - 1; i >= start; i--) {
       const d = await contract.getDecision(i);
+      const eventIndex = events.length - (total - i);
+      const matchedEvent = events[eventIndex] || null;
       decisions.push({
         index: i,
         squadId: d[0],
         agentChain: d[1],
         rationale: d[2],
         timestamp: Number(d[3]),
-        txHash: txMap[d[2] + "_" + d[3].toString()] || null
+        txHash: matchedEvent ? matchedEvent.transactionHash : null
       });
     }
     res.json({ success: true, total, decisions });
