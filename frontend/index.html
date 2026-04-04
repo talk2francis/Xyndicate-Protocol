@@ -394,6 +394,13 @@ if (pipeline) {
   advancePipeline();
   setInterval(advancePipeline, 2500);
 }
+const TX_LOG = {
+  97: '0xbb51f001c581b2383e744383e984fbf0b8fdc2835285d77499f813c68d77e099',
+  96: '0xc99ac2802364734b7f410010287591a0b4b1a6a4c1dc1c191176364aa9803943',
+  95: '0xf3d0ff2088e6d21004df53d6c134319854ad0694b6b6242e3bb1d334a9cbb0c8',
+  94: '0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6',
+  93: '0xc7d1a35ba2e57addc716a8643a72a6b82fc3a1a312ab437e0af6864feef28169'
+};
 const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
       const decisionListEl = document.getElementById('decision-list');
       const showMoreBtn = document.getElementById('show-more-btn');
@@ -501,7 +508,7 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
           squadId: normalizeSquadId(entry.squadId || 'XYNDICATE_ALPHA'),
           agentChain: entry.agentChain || DEFAULT_CHAIN,
           timestamp,
-          txHash: entry.txHash || null,
+          txHash: entry.txHash || TX_LOG[entry.index] || null,
           index: typeof entry.index === 'number' ? entry.index : null
         };
       }
@@ -625,7 +632,7 @@ const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
           if (!res.ok) throw new Error('Fetch failed');
           const data = await res.json();
           if (Array.isArray(data) && data.length) {
-            const latest = data[data.length - 1];
+            const latest = data[0];
             const amountEl = document.getElementById('agent-payment-amount');
             const linkEl = document.getElementById('agent-payment-link');
             if (amountEl && latest?.amount) amountEl.textContent = latest.amount;
