@@ -1,8 +1,9 @@
 const { ethers } = require("ethers");
+const fs = require("fs");
+const path = require("path");
 const ABI = [
   "function getDecisionCount() external view returns (uint256)",
-  "function getDecision(uint256 index) external view returns (string, string, string, uint256)",
-  "event DecisionRecorded(string squadId, string agentChain, string rationale, uint256 timestamp)"
+  "function getDecision(uint256 index) external view returns (string, string, string, uint256)"
 ];
 module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -12,21 +13,23 @@ module.exports = async (req, res) => {
     const contract = new ethers.Contract(process.env.DECISION_LOG_ADDRESS, ABI, provider);
     const count = await contract.getDecisionCount();
     const total = Number(count);
-    const latest = await provider.getBlockNumber();
-    const events = await contract.queryFilter(contract.filters.DecisionRecorded(), latest - 10000, latest);
+    let txLog = {};
+    try {
+      const logPath = path.join(__dirname, "../tx-log.json");
+      const raw = fs.readFileSync(logPath, "utf8");
+      JSON.parse(raw).forEach(e => { txLog[e.index] = e.txHash; });
+    } catch(e) {}
     const decisions = [];
     const start = Math.max(0, total - 30);
     for (let i = total - 1; i >= start; i--) {
       const d = await contract.getDecision(i);
-      const eventIndex = events.length - (total - i);
-      const matchedEvent = events[eventIndex] || null;
       decisions.push({
         index: i,
         squadId: d[0],
         agentChain: d[1],
         rationale: d[2],
         timestamp: Number(d[3]),
-        txHash: matchedEvent ? matchedEvent.transactionHash : null
+        txHash: txLog[i] || null
       });
     }
     res.json({ success: true, total, decisions });

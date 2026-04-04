@@ -19,7 +19,7 @@ const rationale = actions[Math.floor(Math.random() * actions.length)];
 contract.logDecision('XYNDICATE_ALPHA','Oracle->Analyst->Strategist->Executor',rationale)
 .then(tx => tx.wait(1))
 .then(r => {
-  console.log('CONFIRMED TX:', r.hash);
+  console.log('CONFIRMED TX:', r.hash); process.env.LAST_TX = r.hash;
   console.log('OKLINK: https://www.oklink.com/xlayer/tx/' + r.hash);
 }).catch(e => console.error('FAILED:', e.message));
 " 2>&1
