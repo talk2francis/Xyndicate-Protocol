@@ -84,4 +84,6 @@ scripts/          // Proof utilities (self-transfer, deploy, logDecision)
 - `frontend/deployments.json` mirrors every DecisionLog hash so the UI can render immediately without RPC latency.
 - `selectWallet()` now handles OKX/MetaMask/Rabby/Zerion flows, completes the OnchainOS unlock, and attaches the OKLink receipt inline.
 - ACP schemas are versioned so other teams can extend the protocol without breaking existing squads.
-# Automated Pipeline\n\nThe agent pipeline runs automatically every 12 hours via a Railway worker. Each cycle logs a new decision to DecisionLog.sol on X Layer mainnet and fires a Narrator→Oracle micropayment of 0.0001 OKB. All TX hashes are verifiable on OKLink.
+**Automated Pipeline**
+
+The agent pipeline runs automatically every 12 hours via a Railway worker. Each cycle logs a new decision to DecisionLog.sol on X Layer mainnet and fires a Narrator→Oracle micropayment of 0.0001 OKB. All TX hashes are verifiable on OKLink.
