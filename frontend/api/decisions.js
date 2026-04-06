@@ -19,10 +19,7 @@ module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate");
   try {
-    const provider = new ethers.JsonRpcProvider(
-  process.env.XLAYER_RPC,
-  { chainId: 196, name: 'xlayer' }
-);
+    const provider = new ethers.providers.JsonRpcProvider(process.env.XLAYER_RPC);
     const contract = new ethers.Contract(process.env.DECISION_LOG_ADDRESS, ABI, provider);
     const count = await contract.getDecisionCount();
     const total = Number(count);
