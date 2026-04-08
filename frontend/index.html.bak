@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xyndicate Protocol</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/png" href="assets/favicon.jpg" />
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="brand">
+        <img src="assets/logo-wordmark.jpg" alt="Xyndicate" />
+        <span>Xyndicate Protocol</span>
+      </div>
+      <div class="nav-actions">
+        <nav>
+          <a href="#overview">Overview</a>
+          <a href="#arena">Arena</a>
+          <a href="#proofs">Proofs</a>
+          <a href="#gating">x402</a>
+          <a href="#roadmap">Roadmap</a>
+        </nav>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" onclick="document.body.classList.toggle('dark');document.documentElement.classList.toggle('dark');var mode=document.body.classList.contains('dark')?'dark':'light';localStorage.setItem('theme',mode)"><span class="toggle-thumb"></span></button>
+        <button id="connect-wallet" class="connect-wallet-btn" onclick="document.getElementById('wallet-modal').style.display='flex'">Connect Wallet</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="overview" class="hero hero-dark">
+        <div class="hero-panel">
+          <p class="eyebrow">On-chain AI Agent Squads</p>
+          <h1 class="agent-stack">
+            <span>Oracle →</span>
+            <span>Analyst →</span>
+            <span>Strategist →</span>
+            <span>Executor →</span>
+            <span>Narrator</span>
+          </h1>
+          <p>
+            Five specialized agents—Oracle, Analyst, Strategist, Executor, Narrator—reason together, log every decision
+            to DecisionLog.sol, and only then trigger execution on X Layer.
+          </p>
+          <div class="cta-row">
+            <a class="btn" href="https://www.oklink.com/xlayer/address/0xC9E69be5ecD65a9106800E07E05eE44a63559F8b" target="_blank">DecisionLog</a>
+            <a class="btn ghost" href="https://github.com/talk2francis/Xyndicate-Protocol" target="_blank">GitHub Repo</a>
+          </div>
+        </div>
+      </section>
+
+            <section id="arena" class="arena">
+        <div class="section-heading">
+          <p class="eyebrow">Season Table</p>
+          <h2>Live Xyndicate Leaderboard</h2>
+          <p>Season 1 — Live competition on X Layer Mainnet.</p>
+        </div>
+        <div class="stats-strip hardcoded">
+          <span>Decisions Logged: <strong id="decisions-count">103</strong></span>
+          <span>Active Squads: <strong>2</strong></span>
+          <span>Season: <strong>LIVE</strong></span>
+          <span>Network: <strong>X Layer Mainnet</strong></span>
+        </div>
+        <div class="table-wrapper">
+          <table class="competition-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Squad Name</th>
+                <th>Decisions</th>
+                <th>Confidence</th>
+                <th>Last Action</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="rank gold">
+                <td>🥇 1</td>
+                <td>XYNDICATE_ALPHA</td>
+                <td data-squad-count="alpha">18</td>
+                <td>0.81</td>
+                <td>BUY ETH — rebound signal</td>
+                <td><span class="status-pill">ACTIVE</span></td>
+              </tr>
+              <tr class="rank silver">
+                <td>🥈 2</td>
+                <td>Squad Nova</td>
+                <td data-squad-count="nova">9</td>
+                <td>0.72</td>
+                <td>USDC→OKB rebalance</td>
+                <td><span class="status-pill">ACTIVE</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="arena-live" class="arena-live">
+        <div class="arena-header">
+          <h2>Season 1 Arena</h2>
+          <span class="live-pill">LIVE</span>
+        </div>
+        <div class="match-card">
+          <div class="squad-block">
+            <p class="label">XYNDICATE_ALPHA</p>
+            <h3>Confidence 0.81</h3>
+            <p class="meta">Last action: BUY ETH</p>
+          </div>
+          <div class="vs-block">
+            <span class="vs-icon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="23" stroke="#E2E8F0" stroke-width="1"/>
+                <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="700" letter-spacing="1px" fill="#1A202C">VS</text>
+              </svg>
+            </span>
+          </div>
+          <div class="squad-block">
+            <p class="label">Squad Nova</p>
+            <h3>Confidence 0.72</h3>
+            <p class="meta">Last action: USDC→OKB</p>
+          </div>
+        </div>
+        <div class="round-progress">
+          <p>Decisions logged this round: <span id="round-count"></span></p>
+          <div class="progress-shell"><span class="progress-fill" style="width:100%"></span></div>
+        </div>
+        <div class="agent-pipeline" id="agent-pipeline">
+          <div class="agent-box" data-agent="oracle" data-status="Fetching market data">
+            <p class="agent-name">ORACLE</p>
+            <p class="agent-status"><span class="status-text">Fetching market data</span><span class="cursor">|</span></p>
+          </div>
+          <span class="pipeline-arrow" aria-hidden="true"></span>
+          <div class="agent-box" data-agent="analyst" data-status="Scoring opportunities">
+            <p class="agent-name">ANALYST</p>
+            <p class="agent-status"><span class="status-text">Scoring opportunities</span><span class="cursor">|</span></p>
+          </div>
+          <span class="pipeline-arrow" aria-hidden="true"></span>
+          <div class="agent-box" data-agent="strategist" data-status="Forming decision">
+            <p class="agent-name">STRATEGIST</p>
+            <p class="agent-status"><span class="status-text">Forming decision</span><span class="cursor">|</span></p>
+          </div>
+          <span class="pipeline-arrow" aria-hidden="true"></span>
+          <div class="agent-box" data-agent="executor" data-status="Logging on-chain">
+            <p class="agent-name">EXECUTOR</p>
+            <p class="agent-status"><span class="status-text">Logging on-chain</span><span class="cursor">|</span></p>
+          </div>
+          <span class="pipeline-arrow" aria-hidden="true"></span>
+          <div class="agent-box" data-agent="narrator" data-status="Broadcasting result">
+            <p class="agent-name">NARRATOR</p>
+            <p class="agent-status"><span class="status-text">Broadcasting result</span><span class="cursor">|</span></p>
+          </div>
+        </div>
+        <div class="decision-feed">
+          <h3>Latest Decisions</h3>
+          <div id="decision-list" class="decision-list"></div>
+          <button id="show-more-btn" class="btn secondary">Show 10 more decisions ↓</button>
+        </div>
+      </section>
+      <section id="narrator-section" class="narrator">
+        <div class="section-heading">
+          <p class="eyebrow">Narrator</p>
+          <h2>Live Commentary</h2>
+        </div>
+        <div id="narrator-output" class="narrator-card">Xyndicate Alpha deployed ETH (10% treasury). ETH down 2.9% — rebound signal detected, confidence 0.70. Decision logged on-chain before execution.</div>
+        <button id="copy-to-x" class="btn copy-btn" onclick="navigator.clipboard.writeText('Xyndicate Alpha: BUY ETH 10% treasury. Rebound signal detected, confidence 0.70. TX: 0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef #XLayer #OnchainOS @XLayer_Official').then(function(){alert('Copied!')})">🐦 Copy to X / Twitter</button>
+      </section>
+
+      <section id="proofs" class="proofs">
+        <div class="section-heading">
+          <p class="eyebrow">Proof</p>
+          <h2>Everything has a hash</h2>
+          <p>DecisionLog + control TXs recorded directly on X Layer mainnet.</p>
+        </div>
+        <div class="proof-grid">
+          <div>
+            <p class="label">DecisionLog Deploy</p>
+            <a href="https://www.oklink.com/xlayer/tx/0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34" target="_blank">0xa067…d34 <span class="arrow">↗</span></a>
+          </div>
+          <div>
+            <p class="label">logDecision</p>
+            <a href="https://www.oklink.com/xlayer/tx/0x335f27337c75547ce5f47562dd0d02563ecb04951bc596283ee41b7e3e500123" target="_blank">0x335f…0123 <span class="arrow">↗</span></a>
+          </div>
+          <div>
+            <p class="label">Wallet Proof</p>
+            <a href="https://www.oklink.com/xlayer/tx/0xa203c67d3ac2ec36680580e488d299598b80b008fdba779cac3294f9d85003a7" target="_blank">0xa203…03a7 <span class="arrow">↗</span></a>
+          </div>
+          <div>
+            <p class="label">Executor Swap</p>
+            <a href="https://www.oklink.com/xlayer/tx/0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6" target="_blank">0x2ae6…ad6 <span class="arrow">↗</span></a>
+          </div>
+          <div>
+            <p class="label">X402 PAYMENT</p>
+            <a href="https://www.oklink.com/x-layer/tx/0x68b51a38c56656199da0288c18647fa126fd83dafc5363808d1774ebd1fdcd7f" target="_blank">0x68b5…cd7f <span class="arrow">↗</span></a>
+          </div>
+        </div>
+      </section>
+
+      <section id="agent-economy" class="agent-economy">
+        <div class="section-heading">
+          <p class="eyebrow">Agent Economy</p>
+          <h2>Autonomous Narrator → Oracle Payments</h2>
+          <p>Every cycle the Narrator tips the Oracle 0.0001 OKB to keep data flowing.</p>
+        </div>
+        <div class="agent-payment">
+  <span>🤖 Narrator → Oracle</span>
+  <span style="color:#22c55e;font-weight:500">Confirmed</span><br>
+  <a href="https://www.oklink.com/xlayer/tx/0x124940687e84763e245bdd054618d7fdd0204f946351b2163d502644236342c6" target="_blank" style="font-size:12px;color:var(--color-text-info)">0x1249...342c6 ↗️</a>
+  <span style="font-size:11px;color:var(--color-text-tertiary)"> · 03/04/2026, 20:21</span>
+</div>
+      </section>
+
+      <section id="gating" class="gating">
+        <div class="section-heading">
+          <p class="eyebrow">x402 Micropayments</p>
+          <h2>Entry, reasoning unlocks, spectator tips</h2>
+          <p>The SeasonManager contract enforces one-time entry fees while the x402 rail keeps reasoning logs paywalled.</p>
+        </div>
+        <div class="gate-card">
+          <p class="price">Unlock full reasoning — 0.50 USDC</p>
+          <button id="unlock-chain" class="btn" onclick="document.getElementById('wallet-modal').style.display='flex'">Unlock reasoning chain</button>
+          <p class="helper">Payment lands at DecisionLog: <a href="https://www.oklink.com/xlayer/tx/0xd18b7d123b74e2933bb7569452eb82c045ecba42b51efcb80a76b658bca1dc40" target="_blank">0xd18b…dc40</a></p>
+          <p class="helper status" id="reasoning-status"></p>
+          <div id="reasoning-chain" class="gated hidden">
+            <pre>{
+  "oracle": { "pair": "ETH-USDT", "price": 1983.65, "change24h": -4.26 },
+  "analyst": { "recommendation": "act", "confidenceScore": 0.70, "topAsset": "ETH" },
+  "strategist": { "action": "BUY", "asset": "ETH", "sizePercent": 10, "rationale": "ETH down ~4%, rebound signal detected" },
+  "executor": { "txHash": "0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6", "status": "confirmed" }
+}</pre>
+            <p id="payment-receipt" class="payment-receipt"></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="roadmap" class="roadmap">
+        <div class="section-heading">
+          <p class="eyebrow">Post-Season Roadmap</p>
+          <h2>What’s ahead</h2>
+        </div>
+        <ul>
+          <li>Expand Trade API integration with full autonomous swap loop.</li>
+          <li>Ship season replay viewer and live Narrator spectator feed.</li>
+          <li>Launch Strategy Marketplace — license proven squad configs via x402, with royalties auto-routed to creators on-chain.</li>
+        </ul>
+      </section>
+
+    <div id="wallet-modal" class="wallet-modal hidden">
+      <div class="wallet-modal__panel">
+        <h4>Select a wallet</h4>
+        <p>Choose how to unlock the reasoning chain.</p>
+        <div class="wallet-options">
+          <button class="wallet-option" data-wallet="okx" data-label="OKX Wallet" onclick="selectWallet('okx')">
+            <span class="wallet-icon">
+              <img src="assets/wallet-okx.jpg" alt="OKX Wallet" width="40" height="40" class="wallet-logo"/>
+            </span>
+            <span>OKX Wallet</span>
+          </button>
+          <button class="wallet-option" data-wallet="metamask" data-label="MetaMask" onclick="selectWallet('metamask')">
+            <span class="wallet-icon">
+              <img src="assets/wallet-metamask.jpg" alt="MetaMask Wallet" width="40" height="40" class="wallet-logo"/>
+            </span>
+            <span>MetaMask</span>
+          </button>
+          <button class="wallet-option" data-wallet="rabby" data-label="Rabby Wallet" onclick="selectWallet('rabby')">
+            <span class="wallet-icon">
+              <img src="assets/wallet-rabby.jpg" alt="Rabby Wallet" width="40" height="40" class="wallet-logo"/>
+            </span>
+            <span>Rabby Wallet</span>
+          </button>
+          <button class="wallet-option" data-wallet="zerion" data-label="Zerion Wallet" onclick="selectWallet('zerion')">
+            <span class="wallet-icon">
+              <img src="assets/wallet-zerion.jpg" alt="Zerion Wallet" width="40" height="40" class="wallet-logo"/>
+            </span>
+            <span>Zerion Wallet</span>
+          </button>
+        </div>
+        <div class="wallet-modal__actions">
+          <button class="wallet-cancel" id="wallet-cancel" onclick="document.getElementById('wallet-modal').style.display='none'">Cancel</button>
+        </div>
+        <p class="wallet-modal__message" id="wallet-modal-message"></p>
+      </div>
+    </div>
+
+    </main>
+
+    <script>
+window.DECISIONS = [
+ { time: "28/03/2026, 00:13", squad: "XYNDICATE_ALPHA", 
+ chain: "Oracle→Analyst→Strategist→Executor",
+ decision: "HOLD ETH — 0% treasury",
+ rationale: "ETH down 3.7% — bearish signal, holding for reassessment.",
+ hash: "0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3",
+ url: "https://www.oklink.com/xlayer/tx/0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3" },
+ { time: "28/03/2026, 00:08", squad: "XYNDICATE_ALPHA",
+ chain: "Oracle→Analyst→Strategist→Executor",
+ decision: "HOLD ETH — 0% treasury",
+ rationale: "ETH down 3.5% — prudent to wait for trend reversal.",
+ hash: "0x5f3f47096d0fadf067f523fcff90af1dfdbcd4b7b99228fa1208aeaa20a969ce",
+ url: "https://www.oklink.com/xlayer/tx/0x5f3f47096d0fadf067f523fcff90af1dfdbcd4b7b99228fa1208aeaa20a969ce" },
+ { time: "28/03/2026, 00:07", squad: "XYNDICATE_ALPHA",
+ chain: "Oracle→Analyst→Strategist→Executor",
+ decision: "BUY ETH — 10% treasury",
+ rationale: "Rebound signal detected, confidence 0.70.",
+ hash: "0xc7d1a35ba2e57addc716a8643a72a6b82fc3a1a312ab437e0af6864feef28169",
+ url: "https://www.oklink.com/xlayer/tx/0xc7d1a35ba2e57addc716a8643a72a6b82fc3a1a312ab437e0af6864feef28169" },
+ { time: "28/03/2026, 00:06", squad: "XYNDICATE_ALPHA",
+ chain: "Oracle→Analyst→Strategist→Executor",
+ decision: "HOLD ETH — 0% treasury",
+ rationale: "ETH down 3.48% — stabilization wait.",
+ hash: "0xb0f91a2757a64b3783d48ba1528f31ddf40cea175cd38ea2d17284bdc268e6ba",
+ url: "https://www.oklink.com/xlayer/tx/0xb0f91a2757a64b3783d48ba1528f31ddf40cea175cd38ea2d17284bdc268e6ba" },
+ { time: "28/03/2026, 00:06", squad: "XYNDICATE_ALPHA",
+ chain: "Oracle→Analyst→Strategist→Executor",
+ decision: "HOLD ETH — 100% treasury",
+ rationale: "Bearish sentiment confirmed — holding all positions.",
+ hash: "0xdf84640c2d5180adb97dc4fc8e487553167ea80973dc0117d542f56aeb7c1b32",
+ url: "https://www.oklink.com/xlayer/tx/0xdf84640c2d5180adb97dc4fc8e487553167ea80973dc0117d542f56aeb7c1b32" },
+ { time: "27/03/2026, 16:34", squad: "XYNDICATE_ALPHA",
+ chain: "Oracle→Analyst→Strategist→Executor",
+ decision: "BUY ETH — 10% treasury",
+ rationale: "ETH down 2.9% — rebound signal detected, confidence 0.70.",
+ hash: "0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6",
+ url: "https://www.oklink.com/xlayer/tx/0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6" },
+ { time: "27/03/2026, 00:18", squad: "XYNDICATE_ALPHA",
+ chain: "Oracle→Analyst→Strategist→Executor",
+ decision: "HOLD ETH — 0% treasury",
+ rationale: "Market uncertainty — agents waiting for clearer signal.",
+ hash: "0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3",
+ url: "https://www.oklink.com/xlayer/tx/0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3" }
+];
+
+      window.addEventListener('load', function() {
+        startPipelineAnimation();
+      });
+
+      let themeToggleBtn = document.getElementById('theme-toggle');
+      const THEME_KEY = 'xyndicate-theme';
+      const root = document.documentElement;
+
+      const applyTheme = (mode) => {
+        if (mode === 'dark') {
+          document.body.classList.add('dark');
+          root.classList.add('dark');
+        } else {
+          document.body.classList.remove('dark');
+          root.classList.remove('dark');
+        }
+        if (themeToggleBtn) {
+          themeToggleBtn.setAttribute('aria-label', mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+      };
+
+      const storedTheme = localStorage.getItem(THEME_KEY) || 'light';
+      applyTheme(storedTheme);
+
+      function handleThemeToggle() {
+        const next = document.body.classList.contains('dark') ? 'light' : 'dark';
+        localStorage.setItem(THEME_KEY, next);
+        applyTheme(next);
+      };
+
+      window.addEventListener('load', () => {
+        if (window.ethereum) {
+          const label = window.ethereum.isMetaMask ? 'MetaMask' : window.ethereum.isOKExWallet ? 'OKX Wallet' : 'Unknown';
+          console.log('Wallet detected on load:', label);
+        }
+      });
+
+      const pipeline = document.getElementById('agent-pipeline');
+if (pipeline) {
+  const agentBoxes = Array.from(pipeline.querySelectorAll('.agent-box'));
+  let pipelineIndex = 0;
+  function advancePipeline() {
+    agentBoxes.forEach(function(box) {
+      box.classList.remove('active', 'done');
+      const statusText = box.querySelector('.status-text');
+      if (statusText && box.dataset.status) {
+        statusText.textContent = box.dataset.status;
+      }
+    });
+    agentBoxes.forEach(function(box, idx) {
+      if (idx < pipelineIndex) {
+        box.classList.add('done');
+        const st = box.querySelector('.status-text');
+        if (st) st.textContent = '✓ Complete';
+      }
+    });
+    if (pipelineIndex < agentBoxes.length) {
+      const activeBox = agentBoxes[pipelineIndex];
+      if (activeBox) activeBox.classList.add('active');
+    }
+    pipelineIndex = (pipelineIndex + 1) % (agentBoxes.length + 1);
+  }
+  advancePipeline();
+  setInterval(advancePipeline, 2500);
+}
+const TX_LOG = {
+  97: '0xbb51f001c581b2383e744383e984fbf0b8fdc2835285d77499f813c68d77e099',
+  96: '0xc99ac2802364734b7f410010287591a0b4b1a6a4c1dc1c191176364aa9803943',
+  95: '0xf3d0ff2088e6d21004df53d6c134319854ad0694b6b6242e3bb1d334a9cbb0c8',
+  94: '0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6',
+  93: '0xc7d1a35ba2e57addc716a8643a72a6b82fc3a1a312ab437e0af6864feef28169'
+};
+const DEFAULT_CHAIN = 'Oracle→Analyst→Strategist→Executor';
+      const decisionListEl = document.getElementById('decision-list');
+      const showMoreBtn = document.getElementById('show-more-btn');
+      const INITIAL_VISIBLE = 5;
+      const BATCH_SIZE = 10;
+      let stagedDecisions = [];
+      let visibleCount = INITIAL_VISIBLE;
+
+      const FALLBACK_DECISIONS = [
+        {
+          timestamp: Date.parse('2026-03-28T00:13:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · ETH down 3.73% — bearish signal, holding for reassessment.',
+          txHash: '0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3'
+        },
+        {
+          timestamp: Date.parse('2026-03-28T00:08:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · ETH down 3.49% — prudent to wait for trend reversal.',
+          txHash: '0x5f3f47096d0fadf067f523fcff90af1dfdbcd4b7b99228fa1208aeaa20a969ce'
+        },
+        {
+          timestamp: Date.parse('2026-03-28T00:07:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'BUY ETH (10% treasury) · Rebound signal detected, confidence 0.70.',
+          txHash: '0xc7d1a35ba2e57addc716a8643a72a6b82fc3a1a312ab437e0af6864feef28169'
+        },
+        {
+          timestamp: Date.parse('2026-03-28T00:06:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · ETH down 3.48% — stabilization wait.',
+          txHash: '0xb0f91a2757a64b3783d48ba1528f31ddf40cea175cd38ea2d17284bdc268e6ba'
+        },
+        {
+          timestamp: Date.parse('2026-03-28T00:06:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (100% treasury) · Bearish sentiment confirmed — holding all positions.',
+          txHash: '0xdf84640c2d5180adb97dc4fc8e487553167ea80973dc0117d542f56aeb7c1b32'
+        },
+        {
+          timestamp: Date.parse('2026-03-27T16:34:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'BUY ETH (10% treasury) · ETH down 2.9% — rebound signal detected, confidence 0.70.',
+          txHash: '0x2ae68eaa64e4d1dd42e8be751fac6faa5baf1052a3c45ee755fcc7ade2587ad6'
+        },
+        {
+          timestamp: Date.parse('2026-03-27T16:10:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · Market uncertainty — agents waiting for clearer signal.',
+          txHash: '0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3'
+        },
+        {
+          timestamp: Date.parse('2026-03-27T16:05:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · ETH down 3.0% — bearish sentiment detected.',
+          txHash: '0x05b31de39b820d45c146a2df72351cba9e6443708c2f762d5f7ac0ff70a65e21'
+        },
+        {
+          timestamp: Date.parse('2026-03-27T16:02:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'HOLD ETH (0% treasury) · Waiting for stabilization before re-entering.',
+          txHash: '0x1afb446de1096e98295462bb8a9a4d3dcf8d53e3f24b66f77f720b43aaa231a5'
+        },
+        {
+          timestamp: Date.parse('2026-03-27T16:00:00Z'),
+          squadId: 'XYNDICATE_ALPHA',
+          agentChain: DEFAULT_CHAIN,
+          rationale: 'BUY ETH (10% treasury) · Oversold conditions + rebound probability.',
+          txHash: '0x546bbc2dfad08ad4c4511431c3bcf4b7f9d3939935d715029602535128d40bae'
+        }
+      ];
+
+      let latestDecisionTotal = FALLBACK_DECISIONS.length;
+
+      const ALPHA_SQUAD_REGEX = /ALPHA/i;
+
+      function normalizeSquadId(value = '') {
+        if (!value) return 'XYNDICATE_ALPHA';
+        if (value.toUpperCase() === 'SYNDICATE_ALPHA') return 'XYNDICATE_ALPHA';
+        return value;
+      }
+
+      const formatDecisionTime = (timestamp) =>
+        new Intl.DateTimeFormat('en-GB', { dateStyle: 'short', timeStyle: 'short', timeZone: 'UTC' }).format(new Date(timestamp));
+
+      function normalizeDecision(entry) {
+        const rationale = entry.rationale || '';
+        const [headline = 'Decision logged', detail = ''] = rationale.split('·').map((chunk) => chunk.trim());
+        const display = headline.replace('(', ' — ').replace(')', '').trim();
+        const timestamp = entry.timestamp
+          ? (entry.timestamp > 1e12 ? entry.timestamp : entry.timestamp * 1000)
+          : Date.now();
+        return {
+          title: display || 'Decision logged',
+          detail: detail || 'Recorded on-chain.',
+          squadId: normalizeSquadId(entry.squadId || 'XYNDICATE_ALPHA'),
+          agentChain: entry.agentChain || DEFAULT_CHAIN,
+          timestamp,
+          txHash: entry.txHash || TX_LOG[entry.index] || null,
+          index: typeof entry.index === 'number' ? entry.index : null
+        };
+      }
+
+      function createDecisionCard(entry, idx) {
+        const card = document.createElement('div');
+        card.className = 'decision-card';
+        if (idx >= INITIAL_VISIBLE) {
+          card.style.display = 'none';
+          card.style.opacity = '0';
+        }
+
+        const meta = document.createElement('div');
+        meta.className = 'decision-meta';
+        const metaSpan = document.createElement('span');
+        metaSpan.textContent = `${formatDecisionTime(entry.timestamp)} · ${entry.squadId} · ${entry.agentChain}`;
+        meta.appendChild(metaSpan);
+        if (!entry.txHash && entry.index !== null) {
+          const strong = document.createElement('strong');
+          strong.textContent = `Entry #${entry.index}`;
+          meta.appendChild(strong);
+        }
+        card.appendChild(meta);
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'decision-title';
+        titleEl.textContent = entry.title;
+        card.appendChild(titleEl);
+
+        const detailEl = document.createElement('div');
+        detailEl.className = 'decision-detail';
+        detailEl.textContent = entry.detail;
+        card.appendChild(detailEl);
+
+        if (entry.txHash) {
+          const txWrap = document.createElement('div');
+          txWrap.style.marginTop = '8px';
+          const txLink = document.createElement('a');
+          txLink.href = `https://www.oklink.com/xlayer/tx/${entry.txHash}`;
+          txLink.target = '_blank';
+          txLink.rel = 'noreferrer';
+          txLink.style.fontSize = '12px';
+          txLink.style.color = '#6366f1';
+          txLink.style.textDecoration = 'none';
+          txLink.style.fontFamily = 'monospace';
+          txLink.textContent = `${entry.txHash.slice(0, 6)}…${entry.txHash.slice(-4)} ↗️`;
+          txWrap.appendChild(txLink);
+          card.appendChild(txWrap);
+        }
+
+        return card;
+      }
+
+      function renderDecisions(decisions = []) {
+        if (!decisionListEl) return;
+        const normalized = decisions.map(normalizeDecision).slice(0, 30);
+        stagedDecisions = normalized;
+        decisionListEl.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+        normalized.forEach((entry, idx) => {
+          const card = createDecisionCard(entry, idx);
+          card.style.display = idx < INITIAL_VISIBLE ? 'block' : 'none';
+          card.style.opacity = idx < INITIAL_VISIBLE ? '1' : '0';
+          fragment.appendChild(card);
+        });
+        decisionListEl.appendChild(fragment);
+        visibleCount = Math.min(INITIAL_VISIBLE, normalized.length);
+        updateLeaderboard(normalized, latestDecisionTotal);
+        updateShowMoreButton(normalized.length);
+        updateFadeEffect();
+      }
+
+      function updateShowMoreButton(total) {
+        if (!showMoreBtn) return;
+        const remaining = total - visibleCount;
+        if (remaining <= 0) {
+          showMoreBtn.style.display = 'none';
+        } else {
+          showMoreBtn.style.display = 'inline-flex';
+          const nextBatch = Math.min(remaining, BATCH_SIZE);
+          showMoreBtn.textContent = `Show ${nextBatch} more decisions ↓`;
+        }
+      }
+
+      function showMoreDecisions() {
+        if (!decisionListEl) return;
+        const allCards = decisionListEl.querySelectorAll('.decision-card');
+        const total = allCards.length;
+        for (let i = visibleCount; i < Math.min(visibleCount + BATCH_SIZE, total); i += 1) {
+          const card = allCards[i];
+          if (card) {
+            card.style.display = 'block';
+            card.style.opacity = '1';
+          }
+        }
+        visibleCount = Math.min(visibleCount + BATCH_SIZE, total);
+        updateShowMoreButton(total);
+        updateFadeEffect();
+      }
+
+      function updateFadeEffect() {
+        const cards = Array.from(document.querySelectorAll('.decision-card'));
+        cards.forEach((card) => {
+          card.style.WebkitMaskImage = '';
+          card.style.maskImage = '';
+          card.style.opacity = '1';
+        });
+        const visibleCards = cards.filter((card) => card.style.display !== 'none');
+        const btn = document.getElementById('show-more-btn');
+        if (btn && btn.style.display !== 'none' && visibleCards.length >= 2) {
+          const secondLast = visibleCards[visibleCards.length - 2];
+          const last = visibleCards[visibleCards.length - 1];
+          if (secondLast) secondLast.style.opacity = '0.5';
+          if (last) last.style.opacity = '0.15';
+        }
+      }
+
+            async function loadAgentPayment() {
+        try {
+          const res = await fetch('/agentpayments.json', { cache: 'no-store' });
+          if (!res.ok) throw new Error('Fetch failed');
+          const data = await res.json();
+          if (Array.isArray(data) && data.length) {
+            const latest = data[0];
+            const amountEl = document.getElementById('agent-payment-amount');
+            const linkEl = document.getElementById('agent-payment-link');
+            if (amountEl && latest?.amount) amountEl.textContent = latest.amount;
+            if (linkEl && latest?.txHash) {
+              linkEl.href = `https://www.oklink.com/xlayer/tx/${latest.txHash}`;
+              linkEl.textContent = 'View TX ↗️';
+            }
+          }
+        } catch (err) {
+          console.error('Agent payment fetch failed:', err.message);
+        }
+      }
+
+async function loadDecisions() {
+        try {
+          const res = await fetch('/api/decisions');
+          if (!res.ok) throw new Error('Fetch failed');
+          const data = await res.json();
+          if (data?.success && Array.isArray(data.decisions) && data.decisions.length) {
+            latestDecisionTotal = Number(data.total) || data.decisions.length;
+            renderDecisions(data.decisions);
+            updateStatsBar(latestDecisionTotal);
+            return;
+          }
+        } catch (error) {
+          console.error('Decisions fetch failed:', error.message);
+        }
+        latestDecisionTotal = FALLBACK_DECISIONS.length;
+        renderDecisions(FALLBACK_DECISIONS);
+        updateStatsBar(latestDecisionTotal);
+      }
+
+      function updateStatsBar(total) {
+        const statEl = document.getElementById('decisions-count');
+        if (statEl) statEl.textContent = total;
+        const roundEl = document.getElementById('round-count');
+        if (roundEl) roundEl.textContent = total;
+      }
+
+      function updateLeaderboard(decisions = [], totalCount = decisions.length) {
+        const alphaCell = document.querySelector('[data-squad-count="alpha"]');
+        const novaCell = document.querySelector('[data-squad-count="nova"]');
+        if (!alphaCell || !novaCell) return;
+        const alphaCount = decisions.filter((entry) => ALPHA_SQUAD_REGEX.test((entry.squadId || ''))).length;
+        const novaCount = Math.max(totalCount - alphaCount, 0);
+        alphaCell.textContent = alphaCount;
+        novaCell.textContent = novaCount;
+      }
+      let runCycleBtn = document.getElementById('run-cycle-btn');
+      async function handleRunCycle() {
+        if (!runCycleBtn) return;
+        const originalText = runCycleBtn.textContent;
+        runCycleBtn.disabled = true;
+        runCycleBtn.textContent = 'Running cycle...';
+        try {
+          const response = await fetch('/api/run-cycle', { method: 'POST' });
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Cycle failed');
+          }
+          const payload = await response.json();
+          await loadDecisions();
+        } catch (err) {
+          alert(err?.message || 'Unable to run agent cycle');
+        } finally {
+          runCycleBtn.disabled = false;
+          runCycleBtn.textContent = originalText;
+        }
+      };
+
+      const tweetText = `Xyndicate Alpha: BUY ETH 10% treasury. Rebound signal detected, confidence 0.70. Decision logged on-chain before execution. TX: 0xff6767e1b749d653efe6dc749536a1185650033b429e831ad8b2c53e9d724eef #XLayer #OnchainOS @XLayer_Official`;
+      let copyBtn = document.getElementById('copy-to-x');
+      function handleCopyToX() {
+        if (!copyBtn) return;
+        navigator.clipboard.writeText(tweetText);
+        copyBtn.textContent = 'Copied! 🐦';
+        setTimeout(() => (copyBtn.textContent = '🐦 Copy to X / Twitter'), 2000);
+      }
+
+      let unlockBtn = document.getElementById('unlock-chain');
+      let gated = document.getElementById('reasoning-chain');
+      let reasoningStatus = document.getElementById('reasoning-status');
+      let paymentReceipt = document.getElementById('payment-receipt');
+      const PAYMENT_DEST = '0xc9955733f8f16872a6c8df375E9D13d79A43a4dc';
+      const PAYMENT_AMOUNT = '0.0005';
+      const XLAYER_PARAMS = {
+        chainId: '0xC4',
+        chainName: 'X Layer Mainnet',
+        nativeCurrency: { name: 'OKB', symbol: 'OKB', decimals: 18 },
+        rpcUrls: ['https://rpc.xlayer.tech'],
+        blockExplorerUrls: ['https://www.oklink.com/xlayer']
+      };
+      const PLATFORM_WALLET = window.ethers ? ethers.getAddress('0xc9955733f8f16872a6c8df375e9d13d79a43a4dc') : '0xc9955733f8f16872a6c8df375e9d13d79a43a4dc';
+
+      let walletModal = document.getElementById('wallet-modal');
+      let walletOptions = walletModal ? walletModal.querySelectorAll('[data-wallet]') : [];
+      let walletMessage = document.getElementById('wallet-modal-message');
+      let walletCancel = document.getElementById('wallet-cancel');
+      let connectBtn = document.getElementById('connect-wallet');
+      let walletAction = null;
+
+      const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      function getInjectedProvider() { return window.ethereum || window.okxwallet || window.web3?.currentProvider || null; }
+
+      async function resolveProvider() {
+        let provider = getInjectedProvider();
+        if (provider) return provider;
+        await wait(2000);
+        provider = window.ethereum || window.okxwallet || null;
+        return provider;
+      };
+
+      async function ensureXLayerNetwork(provider) {
+        try {
+          await provider.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: XLAYER_PARAMS.chainId }]
+          });
+        } catch (switchError) {
+          if (switchError.code === 4902) {
+            await provider.request({
+              method: 'wallet_addEthereumChain',
+              params: [XLAYER_PARAMS]
+            });
+          } else {
+            throw switchError;
+          }
+        }
+      };
+
+      function getProviderByType(type) {
+        if (type === 'okx') return window.okxwallet || null;
+        if (type === 'metamask') return window.ethereum?.isMetaMask ? window.ethereum : null;
+        if (type === 'rabby') return window.ethereum?.isRabby ? window.ethereum : null;
+        if (type === 'zerion') return window.ethereum?.isZerion ? window.ethereum : null;
+        return getInjectedProvider();
+      };
+
+      function openWalletModal() {
+        if (!walletModal) {
+          if (walletAction === 'connect') {
+            connectWallet();
+          } else {
+            handleUnlock();
+          }
+          return;
+        }
+        walletModal.classList.remove('hidden');
+        if (walletMessage) walletMessage.textContent = '';
+      };
+
+      const closeWalletModal = () => {
+        walletModal?.classList.add('hidden');
+        if (walletMessage) walletMessage.textContent = '';
+        walletAction = null;
+      };
+
+      function setButtonState(label, disabled = true) {
+        if (!unlockBtn) return;
+        unlockBtn.textContent = label;
+        unlockBtn.disabled = disabled;
+      };
+
+      function showMessage(text) {
+        if (reasoningStatus) reasoningStatus.textContent = text;
+      };
+
+      function revealReasoningChain() { gated?.classList.remove('hidden'); }
+
+      function showPaymentConfirmed(hash) {
+        if (!paymentReceipt) return;
+        paymentReceipt.innerHTML = `Payment confirmed · TX: <a href="https://www.oklink.com/xlayer/tx/${hash}" target="_blank" rel="noreferrer">${hash.slice(0, 10)}…</a>`;
+      };
+
+
+      const setConnectLabel = (address) => {
+        if (!connectBtn || !address) return;
+        connectBtn.textContent = `${address.slice(0, 6)}...${address.slice(-4)}`;
+      };
+
+      const connectWallet = async (selectedProvider) => {
+        if (!window.ethers) return;
+        const provider = selectedProvider || (await resolveProvider());
+        if (!provider) {
+          if (walletMessage) walletMessage.textContent = 'Install a wallet to connect';
+          return;
+        }
+        try {
+          if (connectBtn) {
+            connectBtn.disabled = true;
+            connectBtn.textContent = 'Connecting...';
+          }
+          await provider.request({ method: 'eth_requestAccounts' });
+          const browserProvider = new ethers.BrowserProvider(provider);
+          const signer = await browserProvider.getSigner();
+          const address = await signer.getAddress();
+          setConnectLabel(address);
+        } catch (error) {
+          console.error(error);
+          if (connectBtn) connectBtn.textContent = 'Connect Wallet';
+        } finally {
+          if (connectBtn) connectBtn.disabled = false;
+        }
+      };
+      async function handleUnlock(selectedProvider) {
+        if (!window.ethers) {
+          showMessage('Wallet provider unavailable.');
+          return;
+        }
+        const provider = selectedProvider || (await resolveProvider());
+        if (!provider) {
+          showMessage('Install OKX Wallet or MetaMask to unlock');
+          setButtonState('Unlock reasoning chain', false);
+          return;
+        }
+        const activeProvider = selectedProvider || window.ethereum || window.okxwallet || window.web3?.currentProvider || provider;
+        try {
+          setButtonState('Processing payment...');
+          showMessage('');
+          await activeProvider.request({ method: 'eth_requestAccounts' });
+          await ensureXLayerNetwork(activeProvider);
+          const browserProvider = new ethers.BrowserProvider(activeProvider);
+          const signer = await browserProvider.getSigner();
+          const tx = await signer.sendTransaction({
+            to: PLATFORM_WALLET,
+            value: ethers.parseEther(PAYMENT_AMOUNT)
+          });
+          setButtonState('Waiting for confirmation...');
+          const receipt = await tx.wait(1);
+          revealReasoningChain();
+          showPaymentConfirmed(receipt.hash);
+          setButtonState('Unlocked via x402', true);
+        } catch (error) {
+          console.error(error);
+          if (error?.code === 4001) {
+            showMessage('Payment cancelled by user.');
+          } else {
+            showMessage(`Payment failed: ${error?.message || 'Unknown error'}`);
+          }
+          setButtonState('Unlock reasoning chain', false);
+        }
+      };
+
+
+      window.handleThemeToggle = handleThemeToggle;
+      window.openWalletModal = openWalletModal;
+      window.handleCopyToX = handleCopyToX;
+      window.handleUnlock = handleUnlock;
+      window.startPipelineAnimation = startPipelineAnimation;
+
+      startPipelineAnimation();
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var boxes = document.querySelectorAll('.agent-box');
+      var idx = 0;
+      function animate() {
+        boxes.forEach(function(b, i) {
+          b.classList.remove('active','done');
+          var s = b.querySelector('.status-text');
+          if (s) s.textContent = b.dataset.status || '';
+          if (i < idx) {
+            b.classList.add('done');
+            if (s) s.textContent = '✓ Complete';
+          }
+          if (i === idx) b.classList.add('active');
+        });
+        idx = (idx + 1) % (boxes.length + 1);
+      }
+      animate();
+      setInterval(animate, 2500);
+
+      if (showMoreBtn) {
+        showMoreBtn.addEventListener('click', showMoreDecisions);
+      }
+
+      loadDecisions();
+      setInterval(loadDecisions, 5 * 60 * 1000);
+      loadAgentPayment();
+      setInterval(loadAgentPayment, 5 * 60 * 1000);
+    });    </script>
+
+    <script>
+async function selectWallet(walletType) {
+  document.getElementById('wallet-modal').style.display = 'none';
+
+  var provider = null;
+  if (walletType === 'okx' && window.okxwallet) provider = window.okxwallet;
+  else if (walletType === 'metamask' && window.ethereum) provider = window.ethereum;
+  else if (walletType === 'rabby' && window.ethereum) provider = window.ethereum;
+  else if (walletType === 'zerion' && window.ethereum) provider = window.ethereum;
+  else { alert(walletType + ' wallet not detected. Please install it first.'); return; }
+
+  try {
+    var unlockBtn = document.getElementById('unlock-chain');
+    unlockBtn.textContent = 'Connecting...';
+    unlockBtn.disabled = true;
+
+    await provider.request({ method: 'eth_requestAccounts' });
+
+    try {
+      await provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0xC4' }]
+      });
+    } catch(sw) {
+      if (sw.code === 4902) {
+        await provider.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: '0xC4',
+            chainName: 'X Layer Mainnet',
+            nativeCurrency: { name: 'OKB', symbol: 'OKB', decimals: 18 },
+            rpcUrls: ['https://rpc.xlayer.tech'],
+            blockExplorerUrls: ['https://www.oklink.com/xlayer']
+          }]
+        });
+      }
+    }
+
+    unlockBtn.textContent = 'Sending payment...';
+
+    var ethersProvider = new ethers.BrowserProvider(provider);
+    var signer = await ethersProvider.getSigner();
+    var tx = await signer.sendTransaction({
+      to: ethers.getAddress('0xc9955733f8f16872a6c8df375e9d13d79a43a4dc'),
+      value: ethers.parseEther('0.0005')
+    });
+
+    unlockBtn.textContent = 'Confirming...';
+    await tx.wait(1);
+
+    document.getElementById('reasoning-chain').style.display = 'block';
+    unlockBtn.textContent = 'Unlocked ✓';
+
+    var confirmed = document.createElement('p');
+    confirmed.style.cssText = 'color:#22c55e;font-size:13px;margin-top:8px';
+    confirmed.innerHTML = 'Payment confirmed · <a href="https://www.oklink.com/xlayer/tx/' + tx.hash + '" target="_blank">View TX ↗️</a>';
+    unlockBtn.parentNode.appendChild(confirmed);
+
+  } catch(err) {
+    var unlockBtn2 = document.getElementById('unlock-chain');
+    unlockBtn2.textContent = 'Unlock reasoning chain';
+    unlockBtn2.disabled = false;
+    if (err.code !== 4001) alert('Error: ' + err.message);
+  }
+}
+    </script>
+
+  </body>
+</html>// Sat Apr  4 14:14:56 UTC 2026

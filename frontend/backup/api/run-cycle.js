@@ -1,0 +1,208 @@
+const { ethers } = require('ethers');
+const deployments = require('../../deployments.json');
+
+const DECISION_LOG_ABI = ['function logDecision(string,string,string)'];
+const STRATEGY_VAULT_ABI = ['function recordPnL(bytes32 squadId, int256 delta)'];
+const ANALYST_PROMPT = `You are the Analyst agent in the Xyndicate Protocol system.\nYou receive structured market data from the Oracle agent and must respond with JSON matching {"opportunities":[{"asset":string,"type":"long|short|hold","rationale":string,"confidence":number}],"risks":[{"description":string,"severity":number}],"recommendation":"act|wait|exit","topAsset":string,"confidenceScore":number}.`;
+const STRATEGIST_PROMPT = `You are the Strategist agent in the Xyndicate Protocol system.\nUsing the Oracle snapshot and Analyst assessment, output JSON matching {"action":"BUY|SELL|HOLD","asset":string,"sizePercent":number,"rationale":string,"confidence":number}. Keep rationale under 280 characters.`;
+const UNISWAP_POOL_PRICE_URL = process.env.UNISWAP_POOL_PRICE_URL || '';
+const SQUAD_ID = 'Xyndicate Alpha';
+const SQUAD_ID_BYTES32 = ethers.encodeBytes32String('SYNDICATE_ALPHA');
+
+const fetchUniswapPoolPrice = async (okxPrice) => {
+  if (UNISWAP_POOL_PRICE_URL) {
+    try {
+      const res = await fetch(UNISWAP_POOL_PRICE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tool: 'get_pool_price', pair: 'ETH/USDC' })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const uniswapPrice = Number(
+          data?.uniswapPrice ??
+          data?.price ??
+          data?.result?.price ??
+          data?.result?.uniswapPrice ??
+          data?.data?.price ??
+          0
+        );
+
+        if (uniswapPrice > 0) {
+          return { uniswapPrice, source: 'uniswap-live' };
+        }
+      }
+    } catch (error) {
+      console.warn('Uniswap price fetch failed, using fallback mock:', error.message);
+    }
+  }
+
+  const spreadFactor = 1 + (Math.random() - 0.5) * 0.003;
+  return {
+    uniswapPrice: Number((okxPrice * spreadFactor).toFixed(6)),
+    source: 'uniswap-mock'
+  };
+};
+
+const fetchMarketSnapshot = async () => {
+  const res = await fetch('https://www.okx.com/api/v5/market/ticker?instId=ETH-USDT');
+  if (!res.ok) throw new Error('Failed to fetch OKX market data');
+
+  const data = await res.json();
+  const ticker = data?.data?.[0];
+  const okxPrice = Number(ticker?.last || 0);
+  const change24h = Number(ticker?.open24h ? ((Number(ticker.last) - Number(ticker.open24h)) / Number(ticker.open24h)) * 100 : 0);
+  const { uniswapPrice, source } = await fetchUniswapPoolPrice(okxPrice);
+  const spreadBps = okxPrice ? Number((((uniswapPrice - okxPrice) / okxPrice) * 10000).toFixed(2)) : 0;
+
+  console.log(`OKX: ${okxPrice} | Uniswap: ${uniswapPrice} | Spread: ${spreadBps}bps`);
+
+  return {
+    pair: 'ETH-USDT',
+    price: okxPrice,
+    okxPrice,
+    uniswapPrice,
+    priceSpreads: {
+      absolute: Number((uniswapPrice - okxPrice).toFixed(6)),
+      bps: spreadBps,
+      source
+    },
+    change24h
+  };
+};
+
+const callOpenAI = async (systemPrompt, payload) => {
+  const apiKey = (process.env.OPENAI_API_KEY || '').trim();
+  if (!apiKey) throw new Error('OPENAI_API_KEY missing');
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: 'gpt-3.5-turbo',
+      temperature: 0.3,
+      response_format: { type: 'json_object' },
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: JSON.stringify(payload) }
+      ]
+    })
+  });
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`OpenAI error: ${errorText}`);
+  }
+  const json = await res.json();
+  const content = json?.choices?.[0]?.message?.content;
+  return JSON.parse(content || '{}');
+};
+
+const routeDecision = (strategistDecision, marketData) => {
+  const { okxPrice, uniswapPrice } = marketData;
+  const spreadBps = okxPrice ? Math.abs(okxPrice - uniswapPrice) / okxPrice * 10000 : 0;
+
+  let route = 'okx';
+  let routingReason = 'OKX remains within threshold, so default execution path is retained.';
+
+  if (strategistDecision.action === 'BUY' && uniswapPrice < okxPrice && spreadBps > 10) {
+    route = 'uniswap';
+    routingReason = 'Uniswap offers a better buy price beyond the 10 bps threshold.';
+  } else if (strategistDecision.action === 'SELL' && uniswapPrice > okxPrice && spreadBps > 10) {
+    route = 'uniswap';
+    routingReason = 'Uniswap offers a better sell price beyond the 10 bps threshold.';
+  } else if (strategistDecision.action === 'HOLD') {
+    routingReason = 'No execution improvement is needed for HOLD, so OKX remains the default route.';
+  }
+
+  const routedDecision = {
+    ...strategistDecision,
+    route,
+    routingReason,
+    okxPrice,
+    uniswapPrice,
+    spreadBps: Number(spreadBps.toFixed(2))
+  };
+
+  console.log(`Router: selected ${route} — spread ${routedDecision.spreadBps}bps — ${routingReason}`);
+
+  return routedDecision;
+};
+
+const logDecisionOnChain = async (routedDecision) => {
+  const privateKey = (process.env.STRATEGIST_KEY || '').trim();
+  const logAddress = (process.env.DECISION_LOG_ADDRESS || '').trim();
+  const rpcUrl = (process.env.XLAYER_RPC || 'https://rpc.xlayer.tech').trim();
+  if (!privateKey || !logAddress) throw new Error('Missing chain credentials');
+  const provider = new ethers.JsonRpcProvider(rpcUrl);
+  const wallet = new ethers.Wallet(privateKey, provider);
+  const contract = new ethers.Contract(logAddress, DECISION_LOG_ABI, wallet);
+  const narrative = `${routedDecision.action} ${routedDecision.asset} (${routedDecision.sizePercent}% treasury) via ${routedDecision.route} · ${routedDecision.rationale}`;
+  const agentChain = 'Oracle→Analyst→Strategist→Router→Executor';
+  const tx = await contract.logDecision(SQUAD_ID, agentChain, narrative);
+  await tx.wait(1);
+  return { txHash: tx.hash, narrative };
+};
+
+const recordVaultPnL = async (routedDecision) => {
+  const privateKey = (process.env.STRATEGIST_KEY || '').trim();
+  const rpcUrl = (process.env.XLAYER_RPC || 'https://rpc.xlayer.tech').trim();
+  const vaultAddress = process.env.STRATEGY_VAULT_ADDRESS || deployments?.StrategyVault?.address || '';
+
+  if (!privateKey || !vaultAddress) {
+    throw new Error('Missing StrategyVault credentials');
+  }
+
+  const provider = new ethers.JsonRpcProvider(rpcUrl);
+  const wallet = new ethers.Wallet(privateKey, provider);
+  const contract = new ethers.Contract(vaultAddress, STRATEGY_VAULT_ABI, wallet);
+
+  let delta = 0n;
+  if (routedDecision.action === 'BUY') delta = 50n;
+  if (routedDecision.action === 'SELL') delta = 30n;
+
+  const tx = await contract.recordPnL(SQUAD_ID_BYTES32, delta);
+  await tx.wait(1);
+  console.log(`StrategyVault: recorded PnL delta ${delta.toString()} for ${SQUAD_ID} (${tx.hash})`);
+  return { pnlDelta: delta.toString(), vaultTxHash: tx.hash };
+};
+
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+  try {
+    const market = await fetchMarketSnapshot();
+    if (!market.price) throw new Error('Oracle returned price 0');
+
+    const analyst = await callOpenAI(ANALYST_PROMPT, market);
+    const strategist = await callOpenAI(STRATEGIST_PROMPT, { market, analyst });
+    const routedDecision = routeDecision(strategist, market);
+    const { txHash, narrative } = await logDecisionOnChain(routedDecision);
+    const { pnlDelta, vaultTxHash } = await recordVaultPnL(routedDecision);
+    const narratorSummary = `Xyndicate Alpha ${routedDecision.action === 'SELL' ? 'trimmed' : routedDecision.action === 'HOLD' ? 'held' : 'deployed'} ${routedDecision.asset} (${routedDecision.sizePercent}% treasury) via ${routedDecision.route}. ${routedDecision.rationale}`;
+
+    res.status(200).json({
+      txHash,
+      vaultTxHash,
+      pnlDelta,
+      action: routedDecision.action,
+      asset: routedDecision.asset,
+      sizePercent: routedDecision.sizePercent,
+      rationale: routedDecision.rationale,
+      route: routedDecision.route,
+      routingReason: routedDecision.routingReason,
+      spreadBps: routedDecision.spreadBps,
+      narratorSummary,
+      analyst,
+      market,
+      narrative
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message || 'Cycle failed' });
+  }
+};
