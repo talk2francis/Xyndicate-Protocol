@@ -1,21 +1,10 @@
 import { NextResponse } from "next/server";
-import { ethers } from "ethers";
 
 const RAW_TXHASHES_URL = "https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/txhashes.json";
 const RAW_DEPLOYMENTS_URL = "https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/deployments.json";
-const DECISION_LOG_ABI = [
-  "function getDecisionCount() external view returns (uint256)",
-];
 
 export async function GET() {
   try {
-    const rpcUrl = process.env.XLAYER_RPC;
-    const decisionLogAddress = process.env.DECISION_LOG_ADDRESS;
-
-    if (!rpcUrl || !decisionLogAddress) {
-      throw new Error("Missing XLAYER_RPC or DECISION_LOG_ADDRESS");
-    }
-
     const [txhashesRes, deploymentsRes] = await Promise.all([
       fetch(RAW_TXHASHES_URL, { next: { revalidate: 30 } }),
       fetch(RAW_DEPLOYMENTS_URL, { next: { revalidate: 30 } }),
@@ -28,10 +17,7 @@ export async function GET() {
     const txhashes = await txhashesRes.json();
     const deployments = await deploymentsRes.json();
     const entries = Array.isArray(deployments?.decisionLogEntries) ? deployments.decisionLogEntries.slice(-30).reverse() : [];
-
-    const provider = new ethers.JsonRpcProvider(rpcUrl);
-    const contract = new ethers.Contract(decisionLogAddress, DECISION_LOG_ABI, provider);
-    const liveDecisionCount = Number(await contract.getDecisionCount());
+    const totalDecisions = Object.keys(txhashes || {}).length;
 
     const squads = new Map<string, { squadId: string; decisions: number; latestRationale: string; latestTimestamp: number; confidence: number; txHashes: string[] }>();
 
@@ -63,7 +49,7 @@ export async function GET() {
       .map((squad, index) => ({
         rank: index + 1,
         squadId: squad.squadId,
-        decisions: squad.squadId === "SYNDICATE_ALPHA" ? liveDecisionCount : squad.decisions,
+        decisions: squad.squadId === "SYNDICATE_ALPHA" ? totalDecisions : squad.decisions,
         confidence: squad.confidence,
         lastAction: squad.latestRationale,
         latestTimestamp: squad.latestTimestamp,
