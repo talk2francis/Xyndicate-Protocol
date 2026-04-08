@@ -23,6 +23,6 @@ contract.logDecision('XYNDICATE_ALPHA','Oracle->Analyst->Strategist->Executor',r
   console.log('OKLINK: https://www.oklink.com/xlayer/tx/' + r.hash);
 }).catch(e => console.error('FAILED:', e.message));
 " 2>&1
-  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Next run in 12 hours..."
-  sleep 43200
+  echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Next run in 30 minutes..."
+  sleep 1800
 done
