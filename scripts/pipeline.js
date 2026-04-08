@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const runCycleHandler = require('../frontend/api/run-cycle');
+const { writeLeaderboardArtifact } = require('./generate-leaderboard');
 
 function invokeRunCycle() {
   return new Promise((resolve, reject) => {
@@ -26,11 +27,15 @@ function invokeRunCycle() {
 
 async function runFullPipeline() {
   const result = await invokeRunCycle();
+  const leaderboard = writeLeaderboardArtifact();
+
   return {
     txHash: result?.txHash,
     action: result?.action,
     rationale: result?.rationale,
-    narratorSummary: result?.narratorSummary
+    narratorSummary: result?.narratorSummary,
+    narratorPaymentHash: result?.narratorPaymentHash,
+    leaderboardUpdatedAt: leaderboard?.updatedAt
   };
 }
 

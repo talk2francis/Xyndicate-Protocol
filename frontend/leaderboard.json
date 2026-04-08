@@ -1,0 +1,45 @@
+{
+  "squads": [
+    {
+      "rank": 1,
+      "squadId": "SYNDICATE_ALPHA",
+      "decisions": 27,
+      "confidence": 0.84,
+      "lastAction": "HOLD ETH (0% treasury) · The price of ETH has decreased by approximately 3.73% over the last 24 hours, indicating potential bearish sentiment. Holding allows for reassessment of market conditions before making any further trading decisions.",
+      "latestTimestamp": 1774656804,
+      "stats": {
+        "buys": 17,
+        "sells": 1,
+        "holds": 5,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "ETH"
+      },
+      "txHashes": [
+        "0x9c658d2245e77c1120e6b850021f57f46b709a2f9354ca9acebdb15ea1aac69b",
+        "0x5298dec89bc6e535c98422aee2b0b2be08aead5c347588ab6259387b80f62093",
+        "0x9374dadd8b57df7265cadb19a8b800487c3691b323dd1e4abfa6d629fdc72c18",
+        "0xd8e27bbb699d02dc19b92cc7aa740fdc2613a379282323b49cc1714f6b1d9da4",
+        "0x0f0c218911e8bd57e92689e4747c22aa2c975b1e95b399014aaf4b4ecab04f92",
+        "0xdf84640c2d5180adb97dc4fc8e487553167ea80973dc0117d542f56aeb7c1b32",
+        "0xb0f91a2757a64b3783d48ba1528f31ddf40cea175cd38ea2d17284bdc268e6ba",
+        "0xc7d1a35ba2e57addc716a8643a72a6b82fc3a1a312ab437e0af6864feef28169",
+        "0x5f3f47096d0fadf067f523fcff90af1dfdbcd4b7b99228fa1208aeaa20a969ce",
+        "0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3"
+      ]
+    }
+  ],
+  "source": "scheduler-artifact",
+  "updatedAt": "2026-04-08T23:28:48.872Z",
+  "totalDecisions": 27,
+  "supportingProofs": {
+    "narratorPayments": 1,
+    "latestNarratorPayment": {
+      "from": "Narrator Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.0001 OKB",
+      "txHash": "0x124940687e84763e245bdd054618d7fdd0204f946351b2163d502644236342c6",
+      "timestamp": 1743714081,
+      "status": "confirmed"
+    }
+  }
+}
