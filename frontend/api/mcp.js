@@ -30,7 +30,10 @@ function recommendAction(spreadBps) {
 }
 
 function normalizeInstId(pair) {
-  return pair.replace('/', '-');
+  const normalized = pair.toUpperCase();
+  if (normalized === 'ETH/USDC') return 'ETH-USDT';
+  if (normalized === 'OKB/USDC') return 'OKB-USDT';
+  return normalized.replace('/', '-');
 }
 
 async function getOkxTicker(instId) {
@@ -40,7 +43,9 @@ async function getOkxTicker(instId) {
   if (!res.ok) throw new Error(`OKX ticker failed for ${instId}`);
   const json = await res.json();
   const ticker = json?.data?.[0];
-  return Number(ticker?.last || 0);
+  const last = Number(ticker?.last || 0);
+  if (!last) throw new Error(`OKX returned no price for ${instId}`);
+  return last;
 }
 
 async function readFrontendArtifacts() {
@@ -78,22 +83,34 @@ async function getMarketSignal(params = {}) {
   const signals = [];
   for (const pair of pairs) {
     const instId = normalizeInstId(pair);
-    const okxPrice = await getOkxTicker(instId);
-    const fallbackBias = paymentCount ? 1 + Math.min(paymentCount, 5) * 0.0001 : 1;
-    const uniswapPrice = Number((mockUniswapPrice(okxPrice) * fallbackBias).toFixed(6));
-    const spreadBps = okxPrice ? Number((((uniswapPrice - okxPrice) / okxPrice) * 10000).toFixed(2)) : 0;
-    const { recommendedAction, confidence } = recommendAction(spreadBps);
 
-    signals.push({
-      pair,
-      okxPrice,
-      uniswapPrice,
-      spreadBps,
-      recommendedAction,
-      confidence,
-      timestamp: new Date().toISOString(),
-      source: 'okx+mocked-uniswap'
-    });
+    try {
+      const okxPrice = await getOkxTicker(instId);
+      const fallbackBias = paymentCount ? 1 + Math.min(paymentCount, 5) * 0.0001 : 1;
+      const uniswapPrice = Number((mockUniswapPrice(okxPrice) * fallbackBias).toFixed(6));
+      const spreadBps = okxPrice ? Number((((uniswapPrice - okxPrice) / okxPrice) * 10000).toFixed(2)) : 0;
+      const { recommendedAction, confidence } = recommendAction(spreadBps);
+
+      signals.push({
+        pair,
+        okxPrice,
+        uniswapPrice,
+        spreadBps,
+        recommendedAction,
+        confidence,
+        timestamp: new Date().toISOString(),
+        source: 'okx+mocked-uniswap'
+      });
+    } catch (error) {
+      signals.push({
+        pair,
+        error: error.message || 'Market signal unavailable',
+        recommendedAction: 'HOLD',
+        confidence: 0.35,
+        timestamp: new Date().toISOString(),
+        source: 'fallback-error'
+      });
+    }
   }
 
   return signals;
@@ -147,32 +164,45 @@ async function executeRouteQuery(params = {}) {
   const tokenOut = params.tokenOut || 'USDC';
   const amountIn = params.amountIn || '1';
   const pair = `${tokenIn}/${tokenOut}`;
-  const okxPrice = await getOkxTicker(normalizeInstId(pair));
-  const uniswapPrice = mockUniswapPrice(okxPrice);
-  const numericAmountIn = Number(amountIn);
-  const okxEstimatedOut = numericAmountIn * okxPrice;
-  const uniswapEstimatedOut = numericAmountIn * uniswapPrice;
-  const spreadBps = okxPrice ? Number((((uniswapPrice - okxPrice) / okxPrice) * 10000).toFixed(2)) : 0;
-  const recommendation = uniswapEstimatedOut > okxEstimatedOut ? 'uniswap' : 'okx';
 
-  return {
-    tokenIn,
-    tokenOut,
-    amountIn,
-    okxRoute: {
-      price: okxPrice,
-      estimatedOut: Number(okxEstimatedOut.toFixed(6))
-    },
-    uniswapRoute: {
-      price: uniswapPrice,
-      estimatedOut: Number(uniswapEstimatedOut.toFixed(6))
-    },
-    recommendation,
-    spreadBps,
-    reason: recommendation === 'uniswap'
-      ? 'Uniswap route projects a better output on current price spread.'
-      : 'OKX route remains more efficient on current price spread.'
-  };
+  try {
+    const okxPrice = await getOkxTicker(normalizeInstId(pair));
+    const uniswapPrice = mockUniswapPrice(okxPrice);
+    const numericAmountIn = Number(amountIn);
+    const okxEstimatedOut = numericAmountIn * okxPrice;
+    const uniswapEstimatedOut = numericAmountIn * uniswapPrice;
+    const spreadBps = okxPrice ? Number((((uniswapPrice - okxPrice) / okxPrice) * 10000).toFixed(2)) : 0;
+    const recommendation = uniswapEstimatedOut > okxEstimatedOut ? 'uniswap' : 'okx';
+
+    return {
+      tokenIn,
+      tokenOut,
+      amountIn,
+      okxRoute: {
+        price: okxPrice,
+        estimatedOut: Number(okxEstimatedOut.toFixed(6))
+      },
+      uniswapRoute: {
+        price: uniswapPrice,
+        estimatedOut: Number(uniswapEstimatedOut.toFixed(6))
+      },
+      recommendation,
+      spreadBps,
+      reason: recommendation === 'uniswap'
+        ? 'Uniswap route projects a better output on current price spread.'
+        : 'OKX route remains more efficient on current price spread.'
+    };
+  } catch (error) {
+    return {
+      tokenIn,
+      tokenOut,
+      amountIn,
+      error: error.message || 'Route query unavailable',
+      recommendation: 'okx',
+      spreadBps: 0,
+      reason: 'Falling back because route pricing is temporarily unavailable.'
+    };
+  }
 }
 
 module.exports = async (req, res) => {
