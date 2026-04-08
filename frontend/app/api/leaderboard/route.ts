@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { ethers } from "ethers";
 
 const RAW_TXHASHES_URL = "https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/txhashes.json";
+const RAW_DEPLOYMENTS_URL = "https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/deployments.json";
 const DECISION_LOG_ABI = [
-  "event DecisionLogged(uint256 indexed index, string squadId, string agentChain, string rationale, uint256 timestamp)",
+  "function getDecisionCount() external view returns (uint256)",
 ];
 
 export async function GET() {
@@ -15,24 +16,30 @@ export async function GET() {
       throw new Error("Missing XLAYER_RPC or DECISION_LOG_ADDRESS");
     }
 
-    const txhashesRes = await fetch(RAW_TXHASHES_URL, { next: { revalidate: 30 } });
-    if (!txhashesRes.ok) throw new Error("Failed to fetch txhashes.json");
+    const [txhashesRes, deploymentsRes] = await Promise.all([
+      fetch(RAW_TXHASHES_URL, { next: { revalidate: 30 } }),
+      fetch(RAW_DEPLOYMENTS_URL, { next: { revalidate: 30 } }),
+    ]);
+
+    if (!txhashesRes.ok || !deploymentsRes.ok) {
+      throw new Error("Failed to fetch leaderboard artifacts");
+    }
+
     const txhashes = await txhashesRes.json();
+    const deployments = await deploymentsRes.json();
+    const entries = Array.isArray(deployments?.decisionLogEntries) ? deployments.decisionLogEntries.slice(-30).reverse() : [];
 
     const provider = new ethers.JsonRpcProvider(rpcUrl);
     const contract = new ethers.Contract(decisionLogAddress, DECISION_LOG_ABI, provider);
-    const latestBlock = await provider.getBlockNumber();
-    const fromBlock = Math.max(0, latestBlock - 50000);
-    const events = await contract.queryFilter(contract.filters.DecisionLogged(), fromBlock, latestBlock);
-    const latestEvents = events.slice(-30).reverse();
+    const liveDecisionCount = Number(await contract.getDecisionCount());
 
     const squads = new Map<string, { squadId: string; decisions: number; latestRationale: string; latestTimestamp: number; confidence: number; txHashes: string[] }>();
 
-    latestEvents.forEach((event: any) => {
-      const squadId = String(event.args?.squadId || "SYNDICATE_ALPHA");
-      const rationale = String(event.args?.rationale || "Active strategy cycle");
-      const timestamp = Number(event.args?.timestamp || 0);
-      const txHash = event.transactionHash || txhashes?.[String(event.args?.index)] || null;
+    entries.forEach((entry: any) => {
+      const squadId = String(entry?.squadId || "SYNDICATE_ALPHA");
+      const rationale = String(entry?.rationale || "Active strategy cycle");
+      const timestamp = Number(entry?.timestamp || 0);
+      const txHash = entry?.txHash || null;
       const existing = squads.get(squadId) || {
         squadId,
         decisions: 0,
@@ -56,11 +63,11 @@ export async function GET() {
       .map((squad, index) => ({
         rank: index + 1,
         squadId: squad.squadId,
-        decisions: squad.decisions,
+        decisions: squad.squadId === "SYNDICATE_ALPHA" ? liveDecisionCount : squad.decisions,
         confidence: squad.confidence,
         lastAction: squad.latestRationale,
         latestTimestamp: squad.latestTimestamp,
-        txHashes: squad.txHashes,
+        txHashes: squad.txHashes.length ? squad.txHashes : Object.values(txhashes || {}).slice(-5),
       }));
 
     return NextResponse.json({ squads: result }, { headers: { "Cache-Control": "s-maxage=30, stale-while-revalidate=30" } });
