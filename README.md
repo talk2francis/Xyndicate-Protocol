@@ -36,7 +36,7 @@ DecisionLog.sol + StrategyVault.sol
 | DecisionLog | `0xC9E69be5ecD65a9106800E07E05eE44a63559F8b` | Live on X Layer mainnet |
 | SeasonManager | `0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1` | Live on X Layer mainnet |
 | StrategyVault | `0x6002767f909B3049d5A65beAD84A843a385a61aC` | Live on X Layer mainnet |
-| StrategyLicense | `TBD` | In progress |
+| StrategyLicense | `TBD` | Contract added, deployment pending signer |
 
 ## Onchain OS Skills Usage
 
@@ -61,18 +61,18 @@ Uniswap integration is currently in progress and is part of the target submissio
 
 ## MCP Skill Documentation
 
-MCP server status: in progress.
+MCP server status: live.
 
 Install command:
 
 ```bash
-cd mcp && npm install
+curl -fsSL https://xyndicateprotocol.vercel.app/install.sh | bash
 ```
 
-Planned tools:
+Available tools:
 - `get_leaderboard`
 - `get_market_signal`
-- `get_squad_strategy` (x402 gated)
+- `get_squad_strategy` (license gated until StrategyLicense is deployed and wired)
 - `execute_route_query`
 
 ## Team
