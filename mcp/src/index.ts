@@ -2,13 +2,14 @@ import { ethers } from 'ethers';
 import fetch from 'node-fetch';
 
 const RAW_BASE = 'https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend';
-const XLAYER_RPC = process.env.XLAYER_RPC || process.env.XLAYER_RPC || 'https://rpc.xlayer.tech';
+const XLAYER_RPC = process.env.XLAYER_RPC || 'https://rpc.xlayer.tech';
 const STRATEGY_LICENSE_ADDRESS = process.env.STRATEGY_LICENSE_ADDRESS || '';
 const OKX_API_KEY = process.env.OKX_API_KEY || '';
 const LICENSE_ABI = ['function isLicensed(address caller, bytes32 squadId) view returns (bool)'];
+const AVAILABLE_TOOLS = ['get_leaderboard', 'get_market_signal', 'get_squad_strategy', 'execute_route_query'];
 
 type McpToolRequest = {
-  tool: string;
+  tool?: string;
   params?: Record<string, any>;
 };
 
@@ -34,6 +35,10 @@ function recommendAction(spreadBps: number) {
   return { recommendedAction: 'HOLD', confidence: 0.64 };
 }
 
+function normalizeInstId(pair: string) {
+  return pair.replace('/', '-');
+}
+
 async function getOkxTicker(instId: string) {
   const headers: Record<string, string> = {};
   if (OKX_API_KEY) headers['OK-ACCESS-KEY'] = OKX_API_KEY;
@@ -44,12 +49,18 @@ async function getOkxTicker(instId: string) {
   return Number(ticker?.last || 0);
 }
 
-async function getLeaderboard() {
-  const [deployments, txhashes] = await Promise.all([
-    fetchJson(`${RAW_BASE}/deployments.json`),
-    fetchJson(`${RAW_BASE}/txhashes.json`)
+async function readFrontendArtifacts() {
+  const [deployments, txhashes, agentPayments] = await Promise.all([
+    fetchJson(`${RAW_BASE}/deployments.json`).catch(() => ({})),
+    fetchJson(`${RAW_BASE}/txhashes.json`).catch(() => ({})),
+    fetchJson(`${RAW_BASE}/agentpayments.json`).catch(() => ([]))
   ]);
 
+  return { deployments, txhashes, agentPayments };
+}
+
+async function getLeaderboard() {
+  const { deployments, txhashes } = await readFrontendArtifacts();
   const decisionEntries = Array.isArray(deployments?.decisionLogEntries) ? deployments.decisionLogEntries : [];
   const totalDecisions = Object.keys(txhashes || {}).length;
   const latest = decisionEntries[decisionEntries.length - 1] || {};
@@ -67,12 +78,12 @@ async function getLeaderboard() {
 
 async function getMarketSignal(params: Record<string, any> = {}) {
   const pairs = Array.isArray(params.pairs) && params.pairs.length ? params.pairs : ['ETH/USDC', 'OKB/USDC'];
-  const agentPayments = await fetchJson(`${RAW_BASE}/agentpayments.json`).catch(() => []);
+  const { agentPayments } = await readFrontendArtifacts();
   const paymentCount = Array.isArray(agentPayments) ? agentPayments.length : 0;
 
   const signals = [];
   for (const pair of pairs) {
-    const instId = pair.replace('/', '-');
+    const instId = normalizeInstId(pair);
     const okxPrice = await getOkxTicker(instId);
     const fallbackBias = paymentCount ? 1 + Math.min(paymentCount, 5) * 0.0001 : 1;
     const uniswapPrice = Number((mockUniswapPrice(okxPrice) * fallbackBias).toFixed(6));
@@ -86,7 +97,8 @@ async function getMarketSignal(params: Record<string, any> = {}) {
       spreadBps,
       recommendedAction,
       confidence,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      source: 'okx+mocked-uniswap'
     });
   }
 
@@ -102,7 +114,8 @@ async function getSquadStrategy(params: Record<string, any> = {}) {
       error: '402',
       message: 'License required',
       contractAddress: STRATEGY_LICENSE_ADDRESS || 'TBD',
-      priceUsdc: '0.50'
+      priceUsdc: '0.50',
+      access: 'denied'
     };
   }
 
@@ -115,11 +128,12 @@ async function getSquadStrategy(params: Record<string, any> = {}) {
       error: '402',
       message: 'License required',
       contractAddress: STRATEGY_LICENSE_ADDRESS,
-      priceUsdc: '0.50'
+      priceUsdc: '0.50',
+      access: 'denied'
     };
   }
 
-  const deployments = await fetchJson(`${RAW_BASE}/deployments.json`).catch(() => ({}));
+  const { deployments } = await readFrontendArtifacts();
   const historicalDecisions = (deployments?.decisionLogEntries || []).slice(-10);
 
   return {
@@ -129,7 +143,8 @@ async function getSquadStrategy(params: Record<string, any> = {}) {
     allocationPercent: 25,
     entryThreshold: '10bps',
     exitThreshold: '6bps',
-    historicalDecisions
+    historicalDecisions,
+    access: 'granted'
   };
 }
 
@@ -138,10 +153,11 @@ async function executeRouteQuery(params: Record<string, any> = {}) {
   const tokenOut = params.tokenOut || 'USDC';
   const amountIn = params.amountIn || '1';
   const pair = `${tokenIn}/${tokenOut}`;
-  const okxPrice = await getOkxTicker(pair.replace('/', '-'));
+  const okxPrice = await getOkxTicker(normalizeInstId(pair));
   const uniswapPrice = mockUniswapPrice(okxPrice);
-  const okxEstimatedOut = Number(amountIn) * okxPrice;
-  const uniswapEstimatedOut = Number(amountIn) * uniswapPrice;
+  const numericAmountIn = Number(amountIn);
+  const okxEstimatedOut = numericAmountIn * okxPrice;
+  const uniswapEstimatedOut = numericAmountIn * uniswapPrice;
   const spreadBps = okxPrice ? Number((((uniswapPrice - okxPrice) / okxPrice) * 10000).toFixed(2)) : 0;
   const recommendation = uniswapEstimatedOut > okxEstimatedOut ? 'uniswap' : 'okx';
 
@@ -169,6 +185,14 @@ export async function handleMcpRequest(body: McpToolRequest) {
   const tool = body?.tool;
   const params = body?.params || {};
 
+  if (!tool) {
+    return {
+      error: 'missing_tool',
+      message: 'A tool name is required.',
+      availableTools: AVAILABLE_TOOLS
+    };
+  }
+
   if (tool === 'get_leaderboard') return { tool, result: await getLeaderboard() };
   if (tool === 'get_market_signal') return { tool, result: await getMarketSignal(params) };
   if (tool === 'get_squad_strategy') return { tool, result: await getSquadStrategy(params) };
@@ -177,6 +201,6 @@ export async function handleMcpRequest(body: McpToolRequest) {
   return {
     error: 'unknown_tool',
     message: `Unsupported tool: ${tool}`,
-    availableTools: ['get_leaderboard', 'get_market_signal', 'get_squad_strategy', 'execute_route_query']
+    availableTools: AVAILABLE_TOOLS
   };
 }

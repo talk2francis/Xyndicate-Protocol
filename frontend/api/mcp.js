@@ -5,6 +5,7 @@ const XLAYER_RPC = process.env.XLAYER_RPC || 'https://rpc.xlayer.tech';
 const STRATEGY_LICENSE_ADDRESS = process.env.STRATEGY_LICENSE_ADDRESS || '';
 const OKX_API_KEY = process.env.OKX_API_KEY || '';
 const LICENSE_ABI = ['function isLicensed(address caller, bytes32 squadId) view returns (bool)'];
+const AVAILABLE_TOOLS = ['get_leaderboard', 'get_market_signal', 'get_squad_strategy', 'execute_route_query'];
 
 async function fetchJson(url) {
   const res = await fetch(url);
@@ -28,6 +29,10 @@ function recommendAction(spreadBps) {
   return { recommendedAction: 'HOLD', confidence: 0.64 };
 }
 
+function normalizeInstId(pair) {
+  return pair.replace('/', '-');
+}
+
 async function getOkxTicker(instId) {
   const headers = {};
   if (OKX_API_KEY) headers['OK-ACCESS-KEY'] = OKX_API_KEY;
@@ -38,12 +43,18 @@ async function getOkxTicker(instId) {
   return Number(ticker?.last || 0);
 }
 
-async function getLeaderboard() {
-  const [deployments, txhashes] = await Promise.all([
-    fetchJson(`${RAW_BASE}/deployments.json`),
-    fetchJson(`${RAW_BASE}/txhashes.json`)
+async function readFrontendArtifacts() {
+  const [deployments, txhashes, agentPayments] = await Promise.all([
+    fetchJson(`${RAW_BASE}/deployments.json`).catch(() => ({})),
+    fetchJson(`${RAW_BASE}/txhashes.json`).catch(() => ({})),
+    fetchJson(`${RAW_BASE}/agentpayments.json`).catch(() => ([]))
   ]);
 
+  return { deployments, txhashes, agentPayments };
+}
+
+async function getLeaderboard() {
+  const { deployments, txhashes } = await readFrontendArtifacts();
   const decisionEntries = Array.isArray(deployments?.decisionLogEntries) ? deployments.decisionLogEntries : [];
   const totalDecisions = Object.keys(txhashes || {}).length;
   const latest = decisionEntries[decisionEntries.length - 1] || {};
@@ -61,12 +72,12 @@ async function getLeaderboard() {
 
 async function getMarketSignal(params = {}) {
   const pairs = Array.isArray(params.pairs) && params.pairs.length ? params.pairs : ['ETH/USDC', 'OKB/USDC'];
-  const agentPayments = await fetchJson(`${RAW_BASE}/agentpayments.json`).catch(() => []);
+  const { agentPayments } = await readFrontendArtifacts();
   const paymentCount = Array.isArray(agentPayments) ? agentPayments.length : 0;
 
   const signals = [];
   for (const pair of pairs) {
-    const instId = pair.replace('/', '-');
+    const instId = normalizeInstId(pair);
     const okxPrice = await getOkxTicker(instId);
     const fallbackBias = paymentCount ? 1 + Math.min(paymentCount, 5) * 0.0001 : 1;
     const uniswapPrice = Number((mockUniswapPrice(okxPrice) * fallbackBias).toFixed(6));
@@ -80,7 +91,8 @@ async function getMarketSignal(params = {}) {
       spreadBps,
       recommendedAction,
       confidence,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      source: 'okx+mocked-uniswap'
     });
   }
 
@@ -96,7 +108,8 @@ async function getSquadStrategy(params = {}) {
       error: '402',
       message: 'License required',
       contractAddress: STRATEGY_LICENSE_ADDRESS || 'TBD',
-      priceUsdc: '0.50'
+      priceUsdc: '0.50',
+      access: 'denied'
     };
   }
 
@@ -109,11 +122,12 @@ async function getSquadStrategy(params = {}) {
       error: '402',
       message: 'License required',
       contractAddress: STRATEGY_LICENSE_ADDRESS,
-      priceUsdc: '0.50'
+      priceUsdc: '0.50',
+      access: 'denied'
     };
   }
 
-  const deployments = await fetchJson(`${RAW_BASE}/deployments.json`).catch(() => ({}));
+  const { deployments } = await readFrontendArtifacts();
   const historicalDecisions = (deployments?.decisionLogEntries || []).slice(-10);
 
   return {
@@ -123,7 +137,8 @@ async function getSquadStrategy(params = {}) {
     allocationPercent: 25,
     entryThreshold: '10bps',
     exitThreshold: '6bps',
-    historicalDecisions
+    historicalDecisions,
+    access: 'granted'
   };
 }
 
@@ -132,10 +147,11 @@ async function executeRouteQuery(params = {}) {
   const tokenOut = params.tokenOut || 'USDC';
   const amountIn = params.amountIn || '1';
   const pair = `${tokenIn}/${tokenOut}`;
-  const okxPrice = await getOkxTicker(pair.replace('/', '-'));
+  const okxPrice = await getOkxTicker(normalizeInstId(pair));
   const uniswapPrice = mockUniswapPrice(okxPrice);
-  const okxEstimatedOut = Number(amountIn) * okxPrice;
-  const uniswapEstimatedOut = Number(amountIn) * uniswapPrice;
+  const numericAmountIn = Number(amountIn);
+  const okxEstimatedOut = numericAmountIn * okxPrice;
+  const uniswapEstimatedOut = numericAmountIn * uniswapPrice;
   const spreadBps = okxPrice ? Number((((uniswapPrice - okxPrice) / okxPrice) * 10000).toFixed(2)) : 0;
   const recommendation = uniswapEstimatedOut > okxEstimatedOut ? 'uniswap' : 'okx';
 
@@ -169,6 +185,17 @@ module.exports = async (req, res) => {
     return;
   }
 
+  if (req.method === 'GET') {
+    res.status(200).json({
+      name: 'xyndicate-strategy-skill',
+      status: 'ok',
+      endpoint: '/api/mcp',
+      method: 'POST',
+      availableTools: AVAILABLE_TOOLS
+    });
+    return;
+  }
+
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
@@ -178,6 +205,15 @@ module.exports = async (req, res) => {
     const tool = req.body?.tool;
     const params = req.body?.params || {};
 
+    if (!tool) {
+      res.status(400).json({
+        error: 'missing_tool',
+        message: 'A tool name is required.',
+        availableTools: AVAILABLE_TOOLS
+      });
+      return;
+    }
+
     if (tool === 'get_leaderboard') return res.status(200).json({ tool, result: await getLeaderboard() });
     if (tool === 'get_market_signal') return res.status(200).json({ tool, result: await getMarketSignal(params) });
     if (tool === 'get_squad_strategy') return res.status(200).json({ tool, result: await getSquadStrategy(params) });
@@ -186,7 +222,7 @@ module.exports = async (req, res) => {
     res.status(400).json({
       error: 'unknown_tool',
       message: `Unsupported tool: ${tool}`,
-      availableTools: ['get_leaderboard', 'get_market_signal', 'get_squad_strategy', 'execute_route_query']
+      availableTools: AVAILABLE_TOOLS
     });
   } catch (error) {
     res.status(500).json({ error: error.message || 'MCP request failed' });
