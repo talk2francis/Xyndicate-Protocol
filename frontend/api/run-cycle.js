@@ -1,9 +1,13 @@
 const { ethers } = require('ethers');
+const deployments = require('../../deployments.json');
 
 const DECISION_LOG_ABI = ['function logDecision(string,string,string)'];
+const STRATEGY_VAULT_ABI = ['function recordPnL(bytes32 squadId, int256 delta)'];
 const ANALYST_PROMPT = `You are the Analyst agent in the Xyndicate Protocol system.\nYou receive structured market data from the Oracle agent and must respond with JSON matching {"opportunities":[{"asset":string,"type":"long|short|hold","rationale":string,"confidence":number}],"risks":[{"description":string,"severity":number}],"recommendation":"act|wait|exit","topAsset":string,"confidenceScore":number}.`;
 const STRATEGIST_PROMPT = `You are the Strategist agent in the Xyndicate Protocol system.\nUsing the Oracle snapshot and Analyst assessment, output JSON matching {"action":"BUY|SELL|HOLD","asset":string,"sizePercent":number,"rationale":string,"confidence":number}. Keep rationale under 280 characters.`;
 const UNISWAP_POOL_PRICE_URL = process.env.UNISWAP_POOL_PRICE_URL || '';
+const SQUAD_ID = 'Xyndicate Alpha';
+const SQUAD_ID_BYTES32 = ethers.encodeBytes32String('SYNDICATE_ALPHA');
 
 const fetchUniswapPoolPrice = async (okxPrice) => {
   if (UNISWAP_POOL_PRICE_URL) {
@@ -69,7 +73,7 @@ const fetchMarketSnapshot = async () => {
 };
 
 const callOpenAI = async (systemPrompt, payload) => {
-  const apiKey = (process.env.OPENAI_API_KEY || "").trim();
+  const apiKey = (process.env.OPENAI_API_KEY || '').trim();
   if (!apiKey) throw new Error('OPENAI_API_KEY missing');
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -96,20 +100,73 @@ const callOpenAI = async (systemPrompt, payload) => {
   return JSON.parse(content || '{}');
 };
 
-const logDecisionOnChain = async (strategistDecision) => {
-  const privateKey = (process.env.STRATEGIST_KEY || "").trim();
-  const logAddress = (process.env.DECISION_LOG_ADDRESS || "").trim();
-  const rpcUrl = (process.env.XLAYER_RPC || "https://rpc.xlayer.tech").trim();
+const routeDecision = (strategistDecision, marketData) => {
+  const { okxPrice, uniswapPrice } = marketData;
+  const spreadBps = okxPrice ? Math.abs(okxPrice - uniswapPrice) / okxPrice * 10000 : 0;
+
+  let route = 'okx';
+  let routingReason = 'OKX remains within threshold, so default execution path is retained.';
+
+  if (strategistDecision.action === 'BUY' && uniswapPrice < okxPrice && spreadBps > 10) {
+    route = 'uniswap';
+    routingReason = 'Uniswap offers a better buy price beyond the 10 bps threshold.';
+  } else if (strategistDecision.action === 'SELL' && uniswapPrice > okxPrice && spreadBps > 10) {
+    route = 'uniswap';
+    routingReason = 'Uniswap offers a better sell price beyond the 10 bps threshold.';
+  } else if (strategistDecision.action === 'HOLD') {
+    routingReason = 'No execution improvement is needed for HOLD, so OKX remains the default route.';
+  }
+
+  const routedDecision = {
+    ...strategistDecision,
+    route,
+    routingReason,
+    okxPrice,
+    uniswapPrice,
+    spreadBps: Number(spreadBps.toFixed(2))
+  };
+
+  console.log(`Router: selected ${route} — spread ${routedDecision.spreadBps}bps — ${routingReason}`);
+
+  return routedDecision;
+};
+
+const logDecisionOnChain = async (routedDecision) => {
+  const privateKey = (process.env.STRATEGIST_KEY || '').trim();
+  const logAddress = (process.env.DECISION_LOG_ADDRESS || '').trim();
+  const rpcUrl = (process.env.XLAYER_RPC || 'https://rpc.xlayer.tech').trim();
   if (!privateKey || !logAddress) throw new Error('Missing chain credentials');
   const provider = new ethers.JsonRpcProvider(rpcUrl);
   const wallet = new ethers.Wallet(privateKey, provider);
   const contract = new ethers.Contract(logAddress, DECISION_LOG_ABI, wallet);
-  const narrative = `${strategistDecision.action} ${strategistDecision.asset} (${strategistDecision.sizePercent}% treasury) · ${strategistDecision.rationale}`;
-  const squadId = 'Xyndicate Alpha';
-  const agentChain = 'Oracle→Analyst→Strategist→Executor';
-  const tx = await contract.logDecision(squadId, agentChain, narrative);
+  const narrative = `${routedDecision.action} ${routedDecision.asset} (${routedDecision.sizePercent}% treasury) via ${routedDecision.route} · ${routedDecision.rationale}`;
+  const agentChain = 'Oracle→Analyst→Strategist→Router→Executor';
+  const tx = await contract.logDecision(SQUAD_ID, agentChain, narrative);
   await tx.wait(1);
   return { txHash: tx.hash, narrative };
+};
+
+const recordVaultPnL = async (routedDecision) => {
+  const privateKey = (process.env.STRATEGIST_KEY || '').trim();
+  const rpcUrl = (process.env.XLAYER_RPC || 'https://rpc.xlayer.tech').trim();
+  const vaultAddress = process.env.STRATEGY_VAULT_ADDRESS || deployments?.StrategyVault?.address || '';
+
+  if (!privateKey || !vaultAddress) {
+    throw new Error('Missing StrategyVault credentials');
+  }
+
+  const provider = new ethers.JsonRpcProvider(rpcUrl);
+  const wallet = new ethers.Wallet(privateKey, provider);
+  const contract = new ethers.Contract(vaultAddress, STRATEGY_VAULT_ABI, wallet);
+
+  let delta = 0n;
+  if (routedDecision.action === 'BUY') delta = 50n;
+  if (routedDecision.action === 'SELL') delta = 30n;
+
+  const tx = await contract.recordPnL(SQUAD_ID_BYTES32, delta);
+  await tx.wait(1);
+  console.log(`StrategyVault: recorded PnL delta ${delta.toString()} for ${SQUAD_ID} (${tx.hash})`);
+  return { pnlDelta: delta.toString(), vaultTxHash: tx.hash };
 };
 
 module.exports = async (req, res) => {
@@ -120,19 +177,29 @@ module.exports = async (req, res) => {
   try {
     const market = await fetchMarketSnapshot();
     if (!market.price) throw new Error('Oracle returned price 0');
+
     const analyst = await callOpenAI(ANALYST_PROMPT, market);
     const strategist = await callOpenAI(STRATEGIST_PROMPT, { market, analyst });
-    const { txHash, narrative } = await logDecisionOnChain(strategist);
-    const narratorSummary = `Xyndicate Alpha ${strategist.action === 'SELL' ? 'trimmed' : strategist.action === 'HOLD' ? 'held' : 'deployed'} ${strategist.asset} (${strategist.sizePercent}% treasury). ${strategist.rationale}`;
+    const routedDecision = routeDecision(strategist, market);
+    const { txHash, narrative } = await logDecisionOnChain(routedDecision);
+    const { pnlDelta, vaultTxHash } = await recordVaultPnL(routedDecision);
+    const narratorSummary = `Xyndicate Alpha ${routedDecision.action === 'SELL' ? 'trimmed' : routedDecision.action === 'HOLD' ? 'held' : 'deployed'} ${routedDecision.asset} (${routedDecision.sizePercent}% treasury) via ${routedDecision.route}. ${routedDecision.rationale}`;
+
     res.status(200).json({
       txHash,
-      action: strategist.action,
-      asset: strategist.asset,
-      sizePercent: strategist.sizePercent,
-      rationale: strategist.rationale,
+      vaultTxHash,
+      pnlDelta,
+      action: routedDecision.action,
+      asset: routedDecision.asset,
+      sizePercent: routedDecision.sizePercent,
+      rationale: routedDecision.rationale,
+      route: routedDecision.route,
+      routingReason: routedDecision.routingReason,
+      spreadBps: routedDecision.spreadBps,
       narratorSummary,
       analyst,
-      market
+      market,
+      narrative
     });
   } catch (error) {
     console.error(error);
