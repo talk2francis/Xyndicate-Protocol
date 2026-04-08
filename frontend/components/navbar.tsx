@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useWallet } from "@/lib/wallet-context";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -30,6 +31,13 @@ function Logo() {
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const { address, connect, disconnect, isCorrectChain } = useWallet();
+
+  const buttonLabel = useMemo(() => {
+    if (!address) return "Connect Wallet";
+    const compact = `${address.slice(0, 6)}...${address.slice(-4)}`;
+    return isCorrectChain ? compact : `${compact} · Wrong Chain`;
+  }, [address, isCorrectChain]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -65,8 +73,12 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <button className="rounded-full bg-xyn-gold px-4 py-2 text-sm font-semibold text-xyn-dark transition hover:opacity-90">
-            Connect Wallet
+          <button
+            type="button"
+            onClick={address ? disconnect : connect}
+            className="rounded-full bg-xyn-gold px-4 py-2 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
+          >
+            {buttonLabel}
           </button>
         </div>
       </div>

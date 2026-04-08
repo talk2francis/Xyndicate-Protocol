@@ -1,0 +1,64 @@
+"use client";
+
+import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
+
+const XLAYER_CHAIN_ID = 196;
+
+export type WalletContextValue = {
+  address: string | null;
+  chainId: number | null;
+  isCorrectChain: boolean;
+  isModalOpen: boolean;
+  connect: () => void;
+  disconnect: () => void;
+  openModal: () => void;
+  closeModal: () => void;
+  setWalletState: (next: { address: string | null; chainId: number | null }) => void;
+};
+
+const WalletContext = createContext<WalletContextValue | undefined>(undefined);
+
+export function WalletProvider({ children }: { children: ReactNode }) {
+  const [address, setAddress] = useState<string | null>(null);
+  const [chainId, setChainId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = useCallback(() => setIsModalOpen(true), []);
+  const closeModal = useCallback(() => setIsModalOpen(false), []);
+  const connect = useCallback(() => setIsModalOpen(true), []);
+  const disconnect = useCallback(() => {
+    setAddress(null);
+    setChainId(null);
+    setIsModalOpen(false);
+  }, []);
+
+  const setWalletState = useCallback((next: { address: string | null; chainId: number | null }) => {
+    setAddress(next.address);
+    setChainId(next.chainId);
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      address,
+      chainId,
+      isCorrectChain: chainId === XLAYER_CHAIN_ID,
+      isModalOpen,
+      connect,
+      disconnect,
+      openModal,
+      closeModal,
+      setWalletState,
+    }),
+    [address, chainId, connect, disconnect, isModalOpen, openModal, closeModal, setWalletState],
+  );
+
+  return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;
+}
+
+export function useWallet() {
+  const context = useContext(WalletContext);
+  if (!context) {
+    throw new Error("useWallet must be used within WalletProvider");
+  }
+  return context;
+}
