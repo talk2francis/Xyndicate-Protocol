@@ -10,6 +10,33 @@ const DECISION_LOG_ABI = [
 const MAX_BLOCK_RANGE = 100;
 const TARGET_EVENT_COUNT = 30;
 const MAX_WINDOWS = 3000;
+const WINDOW_DELAY_MS = 120;
+const RETRY_DELAY_MS = 700;
+const MAX_RETRIES_PER_WINDOW = 4;
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function queryWindowWithRetry(contract: ethers.Contract, fromBlock: number, toBlock: number) {
+  let attempt = 0;
+
+  while (attempt <= MAX_RETRIES_PER_WINDOW) {
+    try {
+      return await contract.queryFilter(contract.filters.DecisionLogged(), fromBlock, toBlock);
+    } catch (error: any) {
+      const message = String(error?.shortMessage || error?.message || "").toLowerCase();
+      const isRateLimit = message.includes("rate limit") || message.includes("over rate limit");
+      if (!isRateLimit || attempt === MAX_RETRIES_PER_WINDOW) {
+        throw error;
+      }
+      await sleep(RETRY_DELAY_MS * (attempt + 1));
+      attempt += 1;
+    }
+  }
+
+  return [];
+}
 
 async function fetchRecentDecisionEvents(provider: ethers.JsonRpcProvider, contract: ethers.Contract) {
   const latestBlock = await provider.getBlockNumber();
@@ -19,7 +46,7 @@ async function fetchRecentDecisionEvents(provider: ethers.JsonRpcProvider, contr
 
   while (toBlock >= 0 && collected.length < TARGET_EVENT_COUNT && windowsScanned < MAX_WINDOWS) {
     const fromBlock = Math.max(0, toBlock - MAX_BLOCK_RANGE + 1);
-    const events = await contract.queryFilter(contract.filters.DecisionLogged(), fromBlock, toBlock);
+    const events = await queryWindowWithRetry(contract, fromBlock, toBlock);
 
     if (events.length) {
       collected.unshift(...events);
@@ -31,6 +58,7 @@ async function fetchRecentDecisionEvents(provider: ethers.JsonRpcProvider, contr
     if (fromBlock === 0) break;
     toBlock = fromBlock - 1;
     windowsScanned += 1;
+    await sleep(WINDOW_DELAY_MS);
   }
 
   return collected.reverse();
@@ -102,6 +130,8 @@ export async function GET() {
         pagination: {
           maxBlockRange: MAX_BLOCK_RANGE,
           eventsCollected: recentEvents.length,
+          delayMs: WINDOW_DELAY_MS,
+          retryDelayMs: RETRY_DELAY_MS,
         },
       },
       { headers: { "Cache-Control": "s-maxage=30, stale-while-revalidate=30" } },
