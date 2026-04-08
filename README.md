@@ -35,7 +35,7 @@ DecisionLog.sol + StrategyVault.sol
 | --- | --- | --- |
 | DecisionLog | `0xC9E69be5ecD65a9106800E07E05eE44a63559F8b` | Live on X Layer mainnet |
 | SeasonManager | `0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1` | Live on X Layer mainnet |
-| StrategyVault | `TBD` | In progress |
+| StrategyVault | `0x6002767f909B3049d5A65beAD84A843a385a61aC` | Live on X Layer mainnet |
 | StrategyLicense | `TBD` | In progress |
 
 ## Onchain OS Skills Usage
