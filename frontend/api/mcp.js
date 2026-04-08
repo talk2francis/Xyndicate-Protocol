@@ -2,7 +2,7 @@ const { ethers } = require('ethers');
 
 const RAW_BASE = 'https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend';
 const XLAYER_RPC = process.env.XLAYER_RPC || 'https://rpc.xlayer.tech';
-const STRATEGY_LICENSE_ADDRESS = process.env.STRATEGY_LICENSE_ADDRESS || '';
+const STRATEGY_LICENSE_ADDRESS = process.env.STRATEGY_LICENSE_ADDRESS || '0x8AbaCE8Ea22A591CE3109599449776A2cb96B186';
 const OKX_API_KEY = process.env.OKX_API_KEY || '';
 const LICENSE_ABI = ['function isLicensed(address caller, bytes32 squadId) view returns (bool)'];
 const AVAILABLE_TOOLS = ['get_leaderboard', 'get_market_signal', 'get_squad_strategy', 'execute_route_query'];
