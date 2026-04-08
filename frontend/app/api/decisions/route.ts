@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { ethers } from "ethers";
 
+export const dynamic = "force-dynamic";
+
 const ABI = [
   "function getDecisionCount() external view returns (uint256)",
   "function getDecision(uint256 index) external view returns (string, string, string, uint256)",
