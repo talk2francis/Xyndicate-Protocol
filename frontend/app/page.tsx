@@ -18,6 +18,7 @@ const SAMPLE_SIGNAL_RESPONSE = `{
   "recommendation": "BUY"
 }`;
 const FOOTER_OKLINK = "https://www.oklink.com/xlayer/address/0xC9E69be5ecD65a9106800E07E05eE44a63559F8b";
+const HOME_BUILD_MARKER = "2026-04-09-vercel-refresh";
 const GITHUB_URL = "https://github.com/talk2francis/Xyndicate-Protocol";
 const TWITTER_URL = "https://x.com/xyndicatepro";
 
