@@ -72,7 +72,9 @@
     "0xb0f91a2757a64b3783d48ba1528f31ddf40cea175cd38ea2d17284bdc268e6ba",
     "0xc7d1a35ba2e57addc716a8643a72a6b82fc3a1a312ab437e0af6864feef28169",
     "0x5f3f47096d0fadf067f523fcff90af1dfdbcd4b7b99228fa1208aeaa20a969ce",
-    "0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3"
+    "0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3",
+    "0x646c6cf8be29abf65ee41f5a81e1293145ce9b71e1cd4b3904936d4c4ab7c7d5",
+    "0x514cfd032f71a86a193fb6bd5d42c363332f876ee3fdce0ea9ace533f461f2ce"
   ],
   "decisionLogEntries": [
     {
@@ -263,6 +265,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Executor",
       "rationale": "HOLD ETH (0% treasury) · The price of ETH has decreased by approximately 3.73% over the last 24 hours, indicating potential bearish sentiment. Holding allows for reassessment of market conditions before making any further trading decisions.",
       "timestamp": 1774656804
+    },
+    {
+      "txHash": "0x646c6cf8be29abf65ee41f5a81e1293145ce9b71e1cd4b3904936d4c4ab7c7d5",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Price change in the last 24 hours is stable. High price spread between exchanges poses risk. Wait for more favorable conditions.",
+      "timestamp": 1775778027
+    },
+    {
+      "txHash": "0x514cfd032f71a86a193fb6bd5d42c363332f876ee3fdce0ea9ace533f461f2ce",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (0% treasury) · Price change in the last 24 hours is positive. Analyst recommendation is to wait with a confidence score of 0.8.",
+      "timestamp": 1775778027
     }
   ]
 }
