@@ -100,6 +100,7 @@ export default function MarketPage() {
   const [priceWei, setPriceWei] = useState<string>((deployments as any)?.StrategyLicense?.priceWei || "200000000000000");
   const [unlockJson, setUnlockJson] = useState<string | null>(null);
   const [sheetError, setSheetError] = useState<string | null>(null);
+  const [actionToast, setActionToast] = useState<string | null>(null);
   const [buying, setBuying] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [myLicenses, setMyLicenses] = useState<Strategy[]>([]);
@@ -239,6 +240,12 @@ export default function MarketPage() {
     loadEligibleListings();
   }, [address, seasonManagerAddress, strategies]);
 
+  useEffect(() => {
+    if (!actionToast) return;
+    const timeout = window.setTimeout(() => setActionToast(null), 1500);
+    return () => window.clearTimeout(timeout);
+  }, [actionToast]);
+
   const filtered = useMemo(() => {
     let result = strategies.filter((strategy) => strategy.name.toLowerCase().includes(search.toLowerCase()));
 
@@ -316,6 +323,7 @@ export default function MarketPage() {
     link.click();
     link.remove();
     URL.revokeObjectURL(url);
+    setActionToast("Downloaded");
   };
 
   const copyJson = async () => {
@@ -323,6 +331,7 @@ export default function MarketPage() {
     try {
       await navigator.clipboard.writeText(unlockJson);
       setSheetError(null);
+      setActionToast("Copied");
     } catch {
       try {
         const textarea = document.createElement("textarea");
@@ -335,6 +344,7 @@ export default function MarketPage() {
         document.execCommand("copy");
         textarea.remove();
         setSheetError(null);
+        setActionToast("Copied");
       } catch {
         setSheetError("Copy failed. Please select and copy the JSON manually.");
       }
@@ -619,13 +629,46 @@ export default function MarketPage() {
                   <div className="mb-3 text-sm font-semibold">Unlocked config</div>
                   <pre className="overflow-x-auto rounded-2xl bg-black/90 p-5 text-sm text-green-400">{unlockJson}</pre>
                   <div className="mt-4 flex gap-3">
-                    <button type="button" onClick={copyJson} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">
+                    <button type="button" onClick={copyJson} className={`rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition ${actionToast === "Copied" ? "scale-95 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300" : "dark:border-white/10"}`}>
                       Copy JSON
                     </button>
-                    <button type="button" onClick={downloadJson} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">
+                    <button type="button" onClick={downloadJson} className={`rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition ${actionToast === "Downloaded" ? "scale-95 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300" : "dark:border-white/10"}`}>
                       Download .json
                     </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUnlockJson(null);
+                        setSheetError(null);
+                      }}
+                      className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelected(null);
+                        setUnlockJson(null);
+                        setSheetError(null);
+                      }}
+                      className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10"
+                    >
+                      Done
+                    </button>
                   </div>
+                  <AnimatePresence>
+                    {actionToast ? (
+                      <motion.div
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 6 }}
+                        className="mt-4 inline-flex rounded-full bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-600 dark:text-emerald-300"
+                      >
+                        {actionToast}
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
                 </div>
               ) : null}
             </motion.div>
