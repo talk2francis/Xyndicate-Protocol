@@ -24,6 +24,7 @@ function readJson(filePath, fallback) {
 
 function normalizeTimestamp(value) {
   if (typeof value === 'number') return value;
+  if (typeof value === 'bigint') return Number(value);
   if (typeof value === 'string') {
     const asNumber = Number(value);
     if (!Number.isNaN(asNumber) && asNumber > 0) return asNumber;
@@ -31,6 +32,54 @@ function normalizeTimestamp(value) {
     if (!Number.isNaN(asDate)) return Math.floor(asDate / 1000);
   }
   return 0;
+}
+
+function formatOkbFromWei(value) {
+  try {
+    if (value == null) return null;
+    const formatted = Number(ethers.formatEther(value));
+    if (!formatted) return null;
+    return `${formatted} OKB`;
+  } catch {
+    return null;
+  }
+}
+
+async function enrichWithChainData(provider, items) {
+  const blockCache = new Map();
+  const enriched = [];
+
+  for (const item of items) {
+    if (!item.txHash || String(item.txHash).startsWith('decision-')) {
+      enriched.push(item);
+      continue;
+    }
+
+    try {
+      const tx = await provider.getTransaction(item.txHash);
+      const receipt = await provider.getTransactionReceipt(item.txHash);
+      const blockNumber = receipt?.blockNumber ?? tx?.blockNumber ?? null;
+      let block = null;
+
+      if (blockNumber != null) {
+        if (!blockCache.has(blockNumber)) {
+          blockCache.set(blockNumber, await provider.getBlock(blockNumber));
+        }
+        block = blockCache.get(blockNumber);
+      }
+
+      enriched.push({
+        ...item,
+        timestamp: item.timestamp || normalizeTimestamp(block?.timestamp),
+        blockNumber,
+        amount: item.amount || formatOkbFromWei(tx?.value) || null,
+      });
+    } catch {
+      enriched.push(item);
+    }
+  }
+
+  return enriched;
 }
 
 async function buildProofsArtifact() {
@@ -123,9 +172,14 @@ async function buildProofsArtifact() {
     explorerUrl: `${OKLINK_BASE}/${deployments.proofTx.deposit}`,
   }] : [];
 
-  const proofs = [...decisionItems, ...deployItems, ...paymentItems, ...swapItems, ...vaultItems]
+  const enrichedItems = await enrichWithChainData(provider, [...decisionItems, ...deployItems, ...paymentItems, ...swapItems, ...vaultItems]);
+
+  const proofs = enrichedItems
     .filter((item) => item.txHash)
-    .sort((a, b) => b.timestamp - a.timestamp);
+    .sort((a, b) => {
+      if ((b.timestamp || 0) !== (a.timestamp || 0)) return (b.timestamp || 0) - (a.timestamp || 0);
+      return String(b.txHash).localeCompare(String(a.txHash));
+    });
 
   const contracts = [
     {
