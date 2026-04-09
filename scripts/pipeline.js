@@ -4,6 +4,7 @@ const { execFile } = require('child_process');
 const path = require('path');
 const { writeLeaderboardArtifact } = require('./generate-leaderboard');
 const { writeProofsArtifact } = require('./generate-proofs');
+const { persistRuntimeHistory } = require('./persist-runtime-history');
 const { createActivityEntry, appendAndPublishActivityEntry, summarizeFromResult } = require('./agent-activity');
 const { buildStartCycleState, publishCycleState, readCycleState, advanceCycleState, completeCycleState } = require('./cycle-state');
 
@@ -62,6 +63,7 @@ async function runFullPipeline() {
   cursor = Date.now();
   state = await logAgentStep('narrator', result, cycleNumber, cursor);
 
+  const persisted = await persistRuntimeHistory(result);
   const leaderboard = await writeLeaderboardArtifact();
   const proofs = await writeProofsArtifact();
   state = completeCycleState();
@@ -78,6 +80,7 @@ async function runFullPipeline() {
     narratorPaymentHash: result?.narratorPaymentHash,
     leaderboardUpdatedAt: leaderboard?.updatedAt,
     proofsUpdatedAt: proofs?.updatedAt,
+    persistedHistoryCount: persisted?.decisionLogEntries,
     cycleNumber: finalState?.cycleNumber,
     nextCycleTime: finalState?.nextCycleTime,
   };
