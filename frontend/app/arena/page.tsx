@@ -6,6 +6,23 @@ import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 
 const AGENTS = ["oracle", "analyst", "strategist", "router", "executor", "narrator"] as const;
+const AGENT_BADGE_STYLES: Record<string, string> = {
+  oracle: "bg-teal-500/15 text-teal-300 border border-teal-500/20",
+  analyst: "bg-amber-500/15 text-amber-300 border border-amber-500/20",
+  strategist: "bg-violet-500/15 text-violet-300 border border-violet-500/20",
+  router: "bg-orange-500/15 text-orange-300 border border-orange-500/20",
+  executor: "bg-sky-500/15 text-sky-300 border border-sky-500/20",
+  narrator: "bg-zinc-500/15 text-zinc-300 border border-zinc-500/20",
+  system: "bg-emerald-500/15 text-emerald-300 border border-emerald-500/20",
+};
+const ACTIVE_SUBSTATUS: Record<string, string> = {
+  oracle: "scanning",
+  analyst: "scoring",
+  strategist: "planning",
+  router: "routing",
+  executor: "executing",
+  narrator: "narrating",
+};
 
 type LeaderboardSquad = {
   rank: number;
@@ -46,6 +63,20 @@ type CycleStateResponse = {
   agentLog: CycleLogEntry[];
 };
 
+type ActivityEntry = {
+  id: string;
+  agent: string;
+  cycle: number;
+  timestamp: number;
+  status: string;
+  summary: string;
+  durationMs: number;
+};
+
+type ActivityResponse = {
+  entries?: ActivityEntry[];
+};
+
 function parseDecisionText(text?: string) {
   const value = text || "Active strategy cycle";
   const action = (value.match(/\b(BUY|SELL|HOLD)\b/i)?.[1] || "HOLD").toUpperCase();
@@ -64,20 +95,53 @@ function formatCountdown(msRemaining: number) {
 
 function formatTimestamp(timestamp?: number) {
   if (!timestamp) return "Pending";
-  return new Date(timestamp).toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-    timeZone: "UTC",
-  }) + " UTC";
+  return (
+    new Date(timestamp).toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone: "UTC",
+    }) + " UTC"
+  );
+}
+
+function formatTimeAgo(timestamp?: number) {
+  if (!timestamp) return "just now";
+  const diffSeconds = Math.max(0, Math.floor((Date.now() - timestamp) / 1000));
+  if (diffSeconds < 60) return `${diffSeconds}s ago`;
+  if (diffSeconds < 3600) return `${Math.floor(diffSeconds / 60)} minute${Math.floor(diffSeconds / 60) === 1 ? "" : "s"} ago`;
+  return `${Math.floor(diffSeconds / 3600)} hour${Math.floor(diffSeconds / 3600) === 1 ? "" : "s"} ago`;
+}
+
+function formatDuration(durationMs?: number) {
+  const ms = Number(durationMs || 0);
+  if (ms >= 1000) return `${(ms / 1000).toFixed(1)}s`;
+  return `${ms}ms`;
 }
 
 function confidenceBarClass(value: number) {
   if (value > 0.75) return "bg-emerald-500";
   if (value >= 0.5) return "bg-amber-500";
   return "bg-rose-500";
+}
+
+function agentLabel(agent: string) {
+  return agent.charAt(0).toUpperCase() + agent.slice(1);
+}
+
+function pipelinePillLabel(agent: string, currentAgent?: string, completedAgents?: Set<string>) {
+  if (currentAgent === agent) {
+    const sub = ACTIVE_SUBSTATUS[agent] || "active";
+    return `${agentLabel(agent)} — ${sub}`;
+  }
+
+  if (currentAgent === "idle" && completedAgents?.has(agent)) {
+    return `${agentLabel(agent)} ✓ complete`;
+  }
+
+  return agentLabel(agent);
 }
 
 function FilterTab({ active, label, onClick }: { active: boolean; label: string; onClick: () => void }) {
@@ -126,6 +190,21 @@ export default function ArenaPage() {
     refetchInterval: 10000,
   });
 
+  const {
+    data: activityData,
+    isLoading: activityLoading,
+    isError: activityError,
+    refetch: refetchActivity,
+  } = useQuery<ActivityResponse>({
+    queryKey: ["arena-activity"],
+    queryFn: async () => {
+      const res = await fetch("/api/activity", { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to load agent activity");
+      return res.json();
+    },
+    refetchInterval: 5000,
+  });
+
   useEffect(() => {
     if (!cycleState?.nextCycleTime) return;
     const update = () => setCountdownMs(Math.max(0, cycleState.nextCycleTime - Date.now()));
@@ -172,6 +251,13 @@ export default function ArenaPage() {
     return `${latest.squadId}: ${latest.lastAction}`;
   }, [squads]);
 
+  const completedAgents = useMemo(
+    () => new Set((cycleState?.agentLog || []).map((entry) => entry.agent).filter((agent) => agent !== "system")),
+    [cycleState?.agentLog],
+  );
+
+  const activityEntries = activityData?.entries || [];
+
   const copyNarratorToX = async () => {
     const payload = `${narratorText}\n\nLive on Xyndicate Protocol Arena`;
     try {
@@ -188,7 +274,7 @@ export default function ArenaPage() {
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <div className="inline-flex items-center gap-3 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-600 dark:text-emerald-300">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className={`h-2.5 w-2.5 rounded-full bg-emerald-500 ${cycleState?.currentAgent !== "idle" ? "animate-pulse" : ""}`} />
               {cycleState?.currentAgent === "idle" ? "IDLE" : "LIVE"}
             </div>
             <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-6xl">Season 1 Arena</h1>
@@ -210,65 +296,97 @@ export default function ArenaPage() {
       </section>
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
-        <div className="grid gap-3 md:grid-cols-6">
-          {AGENTS.map((agent) => (
-            <div
-              key={agent}
-              className={`rounded-full px-4 py-3 text-center text-sm font-semibold ${
-                cycleState?.currentAgent === agent
-                  ? "bg-xyn-gold text-xyn-dark"
-                  : "bg-black/5 text-xyn-muted dark:bg-white/10 dark:text-zinc-300"
-              }`}
-            >
-              {agent.charAt(0).toUpperCase() + agent.slice(1)}
+        <div className="grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
+          <div>
+            <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+              {AGENTS.map((agent) => {
+                const isCurrent = cycleState?.currentAgent === agent;
+                const isCompleted = cycleState?.currentAgent === "idle" && completedAgents.has(agent);
+                return (
+                  <div
+                    key={agent}
+                    className={`rounded-full px-4 py-3 text-center text-sm font-semibold ${
+                      isCurrent
+                        ? "bg-xyn-gold text-xyn-dark animate-pulse"
+                        : isCompleted
+                          ? "bg-emerald-500/15 text-emerald-300"
+                          : "bg-black/5 text-xyn-muted dark:bg-white/10 dark:text-zinc-300"
+                    }`}
+                  >
+                    {pipelinePillLabel(agent, cycleState?.currentAgent, completedAgents)}
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
-        <div className="mt-5 text-sm text-xyn-muted dark:text-zinc-300">
-          {cycleError ? "Cycle state unavailable" : `Next cycle in ${formatCountdown(countdownMs)}`}
-        </div>
-        <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Live activity</p>
-              <p className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">Cycle #{cycleState?.cycleNumber || 0}</p>
+            <div className="mt-5 text-sm text-xyn-muted dark:text-zinc-300">
+              {cycleError ? "Cycle state unavailable" : `Next cycle in ${formatCountdown(countdownMs)}`}
             </div>
-            {cycleError ? (
-              <button type="button" onClick={() => refetchCycleState()} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">
-                Retry
-              </button>
-            ) : null}
           </div>
 
-          <div className="space-y-3">
-            {cycleLoading ? (
-              Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-16 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />)
-            ) : cycleError ? (
-              <div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">Failed to load cycle state feed.</div>
-            ) : (cycleState?.agentLog || []).length ? (
-              [...(cycleState?.agentLog || [])].reverse().map((entry, index) => (
-                <motion.div
-                  key={`${entry.agent}-${entry.completedAt}-${index}`}
-                  initial={{ opacity: 0, y: -12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`rounded-2xl border px-4 py-3 ${
-                    cycleState?.cycleStartTime && entry.completedAt >= cycleState.cycleStartTime
-                      ? "border-xyn-gold/30 bg-xyn-gold/10"
-                      : "border-black/10 bg-white/70 dark:border-white/10 dark:bg-black/20"
-                  }`}
-                >
-                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="text-sm font-semibold capitalize">{entry.agent}</div>
-                    <div className="text-xs text-xyn-muted dark:text-zinc-400">{formatTimestamp(entry.completedAt)}</div>
-                  </div>
-                  <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-300">{entry.summary}</div>
-                </motion.div>
-              ))
-            ) : (
-              <div className="rounded-2xl border border-dashed border-black/10 px-4 py-5 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">
-                No agent activity logged yet.
+          <div className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">
+                  <span className={`h-2.5 w-2.5 rounded-full bg-emerald-500 ${cycleState?.currentAgent !== "idle" ? "animate-pulse" : "opacity-40"}`} />
+                  Live Agent Activity
+                </div>
+                <p className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">Cycle #{cycleState?.cycleNumber || 0}</p>
               </div>
-            )}
+              {(cycleError || activityError) ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    refetchCycleState();
+                    refetchActivity();
+                  }}
+                  className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10"
+                >
+                  Retry
+                </button>
+              ) : null}
+            </div>
+
+            <div className="max-h-[360px] space-y-3 overflow-y-auto pr-1">
+              {cycleLoading || activityLoading ? (
+                Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-20 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />)
+              ) : cycleError || activityError ? (
+                <div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">Failed to load agent activity.</div>
+              ) : activityEntries.length ? (
+                <AnimatePresence initial={false}>
+                  {activityEntries.map((entry) => {
+                    const isCurrentCycle = entry.cycle === cycleState?.cycleNumber;
+                    return (
+                      <motion.div
+                        key={entry.id}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: isCurrentCycle ? 1 : 0.5, y: 0 }}
+                        exit={{ opacity: 0, y: -12 }}
+                        className="rounded-2xl border border-white/10 bg-white/70 px-4 py-3 dark:bg-black/20"
+                      >
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                          <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className={`rounded-full px-3 py-1 text-xs font-semibold ${AGENT_BADGE_STYLES[entry.agent] || AGENT_BADGE_STYLES.system}`}>
+                                {agentLabel(entry.agent)}
+                              </span>
+                              <span className="text-xs text-xyn-muted dark:text-zinc-400">{formatTimeAgo(entry.timestamp)}</span>
+                            </div>
+                            <p className="mt-2 text-sm text-xyn-muted dark:text-zinc-300">{entry.summary}</p>
+                          </div>
+                          <span className="rounded-full border border-black/10 px-3 py-1 text-xs font-semibold dark:border-white/10">
+                            {formatDuration(entry.durationMs)}
+                          </span>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
+              ) : (
+                <div className="rounded-2xl border border-dashed border-black/10 px-4 py-5 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">
+                  No agent activity logged yet.
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
