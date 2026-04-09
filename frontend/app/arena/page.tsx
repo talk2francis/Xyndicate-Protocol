@@ -302,18 +302,23 @@ export default function ArenaPage() {
               {AGENTS.map((agent) => {
                 const isCurrent = cycleState?.currentAgent === agent;
                 const isCompleted = cycleState?.currentAgent === "idle" && completedAgents.has(agent);
+                const label = pipelinePillLabel(agent, cycleState?.currentAgent, completedAgents);
+                const [title, sublabel] = label.split(" — ");
                 return (
                   <div
                     key={agent}
-                    className={`rounded-full px-4 py-3 text-center text-sm font-semibold ${
+                    className={`min-h-[92px] rounded-[24px] px-3 py-4 text-center text-sm font-semibold ${
                       isCurrent
-                        ? "bg-xyn-gold text-xyn-dark animate-pulse"
+                        ? "bg-xyn-gold text-xyn-dark"
                         : isCompleted
                           ? "bg-emerald-500/15 text-emerald-300"
                           : "bg-black/5 text-xyn-muted dark:bg-white/10 dark:text-zinc-300"
                     }`}
                   >
-                    {pipelinePillLabel(agent, cycleState?.currentAgent, completedAgents)}
+                    <div className={`flex h-full flex-col items-center justify-center gap-1 ${isCurrent ? "animate-pulse" : ""}`}>
+                      <span className="text-sm font-semibold leading-tight">{title}</span>
+                      <span className="text-xs font-medium leading-tight opacity-80">{sublabel || (isCompleted ? "complete" : "standby")}</span>
+                    </div>
                   </div>
                 );
               })}
@@ -371,7 +376,7 @@ export default function ArenaPage() {
                               </span>
                               <span className="text-xs text-xyn-muted dark:text-zinc-400">{formatTimeAgo(entry.timestamp)}</span>
                             </div>
-                            <p className="mt-2 text-sm text-xyn-muted dark:text-zinc-300">{entry.summary}</p>
+                            <p className="mt-2 break-words text-sm text-xyn-muted dark:text-zinc-300">{entry.summary}</p>
                           </div>
                           <span className="rounded-full border border-black/10 px-3 py-1 text-xs font-semibold dark:border-white/10">
                             {formatDuration(entry.durationMs)}

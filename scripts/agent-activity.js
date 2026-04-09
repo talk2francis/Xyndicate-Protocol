@@ -64,6 +64,18 @@ async function appendAndPublishActivityEntry(entry) {
   return payload;
 }
 
+function clampConfidence(value) {
+  const numeric = Number(value || 0);
+  if (!Number.isFinite(numeric)) return 0;
+  if (numeric > 1) return Math.min(1, numeric / 10);
+  if (numeric < 0) return 0;
+  return numeric;
+}
+
+function normalizeAssetLabel(value) {
+  return String(value || 'ETH').replace(/-USDT$/i, '');
+}
+
 function summarizeFromResult(agent, result = {}) {
   const cycleState = readCycleState();
   const fallbackCycle = Number(cycleState?.cycleNumber || 0);
@@ -77,14 +89,14 @@ function summarizeFromResult(agent, result = {}) {
   }
 
   if (agent === 'analyst') {
-    const topAsset = result?.analyst?.topAsset || result?.asset || 'ETH';
+    const topAsset = normalizeAssetLabel(result?.analyst?.topAsset || result?.asset || 'ETH');
     const rec = result?.analyst?.recommendation || 'wait';
-    const confidence = Number(result?.analyst?.confidenceScore || result?.confidence || 0);
+    const confidence = clampConfidence(result?.analyst?.confidenceScore || result?.confidence || 0);
     return `${String(rec).toUpperCase()} ${topAsset} | confidence ${(confidence * 100).toFixed(0)}%`;
   }
 
   if (agent === 'strategist') {
-    return `${result?.action || 'HOLD'} ${result?.asset || 'ETH'} (${result?.sizePercent || 0}% treasury) | ${result?.rationale || 'Strategy ready'}`;
+    return `${result?.action || 'HOLD'} ${normalizeAssetLabel(result?.asset || 'ETH')} (${result?.sizePercent || 0}% treasury) | ${result?.rationale || 'Strategy ready'}`;
   }
 
   if (agent === 'router') {
@@ -96,7 +108,7 @@ function summarizeFromResult(agent, result = {}) {
   }
 
   if (agent === 'narrator') {
-    return result?.narratorSummary || 'Narrator summary ready';
+    return String(result?.narratorSummary || 'Narrator summary ready').replace(/ETH-USDT/gi, 'ETH');
   }
 
   return `Cycle ${fallbackCycle} activity recorded`;
