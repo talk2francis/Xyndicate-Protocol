@@ -7,16 +7,6 @@ import { ethers } from "ethers";
 import deployments from "@/deployments.json";
 import { useWallet } from "@/lib/wallet-context";
 
-declare global {
-  interface Window {
-    ethereum?: {
-      request: (args: { method: string; params?: unknown[] }) => Promise<any>;
-      on?: (event: string, listener: (...args: any[]) => void) => void;
-      removeListener?: (event: string, listener: (...args: any[]) => void) => void;
-    };
-  }
-}
-
 const SEASON_MANAGER_ABI = [
   "function entryFee() view returns (uint256)",
   "function enroll(address agentWallet) external",

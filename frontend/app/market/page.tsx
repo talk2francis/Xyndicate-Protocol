@@ -6,16 +6,6 @@ import { ethers } from "ethers";
 import deployments from "@/deployments.json";
 import { useWallet } from "@/lib/wallet-context";
 
-declare global {
-  interface Window {
-    ethereum?: {
-      request: (args: { method: string; params?: unknown[] }) => Promise<any>;
-      on?: (event: string, listener: (...args: any[]) => void) => void;
-      removeListener?: (event: string, listener: (...args: any[]) => void) => void;
-    };
-  }
-}
-
 type Strategy = {
   squadId: string;
   name: string;
@@ -292,8 +282,34 @@ export default function MarketPage() {
     const link = document.createElement("a");
     link.href = url;
     link.download = `${selected.squadId.toLowerCase()}-config.json`;
+    link.style.display = "none";
+    document.body.appendChild(link);
     link.click();
+    link.remove();
     URL.revokeObjectURL(url);
+  };
+
+  const copyJson = async () => {
+    if (!unlockJson) return;
+    try {
+      await navigator.clipboard.writeText(unlockJson);
+      setSheetError(null);
+    } catch {
+      try {
+        const textarea = document.createElement("textarea");
+        textarea.value = unlockJson;
+        textarea.setAttribute("readonly", "true");
+        textarea.style.position = "absolute";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+        setSheetError(null);
+      } catch {
+        setSheetError("Copy failed. Please select and copy the JSON manually.");
+      }
+    }
   };
 
   const handleListStrategy = async () => {
@@ -572,7 +588,7 @@ export default function MarketPage() {
                   <div className="mb-3 text-sm font-semibold">Unlocked config</div>
                   <pre className="overflow-x-auto rounded-2xl bg-black/90 p-5 text-sm text-green-400">{unlockJson}</pre>
                   <div className="mt-4 flex gap-3">
-                    <button type="button" onClick={() => navigator.clipboard.writeText(unlockJson)} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">
+                    <button type="button" onClick={copyJson} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">
                       Copy JSON
                     </button>
                     <button type="button" onClick={downloadJson} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">

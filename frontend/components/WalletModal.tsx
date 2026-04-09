@@ -4,16 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import { X } from "lucide-react";
 import { useWallet } from "@/lib/wallet-context";
 
-declare global {
-  interface Window {
-    ethereum?: {
-      request: (args: { method: string; params?: unknown[] }) => Promise<any>;
-      on?: (event: string, listener: (...args: any[]) => void) => void;
-      removeListener?: (event: string, listener: (...args: any[]) => void) => void;
-    };
-  }
-}
-
 const WALLET_OPTIONS = [
   { id: "okx", name: "OKX Wallet", recommended: true },
   { id: "metamask", name: "MetaMask" },
@@ -25,14 +15,35 @@ const XLAYER_CHAIN_ID_DECIMAL = 196;
 const XLAYER_CHAIN_ID_HEX = "0xC4";
 
 export function WalletModal() {
-  const { isModalOpen, closeModal, chainId, address, isCorrectChain, setWalletState } = useWallet();
+  const { isModalOpen, closeModal, chainId, address, isCorrectChain, setWalletState, hasProvider } = useWallet();
   const [error, setError] = useState<string | null>(null);
   const [loadingWallet, setLoadingWallet] = useState<string | null>(null);
 
-  const hasEthereum = typeof window !== "undefined" && !!window.ethereum;
+  const resolveProvider = (walletId?: string) => {
+    if (typeof window === "undefined") return null;
+
+    const providers = window.ethereum?.providers;
+    if (walletId && providers?.length) {
+      const matched = providers.find((provider) => {
+        if (walletId === "okx") return provider.isOKExWallet;
+        if (walletId === "metamask") return provider.isMetaMask;
+        if (walletId === "rabby") return provider.isRabby;
+        if (walletId === "zerion") return provider.isZerion;
+        return false;
+      });
+      if (matched) return matched;
+    }
+
+    if (walletId === "okx" && window.okxwallet?.request) {
+      return window.okxwallet;
+    }
+
+    return window.ethereum ?? null;
+  };
 
   useEffect(() => {
-    if (!hasEthereum) return;
+    const provider = resolveProvider();
+    if (!provider) return;
 
     const handleAccountsChanged = (accounts: string[]) => {
       setWalletState({
@@ -49,19 +60,20 @@ export function WalletModal() {
       });
     };
 
-    window.ethereum?.on?.("accountsChanged", handleAccountsChanged);
-    window.ethereum?.on?.("chainChanged", handleChainChanged);
+    provider.on?.("accountsChanged", handleAccountsChanged);
+    provider.on?.("chainChanged", handleChainChanged);
 
     return () => {
-      window.ethereum?.removeListener?.("accountsChanged", handleAccountsChanged);
-      window.ethereum?.removeListener?.("chainChanged", handleChainChanged);
+      provider.removeListener?.("accountsChanged", handleAccountsChanged);
+      provider.removeListener?.("chainChanged", handleChainChanged);
     };
-  }, [address, chainId, hasEthereum, setWalletState]);
+  }, [address, chainId, hasProvider, setWalletState]);
 
   const walletRows = useMemo(() => WALLET_OPTIONS, []);
 
   const connectWallet = async (walletId: string) => {
-    if (!window.ethereum) {
+    const provider = resolveProvider(walletId);
+    if (!provider?.request) {
       setError("No injected wallet detected in this browser.");
       return;
     }
@@ -69,14 +81,15 @@ export function WalletModal() {
     try {
       setLoadingWallet(walletId);
       setError(null);
-      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-      const rawChainId = await window.ethereum.request({ method: "eth_chainId" });
+      const accounts = await provider.request({ method: "eth_requestAccounts" });
+      const rawChainId = await provider.request({ method: "eth_chainId" });
       const parsedChainId = Number.parseInt(rawChainId, 16);
 
       setWalletState({
         address: accounts?.[0] || null,
         chainId: Number.isNaN(parsedChainId) ? null : parsedChainId,
       });
+      closeModal();
     } catch (err: any) {
       setError(err?.message || "Wallet connection failed.");
     } finally {
@@ -85,14 +98,15 @@ export function WalletModal() {
   };
 
   const switchToXLayer = async () => {
-    if (!window.ethereum) {
+    const provider = resolveProvider();
+    if (!provider?.request) {
       setError("No injected wallet detected in this browser.");
       return;
     }
 
     try {
       setError(null);
-      await window.ethereum.request({
+      await provider.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: XLAYER_CHAIN_ID_HEX }],
       });
@@ -154,7 +168,7 @@ export function WalletModal() {
           ))}
         </div>
 
-        {!hasEthereum ? (
+        {!hasProvider ? (
           <p className="mt-4 text-sm text-red-600 dark:text-red-400">
             No injected wallet was detected. Open this app in a wallet-enabled browser.
           </p>

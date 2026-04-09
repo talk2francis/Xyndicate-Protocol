@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 const XLAYER_CHAIN_ID = 196;
 
@@ -9,6 +9,7 @@ export type WalletContextValue = {
   chainId: number | null;
   isCorrectChain: boolean;
   isModalOpen: boolean;
+  hasProvider: boolean;
   connect: () => void;
   disconnect: () => void;
   openModal: () => void;
@@ -22,6 +23,25 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [address, setAddress] = useState<string | null>(null);
   const [chainId, setChainId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasProvider, setHasProvider] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const detectProvider = () => {
+      const provider = window.ethereum;
+      setHasProvider(Boolean(provider || window.okxwallet));
+    };
+
+    detectProvider();
+    window.addEventListener("focus", detectProvider);
+    document.addEventListener("visibilitychange", detectProvider);
+
+    return () => {
+      window.removeEventListener("focus", detectProvider);
+      document.removeEventListener("visibilitychange", detectProvider);
+    };
+  }, []);
 
   const openModal = useCallback(() => setIsModalOpen(true), []);
   const closeModal = useCallback(() => setIsModalOpen(false), []);
@@ -43,13 +63,14 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       chainId,
       isCorrectChain: chainId === XLAYER_CHAIN_ID,
       isModalOpen,
+      hasProvider,
       connect,
       disconnect,
       openModal,
       closeModal,
       setWalletState,
     }),
-    [address, chainId, connect, disconnect, isModalOpen, openModal, closeModal, setWalletState],
+    [address, chainId, connect, disconnect, hasProvider, isModalOpen, openModal, closeModal, setWalletState],
   );
 
   return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;
