@@ -1,27 +1,24 @@
 require('dotenv').config();
 
-const runCycleHandler = require('../frontend/api/run-cycle');
+const { execFile } = require('child_process');
+const path = require('path');
 const { writeLeaderboardArtifact } = require('./generate-leaderboard');
 
 function invokeRunCycle() {
   return new Promise((resolve, reject) => {
-    const req = { method: 'POST' };
-    const res = {
-      statusCode: 200,
-      status(code) {
-        this.statusCode = code;
-        return this;
-      },
-      json(payload) {
-        if (this.statusCode >= 400) {
-          const error = new Error(payload?.error || 'Pipeline failed');
-          return reject(error);
-        }
-        resolve(payload);
-      }
-    };
+    const scriptPath = path.join(__dirname, 'run-cycle-bridge.mjs');
 
-    runCycleHandler(req, res).catch(reject);
+    execFile('node', [scriptPath], { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
+      if (error) {
+        return reject(new Error(stderr || error.message || 'Pipeline failed'));
+      }
+
+      try {
+        resolve(JSON.parse(stdout));
+      } catch (parseError) {
+        reject(new Error(`Failed to parse run-cycle output: ${parseError.message}`));
+      }
+    });
   });
 }
 
@@ -35,7 +32,7 @@ async function runFullPipeline() {
     rationale: result?.rationale,
     narratorSummary: result?.narratorSummary,
     narratorPaymentHash: result?.narratorPaymentHash,
-    leaderboardUpdatedAt: leaderboard?.updatedAt
+    leaderboardUpdatedAt: leaderboard?.updatedAt,
   };
 }
 
