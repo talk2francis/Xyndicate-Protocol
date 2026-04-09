@@ -1,0 +1,185 @@
+require('dotenv').config();
+
+const fs = require('fs');
+const path = require('path');
+const { ethers } = require('ethers');
+
+const ROOT = path.resolve(__dirname, '..');
+const FRONTEND_DIR = path.join(ROOT, 'frontend');
+const DEPLOYMENTS_PATH = path.join(FRONTEND_DIR, 'deployments.json');
+const TXHASHES_PATH = path.join(FRONTEND_DIR, 'txhashes.json');
+const AGENT_PAYMENTS_PATH = path.join(FRONTEND_DIR, 'agentpayments.json');
+const OUTPUT_PATH = path.join(FRONTEND_DIR, 'proofs.json');
+const OKLINK_BASE = 'https://www.oklink.com/xlayer/tx';
+const XLAYER_RPC = process.env.NEXT_PUBLIC_XLAYER_RPC || process.env.XLAYER_RPC || 'https://rpc.xlayer.tech';
+
+function readJson(filePath, fallback) {
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch (error) {
+    if (fallback !== undefined) return fallback;
+    throw error;
+  }
+}
+
+function normalizeTimestamp(value) {
+  if (typeof value === 'number') return value;
+  if (typeof value === 'string') {
+    const asNumber = Number(value);
+    if (!Number.isNaN(asNumber) && asNumber > 0) return asNumber;
+    const asDate = Date.parse(value);
+    if (!Number.isNaN(asDate)) return Math.floor(asDate / 1000);
+  }
+  return 0;
+}
+
+async function buildProofsArtifact() {
+  const deployments = readJson(DEPLOYMENTS_PATH, {});
+  const txhashes = readJson(TXHASHES_PATH, {});
+  const agentPayments = readJson(AGENT_PAYMENTS_PATH, []);
+  const fallbackHashes = Object.values(txhashes || {}).map(String);
+
+  const provider = new ethers.JsonRpcProvider(XLAYER_RPC);
+  const decisionLogAddress = deployments?.DecisionLog?.address;
+  const decisionContract = new ethers.Contract(
+    decisionLogAddress,
+    [
+      'function getDecisionCount() view returns (uint256)',
+      'function getDecision(uint256 index) view returns (string squadId, string agentChain, string rationale, uint256 timestamp)',
+    ],
+    provider,
+  );
+
+  const onchainCount = Number(await decisionContract.getDecisionCount());
+  const decisionItems = [];
+
+  for (let i = 0; i < onchainCount; i += 1) {
+    const row = await decisionContract.getDecision(i);
+    const txHash = fallbackHashes[i] || `decision-${i}`;
+    decisionItems.push({
+      type: 'decision',
+      label: `${String(row?.squadId || 'XYNDICATE')} decision`,
+      txHash,
+      timestamp: normalizeTimestamp(row?.timestamp),
+      amount: null,
+      blockNumber: null,
+      explorerUrl: fallbackHashes[i] ? `${OKLINK_BASE}/${txHash}` : `${OKLINK_BASE}`,
+    });
+  }
+
+  const deployItems = Object.entries(deployments || {})
+    .filter(([, value]) => value && typeof value === 'object')
+    .flatMap(([key, value]) => {
+      if (!value?.deployTx) return [];
+      return [{
+        type: 'deploy',
+        label: `${key} deployment`,
+        txHash: value.deployTx,
+        timestamp: normalizeTimestamp(value.timestamp),
+        amount: null,
+        blockNumber: null,
+        explorerUrl: `${OKLINK_BASE}/${value.deployTx}`,
+      }];
+    });
+
+  const paymentItems = [
+    ...(Array.isArray(agentPayments) ? agentPayments : []).map((payment) => ({
+      type: 'payment',
+      label: `${payment.from} → ${payment.to}`,
+      txHash: payment.txHash,
+      timestamp: normalizeTimestamp(payment.timestamp),
+      amount: payment.amount || null,
+      blockNumber: null,
+      explorerUrl: `${OKLINK_BASE}/${payment.txHash}`,
+    })),
+    ...(deployments?.x402EntryFeeTx ? [{
+      type: 'payment',
+      label: 'Season entry fee',
+      txHash: deployments.x402EntryFeeTx,
+      timestamp: normalizeTimestamp(deployments?.x402Details?.timestamp),
+      amount: deployments?.x402Details?.amount || null,
+      blockNumber: null,
+      explorerUrl: `${OKLINK_BASE}/${deployments.x402EntryFeeTx}`,
+    }] : []),
+  ];
+
+  const swapItems = deployments?.executorSwapTx ? [{
+    type: 'swap',
+    label: `${deployments?.swapDetails?.fromToken || 'Token'} → ${deployments?.swapDetails?.toToken || 'Token'}`,
+    txHash: deployments.executorSwapTx,
+    timestamp: normalizeTimestamp(deployments?.swapDetails?.timestamp),
+    amount: deployments?.swapDetails?.amount || null,
+    blockNumber: null,
+    explorerUrl: `${OKLINK_BASE}/${deployments.executorSwapTx}`,
+  }] : [];
+
+  const vaultItems = deployments?.proofTx?.deposit ? [{
+    type: 'vault',
+    label: 'StrategyVault deposit',
+    txHash: deployments.proofTx.deposit,
+    timestamp: 0,
+    amount: deployments?.swapDetails?.amount || '0.001 OKB',
+    blockNumber: null,
+    explorerUrl: `${OKLINK_BASE}/${deployments.proofTx.deposit}`,
+  }] : [];
+
+  const proofs = [...decisionItems, ...deployItems, ...paymentItems, ...swapItems, ...vaultItems]
+    .filter((item) => item.txHash)
+    .sort((a, b) => b.timestamp - a.timestamp);
+
+  const contracts = [
+    {
+      name: 'DecisionLog',
+      address: deployments?.DecisionLog?.address || null,
+      deployTx: deployments?.DecisionLog?.deployTx || null,
+      description: 'On-chain record of agent decisions and verifiable strategy actions.',
+    },
+    {
+      name: 'SeasonManager',
+      address: deployments?.SeasonManagerV2?.address || deployments?.x402Details?.contract || null,
+      deployTx: deployments?.SeasonManagerV2?.deployTx || null,
+      description: 'Active season enrollment contract currently used by the Deploy flow.',
+    },
+    {
+      name: 'StrategyVault',
+      address: deployments?.StrategyVault?.address || null,
+      deployTx: deployments?.StrategyVault?.deployTx || null,
+      description: 'Tracks squad treasury deposits and symbolic PnL updates.',
+    },
+    {
+      name: 'StrategyLicense',
+      address: deployments?.StrategyLicense?.address || null,
+      deployTx: deployments?.StrategyLicense?.deployTx || null,
+      description: 'Handles paid license purchases and on-chain unlock access control.',
+    },
+  ].map((contract) => ({
+    ...contract,
+    oklinkUrl: contract.deployTx ? `${OKLINK_BASE}/${contract.deployTx}` : null,
+  }));
+
+  return {
+    proofs,
+    totalTxCount: proofs.length,
+    contracts,
+    updatedAt: new Date().toISOString(),
+    onchainDecisionCount: onchainCount,
+    source: 'scheduler-artifact',
+  };
+}
+
+async function writeProofsArtifact() {
+  const artifact = await buildProofsArtifact();
+  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(artifact, null, 2) + '\n');
+  console.log(`Proofs artifact updated: ${OUTPUT_PATH}`);
+  console.log(`Total TXs: ${artifact.totalTxCount} | On-chain decisions: ${artifact.onchainDecisionCount}`);
+  return artifact;
+}
+
+if (require.main === module) {
+  writeProofsArtifact().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
+
+module.exports = { buildProofsArtifact, writeProofsArtifact };

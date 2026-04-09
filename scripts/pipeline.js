@@ -3,6 +3,7 @@ require('dotenv').config();
 const { execFile } = require('child_process');
 const path = require('path');
 const { writeLeaderboardArtifact } = require('./generate-leaderboard');
+const { writeProofsArtifact } = require('./generate-proofs');
 
 function invokeRunCycle() {
   return new Promise((resolve, reject) => {
@@ -25,6 +26,7 @@ function invokeRunCycle() {
 async function runFullPipeline() {
   const result = await invokeRunCycle();
   const leaderboard = writeLeaderboardArtifact();
+  const proofs = await writeProofsArtifact();
 
   return {
     txHash: result?.txHash,
@@ -33,6 +35,7 @@ async function runFullPipeline() {
     narratorSummary: result?.narratorSummary,
     narratorPaymentHash: result?.narratorPaymentHash,
     leaderboardUpdatedAt: leaderboard?.updatedAt,
+    proofsUpdatedAt: proofs?.updatedAt,
   };
 }
 
