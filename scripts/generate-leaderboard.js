@@ -21,6 +21,12 @@ function readJson(filePath, fallback) {
   }
 }
 
+function normalizeSquadId(value) {
+  const squadId = String(value || 'XYNDICATE_ALPHA');
+  if (squadId === 'SYNDICATE_ALPHA' || squadId === 'Xyndicate Alpha') return 'XYNDICATE_ALPHA';
+  return squadId;
+}
+
 function normalizeAction(text) {
   const upper = String(text || '').toUpperCase();
   if (upper.includes('BUY')) return 'BUY';
@@ -43,7 +49,7 @@ function buildLeaderboard() {
   const squadMap = new Map();
 
   for (const entry of entries) {
-    const squadId = String(entry?.squadId || 'SYNDICATE_ALPHA');
+    const squadId = normalizeSquadId(entry?.squadId || 'XYNDICATE_ALPHA');
     const timestamp = Number(entry?.timestamp || 0);
     const rationale = String(entry?.rationale || 'Active strategy cycle');
     const action = normalizeAction(rationale);

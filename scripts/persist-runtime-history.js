@@ -15,6 +15,12 @@ function readJson(filePath, fallback) {
   }
 }
 
+function normalizeSquadId(value) {
+  const squadId = String(value || 'XYNDICATE_ALPHA');
+  if (squadId === 'SYNDICATE_ALPHA' || squadId === 'Xyndicate Alpha') return 'XYNDICATE_ALPHA';
+  return squadId;
+}
+
 function nextDecisionIndex(entries) {
   return Array.isArray(entries) ? entries.length : 0;
 }
@@ -36,7 +42,7 @@ async function persistRuntimeHistory(result) {
     txhashes[String(index)] = item.txHash;
     decisionLogEntries.push({
       txHash: item.txHash,
-      squadId: item.squadId,
+      squadId: normalizeSquadId(item.squadId),
       agentChain: 'Oracle→Analyst→Strategist→Router→Executor',
       rationale: `${item.action} ${item.asset} (${item.sizePercent}% treasury) · ${item.rationale}`,
       timestamp: Math.floor(Date.now() / 1000),

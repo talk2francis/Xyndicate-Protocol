@@ -24,6 +24,12 @@ function readJson(filePath, fallback) {
   }
 }
 
+function normalizeSquadId(value) {
+  const squadId = String(value || 'XYNDICATE_ALPHA');
+  if (squadId === 'SYNDICATE_ALPHA' || squadId === 'Xyndicate Alpha') return 'XYNDICATE_ALPHA';
+  return squadId;
+}
+
 function normalizeTimestamp(value) {
   if (typeof value === 'number') return value;
   if (typeof value === 'bigint') return Number(value);
@@ -117,9 +123,10 @@ async function buildProofsArtifact() {
   for (let i = 0; i < onchainCount; i += 1) {
     const row = await decisionContract.getDecision(i);
     const txHash = fallbackHashes[i] || `decision-${i}`;
+    const normalizedSquadId = normalizeSquadId(row?.squadId || 'XYNDICATE_ALPHA');
     decisionItems.push({
       type: 'decision',
-      label: `${String(row?.squadId || 'XYNDICATE')} decision`,
+      label: `${normalizedSquadId} decision`,
       txHash,
       timestamp: normalizeTimestamp(row?.timestamp),
       amount: null,
