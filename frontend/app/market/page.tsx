@@ -37,6 +37,12 @@ const LICENSE_ABI = [
   "function isLicensed(address caller, bytes32 squadId) external view returns (bool)",
   "function priceWei() external view returns (uint256)",
 ];
+const REGISTRY_ABI = [
+  "function listStrategy(bytes32 squadId, string name, string assetPair, string mode, string risk, bool available) external",
+];
+const SEASON_MANAGER_ABI = [
+  "function squads(address) external view returns (address owner, address agentWallet, bool active)",
+];
 const XLAYER_CHAIN_ID = 196;
 const XLAYER_CHAIN_ID_HEX = "0xC4";
 
@@ -107,8 +113,16 @@ export default function MarketPage() {
   const [buying, setBuying] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [myLicenses, setMyLicenses] = useState<Strategy[]>([]);
+  const [selectedSquadId, setSelectedSquadId] = useState("");
+  const [listingAvailable, setListingAvailable] = useState(true);
+  const [listingError, setListingError] = useState<string | null>(null);
+  const [listingSuccess, setListingSuccess] = useState<string | null>(null);
+  const [listingBusy, setListingBusy] = useState(false);
+  const [enrolledOptions, setEnrolledOptions] = useState<Strategy[]>([]);
 
   const strategyLicenseAddress = (deployments as any)?.StrategyLicense?.address || "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186";
+  const strategyRegistryAddress = (deployments as any)?.StrategyRegistry?.address;
+  const seasonManagerAddress = (deployments as any)?.x402Details?.contract || "0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1";
   useEffect(() => {
     const loadStrategies = async () => {
       const res = await fetch("/api/strategies");
@@ -161,6 +175,52 @@ export default function MarketPage() {
 
     loadLicenses();
   }, [address, strategies, strategyLicenseAddress]);
+
+  useEffect(() => {
+    const loadEligibleListings = async () => {
+      if (!address) {
+        setEnrolledOptions([]);
+        setSelectedSquadId("");
+        return;
+      }
+
+      try {
+        const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_XLAYER_RPC || "https://rpc.xlayer.tech");
+        const seasonManager = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, provider);
+        const squad = await seasonManager.squads(address);
+        const owner = String(squad?.owner || ethers.ZeroAddress);
+        const active = Boolean(squad?.active);
+
+        if (owner.toLowerCase() !== address.toLowerCase() || !active) {
+          setEnrolledOptions([]);
+          setSelectedSquadId("");
+          return;
+        }
+
+        const matched = strategies.filter((strategy) => strategy.creatorWallet?.toLowerCase() === address.toLowerCase());
+        const options = matched.length
+          ? matched
+          : [{
+              squadId: "SYNDICATE_ALPHA",
+              name: "Xyndicate Alpha",
+              mode: "momentum-arbitrage",
+              assetPair: "ETH/USDC",
+              allocationPercent: 25,
+              riskTolerance: "Balanced",
+              status: "ready",
+              summary: "Owner-enrolled squad available for marketplace listing.",
+            }];
+
+        setEnrolledOptions(options);
+        setSelectedSquadId((current) => current || options[0]?.squadId || "");
+      } catch {
+        setEnrolledOptions([]);
+        setSelectedSquadId("");
+      }
+    };
+
+    loadEligibleListings();
+  }, [address, seasonManagerAddress, strategies]);
 
   const filtered = useMemo(() => {
     let result = strategies.filter((strategy) => strategy.name.toLowerCase().includes(search.toLowerCase()));
@@ -234,6 +294,50 @@ export default function MarketPage() {
     link.download = `${selected.squadId.toLowerCase()}-config.json`;
     link.click();
     URL.revokeObjectURL(url);
+  };
+
+  const handleListStrategy = async () => {
+    if (!strategyRegistryAddress) {
+      setListingError("StrategyRegistry is not deployed yet.");
+      setListingSuccess(null);
+      return;
+    }
+
+    const strategy = enrolledOptions.find((item) => item.squadId === selectedSquadId);
+    if (!strategy) {
+      setListingError("No eligible enrolled squad found for listing.");
+      setListingSuccess(null);
+      return;
+    }
+
+    try {
+      setListingBusy(true);
+      setListingError(null);
+      setListingSuccess(null);
+
+      const walletAddress = address || (await ensureWallet());
+      if (!walletAddress) throw new Error("Wallet required");
+      if (!window.ethereum) throw new Error("Wallet provider unavailable");
+
+      const provider = new ethers.BrowserProvider(window.ethereum as any);
+      const signer = await provider.getSigner();
+      const registry = new ethers.Contract(strategyRegistryAddress, REGISTRY_ABI, signer);
+      const tx = await registry.listStrategy(
+        squadKey(strategy.squadId),
+        strategy.name,
+        strategy.assetPair,
+        strategy.mode,
+        strategy.riskTolerance,
+        listingAvailable,
+      );
+      await tx.wait();
+
+      setListingSuccess(`${strategy.name} listed successfully.`);
+    } catch (error: any) {
+      setListingError(error?.shortMessage || error?.message || "Strategy listing failed");
+    } finally {
+      setListingBusy(false);
+    }
   };
 
   return (
@@ -356,19 +460,53 @@ export default function MarketPage() {
         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">List your strategy</p>
         <h2 className="mt-3 text-3xl font-semibold tracking-tight">Earning from your strategy? List it here.</h2>
         <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_auto]">
-          <div className="rounded-2xl border border-dashed border-black/10 p-5 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">
-            Live self-listing is blocked by the deployed contract surface. `StrategyLicense` does not expose `listStrategy`, and `SeasonManager` only stores one squad record keyed by owner address, not a queryable market-listing registry.
+          <div className="space-y-4 rounded-2xl border border-black/10 p-5 dark:border-white/10">
+            <div>
+              <label className="mb-2 block text-sm font-semibold">Squad selector</label>
+              <select
+                value={selectedSquadId}
+                onChange={(event) => setSelectedSquadId(event.target.value)}
+                className="w-full rounded-2xl border border-black/10 bg-transparent px-4 py-3 outline-none focus:border-xyn-gold dark:border-white/10"
+                disabled={!enrolledOptions.length}
+              >
+                {enrolledOptions.length ? enrolledOptions.map((strategy) => (
+                  <option key={strategy.squadId} value={strategy.squadId}>{strategy.name}</option>
+                )) : <option value="">No enrolled squad available</option>}
+              </select>
+            </div>
+
+            <label className="flex items-center justify-between rounded-2xl border border-black/10 px-4 py-3 text-sm dark:border-white/10">
+              <span className="font-semibold">Available for licensing</span>
+              <button
+                type="button"
+                onClick={() => setListingAvailable((prev) => !prev)}
+                className={`relative inline-flex h-7 w-14 items-center rounded-full transition ${listingAvailable ? "bg-xyn-gold" : "bg-black/10 dark:bg-white/10"}`}
+              >
+                <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition ${listingAvailable ? "translate-x-8" : "translate-x-1"}`} />
+              </button>
+            </label>
+
+            {!strategyRegistryAddress ? (
+              <div className="rounded-2xl bg-amber-500/10 p-4 text-sm text-amber-700 dark:text-amber-300">
+                StrategyRegistry deployment is required before listing can go live.
+              </div>
+            ) : null}
+
+            {listingError ? <div className="rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">{listingError}</div> : null}
+            {listingSuccess ? <div className="rounded-2xl bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">{listingSuccess}</div> : null}
+
+            <div className="text-xs text-xyn-muted dark:text-zinc-400">
+              This live path uses a dedicated registry contract so existing license history stays intact.
+            </div>
           </div>
           <button
             type="button"
-            className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold opacity-50 dark:border-white/10"
-            disabled
+            className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark disabled:cursor-not-allowed disabled:opacity-50"
+            onClick={handleListStrategy}
+            disabled={!strategyRegistryAddress || !selectedSquadId || listingBusy}
           >
-            List Strategy
+            {listingBusy ? "Listing..." : "List Strategy"}
           </button>
-        </div>
-        <div className="mt-4 text-xs text-xyn-muted dark:text-zinc-400">
-          Connected wallet enrolled-squad discovery is also gated on contract metadata expansion beyond the current deployed interfaces.
         </div>
       </section>
 
