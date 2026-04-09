@@ -275,9 +275,17 @@ export default function DocsPage() {
             <Play className="h-4 w-4" /> {loading ? "Running..." : "Run Query →"}
           </button>
         </div>
-        <div className="mt-6 flex items-center justify-between gap-4">
-          <div className="text-sm text-xyn-muted dark:text-zinc-300">Works directly in browser, no wallet or install required.</div>
-          <div className="text-sm font-semibold text-xyn-gold">{responseMs != null ? `Response in ${responseMs}ms` : "Awaiting query"}</div>
+        <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <div className="text-sm text-xyn-muted dark:text-zinc-300">Works directly in browser, no wallet or install required.</div>
+            <div className="mt-2 text-xs text-xyn-muted dark:text-zinc-400">Optional deeper demo: wallet-triggered on-chain flow available separately.</div>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="text-sm font-semibold text-xyn-gold">{responseMs != null ? `Response in ${responseMs}ms` : "Awaiting query"}</div>
+            <a href="/deploy" className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10">
+              Run On-Chain Demo →
+            </a>
+          </div>
         </div>
         <div className="mt-4">
           <CodeBlock value={responseText} />
