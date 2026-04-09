@@ -84,12 +84,22 @@ async function enrichWithChainData(provider, items) {
 
 async function buildProofsArtifact() {
   const deployments = readJson(DEPLOYMENTS_PATH, {});
+  const rootDeployments = readJson(path.join(ROOT, 'deployments.json'), {});
+  const mergedDeployments = {
+    ...rootDeployments,
+    ...deployments,
+    StrategyVault: deployments?.StrategyVault || rootDeployments?.StrategyVault || null,
+    StrategyLicense: deployments?.StrategyLicense || rootDeployments?.StrategyLicense || null,
+    StrategyRegistry: deployments?.StrategyRegistry || rootDeployments?.StrategyRegistry || null,
+    SeasonManagerV2: deployments?.SeasonManagerV2 || rootDeployments?.SeasonManagerV2 || null,
+    DecisionLog: deployments?.DecisionLog || rootDeployments?.DecisionLog || null,
+  };
   const txhashes = readJson(TXHASHES_PATH, {});
   const agentPayments = readJson(AGENT_PAYMENTS_PATH, []);
   const fallbackHashes = Object.values(txhashes || {}).map(String);
 
   const provider = new ethers.JsonRpcProvider(XLAYER_RPC);
-  const decisionLogAddress = deployments?.DecisionLog?.address;
+  const decisionLogAddress = mergedDeployments?.DecisionLog?.address;
   const decisionContract = new ethers.Contract(
     decisionLogAddress,
     [
@@ -116,7 +126,7 @@ async function buildProofsArtifact() {
     });
   }
 
-  const deployItems = Object.entries(deployments || {})
+  const deployItems = Object.entries(mergedDeployments || {})
     .filter(([, value]) => value && typeof value === 'object')
     .flatMap(([key, value]) => {
       if (!value?.deployTx) return [];
@@ -141,33 +151,33 @@ async function buildProofsArtifact() {
       blockNumber: null,
       explorerUrl: `${OKLINK_BASE}/${payment.txHash}`,
     })),
-    ...(deployments?.x402EntryFeeTx ? [{
+    ...(mergedDeployments?.x402EntryFeeTx ? [{
       type: 'payment',
       label: 'Season entry fee',
-      txHash: deployments.x402EntryFeeTx,
-      timestamp: normalizeTimestamp(deployments?.x402Details?.timestamp),
-      amount: deployments?.x402Details?.amount || null,
+      txHash: mergedDeployments.x402EntryFeeTx,
+      timestamp: normalizeTimestamp(mergedDeployments?.x402Details?.timestamp),
+      amount: mergedDeployments?.x402Details?.amount || null,
       blockNumber: null,
       explorerUrl: `${OKLINK_BASE}/${deployments.x402EntryFeeTx}`,
     }] : []),
   ];
 
-  const swapItems = deployments?.executorSwapTx ? [{
+  const swapItems = mergedDeployments?.executorSwapTx ? [{
     type: 'swap',
-    label: `${deployments?.swapDetails?.fromToken || 'Token'} → ${deployments?.swapDetails?.toToken || 'Token'}`,
-    txHash: deployments.executorSwapTx,
-    timestamp: normalizeTimestamp(deployments?.swapDetails?.timestamp),
-    amount: deployments?.swapDetails?.amount || null,
+    label: `${mergedDeployments?.swapDetails?.fromToken || 'Token'} → ${mergedDeployments?.swapDetails?.toToken || 'Token'}`,
+    txHash: mergedDeployments.executorSwapTx,
+    timestamp: normalizeTimestamp(mergedDeployments?.swapDetails?.timestamp),
+    amount: mergedDeployments?.swapDetails?.amount || null,
     blockNumber: null,
     explorerUrl: `${OKLINK_BASE}/${deployments.executorSwapTx}`,
   }] : [];
 
-  const vaultItems = deployments?.proofTx?.deposit ? [{
+  const vaultItems = mergedDeployments?.proofTx?.deposit ? [{
     type: 'vault',
     label: 'StrategyVault deposit',
-    txHash: deployments.proofTx.deposit,
+    txHash: mergedDeployments.proofTx.deposit,
     timestamp: 0,
-    amount: deployments?.swapDetails?.amount || '0.001 OKB',
+    amount: mergedDeployments?.swapDetails?.amount || '0.001 OKB',
     blockNumber: null,
     explorerUrl: `${OKLINK_BASE}/${deployments.proofTx.deposit}`,
   }] : [];
@@ -184,26 +194,26 @@ async function buildProofsArtifact() {
   const contracts = [
     {
       name: 'DecisionLog',
-      address: deployments?.DecisionLog?.address || null,
-      deployTx: deployments?.DecisionLog?.deployTx || null,
+      address: mergedDeployments?.DecisionLog?.address || null,
+      deployTx: mergedDeployments?.DecisionLog?.deployTx || null,
       description: 'On-chain record of agent decisions and verifiable strategy actions.',
     },
     {
       name: 'SeasonManager',
-      address: deployments?.SeasonManagerV2?.address || deployments?.x402Details?.contract || null,
-      deployTx: deployments?.SeasonManagerV2?.deployTx || null,
+      address: mergedDeployments?.SeasonManagerV2?.address || mergedDeployments?.x402Details?.contract || null,
+      deployTx: mergedDeployments?.SeasonManagerV2?.deployTx || null,
       description: 'Active season enrollment contract currently used by the Deploy flow.',
     },
     {
       name: 'StrategyVault',
-      address: deployments?.StrategyVault?.address || null,
-      deployTx: deployments?.StrategyVault?.deployTx || null,
+      address: mergedDeployments?.StrategyVault?.address || null,
+      deployTx: mergedDeployments?.StrategyVault?.deployTx || null,
       description: 'Tracks squad treasury deposits and symbolic PnL updates.',
     },
     {
       name: 'StrategyLicense',
-      address: deployments?.StrategyLicense?.address || null,
-      deployTx: deployments?.StrategyLicense?.deployTx || null,
+      address: mergedDeployments?.StrategyLicense?.address || null,
+      deployTx: mergedDeployments?.StrategyLicense?.deployTx || null,
       description: 'Handles paid license purchases and on-chain unlock access control.',
     },
   ].map((contract) => ({
