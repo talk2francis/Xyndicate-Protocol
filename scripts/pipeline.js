@@ -71,8 +71,9 @@ async function runFullPipeline() {
 
   return {
     txHash: result?.txHash,
-    action: result?.action,
-    rationale: result?.rationale,
+    txHashes: result?.txHashes || [],
+    squadResults: result?.squadResults || {},
+    activeSquads: result?.activeSquads || [],
     narratorSummary: result?.narratorSummary,
     narratorPaymentHash: result?.narratorPaymentHash,
     leaderboardUpdatedAt: leaderboard?.updatedAt,

@@ -20,6 +20,8 @@ function readCycleState() {
       cycleStartTime: 0,
       nextCycleTime: Date.now() + INTERVAL_MS,
       lastCycleComplete: 0,
+      activeSquads: [],
+      squadResults: {},
       agentLog: [],
     };
   }
@@ -49,6 +51,8 @@ function buildStartCycleState(previous = readCycleState()) {
     cycleStartTime: now,
     nextCycleTime: now + INTERVAL_MS,
     lastCycleComplete: Number(previous?.lastCycleComplete || 0),
+    activeSquads: ['XYNDICATE_ALPHA', 'Squad Nova'],
+    squadResults: {},
     agentLog: [
       {
         agent: 'system',
@@ -91,9 +95,15 @@ function advanceCycleState(agent, result = {}) {
   const current = readCycleState();
   const currentIndex = AGENT_ORDER.indexOf(agent);
   const nextAgent = AGENT_ORDER[Math.min(currentIndex + 1, AGENT_ORDER.length - 1)] || 'idle';
+  const squadResults = result?.squadResults && typeof result.squadResults === 'object'
+    ? result.squadResults
+    : (current?.squadResults || {});
+
   const nextState = {
     ...current,
     currentAgent: nextAgent,
+    activeSquads: result?.activeSquads || current?.activeSquads || ['XYNDICATE_ALPHA', 'Squad Nova'],
+    squadResults,
     agentLog: [
       ...(Array.isArray(current.agentLog) ? current.agentLog : []),
       {
@@ -115,6 +125,8 @@ function completeCycleState() {
     currentAgent: 'idle',
     nextCycleTime: now + INTERVAL_MS,
     lastCycleComplete: now,
+    activeSquads: current?.activeSquads || ['XYNDICATE_ALPHA', 'Squad Nova'],
+    squadResults: current?.squadResults || {},
     agentLog: [
       ...(Array.isArray(current.agentLog) ? current.agentLog : []),
       {
@@ -142,6 +154,8 @@ function seedTruthfulCycleState() {
     cycleStartTime: now - Math.min(5 * 60 * 1000, INTERVAL_MS),
     nextCycleTime: now + INTERVAL_MS,
     lastCycleComplete: now,
+    activeSquads: ['XYNDICATE_ALPHA', 'Squad Nova'],
+    squadResults: {},
     agentLog: [
       {
         agent: 'system',

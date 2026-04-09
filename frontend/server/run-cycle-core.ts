@@ -12,8 +12,26 @@ const STRATEGY_VAULT_ABI = ["function recordPnL(bytes32 squadId, int256 delta)"]
 const ANALYST_PROMPT = `You are the Analyst agent in the Xyndicate Protocol system.\nYou receive structured market data from the Oracle agent and must respond with JSON matching {"opportunities":[{"asset":string,"type":"long|short|hold","rationale":string,"confidence":number}],"risks":[{"description":string,"severity":number}],"recommendation":"act|wait|exit","topAsset":string,"confidenceScore":number}.`;
 const STRATEGIST_PROMPT = `You are the Strategist agent in the Xyndicate Protocol system.\nUsing the Oracle snapshot and Analyst assessment, output JSON matching {"action":"BUY|SELL|HOLD","asset":string,"sizePercent":number,"rationale":string,"confidence":number}. Keep rationale under 280 characters.`;
 const UNISWAP_POOL_PRICE_URL = process.env.UNISWAP_POOL_PRICE_URL || "";
-const SQUAD_ID = "Xyndicate Alpha";
-const SQUAD_ID_BYTES32 = ethers.encodeBytes32String("SYNDICATE_ALPHA");
+const SQUADS = [
+  {
+    id: ethers.encodeBytes32String("XYNDICATE_ALPHA"),
+    logId: "XYNDICATE_ALPHA",
+    name: "XYNDICATE_ALPHA",
+    displayName: "Xyndicate Alpha",
+    riskMode: "aggressive",
+    baseAsset: "ETH",
+    pair: "ETH-USDT",
+  },
+  {
+    id: ethers.encodeBytes32String("SQUAD_NOVA"),
+    logId: "SQUAD_NOVA",
+    name: "Squad Nova",
+    displayName: "Squad Nova",
+    riskMode: "balanced",
+    baseAsset: "OKB",
+    pair: "OKB-USDT",
+  },
+] as const;
 
 async function fetchUniswapPoolPrice(okxPrice: number) {
   if (UNISWAP_POOL_PRICE_URL) {
@@ -46,9 +64,9 @@ async function fetchUniswapPoolPrice(okxPrice: number) {
   };
 }
 
-async function fetchMarketSnapshot() {
-  const res = await fetch("https://www.okx.com/api/v5/market/ticker?instId=ETH-USDT", { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to fetch OKX market data");
+async function fetchMarketSnapshot(pair: string) {
+  const res = await fetch(`https://www.okx.com/api/v5/market/ticker?instId=${pair}`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to fetch OKX market data for ${pair}`);
 
   const data = await res.json();
   const ticker = data?.data?.[0];
@@ -59,10 +77,10 @@ async function fetchMarketSnapshot() {
   const { uniswapPrice, source } = await fetchUniswapPoolPrice(okxPrice);
   const spreadBps = okxPrice ? Number((((uniswapPrice - okxPrice) / okxPrice) * 10000).toFixed(2)) : 0;
 
-  console.error(`OKX: ${okxPrice} | Uniswap: ${uniswapPrice} | Spread: ${spreadBps}bps`);
+  console.error(`${pair} OKX: ${okxPrice} | Uniswap: ${uniswapPrice} | Spread: ${spreadBps}bps`);
 
   return {
-    pair: "ETH-USDT",
+    pair,
     price: okxPrice,
     okxPrice,
     uniswapPrice,
@@ -106,7 +124,7 @@ async function callOpenAI(systemPrompt: string, payload: unknown) {
   return JSON.parse(content || "{}");
 }
 
-function routeDecision(strategistDecision: any, marketData: any) {
+function routeDecision(strategistDecision: any, marketData: any, squad: any) {
   const { okxPrice, uniswapPrice } = marketData;
   const spreadBps = okxPrice ? (Math.abs(okxPrice - uniswapPrice) / okxPrice) * 10000 : 0;
 
@@ -125,6 +143,8 @@ function routeDecision(strategistDecision: any, marketData: any) {
 
   const routedDecision = {
     ...strategistDecision,
+    squadId: squad.logId,
+    squadName: squad.displayName,
     route,
     routingReason,
     okxPrice,
@@ -136,7 +156,7 @@ function routeDecision(strategistDecision: any, marketData: any) {
   return routedDecision;
 }
 
-async function logDecisionOnChain(routedDecision: any) {
+async function logDecisionOnChain(routedDecision: any, squad: any) {
   const privateKey = (process.env.STRATEGIST_KEY || "").trim();
   const logAddress = (process.env.DECISION_LOG_ADDRESS || "").trim();
   const rpcUrl = (process.env.XLAYER_RPC || "https://rpc.xlayer.tech").trim();
@@ -147,12 +167,12 @@ async function logDecisionOnChain(routedDecision: any) {
   const contract = new ethers.Contract(logAddress, DECISION_LOG_ABI, wallet);
   const narrative = `${routedDecision.action} ${routedDecision.asset} (${routedDecision.sizePercent}% treasury) via ${routedDecision.route} · ${routedDecision.rationale}`;
   const agentChain = "Oracle→Analyst→Strategist→Router→Executor";
-  const tx = await contract.logDecision(SQUAD_ID, agentChain, narrative);
+  const tx = await contract.logDecision(squad.logId, agentChain, narrative);
   await tx.wait(1);
   return { txHash: tx.hash, narrative };
 }
 
-async function recordVaultPnL(routedDecision: any) {
+async function recordVaultPnL(routedDecision: any, squad: any) {
   const privateKey = (process.env.STRATEGIST_KEY || "").trim();
   const rpcUrl = (process.env.XLAYER_RPC || "https://rpc.xlayer.tech").trim();
   const vaultAddress = process.env.STRATEGY_VAULT_ADDRESS || (deployments as any)?.StrategyVault?.address || "";
@@ -167,24 +187,42 @@ async function recordVaultPnL(routedDecision: any) {
   if (routedDecision.action === "BUY") delta = 50n;
   if (routedDecision.action === "SELL") delta = 30n;
 
-  const tx = await contract.recordPnL(SQUAD_ID_BYTES32, delta);
+  const tx = await contract.recordPnL(squad.id, delta);
   await tx.wait(1);
-  console.error(`StrategyVault: recorded PnL delta ${delta.toString()} for ${SQUAD_ID} (${tx.hash})`);
+  console.error(`StrategyVault: recorded PnL delta ${delta.toString()} for ${squad.displayName} (${tx.hash})`);
   return { pnlDelta: delta.toString(), vaultTxHash: tx.hash };
 }
 
-export async function runCycleCore() {
-  const market = await fetchMarketSnapshot();
-  if (!market.price) throw new Error("Oracle returned price 0");
+async function runSquadCycle(squad: (typeof SQUADS)[number]) {
+  const market = await fetchMarketSnapshot(squad.pair);
+  if (!market.price) throw new Error(`Oracle returned price 0 for ${squad.name}`);
 
-  const analyst = await callOpenAI(ANALYST_PROMPT, market);
-  const strategist = await callOpenAI(STRATEGIST_PROMPT, { market, analyst });
-  const routedDecision = routeDecision(strategist, market);
-  const { txHash, narrative } = await logDecisionOnChain(routedDecision);
-  const { pnlDelta, vaultTxHash } = await recordVaultPnL(routedDecision);
-  const narratorSummary = `Xyndicate Alpha ${routedDecision.action === "SELL" ? "trimmed" : routedDecision.action === "HOLD" ? "held" : "deployed"} ${routedDecision.asset} (${routedDecision.sizePercent}% treasury) via ${routedDecision.route}. ${routedDecision.rationale}`;
+  const analyst = await callOpenAI(ANALYST_PROMPT, {
+    squad: { name: squad.displayName, riskMode: squad.riskMode, baseAsset: squad.baseAsset },
+    market,
+  });
+  const strategist = await callOpenAI(STRATEGIST_PROMPT, {
+    squad: { name: squad.displayName, riskMode: squad.riskMode, baseAsset: squad.baseAsset, preferredPair: squad.pair },
+    market,
+    analyst,
+  });
+  const routedDecision = routeDecision(
+    {
+      ...strategist,
+      asset: strategist?.asset || squad.baseAsset,
+    },
+    market,
+    squad,
+  );
+  const { txHash, narrative } = await logDecisionOnChain(routedDecision, squad);
+  const { pnlDelta, vaultTxHash } = await recordVaultPnL(routedDecision, squad);
+  const narratorSummary = `${squad.displayName} ${routedDecision.action === "SELL" ? "trimmed" : routedDecision.action === "HOLD" ? "held" : "deployed"} ${routedDecision.asset} (${routedDecision.sizePercent}% treasury) via ${routedDecision.route}. ${routedDecision.rationale}`;
 
   return {
+    squadId: squad.logId,
+    squadName: squad.displayName,
+    riskMode: squad.riskMode,
+    baseAsset: squad.baseAsset,
     txHash,
     vaultTxHash,
     pnlDelta,
@@ -199,5 +237,23 @@ export async function runCycleCore() {
     analyst,
     market,
     narrative,
+  };
+}
+
+export async function runCycleCore() {
+  const results = [];
+  for (const squad of SQUADS) {
+    results.push(await runSquadCycle(squad));
+  }
+
+  return {
+    sharedMarket: results[0]?.market || null,
+    activeSquads: SQUADS.map((squad) => squad.displayName),
+    squadResults: Object.fromEntries(results.map((result) => [result.squadId, result])),
+    results,
+    txHashes: results.map((result) => result.txHash).filter(Boolean),
+    txHash: results[0]?.txHash,
+    narratorSummary: results.map((result) => result.narratorSummary).join(" | "),
+    narratorPaymentHash: null,
   };
 }

@@ -77,6 +77,52 @@ function normalizeAssetLabel(value) {
 }
 
 function summarizeFromResult(agent, result = {}) {
+   const cycleState = readCycleState();
+   const fallbackCycle = Number(cycleState?.cycleNumber || 0);
++  const primary = Array.isArray(result?.results) && result.results.length ? result.results[0] : result;
+ 
+   if (agent === 'oracle') {
+-    const eth = Number(result?.market?.okxPrice || result?.market?.price || 0);
+-    const change = Number(result?.market?.change24h || 0);
+-    const uni = Number(result?.market?.uniswapPrice || 0);
+-    const spread = Number(result?.market?.priceSpreads?.bps || result?.spreadBps || 0);
++    const eth = Number(primary?.market?.okxPrice || primary?.market?.price || 0);
++    const change = Number(primary?.market?.change24h || 0);
++    const uni = Number(primary?.market?.uniswapPrice || 0);
++    const spread = Number(primary?.market?.priceSpreads?.bps || primary?.spreadBps || 0);
+     return `ETH $${eth.toFixed(2)} (${change >= 0 ? '+' : ''}${change.toFixed(1)}%) | Uniswap ETH/USDC pool: $${uni.toFixed(2)} | Spread: ${spread >= 0 ? '+' : ''}${spread.toFixed(0)}bps`;
+   }
+ 
+   if (agent === 'analyst') {
+-    const topAsset = normalizeAssetLabel(result?.analyst?.topAsset || result?.asset || 'ETH');
+-    const rec = result?.analyst?.recommendation || 'wait';
+-    const confidence = clampConfidence(result?.analyst?.confidenceScore || result?.confidence || 0);
++    const topAsset = normalizeAssetLabel(primary?.analyst?.topAsset || primary?.asset || 'ETH');
++    const rec = primary?.analyst?.recommendation || 'wait';
++    const confidence = clampConfidence(primary?.analyst?.confidenceScore || primary?.confidence || 0);
+     return `${String(rec).toUpperCase()} ${topAsset} | confidence ${(confidence * 100).toFixed(0)}%`;
+   }
+ 
+   if (agent === 'strategist') {
+-    return `${result?.action || 'HOLD'} ${normalizeAssetLabel(result?.asset || 'ETH')} (${result?.sizePercent || 0}% treasury) | ${result?.rationale || 'Strategy ready'}`;
++    return `${primary?.action || 'HOLD'} ${normalizeAssetLabel(primary?.asset || 'ETH')} (${primary?.sizePercent || 0}% treasury) | ${primary?.rationale || 'Strategy ready'}`;
+   }
+ 
+   if (agent === 'router') {
+-    return `${String(result?.route || 'okx').toUpperCase()} selected | ${result?.routingReason || 'Best route chosen'}`;
++    return `${String(primary?.route || 'okx').toUpperCase()} selected | ${primary?.routingReason || 'Best route chosen'}`;
+   }
+ 
+   if (agent === 'executor') {
+-    return `${result?.action || 'HOLD'} executed on ${String(result?.route || 'okx').toUpperCase()} | tx ${result?.txHash || 'pending'}`;
++    const txCount = Array.isArray(result?.txHashes) ? result.txHashes.length : (primary?.txHash ? 1 : 0);
++    return `${primary?.action || 'HOLD'} executed on ${String(primary?.route || 'okx').toUpperCase()} | ${txCount} decision tx${txCount === 1 ? '' : 's'}`;
+   }
+ 
+   if (agent === 'narrator') {
+-    return String(result?.narratorSummary || 'Narrator summary ready').replace(/ETH-USDT/gi, 'ETH');
++    return String(result?.narratorSummary || 'Narrator summary ready').replace(/ETH-USDT/gi, 'ETH');
+   }
   const cycleState = readCycleState();
   const fallbackCycle = Number(cycleState?.cycleNumber || 0);
 
