@@ -188,8 +188,8 @@ export default function DeployPage() {
   );
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-12">
-      <div className="mb-8 flex flex-wrap items-center gap-3">
+    <div className="mx-auto max-w-7xl overflow-x-hidden px-4 py-12 sm:px-6">
+      <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
         {[
           { id: 1, label: "Configure" },
           { id: 2, label: "Fund & Enroll" },
@@ -311,7 +311,7 @@ export default function DeployPage() {
                   type="button"
                   onClick={() => setStep(2)}
                   disabled={!canContinue}
-                  className="rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
                 >
                   Continue to Fund →
                 </button>
@@ -370,7 +370,7 @@ export default function DeployPage() {
                   <button
                     type="button"
                     onClick={connect}
-                    className="rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
+                    className="w-full rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 sm:w-auto"
                   >
                     Connect Wallet
                   </button>
@@ -378,7 +378,7 @@ export default function DeployPage() {
                   <button
                     type="button"
                     onClick={ensureWalletOnXLayer}
-                    className="rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
+                    className="w-full rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 sm:w-auto"
                   >
                     Switch to X Layer
                   </button>
@@ -387,7 +387,7 @@ export default function DeployPage() {
                     type="button"
                     onClick={handleEnroll}
                     disabled={submitting}
-                    className="rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="w-full rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                   >
                     {submitting ? "Submitting transaction..." : "Enroll Squad"}
                   </button>
@@ -420,11 +420,11 @@ export default function DeployPage() {
               <div>First cycle runs in {formatCountdown(cycleCountdown)}</div>
             </div>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-              <Link href="/arena" className="rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90">
+              <Link href="/arena" className="w-full rounded-full bg-xyn-gold px-6 py-3 text-center text-sm font-semibold text-xyn-dark transition hover:opacity-90 sm:w-auto">
                 View in Arena →
               </Link>
               {tweetUrl ? (
-                <a href={tweetUrl} target="_blank" rel="noreferrer" className="rounded-full border border-black/10 px-6 py-3 text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10">
+                <a href={tweetUrl} target="_blank" rel="noreferrer" className="w-full rounded-full border border-black/10 px-6 py-3 text-center text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10 sm:w-auto">
                   Share on X →
                 </a>
               ) : null}

@@ -167,7 +167,7 @@ export default function ArenaPage() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-12">
+    <div className="mx-auto max-w-7xl overflow-x-hidden px-4 py-12 sm:px-6">
       <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -217,7 +217,7 @@ export default function ArenaPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Leaderboard</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Squad standings</h2>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <FilterTab active={filter === "All"} label="All" onClick={() => setFilter("All")} />
             <FilterTab active={filter === "Active"} label="Active" onClick={() => setFilter("Active")} />
             <FilterTab active={filter === "Paused"} label="Paused" onClick={() => setFilter("Paused")} />
@@ -326,7 +326,16 @@ export default function ArenaPage() {
           </div>
 
           <div className="space-y-4">
-            {feed.slice(0, visibleFeedCount).map((entry) => (
+            {isLoading ? (
+              Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-32 animate-pulse rounded-3xl bg-black/5 dark:bg-white/5" />)
+            ) : isError ? (
+              <div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">
+                Failed to load live decision feed.
+                <button type="button" onClick={() => refetch()} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">
+                  Retry
+                </button>
+              </div>
+            ) : feed.slice(0, visibleFeedCount).map((entry) => (
               <div key={entry.id} className="rounded-3xl border border-black/10 bg-xyn-surface p-5 dark:border-white/10 dark:bg-xyn-dark">
                 <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">
                   {entry.squadId} · {formatTimestamp(entry.timestamp)}
@@ -337,12 +346,12 @@ export default function ArenaPage() {
                   </span>
                   <span className="text-sm font-medium">{entry.asset}</span>
                 </div>
-                <p className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">{entry.rationale}</p>
+                <p className="mt-3 break-words text-sm text-xyn-muted dark:text-zinc-300">{entry.rationale}</p>
               </div>
             ))}
           </div>
 
-          {visibleFeedCount < feed.length ? (
+          {!isLoading && !isError && visibleFeedCount < feed.length ? (
             <button
               type="button"
               onClick={() => setVisibleFeedCount((prev) => prev + 10)}

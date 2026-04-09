@@ -188,8 +188,8 @@ export default function HomePage() {
   const edgePair = signal?.pairs?.[0];
 
   return (
-    <div className="bg-xyn-surface text-xyn-dark dark:bg-xyn-dark dark:text-xyn-surface">
-      <section className="mx-auto flex min-h-[calc(100vh-73px)] max-w-7xl flex-col justify-center px-6 py-16">
+    <div className="overflow-x-hidden bg-xyn-surface text-xyn-dark dark:bg-xyn-dark dark:text-xyn-surface">
+      <section className="mx-auto flex min-h-[calc(100vh-73px)] max-w-7xl flex-col justify-center px-4 py-12 sm:px-6 sm:py-16">
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <div className="inline-flex items-center gap-3 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-600 dark:text-emerald-300">
@@ -197,7 +197,7 @@ export default function HomePage() {
               LIVE ON X LAYER MAINNET
             </div>
 
-            <div className="mt-8 max-w-4xl text-5xl font-bold tracking-tight sm:text-[56px] sm:leading-[1.05]">
+            <div className="mt-8 max-w-4xl text-4xl font-bold leading-[0.95] tracking-tight sm:text-[56px] sm:leading-[1.05]">
               <h1>The Autonomous Strategy Skill.</h1>
               <h2 className="text-xyn-gold">For X Layer.</h2>
             </div>
@@ -224,7 +224,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-10">
+      <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6">
         {loadingLeaderboard ? (
           <div className="grid gap-4 md:grid-cols-4">
             {Array.from({ length: 4 }).map((_, index) => <SkeletonCard key={index} />)}
@@ -248,7 +248,7 @@ export default function HomePage() {
         )}
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-10">
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <div className="mb-6">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">How the skill works</p>
           <h3 className="mt-3 text-3xl font-semibold tracking-tight">Install, query, route, verify.</h3>
@@ -291,7 +291,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-10">
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <div className="mb-6">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Live decisions feed</p>
           <h3 className="mt-3 text-3xl font-semibold tracking-tight">Latest protocol activity</h3>
@@ -339,7 +339,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-10">
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <div className="rounded-[32px] bg-xyn-dark p-8 text-white">
           <div className="mb-6">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">MCP skill install</p>
@@ -361,7 +361,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-12 text-sm text-xyn-muted dark:text-zinc-400 md:flex-row md:items-center md:justify-between">
+      <footer className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-12 text-sm text-xyn-muted dark:text-zinc-400 sm:px-6 md:flex-row md:items-center md:justify-between">
         <div>
           <div className="font-semibold text-xyn-dark dark:text-white">Xyndicate Protocol</div>
           <div className="mt-1">Season 1 Live</div>

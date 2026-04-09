@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useWallet } from "@/lib/wallet-context";
 
@@ -34,6 +34,7 @@ function Logo() {
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [walletMenuOpen, setWalletMenuOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const pathname = usePathname();
   const { address, connect, disconnect, isCorrectChain } = useWallet();
 
@@ -50,6 +51,11 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    setMobileNavOpen(false);
+    setWalletMenuOpen(false);
+  }, [pathname]);
+
   return (
     <header
       className={`sticky top-0 z-50 transition-all ${
@@ -58,7 +64,7 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-6">
         <Link href="/" className="shrink-0">
           <Logo />
         </Link>
@@ -75,15 +81,23 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setMobileNavOpen((prev) => !prev)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-xyn-dark transition hover:bg-black/5 md:hidden dark:border-white/10 dark:text-white dark:hover:bg-white/10"
+            aria-label="Toggle navigation"
+          >
+            {mobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
           <div className="relative">
             <button
               type="button"
               onClick={address ? () => setWalletMenuOpen((prev) => !prev) : connect}
-              className="flex items-center gap-2 rounded-full bg-xyn-gold px-4 py-2 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
+              className="flex max-w-[152px] items-center gap-2 rounded-full bg-xyn-gold px-3 py-2 text-sm font-semibold text-xyn-dark transition hover:opacity-90 sm:max-w-none sm:px-4"
             >
-              {buttonLabel}
+              <span className="truncate">{buttonLabel}</span>
               {address ? <ChevronDown className="h-4 w-4" /> : null}
             </button>
 
@@ -105,6 +119,22 @@ export function Navbar() {
           </div>
         </div>
       </div>
+
+      {mobileNavOpen ? (
+        <div className="border-t border-black/10 bg-background/95 px-4 py-4 backdrop-blur md:hidden dark:border-white/10">
+          <nav className="flex flex-col gap-2">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`rounded-2xl px-4 py-3 text-sm transition ${pathname === item.href ? "bg-xyn-gold/15 font-semibold text-xyn-dark dark:text-xyn-gold" : "text-xyn-muted hover:bg-black/5 hover:text-xyn-dark dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"}`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      ) : null}
     </header>
   );
 }
