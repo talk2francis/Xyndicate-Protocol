@@ -4,7 +4,7 @@ const { execFile } = require('child_process');
 const path = require('path');
 const { writeLeaderboardArtifact } = require('./generate-leaderboard');
 const { writeProofsArtifact } = require('./generate-proofs');
-const { startCycleState, advanceCycleState, completeCycleState } = require('./cycle-state');
+const { buildStartCycleState, publishCycleState, readCycleState, advanceCycleState, completeCycleState } = require('./cycle-state');
 
 function invokeRunCycle() {
   return new Promise((resolve, reject) => {
@@ -25,17 +25,24 @@ function invokeRunCycle() {
 }
 
 async function runFullPipeline() {
-  startCycleState();
+  const startState = buildStartCycleState();
+  await publishCycleState(startState, `Publish Arena cycle ${startState.cycleNumber} start state`);
+
   const result = await invokeRunCycle();
-  advanceCycleState('oracle', result);
-  advanceCycleState('analyst', result);
-  advanceCycleState('strategist', result);
-  advanceCycleState('router', result);
-  advanceCycleState('executor', result);
-  advanceCycleState('narrator', result);
+
+  let state = advanceCycleState('oracle', result);
+  state = advanceCycleState('analyst', result);
+  state = advanceCycleState('strategist', result);
+  state = advanceCycleState('router', result);
+  state = advanceCycleState('executor', result);
+  state = advanceCycleState('narrator', result);
+
   const leaderboard = writeLeaderboardArtifact();
   const proofs = await writeProofsArtifact();
-  completeCycleState();
+  state = completeCycleState();
+  await publishCycleState(state, `Publish Arena cycle ${state.cycleNumber} completion state`);
+
+  const finalState = readCycleState();
 
   return {
     txHash: result?.txHash,
@@ -45,6 +52,8 @@ async function runFullPipeline() {
     narratorPaymentHash: result?.narratorPaymentHash,
     leaderboardUpdatedAt: leaderboard?.updatedAt,
     proofsUpdatedAt: proofs?.updatedAt,
+    cycleNumber: finalState?.cycleNumber,
+    nextCycleTime: finalState?.nextCycleTime,
   };
 }
 

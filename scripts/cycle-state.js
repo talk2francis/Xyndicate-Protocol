@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const { writeAndPublishJson } = require('./github-artifacts');
 
 const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
 const STATE_PATH = path.join(FRONTEND_DIR, 'cycle_state.json');
+const STATE_REPO_PATH = 'frontend/cycle_state.json';
 const INTERVAL_MS = 30 * 60 * 1000;
 
 const AGENT_ORDER = ['oracle', 'analyst', 'strategist', 'router', 'executor', 'narrator', 'idle'];
@@ -28,18 +30,38 @@ function writeCycleState(state) {
   return state;
 }
 
-function startCycleState() {
-  const previous = readCycleState();
+async function publishCycleState(state, message) {
+  const normalized = writeCycleState(state);
+  await writeAndPublishJson({
+    localPath: STATE_PATH,
+    repoPath: STATE_REPO_PATH,
+    content: normalized,
+    message,
+  });
+  return normalized;
+}
+
+function buildStartCycleState(previous = readCycleState()) {
   const now = Date.now();
-  const state = {
+  return {
     currentAgent: 'oracle',
     cycleNumber: Number(previous?.cycleNumber || 0) + 1,
     cycleStartTime: now,
     nextCycleTime: now + INTERVAL_MS,
     lastCycleComplete: Number(previous?.lastCycleComplete || 0),
-    agentLog: [],
+    agentLog: [
+      {
+        agent: 'system',
+        status: 'started',
+        completedAt: now,
+        summary: `Cycle ${Number(previous?.cycleNumber || 0) + 1} started. Oracle snapshot in progress.`,
+      },
+    ],
   };
-  return writeCycleState(state);
+}
+
+function startCycleState() {
+  return writeCycleState(buildStartCycleState());
 }
 
 function summarizeAgentStep(agent, result = {}) {
@@ -93,15 +115,56 @@ function completeCycleState() {
     currentAgent: 'idle',
     nextCycleTime: now + INTERVAL_MS,
     lastCycleComplete: now,
+    agentLog: [
+      ...(Array.isArray(current.agentLog) ? current.agentLog : []),
+      {
+        agent: 'system',
+        status: 'complete',
+        completedAt: now,
+        summary: `Cycle ${current.cycleNumber || 0} complete. Awaiting next scheduled run.`,
+      },
+    ].slice(-50),
   });
+}
+
+function seedTruthfulCycleState() {
+  const previous = readCycleState();
+  const entries = Array.isArray(previous?.agentLog) ? previous.agentLog : [];
+  const hasLiveState = Number(previous?.cycleNumber || 0) > 0 || entries.length > 0;
+  if (hasLiveState) {
+    return previous;
+  }
+
+  const now = Date.now();
+  const seeded = {
+    currentAgent: 'idle',
+    cycleNumber: 1,
+    cycleStartTime: now - Math.min(5 * 60 * 1000, INTERVAL_MS),
+    nextCycleTime: now + INTERVAL_MS,
+    lastCycleComplete: now,
+    agentLog: [
+      {
+        agent: 'system',
+        status: 'seeded',
+        completedAt: now,
+        summary: 'Initial scheduler-backed Arena state published. Waiting for the next live cycle to append agent steps.',
+      },
+    ],
+  };
+
+  return writeCycleState(seeded);
 }
 
 module.exports = {
   INTERVAL_MS,
   STATE_PATH,
+  STATE_REPO_PATH,
   readCycleState,
   writeCycleState,
+  publishCycleState,
+  buildStartCycleState,
   startCycleState,
   advanceCycleState,
   completeCycleState,
+  seedTruthfulCycleState,
 };
