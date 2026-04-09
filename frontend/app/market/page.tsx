@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { ethers } from "ethers";
 import deployments from "@/deployments.json";
@@ -92,6 +93,21 @@ function riskClass(risk: string) {
   return "bg-amber-500/15 text-amber-700 dark:text-amber-300";
 }
 
+function RetryState({ message, onRetry }: { message: string; onRetry: () => void }) {
+  return (
+    <div className="rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">
+      {message}
+      <button type="button" onClick={onRetry} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">
+        Retry
+      </button>
+    </div>
+  );
+}
+
+function StrategySkeleton() {
+  return <div className="h-[360px] animate-pulse rounded-[32px] bg-black/5 dark:bg-white/5" />;
+}
+
 export default function MarketPage() {
   const { address, connect, isCorrectChain, selectedWallet, setWalletState } = useWallet();
   const [search, setSearch] = useState("");
@@ -143,14 +159,18 @@ export default function MarketPage() {
     return window.ethereum ?? window.okxwallet ?? null;
   };
 
-  useEffect(() => {
-    const loadStrategies = async () => {
-      const res = await fetch("/api/strategies");
+  const {
+    isLoading: loadingStrategies,
+    isError: strategiesError,
+    refetch: refetchStrategies,
+  } = useQuery({
+    queryKey: ["market-strategies", strategyLicenseAddress],
+    queryFn: async () => {
+      const res = await fetch("/api/strategies", { cache: "no-store" });
       const json = await res.json();
+      if (!res.ok) throw new Error(json?.error || "Failed to load strategies");
       setStrategies(json?.strategies || []);
-    };
 
-    const loadPrice = async () => {
       try {
         const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_XLAYER_RPC || "https://rpc.xlayer.tech");
         const contract = new ethers.Contract(strategyLicenseAddress, LICENSE_ABI, provider);
@@ -160,11 +180,11 @@ export default function MarketPage() {
       } catch {
         setPriceLabel("0.50 USDC");
       }
-    };
 
-    loadStrategies();
-    loadPrice();
-  }, [strategyLicenseAddress]);
+      return json;
+    },
+    refetchInterval: 60000,
+  });
 
   useEffect(() => {
     const loadLicenses = async () => {
@@ -479,7 +499,13 @@ export default function MarketPage() {
       </section>
 
       <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {filtered.map((strategy, index) => {
+        {loadingStrategies ? (
+          Array.from({ length: 6 }).map((_, index) => <StrategySkeleton key={index} />)
+        ) : strategiesError ? (
+          <div className="md:col-span-2 xl:col-span-3">
+            <RetryState message="Failed to load marketplace strategies." onRetry={() => refetchStrategies()} />
+          </div>
+        ) : filtered.length ? filtered.map((strategy, index) => {
           const variant = avatarVariant(strategy.name);
           const positivePnl = strategy.performancePct ?? 0;
           const confidenceSeed = strategy.name.length + strategy.allocationPercent;
@@ -542,7 +568,11 @@ export default function MarketPage() {
               </button>
             </motion.div>
           );
-        })}
+        }) : (
+          <div className="md:col-span-2 xl:col-span-3 rounded-[32px] border border-dashed border-black/10 p-6 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">
+            No strategies matched your current filters.
+          </div>
+        )}
       </section>
 
       <section className="mt-10 grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
@@ -659,7 +689,7 @@ export default function MarketPage() {
               initial={{ y: 80 }}
               animate={{ y: 0 }}
               exit={{ y: 80 }}
-              className="absolute bottom-0 left-0 right-0 mx-auto max-w-4xl rounded-t-[32px] bg-xyn-surface p-8 dark:bg-xyn-dark"
+              className="absolute inset-0 mx-auto h-full w-full max-w-4xl overflow-y-auto rounded-none bg-xyn-surface p-6 sm:bottom-0 sm:left-0 sm:right-0 sm:top-auto sm:h-auto sm:max-h-[90vh] sm:rounded-t-[32px] sm:p-8 dark:bg-xyn-dark"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -708,7 +738,7 @@ export default function MarketPage() {
                 <div className="mt-6">
                   <div className="mb-3 text-sm font-semibold">Unlocked config</div>
                   <pre className="overflow-x-auto rounded-2xl bg-black/90 p-5 text-sm text-green-400">{unlockJson}</pre>
-                  <div className="mt-4 flex gap-3">
+                  <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                     <button type="button" onClick={copyJson} className={`rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition ${actionToast === "Copied" ? "scale-95 bg-emerald-500/10 text-emerald-600 dark:text-emerald-300" : "dark:border-white/10"}`}>
                       Copy JSON
                     </button>
@@ -763,7 +793,7 @@ export default function MarketPage() {
               initial={{ x: 360 }}
               animate={{ x: 0 }}
               exit={{ x: 360 }}
-              className="absolute right-0 top-0 h-full w-full max-w-md bg-xyn-surface p-8 shadow-2xl dark:bg-xyn-dark"
+              className="absolute inset-0 h-full w-full bg-xyn-surface p-6 shadow-2xl sm:left-auto sm:right-0 sm:top-0 sm:max-w-md sm:p-8 dark:bg-xyn-dark"
             >
               <div className="flex items-center justify-between">
                 <h3 className="text-2xl font-semibold">My Licenses</h3>

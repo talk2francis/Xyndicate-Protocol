@@ -95,7 +95,7 @@ export default function ArenaPage() {
   const [visibleFeedCount, setVisibleFeedCount] = useState(20);
   const [copyToast, setCopyToast] = useState<string | null>(null);
 
-  const { data, isLoading } = useQuery<LeaderboardResponse>({
+  const { data, isLoading, isError, refetch } = useQuery<LeaderboardResponse>({
     queryKey: ["arena-leaderboard"],
     queryFn: async () => {
       const res = await fetch("/api/leaderboard");
@@ -224,7 +224,7 @@ export default function ArenaPage() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-3xl border border-black/10 dark:border-white/10">
+        <div className="overflow-x-auto rounded-3xl border border-black/10 dark:border-white/10">
           <div className="hidden grid-cols-[0.8fr_1.4fr_0.9fr_1.2fr_2fr_1fr_1fr] gap-4 bg-black/5 px-5 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:bg-white/5 dark:text-zinc-400 lg:grid">
             <div>Rank</div>
             <div>Squad Name</div>
@@ -240,6 +240,15 @@ export default function ArenaPage() {
               {Array.from({ length: 4 }).map((_, index) => (
                 <div key={index} className="h-20 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />
               ))}
+            </div>
+          ) : isError ? (
+            <div className="p-5">
+              <div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">
+                Failed to load leaderboard data.
+                <button type="button" onClick={() => refetch()} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">
+                  Retry
+                </button>
+              </div>
             </div>
           ) : (
             <div className="divide-y divide-black/10 dark:divide-white/10">

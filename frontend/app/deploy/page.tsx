@@ -347,6 +347,14 @@ export default function DeployPage() {
             className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5"
           >
             <h1 className="text-4xl font-semibold tracking-tight">Fund & enroll</h1>
+            {error ? (
+              <div className="mt-6 rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">
+                {error}
+                <div className="mt-3">
+                  <button type="button" onClick={handleEnroll} className="font-semibold underline">Retry</button>
+                </div>
+              </div>
+            ) : null}
             <div className="mt-8 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
               <div className="rounded-3xl border border-black/10 bg-xyn-surface p-6 dark:border-white/10 dark:bg-xyn-dark">
                 <div className="space-y-3 text-sm">
@@ -391,14 +399,6 @@ export default function DeployPage() {
                   </div>
                 ) : null}
 
-                {error ? (
-                  <div className="mt-5 rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">
-                    {error}
-                    <div className="mt-3">
-                      <button type="button" onClick={handleEnroll} className="font-semibold underline">Try again</button>
-                    </div>
-                  </div>
-                ) : null}
               </div>
             </div>
           </motion.section>
@@ -419,7 +419,7 @@ export default function DeployPage() {
               {okLinkVault ? <div>Vault Deposit TX: <a className="underline" href={okLinkVault} target="_blank" rel="noreferrer">{vaultTxHash}</a></div> : null}
               <div>First cycle runs in {formatCountdown(cycleCountdown)}</div>
             </div>
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
               <Link href="/arena" className="rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90">
                 View in Arena →
               </Link>

@@ -18,7 +18,6 @@ const SAMPLE_SIGNAL_RESPONSE = `{
   "recommendation": "BUY"
 }`;
 const FOOTER_OKLINK = "https://www.oklink.com/xlayer/address/0xC9E69be5ecD65a9106800E07E05eE44a63559F8b";
-const HOME_BUILD_MARKER = "2026-04-09-vercel-refresh";
 const GITHUB_URL = "https://github.com/talk2francis/Xyndicate-Protocol";
 const TWITTER_URL = "https://x.com/xyndicatepro";
 
@@ -123,8 +122,28 @@ function PipelineGraphic() {
   );
 }
 
+function SkeletonCard() {
+  return <div className="h-28 animate-pulse rounded-3xl bg-black/5 dark:bg-white/5" />;
+}
+
+function RetryState({ message, onRetry }: { message: string; onRetry: () => void }) {
+  return (
+    <div className="rounded-3xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">
+      {message}
+      <button type="button" onClick={onRetry} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">
+        Retry
+      </button>
+    </div>
+  );
+}
+
 export default function HomePage() {
-  const { data: leaderboard } = useQuery<LeaderboardResponse>({
+  const {
+    data: leaderboard,
+    isLoading: loadingLeaderboard,
+    isError: leaderboardError,
+    refetch: refetchLeaderboard,
+  } = useQuery<LeaderboardResponse>({
     queryKey: ["leaderboard-home"],
     queryFn: async () => {
       const res = await fetch("/api/leaderboard");
@@ -134,7 +153,12 @@ export default function HomePage() {
     refetchInterval: 60000,
   });
 
-  const { data: signal } = useQuery<SignalResponse>({
+  const {
+    data: signal,
+    isLoading: loadingSignal,
+    isError: signalError,
+    refetch: refetchSignal,
+  } = useQuery<SignalResponse>({
     queryKey: ["signal-home"],
     queryFn: async () => {
       const res = await fetch("/api/signal");
@@ -182,7 +206,7 @@ export default function HomePage() {
               Six agents. Dual-source routing. Every decision on-chain.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
               <Link href="/deploy" className="rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90">
                 Deploy a Squad →
               </Link>
@@ -201,19 +225,27 @@ export default function HomePage() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-10">
-        <div className="grid gap-4 md:grid-cols-4">
-          {[
-            { label: "Total Decisions Logged", value: countTotal },
-            { label: "Active Squads", value: countSquads },
-            { label: "Uniswap Routes Found", value: 0 },
-            { label: "Season", value: "LIVE" },
-          ].map((item) => (
-            <div key={item.label} className="rounded-3xl border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">{item.label}</div>
-              <div className="mt-3 text-3xl font-semibold text-xyn-dark dark:text-white">{item.value}</div>
-            </div>
-          ))}
-        </div>
+        {loadingLeaderboard ? (
+          <div className="grid gap-4 md:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, index) => <SkeletonCard key={index} />)}
+          </div>
+        ) : leaderboardError ? (
+          <RetryState message="Failed to load live protocol stats." onRetry={() => refetchLeaderboard()} />
+        ) : (
+          <div className="grid gap-4 md:grid-cols-4">
+            {[
+              { label: "Total Decisions Logged", value: countTotal },
+              { label: "Active Squads", value: countSquads },
+              { label: "Uniswap Routes Found", value: 0 },
+              { label: "Season", value: "LIVE" },
+            ].map((item) => (
+              <div key={item.label} className="rounded-3xl border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">
+                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">{item.label}</div>
+                <div className="mt-3 text-3xl font-semibold text-xyn-dark dark:text-white">{item.value}</div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-10">
@@ -242,11 +274,19 @@ export default function HomePage() {
 
           <div className="rounded-3xl border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">
             <div className="text-sm font-semibold">Get Edge</div>
-            <div className="mt-4 text-lg font-medium">
-              {edgePair
-                ? `${edgePair.pair.split("/")[0] || "ETH"}: OKX $${edgePair.okxPrice.toFixed(2)} vs Uniswap $${edgePair.uniswapPrice.toFixed(2)} → Router sees ${Math.abs(edgePair.spreadBps / 100).toFixed(2)}% spread`
-                : "OKX: $1,823.45 vs Uniswap: $1,829.12 → Router saves 0.31%"}
-            </div>
+            {loadingSignal ? (
+              <div className="mt-4 h-20 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />
+            ) : signalError ? (
+              <div className="mt-4">
+                <RetryState message="Failed to load live market edge." onRetry={() => refetchSignal()} />
+              </div>
+            ) : (
+              <div className="mt-4 text-lg font-medium break-words">
+                {edgePair
+                  ? `${edgePair.pair.split("/")[0] || "ETH"}: OKX $${edgePair.okxPrice.toFixed(2)} vs Uniswap $${edgePair.uniswapPrice.toFixed(2)} → Router sees ${Math.abs(edgePair.spreadBps / 100).toFixed(2)}% spread`
+                  : "OKX: $1,823.45 vs Uniswap: $1,829.12 → Router saves 0.31%"}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -258,38 +298,44 @@ export default function HomePage() {
         </div>
 
         <div className="space-y-4">
-          <AnimatePresence initial={false}>
-            {liveFeed.map((item) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: -16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{ duration: 0.25 }}
-                className="rounded-3xl border border-black/10 bg-white/70 p-5 dark:border-white/10 dark:bg-white/5"
-              >
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">
-                      {item.squadId} · {formatTimestamp(item.timestamp)}
+          {loadingLeaderboard ? (
+            Array.from({ length: 3 }).map((_, index) => <SkeletonCard key={index} />)
+          ) : leaderboardError ? (
+            <RetryState message="Failed to load live decisions feed." onRetry={() => refetchLeaderboard()} />
+          ) : (
+            <AnimatePresence initial={false}>
+              {liveFeed.map((item) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: -16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={{ duration: 0.25 }}
+                  className="rounded-3xl border border-black/10 bg-white/70 p-5 dark:border-white/10 dark:bg-white/5"
+                >
+                  <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <div>
+                      <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">
+                        {item.squadId} · {formatTimestamp(item.timestamp)}
+                      </div>
+                      <div className="mt-2 flex flex-wrap items-center gap-3">
+                        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${actionClass(item.action)}`}>{item.action}</span>
+                        <span className="text-sm font-medium">{item.asset}</span>
+                      </div>
+                      <p className="mt-3 break-words text-sm text-xyn-muted dark:text-zinc-300">{item.rationale}</p>
                     </div>
-                    <div className="mt-2 flex flex-wrap items-center gap-3">
-                      <span className={`rounded-full px-3 py-1 text-xs font-semibold ${actionClass(item.action)}`}>{item.action}</span>
-                      <span className="text-sm font-medium">{item.asset}</span>
+                    <div className="w-full sm:min-w-[180px] sm:max-w-[220px]">
+                      <div className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Confidence</div>
+                      <div className="h-2 rounded-full bg-black/10 dark:bg-white/10">
+                        <div className="h-2 rounded-full bg-xyn-gold" style={{ width: `${item.confidence}%` }} />
+                      </div>
+                      <div className="mt-2 text-sm font-medium">{item.confidence}%</div>
                     </div>
-                    <p className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">{item.rationale}</p>
                   </div>
-                  <div className="min-w-[180px]">
-                    <div className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Confidence</div>
-                    <div className="h-2 rounded-full bg-black/10 dark:bg-white/10">
-                      <div className="h-2 rounded-full bg-xyn-gold" style={{ width: `${item.confidence}%` }} />
-                    </div>
-                    <div className="mt-2 text-sm font-medium">{item.confidence}%</div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          )}
         </div>
       </section>
 

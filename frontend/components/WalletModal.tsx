@@ -120,8 +120,8 @@ export function WalletModal() {
   if (!isModalOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
-      <div className="w-full max-w-xl rounded-2xl border border-black/10 bg-xyn-surface p-6 shadow-2xl dark:border-white/10 dark:bg-xyn-dark">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 px-0 sm:px-4 backdrop-blur-sm">
+      <div className="h-full w-full overflow-y-auto rounded-none border border-black/10 bg-xyn-surface p-6 shadow-2xl sm:h-auto sm:max-w-xl sm:rounded-2xl dark:border-white/10 dark:bg-xyn-dark">
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <h2 className="text-2xl font-semibold">Connect wallet</h2>

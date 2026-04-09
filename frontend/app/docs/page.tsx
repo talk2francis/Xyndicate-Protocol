@@ -145,10 +145,12 @@ export default function DocsPage() {
       let data: unknown;
       if (tool === "get_leaderboard") {
         const res = await fetch("/api/leaderboard");
+        if (!res.ok) throw new Error("Leaderboard query failed");
         data = await res.json();
       } else if (tool === "get_market_signal") {
         const res = await fetch("/api/signal");
         const json = await res.json();
+        if (!res.ok) throw new Error(json?.error || "Signal query failed");
         data = json?.pairs?.find((item: any) => item.pair === pair.replace("USDC", "USDT")) || json;
       } else {
         const res = await fetch("/api/mcp", {
@@ -156,7 +158,9 @@ export default function DocsPage() {
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ tool: "execute_route_query", params: { pair } }),
         });
-        data = await res.json();
+        const json = await res.json();
+        if (!res.ok) throw new Error(json?.error || "MCP query failed");
+        data = json;
       }
 
       setResponseText(JSON.stringify(data, null, 2));
@@ -331,12 +335,12 @@ export default function DocsPage() {
 
       <AnimatePresence>
         {showOnchainDemo ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/60 p-6 backdrop-blur-sm" onClick={() => setShowOnchainDemo(false)}>
-            <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} className="mx-auto mt-24 max-w-2xl rounded-[32px] border border-white/10 bg-xyn-surface p-8 dark:bg-xyn-dark" onClick={(e) => e.stopPropagation()}>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/60 p-0 sm:p-6 backdrop-blur-sm" onClick={() => setShowOnchainDemo(false)}>
+            <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} className="mx-auto mt-0 h-full w-full overflow-y-auto rounded-none border border-white/10 bg-xyn-surface p-6 sm:mt-24 sm:h-auto sm:max-w-2xl sm:rounded-[32px] sm:p-8 dark:bg-xyn-dark" onClick={(e) => e.stopPropagation()}>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">On-chain demo</p>
               <h3 className="mt-3 text-3xl font-semibold tracking-tight">This runs the live wallet flow.</h3>
               <p className="mt-4 text-sm text-xyn-muted dark:text-zinc-300">You will connect a wallet, switch to X Layer if needed, and trigger the real Deploy/Enroll path. This is optional and separate from the zero-friction browser query demo.</p>
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a href="/deploy" className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark">Continue to Deploy →</a>
                 <a href="/market" className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10">View Market →</a>
                 <button type="button" onClick={() => setShowOnchainDemo(false)} className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10">Cancel</button>
@@ -348,9 +352,9 @@ export default function DocsPage() {
 
       <AnimatePresence>
         {showArchitecture ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/70 p-6 backdrop-blur-sm" onClick={() => setShowArchitecture(false)}>
-            <motion.div initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.96, opacity: 0 }} className="mx-auto flex h-full max-w-6xl items-center justify-center">
-              <div className="w-full overflow-hidden rounded-[32px] border border-white/10 bg-black p-6" onClick={(e) => e.stopPropagation()} dangerouslySetInnerHTML={{ __html: ARCHITECTURE_SVG }} />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/70 p-0 sm:p-6 backdrop-blur-sm" onClick={() => setShowArchitecture(false)}>
+            <motion.div initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.96, opacity: 0 }} className="mx-auto flex h-full w-full max-w-6xl items-center justify-center">
+              <div className="h-full w-full overflow-auto rounded-none border border-white/10 bg-black p-4 sm:h-auto sm:rounded-[32px] sm:p-6" onClick={(e) => e.stopPropagation()} dangerouslySetInnerHTML={{ __html: ARCHITECTURE_SVG }} />
             </motion.div>
           </motion.div>
         ) : null}

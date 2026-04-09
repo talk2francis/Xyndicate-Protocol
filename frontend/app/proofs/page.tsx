@@ -71,7 +71,7 @@ export default function ProofsPage() {
   const [filter, setFilter] = useState<"All" | "Decisions" | "Swaps" | "Payments" | "Vault Events">("All");
   const [page, setPage] = useState(1);
 
-  const { data, isLoading } = useQuery<ProofsResponse>({
+  const { data, isLoading, isError, refetch } = useQuery<ProofsResponse>({
     queryKey: ["proofs-page"],
     queryFn: async () => {
       const res = await fetch("/api/proofs");
@@ -163,7 +163,7 @@ export default function ProofsPage() {
           </button>
         </div>
 
-        <div className="overflow-hidden rounded-3xl border border-black/10 dark:border-white/10">
+        <div className="overflow-x-auto rounded-3xl border border-black/10 dark:border-white/10">
           <div className="hidden grid-cols-[0.9fr_1.2fr_1.5fr_1fr_1fr_0.8fr] gap-4 bg-black/5 px-5 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:bg-white/5 dark:text-zinc-400 lg:grid">
             <div>Type</div>
             <div>Timestamp</div>
@@ -178,6 +178,15 @@ export default function ProofsPage() {
               {Array.from({ length: 6 }).map((_, index) => (
                 <div key={index} className="h-16 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />
               ))}
+            </div>
+          ) : isError ? (
+            <div className="p-5">
+              <div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">
+                Failed to load proof artifacts.
+                <button type="button" onClick={() => refetch()} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">
+                  Retry
+                </button>
+              </div>
             </div>
           ) : (
             <div className="divide-y divide-black/10 dark:divide-white/10">
@@ -206,7 +215,7 @@ export default function ProofsPage() {
           )}
         </div>
 
-        <div className="mt-6 flex items-center justify-between">
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-sm text-xyn-muted dark:text-zinc-300">Page {currentPage} of {totalPages}</div>
           <div className="flex gap-3">
             <button
