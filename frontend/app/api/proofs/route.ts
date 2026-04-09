@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { ethers } from "ethers";
 
 const BASE = "https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend";
 const OKLINK_BASE = "https://www.oklink.com/xlayer/tx";
+const XLAYER_RPC = process.env.NEXT_PUBLIC_XLAYER_RPC || "https://rpc.xlayer.tech";
 
 type ProofItem = {
   type: "decision" | "swap" | "payment" | "vault" | "deploy";
@@ -56,27 +58,66 @@ export async function GET() {
       });
 
     const decisionEntries = Array.isArray(deployments?.decisionLogEntries) ? deployments.decisionLogEntries : [];
-    const entryByTxHash = new Map<string, any>(
-      decisionEntries
-        .filter((entry: any) => entry?.txHash)
-        .map((entry: any) => [String(entry.txHash).toLowerCase(), entry] as const),
-    );
+    const fallbackHashes = Object.values(txhashes || {}).map(String);
+    const decisionLogAddress = deployments?.DecisionLog?.address;
 
-    const decisionItems: ProofItem[] = Object.entries(txhashes || {}).map(([index, txHash]) => {
-      const normalizedHash = String(txHash);
-      const matchedEntry = entryByTxHash.get(normalizedHash.toLowerCase());
-      const labelSquad = matchedEntry?.squadId || "XYNDICATE";
+    let decisionItems: ProofItem[] = [];
 
-      return {
-        type: "decision",
-        label: `${labelSquad} decision`,
-        txHash: normalizedHash,
-        timestamp: normalizeTimestamp(matchedEntry?.timestamp ?? index),
-        amount: null,
-        blockNumber: null,
-        explorerUrl: `${OKLINK_BASE}/${normalizedHash}`,
-      };
-    });
+    if (decisionLogAddress) {
+      try {
+        const provider = new ethers.JsonRpcProvider(XLAYER_RPC);
+        const contract = new ethers.Contract(
+          decisionLogAddress,
+          [
+            "function getDecisionCount() view returns (uint256)",
+            "function getDecision(uint256 index) view returns (string squadId, string agentChain, string rationale, uint256 timestamp)",
+          ],
+          provider,
+        );
+
+        const onchainCount = Number(await contract.getDecisionCount());
+        const startIndex = Math.max(0, onchainCount - 250);
+        const rows = await Promise.all(
+          Array.from({ length: onchainCount - startIndex }, (_, offset) => contract.getDecision(startIndex + offset)),
+        );
+
+        decisionItems = rows.map((row: any, idx: number) => {
+          const txHash = fallbackHashes[startIndex + idx] || `decision-${startIndex + idx}`;
+          const squadId = String(row?.squadId || "XYNDICATE");
+          return {
+            type: "decision",
+            label: `${squadId} decision`,
+            txHash,
+            timestamp: normalizeTimestamp(row?.timestamp),
+            amount: null,
+            blockNumber: null,
+            explorerUrl: fallbackHashes[startIndex + idx] ? `${OKLINK_BASE}/${txHash}` : `${OKLINK_BASE}`,
+          };
+        });
+      } catch {
+        const entryByTxHash = new Map<string, any>(
+          decisionEntries
+            .filter((entry: any) => entry?.txHash)
+            .map((entry: any) => [String(entry.txHash).toLowerCase(), entry] as const),
+        );
+
+        decisionItems = Object.entries(txhashes || {}).map(([index, txHash]) => {
+          const normalizedHash = String(txHash);
+          const matchedEntry = entryByTxHash.get(normalizedHash.toLowerCase());
+          const labelSquad = matchedEntry?.squadId || "XYNDICATE";
+
+          return {
+            type: "decision",
+            label: `${labelSquad} decision`,
+            txHash: normalizedHash,
+            timestamp: normalizeTimestamp(matchedEntry?.timestamp ?? index),
+            amount: null,
+            blockNumber: null,
+            explorerUrl: `${OKLINK_BASE}/${normalizedHash}`,
+          };
+        });
+      }
+    }
 
     const paymentItems: ProofItem[] = [
       ...(Array.isArray(agentPayments) ? agentPayments : []).map((payment: any) => ({
