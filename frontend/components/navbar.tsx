@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useWallet } from "@/lib/wallet-context";
 
@@ -31,6 +33,8 @@ function Logo() {
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [walletMenuOpen, setWalletMenuOpen] = useState(false);
+  const pathname = usePathname();
   const { address, connect, disconnect, isCorrectChain } = useWallet();
 
   const buttonLabel = useMemo(() => {
@@ -64,7 +68,7 @@ export function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm text-xyn-muted transition hover:text-xyn-dark dark:text-zinc-300 dark:hover:text-white"
+              className={`rounded-full px-3 py-2 text-sm transition ${pathname === item.href ? "bg-xyn-gold/15 font-semibold text-xyn-dark dark:text-xyn-gold" : "text-xyn-muted hover:text-xyn-dark dark:text-zinc-300 dark:hover:text-white"}`}
             >
               {item.label}
             </Link>
@@ -73,13 +77,32 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <button
-            type="button"
-            onClick={address ? disconnect : connect}
-            className="rounded-full bg-xyn-gold px-4 py-2 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
-          >
-            {buttonLabel}
-          </button>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={address ? () => setWalletMenuOpen((prev) => !prev) : connect}
+              className="flex items-center gap-2 rounded-full bg-xyn-gold px-4 py-2 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
+            >
+              {buttonLabel}
+              {address ? <ChevronDown className="h-4 w-4" /> : null}
+            </button>
+
+            {address && walletMenuOpen ? (
+              <div className="absolute right-0 mt-2 w-52 rounded-2xl border border-black/10 bg-white/95 p-2 shadow-xl dark:border-white/10 dark:bg-zinc-900/95">
+                <div className="px-3 py-2 text-xs text-xyn-muted dark:text-zinc-400">Connected wallet</div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    disconnect();
+                    setWalletMenuOpen(false);
+                  }}
+                  className="w-full rounded-xl px-3 py-2 text-left text-sm font-semibold text-rose-600 transition hover:bg-rose-500/10 dark:text-rose-300"
+                >
+                  Disconnect wallet
+                </button>
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
     </header>

@@ -46,3 +46,13 @@ body {
 .animate-xyn-pulse-run {
   animation: xyn-pulse-run 4s linear infinite;
 }
+
+select option {
+  color: #0a0a0a;
+  background: #ffffff;
+}
+
+.dark select option {
+  color: #f5f4f0;
+  background: #18181b;
+}

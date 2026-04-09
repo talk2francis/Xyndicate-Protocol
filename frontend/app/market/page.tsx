@@ -113,6 +113,12 @@ export default function MarketPage() {
   const strategyLicenseAddress = (deployments as any)?.StrategyLicense?.address || "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186";
   const strategyRegistryAddress = (deployments as any)?.StrategyRegistry?.address;
   const seasonManagerAddress = (deployments as any)?.x402Details?.contract || "0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1";
+
+  const resolveProvider = () => {
+    if (typeof window === "undefined") return null;
+    return window.okxwallet ?? window.ethereum ?? null;
+  };
+
   useEffect(() => {
     const loadStrategies = async () => {
       const res = await fetch("/api/strategies");
@@ -228,13 +234,14 @@ export default function MarketPage() {
   }, [filter, search, sort, strategies]);
 
   const ensureWallet = async () => {
-    if (!window.ethereum) throw new Error("No wallet provider detected");
-    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-    const chainHex = await window.ethereum.request({ method: "eth_chainId" });
+    const provider = resolveProvider();
+    if (!provider?.request) throw new Error("No wallet provider detected");
+    const accounts = await provider.request({ method: "eth_requestAccounts" });
+    const chainHex = await provider.request({ method: "eth_chainId" });
     const chainId = Number.parseInt(chainHex, 16);
 
     if (chainId !== XLAYER_CHAIN_ID) {
-      await window.ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: XLAYER_CHAIN_ID_HEX }] });
+      await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: XLAYER_CHAIN_ID_HEX }] });
     }
 
     setWalletState({ address: accounts?.[0] || null, chainId: XLAYER_CHAIN_ID });
@@ -251,9 +258,10 @@ export default function MarketPage() {
 
       const walletAddress = address || (await ensureWallet());
       if (!walletAddress) throw new Error("Wallet required");
-      if (!window.ethereum) throw new Error("Wallet provider unavailable");
+      const injectedProvider = resolveProvider();
+      if (!injectedProvider) throw new Error("Wallet provider unavailable");
 
-      const provider = new ethers.BrowserProvider(window.ethereum as any);
+      const provider = new ethers.BrowserProvider(injectedProvider as any);
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(strategyLicenseAddress, LICENSE_ABI, signer);
       const tx = await contract.buyLicense(squadKey(selected.squadId), { value: BigInt(priceWei) });
@@ -333,9 +341,10 @@ export default function MarketPage() {
 
       const walletAddress = address || (await ensureWallet());
       if (!walletAddress) throw new Error("Wallet required");
-      if (!window.ethereum) throw new Error("Wallet provider unavailable");
+      const injectedProvider = resolveProvider();
+      if (!injectedProvider) throw new Error("Wallet provider unavailable");
 
-      const provider = new ethers.BrowserProvider(window.ethereum as any);
+      const provider = new ethers.BrowserProvider(injectedProvider as any);
       const signer = await provider.getSigner();
       const registry = new ethers.Contract(strategyRegistryAddress, REGISTRY_ABI, signer);
       const tx = await registry.listStrategy(
@@ -396,7 +405,7 @@ export default function MarketPage() {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="rounded-2xl border border-black/10 bg-transparent px-4 py-3 outline-none focus:border-xyn-gold dark:border-white/10"
+            className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark outline-none focus:border-xyn-gold dark:border-white/10 dark:bg-zinc-900 dark:text-white"
           >
             <option>Best Performance</option>
             <option>Most Decisions</option>
@@ -482,7 +491,7 @@ export default function MarketPage() {
               <select
                 value={selectedSquadId}
                 onChange={(event) => setSelectedSquadId(event.target.value)}
-                className="w-full rounded-2xl border border-black/10 bg-transparent px-4 py-3 outline-none focus:border-xyn-gold dark:border-white/10"
+                className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark outline-none focus:border-xyn-gold dark:border-white/10 dark:bg-zinc-900 dark:text-white"
                 disabled={!enrolledOptions.length}
               >
                 {enrolledOptions.length ? enrolledOptions.map((strategy) => (
