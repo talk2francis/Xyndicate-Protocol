@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import deployments from "@/deployments.json";
+import deployments from "../deployments.json";
 
 const DECISION_LOG_ABI = ["function logDecision(string,string,string)"];
 const STRATEGY_VAULT_ABI = ["function recordPnL(bytes32 squadId, int256 delta)"];
