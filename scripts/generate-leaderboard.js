@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const fs = require('fs');
 const path = require('path');
+const { writeAndPublishJson } = require('./github-artifacts');
 
 const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
@@ -9,6 +10,7 @@ const DEPLOYMENTS_PATH = path.join(FRONTEND_DIR, 'deployments.json');
 const TXHASHES_PATH = path.join(FRONTEND_DIR, 'txhashes.json');
 const AGENT_PAYMENTS_PATH = path.join(FRONTEND_DIR, 'agentpayments.json');
 const OUTPUT_PATH = path.join(FRONTEND_DIR, 'leaderboard.json');
+const OUTPUT_REPO_PATH = 'frontend/leaderboard.json';
 
 function readJson(filePath, fallback) {
   try {
@@ -112,16 +114,24 @@ function buildLeaderboard() {
   };
 }
 
-function writeLeaderboardArtifact() {
+async function writeLeaderboardArtifact() {
   const leaderboard = buildLeaderboard();
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(leaderboard, null, 2) + '\n');
+  await writeAndPublishJson({
+    localPath: OUTPUT_PATH,
+    repoPath: OUTPUT_REPO_PATH,
+    content: leaderboard,
+    message: `Publish leaderboard artifact at ${leaderboard.updatedAt}`,
+  });
   console.log(`Leaderboard artifact updated: ${OUTPUT_PATH}`);
   console.log(`Squads: ${leaderboard.squads.length} | Decisions: ${leaderboard.totalDecisions}`);
   return leaderboard;
 }
 
 if (require.main === module) {
-  writeLeaderboardArtifact();
+  writeLeaderboardArtifact().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
 }
 
 module.exports = { buildLeaderboard, writeLeaderboardArtifact };

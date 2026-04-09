@@ -3,6 +3,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { ethers } = require('ethers');
+const { writeAndPublishJson } = require('./github-artifacts');
 
 const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
@@ -10,6 +11,7 @@ const DEPLOYMENTS_PATH = path.join(FRONTEND_DIR, 'deployments.json');
 const TXHASHES_PATH = path.join(FRONTEND_DIR, 'txhashes.json');
 const AGENT_PAYMENTS_PATH = path.join(FRONTEND_DIR, 'agentpayments.json');
 const OUTPUT_PATH = path.join(FRONTEND_DIR, 'proofs.json');
+const OUTPUT_REPO_PATH = 'frontend/proofs.json';
 const OKLINK_BASE = 'https://www.oklink.com/xlayer/tx';
 const XLAYER_RPC = process.env.NEXT_PUBLIC_XLAYER_RPC || process.env.XLAYER_RPC || 'https://rpc.xlayer.tech';
 
@@ -233,7 +235,12 @@ async function buildProofsArtifact() {
 
 async function writeProofsArtifact() {
   const artifact = await buildProofsArtifact();
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(artifact, null, 2) + '\n');
+  await writeAndPublishJson({
+    localPath: OUTPUT_PATH,
+    repoPath: OUTPUT_REPO_PATH,
+    content: artifact,
+    message: `Publish proofs artifact at ${artifact.updatedAt}`,
+  });
   console.log(`Proofs artifact updated: ${OUTPUT_PATH}`);
   console.log(`Total TXs: ${artifact.totalTxCount} | On-chain decisions: ${artifact.onchainDecisionCount}`);
   return artifact;

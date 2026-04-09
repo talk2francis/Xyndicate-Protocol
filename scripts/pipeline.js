@@ -62,7 +62,7 @@ async function runFullPipeline() {
   cursor = Date.now();
   state = await logAgentStep('narrator', result, cycleNumber, cursor);
 
-  const leaderboard = writeLeaderboardArtifact();
+  const leaderboard = await writeLeaderboardArtifact();
   const proofs = await writeProofsArtifact();
   state = completeCycleState();
   await publishCycleState(state, `Publish Arena cycle ${state.cycleNumber} completion state`);
