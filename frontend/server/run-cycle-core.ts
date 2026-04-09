@@ -59,7 +59,7 @@ async function fetchMarketSnapshot() {
   const { uniswapPrice, source } = await fetchUniswapPoolPrice(okxPrice);
   const spreadBps = okxPrice ? Number((((uniswapPrice - okxPrice) / okxPrice) * 10000).toFixed(2)) : 0;
 
-  console.log(`OKX: ${okxPrice} | Uniswap: ${uniswapPrice} | Spread: ${spreadBps}bps`);
+  console.error(`OKX: ${okxPrice} | Uniswap: ${uniswapPrice} | Spread: ${spreadBps}bps`);
 
   return {
     pair: "ETH-USDT",
@@ -132,7 +132,7 @@ function routeDecision(strategistDecision: any, marketData: any) {
     spreadBps: Number(spreadBps.toFixed(2)),
   };
 
-  console.log(`Router: selected ${route} — spread ${routedDecision.spreadBps}bps — ${routingReason}`);
+  console.error(`Router: selected ${route} — spread ${routedDecision.spreadBps}bps — ${routingReason}`);
   return routedDecision;
 }
 
@@ -169,7 +169,7 @@ async function recordVaultPnL(routedDecision: any) {
 
   const tx = await contract.recordPnL(SQUAD_ID_BYTES32, delta);
   await tx.wait(1);
-  console.log(`StrategyVault: recorded PnL delta ${delta.toString()} for ${SQUAD_ID} (${tx.hash})`);
+  console.error(`StrategyVault: recorded PnL delta ${delta.toString()} for ${SQUAD_ID} (${tx.hash})`);
   return { pnlDelta: delta.toString(), vaultTxHash: tx.hash };
 }
 
