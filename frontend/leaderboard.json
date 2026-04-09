@@ -2,6 +2,42 @@
   "squads": [
     {
       "rank": 1,
+      "squadId": "XYNDICATE_ALPHA",
+      "decisions": 1,
+      "confidence": 0.84,
+      "lastAction": "HOLD ETH (100% treasury) · Price change in the last 24 hours is stable. High price spread between exchanges poses risk. Wait for more favorable conditions.",
+      "latestTimestamp": 1775778027,
+      "stats": {
+        "buys": 0,
+        "sells": 0,
+        "holds": 1,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "ETH"
+      },
+      "txHashes": [
+        "0x646c6cf8be29abf65ee41f5a81e1293145ce9b71e1cd4b3904936d4c4ab7c7d5"
+      ]
+    },
+    {
+      "rank": 2,
+      "squadId": "SQUAD_NOVA",
+      "decisions": 1,
+      "confidence": 0.84,
+      "lastAction": "HOLD OKB (0% treasury) · Price change in the last 24 hours is positive. Analyst recommendation is to wait with a confidence score of 0.8.",
+      "latestTimestamp": 1775778027,
+      "stats": {
+        "buys": 0,
+        "sells": 0,
+        "holds": 1,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "OKB"
+      },
+      "txHashes": [
+        "0x514cfd032f71a86a193fb6bd5d42c363332f876ee3fdce0ea9ace533f461f2ce"
+      ]
+    },
+    {
+      "rank": 3,
       "squadId": "SYNDICATE_ALPHA",
       "decisions": 27,
       "confidence": 0.84,
@@ -29,8 +65,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-09T23:00:46.675Z",
-  "totalDecisions": 27,
+  "updatedAt": "2026-04-09T23:40:29.541Z",
+  "totalDecisions": 29,
   "supportingProofs": {
     "narratorPayments": 1,
     "latestNarratorPayment": {
