@@ -15,11 +15,11 @@ const XLAYER_CHAIN_ID_DECIMAL = 196;
 const XLAYER_CHAIN_ID_HEX = "0xC4";
 
 export function WalletModal() {
-  const { isModalOpen, closeModal, chainId, address, isCorrectChain, setWalletState, hasProvider } = useWallet();
+  const { isModalOpen, closeModal, chainId, address, isCorrectChain, selectedWallet, setWalletState, hasProvider } = useWallet();
   const [error, setError] = useState<string | null>(null);
   const [loadingWallet, setLoadingWallet] = useState<string | null>(null);
 
-  const resolveProvider = (walletId?: string) => {
+  const resolveProvider = (walletId?: string | null) => {
     if (typeof window === "undefined") return null;
 
     const providers = window.ethereum?.providers;
@@ -42,7 +42,7 @@ export function WalletModal() {
   };
 
   useEffect(() => {
-    const provider = resolveProvider();
+    const provider = resolveProvider(selectedWallet);
     if (!provider) return;
 
     const handleAccountsChanged = (accounts: string[]) => {
@@ -67,7 +67,7 @@ export function WalletModal() {
       provider.removeListener?.("accountsChanged", handleAccountsChanged);
       provider.removeListener?.("chainChanged", handleChainChanged);
     };
-  }, [address, chainId, hasProvider, setWalletState]);
+  }, [address, chainId, hasProvider, selectedWallet, setWalletState]);
 
   const walletRows = useMemo(() => WALLET_OPTIONS, []);
 
@@ -88,6 +88,7 @@ export function WalletModal() {
       setWalletState({
         address: accounts?.[0] || null,
         chainId: Number.isNaN(parsedChainId) ? null : parsedChainId,
+        selectedWallet: walletId,
       });
       closeModal();
     } catch (err: any) {
@@ -98,7 +99,7 @@ export function WalletModal() {
   };
 
   const switchToXLayer = async () => {
-    const provider = resolveProvider();
+    const provider = resolveProvider(selectedWallet);
     if (!provider?.request) {
       setError("No injected wallet detected in this browser.");
       return;
@@ -110,7 +111,7 @@ export function WalletModal() {
         method: "wallet_switchEthereumChain",
         params: [{ chainId: XLAYER_CHAIN_ID_HEX }],
       });
-      setWalletState({ address, chainId: XLAYER_CHAIN_ID_DECIMAL });
+      setWalletState({ address, chainId: XLAYER_CHAIN_ID_DECIMAL, selectedWallet });
     } catch (err: any) {
       setError(err?.message || "Failed to switch to X Layer.");
     }

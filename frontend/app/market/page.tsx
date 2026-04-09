@@ -89,7 +89,7 @@ function riskClass(risk: string) {
 }
 
 export default function MarketPage() {
-  const { address, connect, isCorrectChain, setWalletState } = useWallet();
+  const { address, connect, isCorrectChain, selectedWallet, setWalletState } = useWallet();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
   const [sort, setSort] = useState("Best Performance");
@@ -109,6 +109,7 @@ export default function MarketPage() {
   const [listingSuccess, setListingSuccess] = useState<string | null>(null);
   const [listingBusy, setListingBusy] = useState(false);
   const [enrolledOptions, setEnrolledOptions] = useState<Strategy[]>([]);
+  const [listingHint, setListingHint] = useState<string | null>(null);
 
   const strategyLicenseAddress = (deployments as any)?.StrategyLicense?.address || "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186";
   const strategyRegistryAddress = (deployments as any)?.StrategyRegistry?.address;
@@ -116,7 +117,23 @@ export default function MarketPage() {
 
   const resolveProvider = () => {
     if (typeof window === "undefined") return null;
-    return window.okxwallet ?? window.ethereum ?? null;
+    const providers = window.ethereum?.providers;
+    if (selectedWallet && providers?.length) {
+      const matched = providers.find((provider) => {
+        if (selectedWallet === "okx") return provider.isOKExWallet;
+        if (selectedWallet === "metamask") return provider.isMetaMask;
+        if (selectedWallet === "rabby") return provider.isRabby;
+        if (selectedWallet === "zerion") return provider.isZerion;
+        return false;
+      });
+      if (matched) return matched;
+    }
+
+    if (selectedWallet === "okx" && window.okxwallet?.request) {
+      return window.okxwallet;
+    }
+
+    return window.ethereum ?? window.okxwallet ?? null;
   };
 
   useEffect(() => {
@@ -177,6 +194,7 @@ export default function MarketPage() {
       if (!address) {
         setEnrolledOptions([]);
         setSelectedSquadId("");
+        setListingHint("Connect the enrolled squad wallet to list a strategy.");
         return;
       }
 
@@ -190,6 +208,7 @@ export default function MarketPage() {
         if (owner.toLowerCase() !== address.toLowerCase() || !active) {
           setEnrolledOptions([]);
           setSelectedSquadId("");
+          setListingHint("No active SeasonManager squad is enrolled for this connected wallet.");
           return;
         }
 
@@ -209,9 +228,11 @@ export default function MarketPage() {
 
         setEnrolledOptions(options);
         setSelectedSquadId((current) => current || options[0]?.squadId || "");
+        setListingHint(null);
       } catch {
         setEnrolledOptions([]);
         setSelectedSquadId("");
+        setListingHint("Could not load enrolled squad status from SeasonManager.");
       }
     };
 
@@ -244,7 +265,7 @@ export default function MarketPage() {
       await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: XLAYER_CHAIN_ID_HEX }] });
     }
 
-    setWalletState({ address: accounts?.[0] || null, chainId: XLAYER_CHAIN_ID });
+    setWalletState({ address: accounts?.[0] || null, chainId: XLAYER_CHAIN_ID, selectedWallet });
     return accounts?.[0] || null;
   };
 
@@ -519,6 +540,7 @@ export default function MarketPage() {
 
             {listingError ? <div className="rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">{listingError}</div> : null}
             {listingSuccess ? <div className="rounded-2xl bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">{listingSuccess}</div> : null}
+            {listingHint ? <div className="rounded-2xl bg-amber-500/10 p-4 text-sm text-amber-700 dark:text-amber-300">{listingHint}</div> : null}
 
             <div className="text-xs text-xyn-muted dark:text-zinc-400">
               This live path uses a dedicated registry contract so existing license history stays intact.
