@@ -56,25 +56,27 @@ export async function GET() {
       });
 
     const decisionEntries = Array.isArray(deployments?.decisionLogEntries) ? deployments.decisionLogEntries : [];
-    const decisionItems: ProofItem[] = decisionEntries.length
-      ? decisionEntries.map((entry: any, index: number) => ({
-          type: "decision",
-          label: entry?.squadId ? `${entry.squadId} decision` : `Decision ${index + 1}`,
-          txHash: entry.txHash,
-          timestamp: normalizeTimestamp(entry.timestamp),
-          amount: null,
-          blockNumber: null,
-          explorerUrl: `${OKLINK_BASE}/${entry.txHash}`,
-        }))
-      : Object.entries(txhashes || {}).map(([index, txHash]) => ({
-          type: "decision",
-          label: `Decision ${index}`,
-          txHash: String(txHash),
-          timestamp: Number(index) || 0,
-          amount: null,
-          blockNumber: null,
-          explorerUrl: `${OKLINK_BASE}/${txHash}`,
-        }));
+    const entryByTxHash = new Map<string, any>(
+      decisionEntries
+        .filter((entry: any) => entry?.txHash)
+        .map((entry: any) => [String(entry.txHash).toLowerCase(), entry] as const),
+    );
+
+    const decisionItems: ProofItem[] = Object.entries(txhashes || {}).map(([index, txHash]) => {
+      const normalizedHash = String(txHash);
+      const matchedEntry = entryByTxHash.get(normalizedHash.toLowerCase());
+      const labelSquad = matchedEntry?.squadId || "XYNDICATE";
+
+      return {
+        type: "decision",
+        label: `${labelSquad} decision`,
+        txHash: normalizedHash,
+        timestamp: normalizeTimestamp(matchedEntry?.timestamp ?? index),
+        amount: null,
+        blockNumber: null,
+        explorerUrl: `${OKLINK_BASE}/${normalizedHash}`,
+      };
+    });
 
     const paymentItems: ProofItem[] = [
       ...(Array.isArray(agentPayments) ? agentPayments : []).map((payment: any) => ({
