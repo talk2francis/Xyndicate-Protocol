@@ -10,6 +10,8 @@ import { useWallet } from "@/lib/wallet-context";
 const SEASON_MANAGER_ABI = [
   "function entryFee() view returns (uint256)",
   "function enroll(address agentWallet) external",
+  "function payEntryFee(string seasonId) external payable",
+  "function squads(address) view returns (address owner, address agentWallet, bool active)",
 ];
 const STRATEGY_VAULT_ABI = ["function deposit(bytes32 squadId) external payable"];
 const XLAYER_CHAIN_ID = 196;
@@ -149,10 +151,28 @@ export default function DeployPage() {
       const seasonManager = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, signer);
       const strategyVault = new ethers.Contract(strategyVaultAddress, STRATEGY_VAULT_ABI, signer);
       const squadId = ethers.encodeBytes32String(squadName.toUpperCase().slice(0, 31));
+      const seasonId = (deployments as any)?.x402Details?.seasonId || "SEASON_001";
+      const requiredFee = ethers.parseEther(entryFee || SYMBOLIC_DEPOSIT);
 
-      const enrollTx = await seasonManager.enroll(signerAddress);
-      setEnrollTxHash(enrollTx.hash);
-      await enrollTx.wait();
+      const existingSquad = await seasonManager.squads(signerAddress);
+      if (existingSquad?.owner && existingSquad.owner !== ethers.ZeroAddress) {
+        throw new Error("This wallet is already enrolled in Season 1.");
+      }
+
+      try {
+        const feeTx = await seasonManager.payEntryFee(seasonId, { value: requiredFee });
+        await feeTx.wait();
+      } catch (feeErr: any) {
+        throw new Error(feeErr?.shortMessage || feeErr?.message || "Entry fee payment failed");
+      }
+
+      try {
+        const enrollTx = await seasonManager.enroll(signerAddress);
+        setEnrollTxHash(enrollTx.hash);
+        await enrollTx.wait();
+      } catch (enrollErr: any) {
+        throw new Error(enrollErr?.shortMessage || enrollErr?.message || "Enroll transaction reverted on the live SeasonManager contract");
+      }
 
       const depositTx = await strategyVault.deposit(squadId, {
         value: ethers.parseEther(SYMBOLIC_DEPOSIT),
