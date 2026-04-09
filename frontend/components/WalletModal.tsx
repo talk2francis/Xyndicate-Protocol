@@ -5,10 +5,10 @@ import { X } from "lucide-react";
 import { useWallet } from "@/lib/wallet-context";
 
 const WALLET_OPTIONS = [
-  { id: "okx", name: "OKX Wallet", recommended: true, icon: "/wallets/okx.svg" },
-  { id: "metamask", name: "MetaMask", icon: "/wallets/metamask.svg" },
-  { id: "rabby", name: "Rabby", icon: "/wallets/rabby.svg" },
-  { id: "zerion", name: "Zerion", icon: "/wallets/zerion.svg" },
+  { id: "okx", name: "OKX Wallet", recommended: true, icon: "/wallets/okx.jpg" },
+  { id: "metamask", name: "MetaMask", icon: "/wallets/metamask.jpg" },
+  { id: "rabby", name: "Rabby", icon: "/wallets/rabby.jpg" },
+  { id: "zerion", name: "Zerion", icon: "/wallets/zerion.jpg" },
 ];
 
 const XLAYER_CHAIN_ID_DECIMAL = 196;
@@ -146,7 +146,7 @@ export function WalletModal() {
               className="flex items-center justify-between rounded-2xl border border-black/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/5"
             >
               <div className="flex items-center gap-3">
-                <img src={wallet.icon} alt={`${wallet.name} logo`} className="h-8 w-8 rounded-full bg-white object-contain p-1" />
+                <img src={wallet.icon} alt={`${wallet.name} logo`} className="h-9 w-9 rounded-full bg-white object-cover" />
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="font-medium">{wallet.name}</p>

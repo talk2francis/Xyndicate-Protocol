@@ -42,7 +42,7 @@ function riskTone(risk: Risk) {
 }
 
 export default function DeployPage() {
-  const { address, chainId, connect, isCorrectChain, setWalletState } = useWallet();
+  const { address, chainId, connect, isCorrectChain, selectedWallet, setWalletState } = useWallet();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [squadName, setSquadName] = useState("");
   const [risk, setRisk] = useState<Risk>("Balanced");
@@ -93,21 +93,43 @@ export default function DeployPage() {
     loadEntryFee();
   }, [seasonManagerAddress]);
 
-  const ensureWalletOnXLayer = async () => {
-    if (!window.ethereum) throw new Error("No wallet provider detected");
+  const resolveProvider = () => {
+    if (typeof window === "undefined") return null;
+    const providers = window.ethereum?.providers;
+    if (selectedWallet && providers?.length) {
+      const matched = providers.find((provider) => {
+        if (selectedWallet === "okx") return provider.isOKExWallet;
+        if (selectedWallet === "metamask") return provider.isMetaMask;
+        if (selectedWallet === "rabby") return provider.isRabby;
+        if (selectedWallet === "zerion") return provider.isZerion;
+        return false;
+      });
+      if (matched) return matched;
+    }
 
-    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-    const currentChainHex = await window.ethereum.request({ method: "eth_chainId" });
+    if (selectedWallet === "okx" && window.okxwallet?.request) {
+      return window.okxwallet;
+    }
+
+    return window.ethereum ?? window.okxwallet ?? null;
+  };
+
+  const ensureWalletOnXLayer = async () => {
+    const provider = resolveProvider();
+    if (!provider?.request) throw new Error("No wallet provider detected");
+
+    const accounts = await provider.request({ method: "eth_requestAccounts" });
+    const currentChainHex = await provider.request({ method: "eth_chainId" });
     const currentChainId = Number.parseInt(currentChainHex, 16);
 
     if (currentChainId !== XLAYER_CHAIN_ID) {
-      await window.ethereum.request({
+      await provider.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: XLAYER_CHAIN_ID_HEX }],
       });
     }
 
-    setWalletState({ address: accounts?.[0] || null, chainId: XLAYER_CHAIN_ID });
+    setWalletState({ address: accounts?.[0] || null, chainId: XLAYER_CHAIN_ID, selectedWallet });
     return accounts?.[0] || null;
   };
 
@@ -118,9 +140,10 @@ export default function DeployPage() {
 
       const walletAddress = address || (await ensureWalletOnXLayer());
       if (!walletAddress) throw new Error("Wallet connection required");
-      if (!window.ethereum) throw new Error("Wallet provider unavailable");
+      const injectedProvider = resolveProvider();
+      if (!injectedProvider) throw new Error("Wallet provider unavailable");
 
-      const provider = new ethers.BrowserProvider(window.ethereum as any);
+      const provider = new ethers.BrowserProvider(injectedProvider as any);
       const signer = await provider.getSigner();
       const signerAddress = await signer.getAddress();
       const seasonManager = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, signer);

@@ -93,6 +93,7 @@ export default function ArenaPage() {
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [remaining, setRemaining] = useState(CYCLE_SECONDS);
   const [visibleFeedCount, setVisibleFeedCount] = useState(20);
+  const [copyToast, setCopyToast] = useState<string | null>(null);
 
   const { data, isLoading } = useQuery<LeaderboardResponse>({
     queryKey: ["arena-leaderboard"],
@@ -114,6 +115,12 @@ export default function ArenaPage() {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!copyToast) return;
+    const timeout = window.setTimeout(() => setCopyToast(null), 1500);
+    return () => window.clearTimeout(timeout);
+  }, [copyToast]);
 
   const squads = data?.squads || [];
   const filteredSquads = useMemo(() => {
@@ -148,6 +155,16 @@ export default function ArenaPage() {
     if (!latest?.lastAction) return "Narrator awaiting next strategy cycle.";
     return `${latest.squadId}: ${latest.lastAction}`;
   }, [squads]);
+
+  const copyNarratorToX = async () => {
+    const payload = `${narratorText}\n\nLive on Xyndicate Protocol Arena`; 
+    try {
+      await navigator.clipboard.writeText(payload);
+      setCopyToast("Copied to clipboard");
+    } catch {
+      setCopyToast("Copy failed");
+    }
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
@@ -336,10 +353,10 @@ export default function ArenaPage() {
             <div className="rounded-2xl bg-black/40 p-5 font-mono text-sm text-green-400">{narratorText}</div>
             <button
               type="button"
-              onClick={() => navigator.clipboard.writeText(narratorText)}
-              className="mt-5 rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
+              onClick={copyNarratorToX}
+              className={`mt-5 rounded-full px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 ${copyToast ? "bg-emerald-400" : "bg-xyn-gold"}`}
             >
-              Copy to X / Twitter
+              {copyToast || "Copy to X / Twitter"}
             </button>
           </section>
 
