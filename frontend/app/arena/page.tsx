@@ -5,9 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 
-const AGENTS = ["Oracle", "Analyst", "Strategist", "Router", "Executor", "Narrator"];
-const CYCLE_SECONDS = 30 * 60;
-const AGENT_SLOT_SECONDS = 5 * 60;
+const AGENTS = ["oracle", "analyst", "strategist", "router", "executor", "narrator"] as const;
 
 type LeaderboardSquad = {
   rank: number;
@@ -30,11 +28,22 @@ type LeaderboardResponse = {
   squads?: LeaderboardSquad[];
   totalDecisions?: number;
   updatedAt?: string;
-  supportingProofs?: {
-    latestNarratorPayment?: {
-      txHash?: string;
-    } | null;
-  };
+};
+
+type CycleLogEntry = {
+  agent: string;
+  status: string;
+  completedAt: number;
+  summary: string;
+};
+
+type CycleStateResponse = {
+  currentAgent: string;
+  cycleNumber: number;
+  cycleStartTime: number;
+  nextCycleTime: number;
+  lastCycleComplete: number;
+  agentLog: CycleLogEntry[];
 };
 
 function parseDecisionText(text?: string) {
@@ -46,19 +55,16 @@ function parseDecisionText(text?: string) {
   return { action, asset, route, rationale: value };
 }
 
-function formatCountdown(totalSeconds: number) {
-  const minutes = Math.floor(totalSeconds / 60)
-    .toString()
-    .padStart(2, "0");
-  const seconds = Math.floor(totalSeconds % 60)
-    .toString()
-    .padStart(2, "0");
+function formatCountdown(msRemaining: number) {
+  const totalSeconds = Math.max(0, Math.floor(msRemaining / 1000));
+  const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, "0");
+  const seconds = Math.floor(totalSeconds % 60).toString().padStart(2, "0");
   return `${minutes}:${seconds}`;
 }
 
 function formatTimestamp(timestamp?: number) {
   if (!timestamp) return "Pending";
-  return new Date(timestamp * 1000).toLocaleString("en-US", {
+  return new Date(timestamp).toLocaleString("en-US", {
     month: "short",
     day: "numeric",
     hour: "2-digit",
@@ -91,9 +97,9 @@ function FilterTab({ active, label, onClick }: { active: boolean; label: string;
 export default function ArenaPage() {
   const [filter, setFilter] = useState<"All" | "Active" | "Paused">("All");
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
-  const [remaining, setRemaining] = useState(CYCLE_SECONDS);
   const [visibleFeedCount, setVisibleFeedCount] = useState(20);
   const [copyToast, setCopyToast] = useState<string | null>(null);
+  const [countdownMs, setCountdownMs] = useState(0);
 
   const { data, isLoading, isError, refetch } = useQuery<LeaderboardResponse>({
     queryKey: ["arena-leaderboard"],
@@ -105,16 +111,28 @@ export default function ArenaPage() {
     refetchInterval: 30000,
   });
 
-  useEffect(() => {
-    setRemaining(CYCLE_SECONDS);
-  }, [data?.updatedAt, data?.totalDecisions]);
+  const {
+    data: cycleState,
+    isLoading: cycleLoading,
+    isError: cycleError,
+    refetch: refetchCycleState,
+  } = useQuery<CycleStateResponse>({
+    queryKey: ["arena-cycle-state"],
+    queryFn: async () => {
+      const res = await fetch("/api/cycle-state", { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to load cycle state");
+      return res.json();
+    },
+    refetchInterval: 10000,
+  });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setRemaining((prev) => (prev <= 1 ? CYCLE_SECONDS : prev - 1));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+    if (!cycleState?.nextCycleTime) return;
+    const update = () => setCountdownMs(Math.max(0, cycleState.nextCycleTime - Date.now()));
+    update();
+    const timer = window.setInterval(update, 1000);
+    return () => window.clearInterval(timer);
+  }, [cycleState?.nextCycleTime]);
 
   useEffect(() => {
     if (!copyToast) return;
@@ -133,8 +151,6 @@ export default function ArenaPage() {
   const avgConfidence = squads.length
     ? squads.reduce((sum, squad) => sum + (squad.confidence || 0.84), 0) / squads.length
     : 0.84;
-
-  const activeAgentIndex = Math.floor((CYCLE_SECONDS - remaining) / AGENT_SLOT_SECONDS) % AGENTS.length;
 
   const feed = useMemo(() => {
     return squads.flatMap((squad) => {
@@ -157,7 +173,7 @@ export default function ArenaPage() {
   }, [squads]);
 
   const copyNarratorToX = async () => {
-    const payload = `${narratorText}\n\nLive on Xyndicate Protocol Arena`; 
+    const payload = `${narratorText}\n\nLive on Xyndicate Protocol Arena`;
     try {
       await navigator.clipboard.writeText(payload);
       setCopyToast("Copied to clipboard");
@@ -173,7 +189,7 @@ export default function ArenaPage() {
           <div>
             <div className="inline-flex items-center gap-3 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-600 dark:text-emerald-300">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              LIVE
+              {cycleState?.currentAgent === "idle" ? "IDLE" : "LIVE"}
             </div>
             <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-6xl">Season 1 Arena</h1>
           </div>
@@ -195,20 +211,66 @@ export default function ArenaPage() {
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="grid gap-3 md:grid-cols-6">
-          {AGENTS.map((agent, index) => (
+          {AGENTS.map((agent) => (
             <div
               key={agent}
               className={`rounded-full px-4 py-3 text-center text-sm font-semibold ${
-                index === activeAgentIndex
+                cycleState?.currentAgent === agent
                   ? "bg-xyn-gold text-xyn-dark"
                   : "bg-black/5 text-xyn-muted dark:bg-white/10 dark:text-zinc-300"
               }`}
             >
-              {agent}
+              {agent.charAt(0).toUpperCase() + agent.slice(1)}
             </div>
           ))}
         </div>
-        <div className="mt-5 text-sm text-xyn-muted dark:text-zinc-300">Next cycle in {formatCountdown(remaining)}</div>
+        <div className="mt-5 text-sm text-xyn-muted dark:text-zinc-300">
+          {cycleError ? "Cycle state unavailable" : `Next cycle in ${formatCountdown(countdownMs)}`}
+        </div>
+        <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Live activity</p>
+              <p className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">Cycle #{cycleState?.cycleNumber || 0}</p>
+            </div>
+            {cycleError ? (
+              <button type="button" onClick={() => refetchCycleState()} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">
+                Retry
+              </button>
+            ) : null}
+          </div>
+
+          <div className="space-y-3">
+            {cycleLoading ? (
+              Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-16 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />)
+            ) : cycleError ? (
+              <div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">Failed to load cycle state feed.</div>
+            ) : (cycleState?.agentLog || []).length ? (
+              [...(cycleState?.agentLog || [])].reverse().map((entry, index) => (
+                <motion.div
+                  key={`${entry.agent}-${entry.completedAt}-${index}`}
+                  initial={{ opacity: 0, y: -12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`rounded-2xl border px-4 py-3 ${
+                    cycleState?.cycleStartTime && entry.completedAt >= cycleState.cycleStartTime
+                      ? "border-xyn-gold/30 bg-xyn-gold/10"
+                      : "border-black/10 bg-white/70 dark:border-white/10 dark:bg-black/20"
+                  }`}
+                >
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="text-sm font-semibold capitalize">{entry.agent}</div>
+                    <div className="text-xs text-xyn-muted dark:text-zinc-400">{formatTimestamp(entry.completedAt)}</div>
+                  </div>
+                  <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-300">{entry.summary}</div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="rounded-2xl border border-dashed border-black/10 px-4 py-5 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">
+                No agent activity logged yet.
+              </div>
+            )}
+          </div>
+        </div>
       </section>
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
@@ -338,7 +400,7 @@ export default function ArenaPage() {
             ) : feed.slice(0, visibleFeedCount).map((entry) => (
               <div key={entry.id} className="rounded-3xl border border-black/10 bg-xyn-surface p-5 dark:border-white/10 dark:bg-xyn-dark">
                 <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">
-                  {entry.squadId} · {formatTimestamp(entry.timestamp)}
+                  {entry.squadId} · {formatTimestamp((entry.timestamp || 0) * 1000)}
                 </div>
                 <div className="mt-3 flex items-center gap-3">
                   <span className={`rounded-full px-3 py-1 text-xs font-semibold ${entry.action === "BUY" ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300" : entry.action === "SELL" ? "bg-rose-500/15 text-rose-600 dark:text-rose-300" : "bg-black/5 text-xyn-muted dark:bg-white/10 dark:text-zinc-300"}`}>

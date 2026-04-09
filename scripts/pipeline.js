@@ -4,6 +4,7 @@ const { execFile } = require('child_process');
 const path = require('path');
 const { writeLeaderboardArtifact } = require('./generate-leaderboard');
 const { writeProofsArtifact } = require('./generate-proofs');
+const { startCycleState, advanceCycleState, completeCycleState } = require('./cycle-state');
 
 function invokeRunCycle() {
   return new Promise((resolve, reject) => {
@@ -24,9 +25,17 @@ function invokeRunCycle() {
 }
 
 async function runFullPipeline() {
+  startCycleState();
   const result = await invokeRunCycle();
+  advanceCycleState('oracle', result);
+  advanceCycleState('analyst', result);
+  advanceCycleState('strategist', result);
+  advanceCycleState('router', result);
+  advanceCycleState('executor', result);
+  advanceCycleState('narrator', result);
   const leaderboard = writeLeaderboardArtifact();
   const proofs = await writeProofsArtifact();
+  completeCycleState();
 
   return {
     txHash: result?.txHash,

@@ -1,7 +1,7 @@
 const { runFullPipeline } = require('./pipeline');
+const { INTERVAL_MS } = require('./cycle-state');
 
 let lastRunAt = 0;
-const INTERVAL_MS = 30 * 60 * 1000;
 
 function canRun() {
   return Date.now() - lastRunAt >= INTERVAL_MS;
