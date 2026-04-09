@@ -77,9 +77,12 @@ export async function GET() {
 
         const onchainCount = Number(await contract.getDecisionCount());
         const startIndex = Math.max(0, onchainCount - 250);
-        const rows = await Promise.all(
-          Array.from({ length: onchainCount - startIndex }, (_, offset) => contract.getDecision(startIndex + offset)),
-        );
+        const rows: any[] = [];
+
+        for (let i = startIndex; i < onchainCount; i += 1) {
+          const row = await contract.getDecision(i);
+          rows.push(row);
+        }
 
         decisionItems = rows.map((row: any, idx: number) => {
           const txHash = fallbackHashes[startIndex + idx] || `decision-${startIndex + idx}`;
