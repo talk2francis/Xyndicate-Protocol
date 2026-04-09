@@ -111,6 +111,7 @@ export default function DocsPage() {
   const [responseMs, setResponseMs] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [showArchitecture, setShowArchitecture] = useState(false);
+  const [showOnchainDemo, setShowOnchainDemo] = useState(false);
 
   const installValue = useMemo(() => {
     if (installTab === "Plugin Store") return CURL_COMMAND;
@@ -282,9 +283,9 @@ export default function DocsPage() {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <div className="text-sm font-semibold text-xyn-gold">{responseMs != null ? `Response in ${responseMs}ms` : "Awaiting query"}</div>
-            <a href="/deploy" className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10">
+            <button type="button" onClick={() => setShowOnchainDemo(true)} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10">
               Run On-Chain Demo →
-            </a>
+            </button>
           </div>
         </div>
         <div className="mt-4">
@@ -327,6 +328,23 @@ export default function DocsPage() {
         </div>
         <div className="overflow-hidden rounded-3xl border border-black/10 bg-black/90 p-4 dark:border-white/10" dangerouslySetInnerHTML={{ __html: ARCHITECTURE_SVG }} />
       </section>
+
+      <AnimatePresence>
+        {showOnchainDemo ? (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/60 p-6 backdrop-blur-sm" onClick={() => setShowOnchainDemo(false)}>
+            <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} className="mx-auto mt-24 max-w-2xl rounded-[32px] border border-white/10 bg-xyn-surface p-8 dark:bg-xyn-dark" onClick={(e) => e.stopPropagation()}>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">On-chain demo</p>
+              <h3 className="mt-3 text-3xl font-semibold tracking-tight">This runs the live wallet flow.</h3>
+              <p className="mt-4 text-sm text-xyn-muted dark:text-zinc-300">You will connect a wallet, switch to X Layer if needed, and trigger the real Deploy/Enroll path. This is optional and separate from the zero-friction browser query demo.</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a href="/deploy" className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark">Continue to Deploy →</a>
+                <a href="/market" className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10">View Market →</a>
+                <button type="button" onClick={() => setShowOnchainDemo(false)} className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10">Cancel</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showArchitecture ? (
