@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { WalletModal } from "@/components/WalletModal";
+import { Providers } from "@/components/providers";
 import { WalletProvider } from "@/lib/wallet-context";
 
 const inter = Inter({
@@ -28,11 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="min-h-screen bg-xyn-surface text-xyn-dark dark:bg-xyn-dark dark:text-xyn-surface">
-        <WalletProvider>
-          <Navbar />
-          <WalletModal />
-          <main>{children}</main>
-        </WalletProvider>
+        <Providers>
+          <WalletProvider>
+            <Navbar />
+            <WalletModal />
+            <main>{children}</main>
+          </WalletProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -25,3 +25,24 @@ body {
 * {
   border-color: rgb(107 106 101 / 0.18);
 }
+
+@keyframes xyn-pulse-run {
+  0% {
+    transform: translate(0%, -50%);
+    opacity: 0.4;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(5600%, -50%);
+    opacity: 0.4;
+  }
+}
+
+.animate-xyn-pulse-run {
+  animation: xyn-pulse-run 4s linear infinite;
+}
