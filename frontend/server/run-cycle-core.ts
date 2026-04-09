@@ -1,5 +1,11 @@
 import { ethers } from "ethers";
-import deployments from "../deployments.json";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const deployments = JSON.parse(fs.readFileSync(path.join(__dirname, "../deployments.json"), "utf8"));
 
 const DECISION_LOG_ABI = ["function logDecision(string,string,string)"];
 const STRATEGY_VAULT_ABI = ["function recordPnL(bytes32 squadId, int256 delta)"];
