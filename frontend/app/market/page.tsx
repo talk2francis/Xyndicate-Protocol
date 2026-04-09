@@ -25,15 +25,17 @@ type Strategy = {
   riskTolerance: string;
   status: string;
   summary: string;
+  createdAt?: string;
+  creatorWallet?: string;
+  performancePct?: number;
+  decisionCount?: number;
+  confidenceScores?: number[];
 };
 
 const LICENSE_ABI = [
   "function buyLicense(bytes32 squadId) external payable",
   "function isLicensed(address caller, bytes32 squadId) external view returns (bool)",
   "function priceWei() external view returns (uint256)",
-];
-const SEASON_MANAGER_ABI = [
-  "function squads(address) external view returns (address owner, address agentWallet, bool active)",
 ];
 const XLAYER_CHAIN_ID = 196;
 const XLAYER_CHAIN_ID_HEX = "0xC4";
@@ -63,6 +65,11 @@ function sparklinePoints(seed: number) {
   return values
     .map((value, index) => `${index * 16},${100 - value}`)
     .join(" ");
+}
+
+function sparklineFromScores(scores?: number[]) {
+  const values = (scores && scores.length ? scores : [60, 63, 67, 69, 72, 74, 77, 79]).slice(0, 8);
+  return values.map((value, index) => `${index * 16},${100 - value}`).join(" ");
 }
 
 function truncateAddress(address?: string | null) {
@@ -102,8 +109,6 @@ export default function MarketPage() {
   const [myLicenses, setMyLicenses] = useState<Strategy[]>([]);
 
   const strategyLicenseAddress = (deployments as any)?.StrategyLicense?.address || "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186";
-  const seasonManagerAddress = (deployments as any)?.x402Details?.contract || "0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1";
-
   useEffect(() => {
     const loadStrategies = async () => {
       const res = await fetch("/api/strategies");
@@ -160,12 +165,14 @@ export default function MarketPage() {
   const filtered = useMemo(() => {
     let result = strategies.filter((strategy) => strategy.name.toLowerCase().includes(search.toLowerCase()));
 
-    if (filter === "Conservative") result = result.filter((strategy) => strategy.riskTolerance.toLowerCase().includes("low"));
-    if (filter === "Balanced") result = result.filter((strategy) => strategy.riskTolerance.toLowerCase().includes("medium"));
-    if (filter === "Aggressive") result = result.filter((strategy) => strategy.riskTolerance.toLowerCase().includes("high") || strategy.riskTolerance.toLowerCase().includes("aggressive"));
+    if (filter === "Top PnL") result = result.filter((strategy) => (strategy.performancePct || 0) >= 10);
+    if (filter === "Conservative") result = result.filter((strategy) => strategy.riskTolerance.toLowerCase().includes("conservative") || strategy.riskTolerance.toLowerCase().includes("low"));
+    if (filter === "Balanced") result = result.filter((strategy) => strategy.riskTolerance.toLowerCase().includes("balanced") || strategy.riskTolerance.toLowerCase().includes("medium"));
+    if (filter === "Aggressive") result = result.filter((strategy) => strategy.riskTolerance.toLowerCase().includes("aggressive") || strategy.riskTolerance.toLowerCase().includes("high"));
 
-    if (sort === "Most Decisions") result = [...result].sort((a, b) => b.allocationPercent - a.allocationPercent);
-    if (sort === "Newest") result = [...result].reverse();
+    if (sort === "Best Performance") result = [...result].sort((a, b) => (b.performancePct || 0) - (a.performancePct || 0));
+    if (sort === "Most Decisions") result = [...result].sort((a, b) => (b.decisionCount || 0) - (a.decisionCount || 0));
+    if (sort === "Newest") result = [...result].sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
 
     return result;
   }, [filter, search, sort, strategies]);
@@ -202,17 +209,15 @@ export default function MarketPage() {
       const tx = await contract.buyLicense(squadKey(selected.squadId), { value: BigInt(priceWei) });
       await tx.wait();
 
+      const configResponse = await fetch(`/api/strategies/${selected.squadId}/config`, { cache: "no-store" });
+      const configPayload = await configResponse.json();
+      if (!configResponse.ok || !configPayload?.config) {
+        throw new Error(configPayload?.error || "Strategy config unlock failed");
+      }
+
       setLicensedMap((prev) => ({ ...prev, [selected.squadId]: true }));
       setMyLicenses((prev) => (prev.find((item) => item.squadId === selected.squadId) ? prev : [...prev, selected]));
-      setUnlockJson(JSON.stringify({
-        squadId: selected.squadId,
-        name: selected.name,
-        assetPair: selected.assetPair,
-        mode: selected.mode,
-        allocationPercent: selected.allocationPercent,
-        riskTolerance: selected.riskTolerance,
-        note: "Live license purchase succeeded. Full config export route is pending backend endpoint support.",
-      }, null, 2));
+      setUnlockJson(JSON.stringify(configPayload.config, null, 2));
     } catch (error: any) {
       setSheetError(error?.shortMessage || error?.message || "License purchase failed");
     } finally {
@@ -283,9 +288,9 @@ export default function MarketPage() {
       <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {filtered.map((strategy, index) => {
           const variant = avatarVariant(strategy.name);
-          const positivePnl = 8 + strategy.allocationPercent / 4;
+          const positivePnl = strategy.performancePct ?? 0;
           const confidenceSeed = strategy.name.length + strategy.allocationPercent;
-          const creator = (deployments as any)?.DecisionLog?.address || "0xC9E69be5ecD65a9106800E07E05eE44a63559F8b";
+          const creator = strategy.creatorWallet || (deployments as any)?.DecisionLog?.address || "0xC9E69be5ecD65a9106800E07E05eE44a63559F8b";
           const licensed = !!licensedMap[strategy.squadId];
 
           return (
@@ -315,7 +320,7 @@ export default function MarketPage() {
                   <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">PnL</div>
                 </div>
                 <div className="text-right">
-                  <div className="text-xl font-semibold">{strategy.allocationPercent * 4}</div>
+                  <div className="text-xl font-semibold">{strategy.decisionCount ?? strategy.allocationPercent * 4}</div>
                   <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">Decisions</div>
                 </div>
               </div>
@@ -330,7 +335,7 @@ export default function MarketPage() {
                     strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    points={sparklinePoints(confidenceSeed)}
+                    points={strategy.confidenceScores?.length ? sparklineFromScores(strategy.confidenceScores) : sparklinePoints(confidenceSeed)}
                   />
                 </svg>
               </div>
@@ -352,7 +357,7 @@ export default function MarketPage() {
         <h2 className="mt-3 text-3xl font-semibold tracking-tight">Earning from your strategy? List it here.</h2>
         <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_auto]">
           <div className="rounded-2xl border border-dashed border-black/10 p-5 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">
-            Live self-listing is pending contract support. The deployed StrategyLicense contract does not currently expose strategy listing metadata or `listStrategy`, so this section is staged for the next contract upgrade.
+            Live self-listing is blocked by the deployed contract surface. `StrategyLicense` does not expose `listStrategy`, and `SeasonManager` only stores one squad record keyed by owner address, not a queryable market-listing registry.
           </div>
           <button
             type="button"
