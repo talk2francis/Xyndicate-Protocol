@@ -115,6 +115,7 @@ export default function MarketPage() {
   const [listingBusy, setListingBusy] = useState(false);
   const [enrolledOptions, setEnrolledOptions] = useState<Strategy[]>([]);
   const [listingHint, setListingHint] = useState<string | null>(null);
+  const [mySquad, setMySquad] = useState<Strategy | null>(null);
 
   const strategyLicenseAddress = (deployments as any)?.StrategyLicense?.address || "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186";
   const strategyRegistryAddress = (deployments as any)?.StrategyRegistry?.address;
@@ -200,6 +201,7 @@ export default function MarketPage() {
       if (!address) {
         setEnrolledOptions([]);
         setSelectedSquadId("");
+        setMySquad(null);
         setListingHint("Connect the enrolled squad wallet to list a strategy.");
         return;
       }
@@ -214,6 +216,7 @@ export default function MarketPage() {
         if (owner.toLowerCase() !== address.toLowerCase() || !active) {
           setEnrolledOptions([]);
           setSelectedSquadId("");
+          setMySquad(null);
           setListingHint("No active enrolled squad is available for this connected wallet.");
           return;
         }
@@ -257,10 +260,12 @@ export default function MarketPage() {
 
         setEnrolledOptions(options);
         setSelectedSquadId((current) => current || options[0]?.squadId || "");
+        setMySquad(options[0] || null);
         setListingHint(null);
       } catch {
         setEnrolledOptions([]);
         setSelectedSquadId("");
+        setMySquad(null);
         setListingHint("Could not load enrolled squad status from SeasonManager.");
       }
     };
@@ -540,11 +545,57 @@ export default function MarketPage() {
         })}
       </section>
 
-      <section className="mt-10 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
-        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">List your strategy</p>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight">Earning from your strategy? List it here.</h2>
-        <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_auto]">
-          <div className="space-y-4 rounded-2xl border border-black/10 p-5 dark:border-white/10">
+      <section className="mt-10 grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">My Squad</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight">Your live squad status.</h2>
+
+          {mySquad ? (
+            <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-6 dark:border-white/10 dark:bg-white/5">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="text-2xl font-semibold">{mySquad.name}</div>
+                  <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-300">{mySquad.summary}</div>
+                </div>
+                <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-300">LIVE</span>
+              </div>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10">
+                  <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Squad ID</div>
+                  <div className="mt-2 text-sm font-semibold">{mySquad.squadId}</div>
+                </div>
+                <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10">
+                  <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Wallet</div>
+                  <div className="mt-2 text-sm font-semibold">{truncateAddress(address)}</div>
+                </div>
+                <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10">
+                  <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Pair</div>
+                  <div className="mt-2 text-sm font-semibold">{mySquad.assetPair}</div>
+                </div>
+                <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10">
+                  <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Risk</div>
+                  <div className="mt-2 text-sm font-semibold">{mySquad.riskTolerance}</div>
+                </div>
+              </div>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+                <span className="rounded-full bg-xyn-gold/15 px-4 py-2 text-sm font-semibold text-xyn-gold">Listed on marketplace</span>
+                <span className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">One wallet, one squad in current season</span>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-6 rounded-3xl border border-dashed border-black/10 p-6 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">
+              No live squad detected for this wallet yet. Use Deploy to create one, then return here to manage listing.
+            </div>
+          )}
+        </div>
+
+        <div className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">List your strategy</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight">Earning from your strategy? List it here.</h2>
+          <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_auto]">
+            <div className="space-y-4 rounded-2xl border border-black/10 p-5 dark:border-white/10">
             <div>
               <label className="mb-2 block text-sm font-semibold">Squad selector</label>
               <select
@@ -580,18 +631,19 @@ export default function MarketPage() {
             {listingSuccess ? <div className="rounded-2xl bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">{listingSuccess}</div> : null}
             {listingHint ? <div className="rounded-2xl bg-amber-500/10 p-4 text-sm text-amber-700 dark:text-amber-300">{listingHint}</div> : null}
 
-            <div className="text-xs text-xyn-muted dark:text-zinc-400">
-              This live path uses a dedicated registry contract so existing license history stays intact.
+              <div className="text-xs text-xyn-muted dark:text-zinc-400">
+                This live path uses a dedicated registry contract so existing license history stays intact.
+              </div>
             </div>
+            <button
+              type="button"
+              className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark disabled:cursor-not-allowed disabled:opacity-50"
+              onClick={handleListStrategy}
+              disabled={!strategyRegistryAddress || !selectedSquadId || listingBusy}
+            >
+              {listingBusy ? "Listing..." : "List Strategy"}
+            </button>
           </div>
-          <button
-            type="button"
-            className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark disabled:cursor-not-allowed disabled:opacity-50"
-            onClick={handleListStrategy}
-            disabled={!strategyRegistryAddress || !selectedSquadId || listingBusy}
-          >
-            {listingBusy ? "Listing..." : "List Strategy"}
-          </button>
         </div>
       </section>
 
