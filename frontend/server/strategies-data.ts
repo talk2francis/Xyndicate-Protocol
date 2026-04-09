@@ -1,6 +1,6 @@
 export const strategies = [
   {
-    squadId: "SYNDICATE_ALPHA",
+    squadId: "XYNDICATE_ALPHA",
     name: "Xyndicate Alpha",
     mode: "momentum-arbitrage",
     assetPair: "ETH/USDC",
@@ -15,7 +15,7 @@ export const strategies = [
     confidenceScores: [72, 76, 74, 81, 79, 84, 86, 88],
   },
   {
-    squadId: "SYNDICATE_BETA",
+    squadId: "XYNDICATE_BETA",
     name: "Xyndicate Beta",
     mode: "mean-reversion-defense",
     assetPair: "OKB/USDC",
