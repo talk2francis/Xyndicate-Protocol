@@ -1,6 +1,6 @@
 # Xyndicate Protocol
 
-Xyndicate Protocol is a Skills Arena submission for OKX Build X S2, built as a multi-agent autonomous trading system on X Layer. The project combines market intelligence, agent collaboration, on-chain proof logging, and emerging skill interfaces into a single product surface: an agent squad that reads market data, reasons through strategy, routes execution decisions, and records its actions on-chain for transparent verification.
+Xyndicate Protocol is a Skills Arena submission for OKX Build X S2, built as a multi-agent autonomous trading system on X Layer. The project combines market intelligence, agent collaboration, on-chain proof logging, and emerging skill interfaces into a single product surface: an agent squad that reads market data, reasons through strategy, routes execution decisions, and records its actions on-chain for transparent verification. As of submission, the project is early-stage and not yet star-driven on GitHub, so positioning is based on shipped product depth, live contracts, and end-to-end judge-verifiable flows rather than repository social proof.
 
 ## Architecture Overview
 
@@ -37,6 +37,8 @@ DecisionLog.sol + StrategyVault.sol
 | SeasonManager | `0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1` | Live on X Layer mainnet |
 | StrategyVault | `0x6002767f909B3049d5A65beAD84A843a385a61aC` | Live on X Layer mainnet |
 | StrategyLicense | `0x8AbaCE8Ea22A591CE3109599449776A2cb96B186` | Live on X Layer mainnet |
+| StrategyRegistry | `0x8d486C3d45dc9C23500e3bF9781124eF149277f0` | Live on X Layer mainnet |
+| SeasonManagerV2 | `0x0E6619188f19872554789a84F6E9150EA7b78d48` | Live on X Layer mainnet |
 
 ## Onchain OS Skills Usage
 
@@ -50,14 +52,14 @@ DecisionLog.sol + StrategyVault.sol
 
 ## Uniswap AI Skills Usage
 
-Uniswap integration is currently in progress and is part of the target submission state.
+Uniswap-aware signal enrichment is live in the submission runtime path and is exposed through the market signal / routing surfaces.
 
 | tool name | file used in | what it does |
 | --- | --- | --- |
-| market signal enrichment | `TBD` | Will augment Oracle inputs with Uniswap-aware market intelligence before strategist reasoning. |
-| route intelligence | `TBD` | Will help the Router select execution paths before handing off to the Executor. |
-| liquidity context | `TBD` | Will supply additional DEX-side context for strategy quality and execution safety. |
-| trade path support | `TBD` | Will support the future execution stack once Uniswap AI Skills are wired into the live pipeline. |
+| market signal enrichment | `frontend/server/run-cycle-core.ts`, `frontend/app/api/signal/route.ts` | Augments Oracle output with Uniswap-aware price context and spread calculations alongside OKX pricing. |
+| route intelligence | `agents/src/agents/router.ts`, `frontend/server/run-cycle-core.ts` | Helps the Router select execution path recommendations before handoff to execution. |
+| liquidity context | `frontend/app/api/mcp/route.ts`, `mcp/src/index.ts` | Supplies DEX-side context and pair normalization for live signal and MCP responses. |
+| trade path support | `frontend/server/mcp-route.ts`, `frontend/app/api/mcp/route.ts` | Supports route-query responses for assistant and demo execution flows. |
 
 ## MCP Skill Documentation
 
@@ -101,4 +103,4 @@ https://xyndicateprotocol.vercel.app
 
 ## Demo Video
 
-[PENDING]
+To be inserted once the final recorded demo is uploaded.
