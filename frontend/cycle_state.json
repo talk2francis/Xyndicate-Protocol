@@ -1,162 +1,20 @@
 {
-  "currentAgent": "idle",
-  "cycleNumber": 59,
-  "cycleStartTime": 1775856764763,
-  "nextCycleTime": 1775858651083,
+  "currentAgent": "oracle",
+  "cycleNumber": 60,
+  "cycleStartTime": 1775858507676,
+  "nextCycleTime": 1775860307676,
   "lastCycleComplete": 1775856851083,
   "activeSquads": [
-    "Xyndicate Alpha",
+    "XYNDICATE_ALPHA",
     "Squad Nova"
   ],
-  "squadResults": {
-    "XYNDICATE_ALPHA": {
-      "squadId": "XYNDICATE_ALPHA",
-      "squadName": "Xyndicate Alpha",
-      "riskMode": "aggressive",
-      "baseAsset": "ETH",
-      "txHash": "0x5319129658bb88ac950a5958e52e67bb344f18d219cd69c0f81fc732d484f7c5",
-      "vaultTxHash": "0xcdd34e0db86f1af34e61f3b6027964f8f1ee301e0a7410586fe3812a7d4df5b2",
-      "pnlDelta": "0",
-      "action": "HOLD",
-      "asset": "ETH",
-      "sizePercent": 100,
-      "rationale": "Stable price with minimal spread, no immediate trading opportunity. Market stability may change rapidly due to high volatility.",
-      "route": "okx",
-      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "spreadBps": 0,
-      "narratorSummary": "Xyndicate Alpha held ETH (100% treasury) via okx. Stable price with minimal spread, no immediate trading opportunity. Market stability may change rapidly due to high volatility.",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "ETH",
-            "type": "hold",
-            "rationale": "Stable price with minimal spread, no immediate trading opportunity",
-            "confidence": 0.8
-          }
-        ],
-        "risks": [
-          {
-            "description": "Market stability may change rapidly due to high volatility in the crypto space",
-            "severity": 0.9
-          }
-        ],
-        "recommendation": "wait",
-        "topAsset": "ETH",
-        "confidenceScore": 0.8
-      },
-      "market": {
-        "pair": "ETH-USDT",
-        "price": 2246.41,
-        "okxPrice": 2246.41,
-        "uniswapPrice": 2246.41,
-        "spreadBps": 0,
-        "betterRoute": "okx",
-        "uniswapPoolId": null,
-        "priceSpreads": {
-          "absolute": 0,
-          "bps": 0,
-          "source": "okx-fallback"
-        },
-        "change24h": 1.7257618982927894
-      },
-      "narrative": "HOLD ETH (100% treasury) via okx · Stable price with minimal spread, no immediate trading opportunity. Market stability may change rapidly due to high volatility."
-    },
-    "SQUAD_NOVA": {
-      "squadId": "SQUAD_NOVA",
-      "squadName": "Squad Nova",
-      "riskMode": "balanced",
-      "baseAsset": "OKB",
-      "txHash": "0x55bdd8bf49df8f653fc707ab480b9e028bb50d05fedfd84151c3e5805f2adb6c",
-      "vaultTxHash": "0x1da6edb57010018adf4d8fabaaeed983d6fd8a83ab6280c2adcdd969ef27ca50",
-      "pnlDelta": "0",
-      "action": "HOLD",
-      "asset": "OKB",
-      "sizePercent": 0,
-      "rationale": "Price has increased by 1.55% in the last 24 hours. Analyst recommends waiting. Confidence level is 80%.",
-      "route": "okx",
-      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "spreadBps": 0,
-      "narratorSummary": "Squad Nova held OKB (0% treasury) via okx. Price has increased by 1.55% in the last 24 hours. Analyst recommends waiting. Confidence level is 80%.",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "OKB",
-            "type": "hold",
-            "rationale": "Price has increased by 1.55% in the last 24 hours.",
-            "confidence": 0.8
-          }
-        ],
-        "risks": [],
-        "recommendation": "wait",
-        "topAsset": "OKB",
-        "confidenceScore": 0.8
-      },
-      "market": {
-        "pair": "OKB-USDT",
-        "price": 85.14,
-        "okxPrice": 85.14,
-        "uniswapPrice": 85.14,
-        "spreadBps": 0,
-        "betterRoute": "okx",
-        "uniswapPoolId": null,
-        "priceSpreads": {
-          "absolute": 0,
-          "bps": 0,
-          "source": "okx-fallback"
-        },
-        "change24h": 1.5505725190839659
-      },
-      "narrative": "HOLD OKB (0% treasury) via okx · Price has increased by 1.55% in the last 24 hours. Analyst recommends waiting. Confidence level is 80%."
-    }
-  },
+  "squadResults": {},
   "agentLog": [
     {
       "agent": "system",
       "status": "started",
-      "completedAt": 1775856764763,
-      "summary": "Cycle 59 started. Oracle snapshot in progress."
-    },
-    {
-      "agent": "oracle",
-      "status": "complete",
-      "completedAt": 1775856796607,
-      "summary": "ETH $0.00 (0.00%) | Uniswap spread 0.00bps"
-    },
-    {
-      "agent": "analyst",
-      "status": "complete",
-      "completedAt": 1775856797519,
-      "summary": "wait on ETH | confidence 0"
-    },
-    {
-      "agent": "strategist",
-      "status": "complete",
-      "completedAt": 1775856798370,
-      "summary": "HOLD ETH (0% treasury)"
-    },
-    {
-      "agent": "router",
-      "status": "complete",
-      "completedAt": 1775856799156,
-      "summary": "okx selected | spread 0.00bps"
-    },
-    {
-      "agent": "executor",
-      "status": "complete",
-      "completedAt": 1775856800022,
-      "summary": "HOLD executed | tx 0x5319129658bb88ac950a5958e52e67bb344f18d219cd69c0f81fc732d484f7c5"
-    },
-    {
-      "agent": "narrator",
-      "status": "complete",
-      "completedAt": 1775856800833,
-      "summary": "Xyndicate Alpha held ETH (100% treasury) via okx. Stable price with minimal spread, no immediate trading opportunity. Market stability may change rapidly due to high volatility. | Squad Nova held OKB (0% treasury) via okx. Price has increased by 1.55% in the last 24 hours. Analyst recommends waiting. Confidence level is 80%."
-    },
-    {
-      "agent": "system",
-      "status": "complete",
-      "completedAt": 1775856851083,
-      "summary": "Cycle 59 complete. Awaiting next scheduled run."
+      "completedAt": 1775858507676,
+      "summary": "Cycle 60 started. Oracle snapshot in progress."
     }
   ]
 }
