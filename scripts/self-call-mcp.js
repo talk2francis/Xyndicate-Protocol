@@ -35,6 +35,12 @@ async function selfCallMcp() {
     { tool: 'get_economy_snapshot', params: {} },
   ]) {
     const result = await callTool(job.tool, job.params);
+    await appendAndPublishUsageEntry({
+      tool: job.tool,
+      calledAt: Date.now(),
+      caller: 'scheduler-self-call',
+      responseTime: result.responseTime,
+    });
     console.log(`MCP self-call: ${job.tool} completed in ${result.responseTime}ms`);
     results.push(result);
   }
