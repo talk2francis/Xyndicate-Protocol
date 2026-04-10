@@ -84,11 +84,12 @@ function summarizeFromResult(agent, result = {}) {
   const primary = Array.isArray(result?.results) && result.results.length ? result.results[0] : result;
 
   if (agent === 'oracle') {
-    const eth = Number(primary?.market?.okxPrice || primary?.market?.price || 0);
+    const asset = normalizeAssetLabel(primary?.asset || primary?.baseAsset || primary?.market?.pair || 'ETH');
+    const okx = Number(primary?.market?.okxPrice || primary?.market?.price || 0);
     const change = Number(primary?.market?.change24h || 0);
     const uni = Number(primary?.market?.uniswapPrice || 0);
-    const spread = Number(primary?.market?.priceSpreads?.bps || primary?.spreadBps || 0);
-    return `ETH $${eth.toFixed(2)} (${change >= 0 ? '+' : ''}${change.toFixed(1)}%) | Uniswap ETH/USDC pool: $${uni.toFixed(2)} | Spread: ${spread >= 0 ? '+' : ''}${spread.toFixed(0)}bps`;
+    const spread = Number(primary?.market?.spreadBps || primary?.market?.priceSpreads?.bps || primary?.spreadBps || 0);
+    return `${asset} OKX: $${okx.toFixed(2)} (${change >= 0 ? '+' : ''}${change.toFixed(1)}%) | Uniswap: $${uni.toFixed(2)} | Spread: ${spread}bps`;
   }
 
   if (agent === 'analyst') {

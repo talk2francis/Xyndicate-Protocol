@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { betterRouteForPrices, computeSpreadBps, fetchUniswapPrice } from "./uniswap";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,7 +12,6 @@ const DECISION_LOG_ABI = ["function logDecision(string,string,string)"];
 const STRATEGY_VAULT_ABI = ["function recordPnL(bytes32 squadId, int256 delta)"];
 const ANALYST_PROMPT = `You are the Analyst agent in the Xyndicate Protocol system.\nYou receive structured market data from the Oracle agent and must respond with JSON matching {"opportunities":[{"asset":string,"type":"long|short|hold","rationale":string,"confidence":number}],"risks":[{"description":string,"severity":number}],"recommendation":"act|wait|exit","topAsset":string,"confidenceScore":number}.`;
 const STRATEGIST_PROMPT = `You are the Strategist agent in the Xyndicate Protocol system.\nUsing the Oracle snapshot and Analyst assessment, output JSON matching {"action":"BUY|SELL|HOLD","asset":string,"sizePercent":number,"rationale":string,"confidence":number}. Keep rationale under 280 characters.`;
-const UNISWAP_POOL_PRICE_URL = process.env.UNISWAP_POOL_PRICE_URL || "";
 const SQUADS = [
   {
     id: ethers.encodeBytes32String("XYNDICATE_ALPHA"),
@@ -33,37 +33,6 @@ const SQUADS = [
   },
 ] as const;
 
-async function fetchUniswapPoolPrice(okxPrice: number) {
-  if (UNISWAP_POOL_PRICE_URL) {
-    try {
-      const res = await fetch(UNISWAP_POOL_PRICE_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tool: "get_pool_price", pair: "ETH/USDC" }),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        const uniswapPrice = Number(
-          data?.uniswapPrice ?? data?.price ?? data?.result?.price ?? data?.result?.uniswapPrice ?? data?.data?.price ?? 0,
-        );
-
-        if (uniswapPrice > 0) {
-          return { uniswapPrice, source: "uniswap-live" };
-        }
-      }
-    } catch (error: any) {
-      console.warn("Uniswap price fetch failed, using fallback mock:", error.message);
-    }
-  }
-
-  const spreadFactor = 1 + (Math.random() - 0.5) * 0.003;
-  return {
-    uniswapPrice: Number((okxPrice * spreadFactor).toFixed(6)),
-    source: "uniswap-mock",
-  };
-}
-
 async function fetchMarketSnapshot(pair: string) {
   const res = await fetch(`https://www.okx.com/api/v5/market/ticker?instId=${pair}`, { cache: "no-store" });
   if (!res.ok) throw new Error(`Failed to fetch OKX market data for ${pair}`);
@@ -74,20 +43,39 @@ async function fetchMarketSnapshot(pair: string) {
   const change24h = Number(
     ticker?.open24h ? ((Number(ticker.last) - Number(ticker.open24h)) / Number(ticker.open24h)) * 100 : 0,
   );
-  const { uniswapPrice, source } = await fetchUniswapPoolPrice(okxPrice);
-  const spreadBps = okxPrice ? Number((((uniswapPrice - okxPrice) / okxPrice) * 10000).toFixed(2)) : 0;
+  let uniswap = {
+    uniswapPrice: null as number | null,
+    uniswapPoolId: null as string | null,
+    sqrtPrice: null as string | null,
+    liquidity: null as string | null,
+    source: "okx-fallback",
+  };
 
-  console.error(`${pair} OKX: ${okxPrice} | Uniswap: ${uniswapPrice} | Spread: ${spreadBps}bps`);
+  try {
+    const graphPair = pair.startsWith("ETH-") ? "ETH/USDC" : "OKB/USDC";
+    uniswap = await fetchUniswapPrice(graphPair);
+  } catch (error: any) {
+    console.warn(`Uniswap subgraph fetch failed for ${pair}, falling back to OKX price:`, error.message);
+  }
+
+  const uniswapPrice = uniswap.uniswapPrice ?? okxPrice;
+  const spreadBps = computeSpreadBps(okxPrice, uniswap.uniswapPrice ?? okxPrice);
+  const betterRoute = betterRouteForPrices(okxPrice, uniswap.uniswapPrice ?? okxPrice);
+
+  console.error(`Uniswap ${pair.startsWith("ETH-") ? "ETH" : pair.split("-")[0]} price: $${uniswapPrice.toFixed(2)} | Spread: ${spreadBps}bps`);
 
   return {
     pair,
     price: okxPrice,
     okxPrice,
     uniswapPrice,
+    spreadBps,
+    betterRoute,
+    uniswapPoolId: uniswap.uniswapPoolId,
     priceSpreads: {
       absolute: Number((uniswapPrice - okxPrice).toFixed(6)),
       bps: spreadBps,
-      source,
+      source: uniswap.source,
     },
     change24h,
   };
@@ -126,7 +114,7 @@ async function callOpenAI(systemPrompt: string, payload: unknown) {
 
 function routeDecision(strategistDecision: any, marketData: any, squad: any) {
   const { okxPrice, uniswapPrice } = marketData;
-  const spreadBps = okxPrice ? (Math.abs(okxPrice - uniswapPrice) / okxPrice) * 10000 : 0;
+  const spreadBps = computeSpreadBps(okxPrice, uniswapPrice);
 
   let route = "okx";
   let routingReason = "OKX remains within threshold, so default execution path is retained.";
@@ -149,7 +137,7 @@ function routeDecision(strategistDecision: any, marketData: any, squad: any) {
     routingReason,
     okxPrice,
     uniswapPrice,
-    spreadBps: Number(spreadBps.toFixed(2)),
+    spreadBps,
   };
 
   console.error(`Router: selected ${route} — spread ${routedDecision.spreadBps}bps — ${routingReason}`);

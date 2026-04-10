@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { betterRouteForPrices, computeSpreadBps, fetchUniswapPrice } from "@/server/uniswap";
 
 const OKX_API_KEY = process.env.OKX_API_KEY || "";
 const PAIRS = [
@@ -34,15 +35,27 @@ export async function GET() {
           throw new Error(`OKX returned no price for ${pair}`);
         }
 
-        const spreadFactor = 1 + (Math.random() - 0.5) * 0.004;
-        const uniswapPrice = Number((okxPrice * spreadFactor).toFixed(6));
-        const spreadBps = Number((((uniswapPrice - okxPrice) / okxPrice) * 10000).toFixed(2));
+        let uniswap = {
+          uniswapPrice: null as number | null,
+          uniswapPoolId: null as string | null,
+        };
+
+        try {
+          uniswap = await fetchUniswapPrice(label === "ETH/USDT" ? "ETH/USDC" : "OKB/USDC");
+        } catch {
+          uniswap = { uniswapPrice: null, uniswapPoolId: null };
+        }
+
+        const resolvedUniswapPrice = uniswap.uniswapPrice ?? okxPrice;
+        const spreadBps = computeSpreadBps(okxPrice, resolvedUniswapPrice);
 
         return {
           pair: label,
           okxPrice,
-          uniswapPrice,
+          uniswapPrice: resolvedUniswapPrice,
           spreadBps,
+          betterRoute: betterRouteForPrices(okxPrice, resolvedUniswapPrice),
+          uniswapPoolId: uniswap.uniswapPoolId,
           recommendation: recommendation(spreadBps),
         };
       }),

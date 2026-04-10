@@ -47,6 +47,19 @@ type LeaderboardResponse = {
   updatedAt?: string;
 };
 
+type SignalPair = {
+  pair: string;
+  okxPrice: number;
+  uniswapPrice: number;
+  spreadBps: number;
+  betterRoute?: string;
+  uniswapPoolId?: string | null;
+};
+
+type SignalResponse = {
+  pairs?: SignalPair[];
+};
+
 type CycleLogEntry = {
   agent: string;
   status: string;
@@ -213,6 +226,18 @@ export default function ArenaPage() {
     return () => window.clearInterval(timer);
   }, [cycleState?.nextCycleTime]);
 
+  const {
+    data: signalData,
+  } = useQuery<SignalResponse>({
+    queryKey: ["arena-signal"],
+    queryFn: async () => {
+      const res = await fetch("/api/signal", { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to load signal");
+      return res.json();
+    },
+    refetchInterval: 30000,
+  });
+
   useEffect(() => {
     if (!copyToast) return;
     const timeout = window.setTimeout(() => setCopyToast(null), 1500);
@@ -230,6 +255,7 @@ export default function ArenaPage() {
   const avgConfidence = squads.length
     ? squads.reduce((sum, squad) => sum + (squad.confidence || 0.84), 0) / squads.length
     : 0.84;
+  const lastSpreadBps = signalData?.pairs?.find((item) => item.pair === "ETH/USDT")?.spreadBps ?? 0;
 
   const feed = useMemo(() => {
     return squads.flatMap((squad) => {
@@ -279,12 +305,13 @@ export default function ArenaPage() {
             </div>
             <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-6xl">Season 1 Arena</h1>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
             {[
               { label: "Total Decisions", value: totalDecisions },
               { label: "Active Squads", value: squads.length },
               { label: "Total Swaps", value: totalSwaps },
               { label: "Avg Confidence", value: `${Math.round(avgConfidence * 100)}%` },
+              { label: "Avg Uniswap Spread", value: `${lastSpreadBps}bps` },
             ].map((chip) => (
               <div key={chip.label} className="rounded-2xl border border-black/10 bg-xyn-surface px-4 py-3 dark:border-white/10 dark:bg-xyn-dark">
                 <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">{chip.label}</div>
