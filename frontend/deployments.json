@@ -76,7 +76,9 @@
     "0x646c6cf8be29abf65ee41f5a81e1293145ce9b71e1cd4b3904936d4c4ab7c7d5",
     "0x514cfd032f71a86a193fb6bd5d42c363332f876ee3fdce0ea9ace533f461f2ce",
     "0x7d08ec8a4ac9aefaedb1d73b8b0fbc728e52141a817c80f9fded3c8f3b88afce",
-    "0x8a128920d95b70678e79c76b6e249ae57f7a08df35fc5b64b26a3a0943d0f278"
+    "0x8a128920d95b70678e79c76b6e249ae57f7a08df35fc5b64b26a3a0943d0f278",
+    "0x8cd52d7a6ae111a5538ec26def755664dc2782ec44f62e536dadd870eeffbe51",
+    "0xdac50e7f56581f7c489baa5d3ebc731eb7ba08d35a898bbc2e5113edfd691c07"
   ],
   "decisionLogEntries": [
     {
@@ -295,6 +297,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · OKB price stable with minor decrease in last 24h. Balanced risk mode supports holding. Analyst confidence: 80%.",
       "timestamp": 1775779120
+    },
+    {
+      "txHash": "0x8cd52d7a6ae111a5538ec26def755664dc2782ec44f62e536dadd870eeffbe51",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "WAIT ETH (0% treasury) · High price spread between Uniswap and OKX, wait for spread to narrow for better entry point.",
+      "timestamp": 1775779341
+    },
+    {
+      "txHash": "0xdac50e7f56581f7c489baa5d3ebc731eb7ba08d35a898bbc2e5113edfd691c07",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY OKB (100% treasury) · Positive 24h price change and low price spread on Uniswap indicate potential for gains. Analyst confidence is high at 75%.",
+      "timestamp": 1775779341
     }
   ]
 }
