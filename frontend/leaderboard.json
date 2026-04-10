@@ -3,19 +3,18 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 30,
+      "decisions": 31,
       "confidence": 0.84,
-      "lastAction": "WAIT ETH (0% treasury) · High price spread between Uniswap and OKX, wait for spread to narrow for better entry point.",
-      "latestTimestamp": 1775779341,
+      "lastAction": "HOLD ETH (100% treasury) · Market price change in the last 24 hours is low, limiting profit opportunities. Wait for better market conditions.",
+      "latestTimestamp": 1775782877,
       "stats": {
         "buys": 17,
         "sells": 1,
-        "holds": 7,
-        "lastTradeAction": "UNKNOWN",
+        "holds": 8,
+        "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xd8e27bbb699d02dc19b92cc7aa740fdc2613a379282323b49cc1714f6b1d9da4",
         "0x0f0c218911e8bd57e92689e4747c22aa2c975b1e95b399014aaf4b4ecab04f92",
         "0xdf84640c2d5180adb97dc4fc8e487553167ea80973dc0117d542f56aeb7c1b32",
         "0xb0f91a2757a64b3783d48ba1528f31ddf40cea175cd38ea2d17284bdc268e6ba",
@@ -24,33 +23,35 @@
         "0xa0b85bab72d09aedf9cc9d0f1b943ff54884cdd0f362118fbbd0f286a7d8cdb3",
         "0x646c6cf8be29abf65ee41f5a81e1293145ce9b71e1cd4b3904936d4c4ab7c7d5",
         "0x7d08ec8a4ac9aefaedb1d73b8b0fbc728e52141a817c80f9fded3c8f3b88afce",
-        "0x8cd52d7a6ae111a5538ec26def755664dc2782ec44f62e536dadd870eeffbe51"
+        "0x8cd52d7a6ae111a5538ec26def755664dc2782ec44f62e536dadd870eeffbe51",
+        "0x5e09c05b39d540733c8a3dc38f455e27ef67a62c0c2593268c84ead786ff8e66"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 3,
+      "decisions": 4,
       "confidence": 0.84,
-      "lastAction": "BUY OKB (100% treasury) · Positive 24h price change and low price spread on Uniswap indicate potential for gains. Analyst confidence is high at 75%.",
-      "latestTimestamp": 1775779341,
+      "lastAction": "HOLD OKB (100% treasury) · Price stable with minimal spread, no significant change in the last 24 hours. Analyst recommendation to wait with 80% confidence.",
+      "latestTimestamp": 1775782877,
       "stats": {
         "buys": 1,
         "sells": 0,
-        "holds": 2,
-        "lastTradeAction": "BUY",
+        "holds": 3,
+        "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
         "0x514cfd032f71a86a193fb6bd5d42c363332f876ee3fdce0ea9ace533f461f2ce",
         "0x8a128920d95b70678e79c76b6e249ae57f7a08df35fc5b64b26a3a0943d0f278",
-        "0xdac50e7f56581f7c489baa5d3ebc731eb7ba08d35a898bbc2e5113edfd691c07"
+        "0xdac50e7f56581f7c489baa5d3ebc731eb7ba08d35a898bbc2e5113edfd691c07",
+        "0xb6ed3d031ff16c41045f17e7dda3e70d3a8e4a88723fbb427c939985b26473b1"
       ]
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-10T00:02:23.206Z",
-  "totalDecisions": 33,
+  "updatedAt": "2026-04-10T01:01:19.148Z",
+  "totalDecisions": 35,
   "supportingProofs": {
     "narratorPayments": 1,
     "latestNarratorPayment": {
