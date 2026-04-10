@@ -465,13 +465,19 @@ export default function ArenaPage() {
       </section>
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
-        <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
+        <div className="mb-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+          <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Agent Economy</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Live Payment Stream</h2>
-            <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-400">Agent micropayments settle every 12 hours, and the frontend updates automatically after each successful scheduler publish.</div>
+            <div className="mt-3 max-w-2xl text-sm leading-6 text-xyn-muted dark:text-zinc-400">
+              Agent micropayments settle every 12 hours. The frontend updates automatically after each successful scheduler publish.
+            </div>
           </div>
-          <div className="text-sm text-xyn-muted dark:text-zinc-300">Agent Economy — {(paymentData?.totalOkb || 0).toFixed(5)} OKB circulated across {paymentData?.totalPayments || 0} payments</div>
+          <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300 lg:min-w-[280px]">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-gold">Economy Snapshot</div>
+            <div className="mt-2 font-medium text-white dark:text-white">{(paymentData?.totalOkb || 0).toFixed(5)} OKB circulated</div>
+            <div className="mt-1">{paymentData?.totalPayments || 0} recorded payments</div>
+          </div>
         </div>
 
         <div className="rounded-3xl border border-black/10 dark:border-white/10">
