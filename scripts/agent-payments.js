@@ -96,6 +96,11 @@ async function appendAndPublishPayment(entry) {
 }
 
 async function executeCyclePayments() {
+  if (!STRATEGIST_KEY || !ORACLE_WALLET_ADDRESS) {
+    console.error('Agent payment chain skipped: missing STRATEGIST_KEY or ORACLE_WALLET_ADDRESS');
+    return [];
+  }
+
   const payments = [];
   for (const type of ['analyst-oracle', 'strategist-analyst']) {
     const entry = await sendPayment(type);

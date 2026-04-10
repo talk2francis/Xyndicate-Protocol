@@ -12,6 +12,7 @@ const TXHASHES_PATH = path.join(FRONTEND_DIR, 'txhashes.json');
 const RPC_URL = process.env.XLAYER_RPC || process.env.NEXT_PUBLIC_XLAYER_RPC || 'https://rpc.xlayer.tech';
 const BLOCK_WINDOW = Math.min(100, Number(process.env.DECISION_LOG_SCAN_WINDOW || 100));
 const FINALITY_BUFFER = Number(process.env.DECISION_LOG_FINALITY_BUFFER || 8);
+const DEPLOYMENT_START_PADDING = Number(process.env.DECISION_LOG_DEPLOYMENT_START_PADDING || 20);
 
 const DECISION_LOG_ABI = [
   'event DecisionRecorded(string indexed squadId, string agentChain, string rationale, uint256 timestamp)',
@@ -47,10 +48,12 @@ async function main() {
   const contract = new ethers.Contract(address, DECISION_LOG_ABI, provider);
   const latestBlock = await provider.getBlockNumber();
   const safeLatestBlock = Math.max(0, latestBlock - FINALITY_BUFFER);
+  const deployReceipt = deployments?.DecisionLog?.deployTx ? await provider.getTransactionReceipt(deployments.DecisionLog.deployTx) : null;
+  const deploymentStartBlock = Math.max(0, Number(deployReceipt?.blockNumber || 0) - DEPLOYMENT_START_PADDING);
   const recovery = readJson(RECOVERY_PATH, {
     recoveredByIndex: {},
     latestScannedBlock: 0,
-    nextFromBlock: 0,
+    nextFromBlock: deploymentStartBlock,
     recoveredCount: 0,
     updatedAt: null,
   });
@@ -65,7 +68,12 @@ async function main() {
     byKey.set(key, i);
   }
 
-  let fromBlock = recovery.nextFromBlock || 0;
+  if (!recovery.nextFromBlock || recovery.nextFromBlock < deploymentStartBlock || recovery.latestScannedBlock < deploymentStartBlock) {
+    recovery.latestScannedBlock = Math.max(0, deploymentStartBlock - 1);
+    recovery.nextFromBlock = deploymentStartBlock;
+  }
+
+  let fromBlock = recovery.nextFromBlock || deploymentStartBlock;
   while (fromBlock <= safeLatestBlock) {
     const toBlock = Math.min(fromBlock + BLOCK_WINDOW - 1, safeLatestBlock);
 
