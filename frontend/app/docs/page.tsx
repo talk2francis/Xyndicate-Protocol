@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Copy, ExternalLink, Play } from "lucide-react";
 
@@ -14,9 +14,23 @@ type ToolCard = {
   response: string;
 };
 
+type McpUsageEntry = {
+  tool: string;
+  calledAt: number;
+  caller: string;
+  responseTime: number;
+};
+
+type McpUsageResponse = {
+  entries: McpUsageEntry[];
+  totalCallsToday: number;
+  byTool: Record<string, number>;
+  averageResponseTimeMs: number;
+};
+
 const INSTALL_TABS = ["Plugin Store", "Direct MCP", "Manual"] as const;
 const GUIDE_TABS = ["Claude Code", "OpenClaw", "Raw HTTP"] as const;
-const TEST_TOOLS = ["get_market_signal", "get_leaderboard", "execute_route_query"] as const;
+const TEST_TOOLS = ["get_market_signal", "get_leaderboard", "execute_route_query", "get_economy_snapshot"] as const;
 const TEST_PAIRS = ["ETH/USDC", "OKB/USDC"] as const;
 
 const CURL_COMMAND = "curl -fsSL https://xyndicateprotocol.vercel.app/install.sh | bash";
@@ -74,6 +88,15 @@ const TOOL_CARDS: ToolCard[] = [
     request: JSON.stringify({ tool: "execute_route_query", params: { pair: "OKB/USDC" } }, null, 2),
     response: JSON.stringify({ route: "OKX", pair: "OKB/USDC", action: "HOLD", reason: "Spread within threshold" }, null, 2),
   },
+  {
+    name: "get_economy_snapshot",
+    description: "Returns a live summary of decision volume, agent micropayments, x402 volume, route distribution, and top squad status.",
+    params: [],
+    returns: "Economy snapshot JSON for the current season with payment, route, and squad metrics.",
+    auth: "No auth required.",
+    request: JSON.stringify({ tool: "get_economy_snapshot", params: {} }, null, 2),
+    response: JSON.stringify({ season: 1, totalDecisions: 103, totalOkbCirculated: 0.0002, totalX402Volume: 0.00044, activeSquads: 2 }, null, 2),
+  },
 ];
 
 const ARCHITECTURE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" fill="none">
@@ -112,6 +135,8 @@ export default function DocsPage() {
   const [loading, setLoading] = useState(false);
   const [showArchitecture, setShowArchitecture] = useState(false);
   const [showOnchainDemo, setShowOnchainDemo] = useState(false);
+  const [usageData, setUsageData] = useState<McpUsageResponse>({ entries: [], totalCallsToday: 0, byTool: {}, averageResponseTimeMs: 0 });
+  const [usageLoading, setUsageLoading] = useState(true);
 
   const installValue = useMemo(() => {
     if (installTab === "Plugin Store") return CURL_COMMAND;
@@ -137,6 +162,31 @@ export default function DocsPage() {
   -d '{"tool":"get_market_signal","params":{"pair":"ETH/USDC"}}'`;
   }, [guideTab]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadUsage = async () => {
+      try {
+        setUsageLoading(true);
+        const res = await fetch("/api/mcp-usage", { cache: "no-store" });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json?.error || "Failed to load MCP usage");
+        if (!cancelled) setUsageData(json);
+      } catch {
+        if (!cancelled) setUsageData({ entries: [], totalCallsToday: 0, byTool: {}, averageResponseTimeMs: 0 });
+      } finally {
+        if (!cancelled) setUsageLoading(false);
+      }
+    };
+
+    loadUsage();
+    const interval = window.setInterval(loadUsage, 5000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
+  }, []);
+
   const runQuery = async () => {
     try {
       setLoading(true);
@@ -144,14 +194,32 @@ export default function DocsPage() {
 
       let data: unknown;
       if (tool === "get_leaderboard") {
-        const res = await fetch("/api/leaderboard");
-        if (!res.ok) throw new Error("Leaderboard query failed");
-        data = await res.json();
+        const res = await fetch("/api/mcp", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ tool: "get_leaderboard", params: {} }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json?.error || "Leaderboard query failed");
+        data = json;
       } else if (tool === "get_market_signal") {
-        const res = await fetch("/api/signal");
+        const res = await fetch("/api/mcp", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ tool: "get_market_signal", params: { pair } }),
+        });
         const json = await res.json();
         if (!res.ok) throw new Error(json?.error || "Signal query failed");
-        data = json?.pairs?.find((item: any) => item.pair === pair.replace("USDC", "USDT")) || json;
+        data = json;
+      } else if (tool === "get_economy_snapshot") {
+        const res = await fetch("/api/mcp", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ tool: "get_economy_snapshot", params: {} }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json?.error || "Economy snapshot failed");
+        data = json;
       } else {
         const res = await fetch("/api/mcp", {
           method: "POST",
@@ -270,7 +338,7 @@ export default function DocsPage() {
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Live tester</h2>
         </div>
         <div className="grid gap-4 lg:grid-cols-[0.9fr_0.9fr_auto]">
-          <select value={pair} onChange={(e) => setPair(e.target.value as (typeof TEST_PAIRS)[number])} className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark dark:border-white/10 dark:bg-zinc-900 dark:text-white">
+          <select value={pair} onChange={(e) => setPair(e.target.value as (typeof TEST_PAIRS)[number])} disabled={tool === "get_leaderboard" || tool === "get_economy_snapshot"} className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark disabled:opacity-50 dark:border-white/10 dark:bg-zinc-900 dark:text-white">
             {TEST_PAIRS.map((item) => <option key={item}>{item}</option>)}
           </select>
           <select value={tool} onChange={(e) => setTool(e.target.value as (typeof TEST_TOOLS)[number])} className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark dark:border-white/10 dark:bg-zinc-900 dark:text-white">
@@ -294,6 +362,63 @@ export default function DocsPage() {
         </div>
         <div className="mt-4">
           <CodeBlock value={responseText} />
+        </div>
+      </section>
+
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">MCP Live Usage</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight">Scheduler and tester activity</h2>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-gold">Calls today</div>
+              <div className="mt-2 text-2xl font-semibold">{usageLoading ? "..." : usageData.totalCallsToday}</div>
+            </div>
+            <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-gold">Avg response</div>
+              <div className="mt-2 text-2xl font-semibold">{usageLoading ? "..." : `${usageData.averageResponseTimeMs}ms`}</div>
+            </div>
+            <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-gold">Tools hit</div>
+              <div className="mt-2 text-2xl font-semibold">{usageLoading ? "..." : Object.keys(usageData.byTool || {}).length}</div>
+            </div>
+          </div>
+        </div>
+        <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="rounded-3xl border border-black/10 p-5 dark:border-white/10">
+            <div className="text-sm font-semibold">Breakdown by tool</div>
+            <div className="mt-4 space-y-3 text-sm">
+              {Object.entries(usageData.byTool || {}).length ? Object.entries(usageData.byTool).map(([toolName, count]) => (
+                <div key={toolName} className="flex items-center justify-between rounded-2xl bg-black/5 px-4 py-3 dark:bg-white/5">
+                  <span className="font-mono text-xs sm:text-sm">{toolName}</span>
+                  <span className="font-semibold">{count}</span>
+                </div>
+              )) : (
+                <div className="rounded-2xl bg-black/5 px-4 py-3 text-xyn-muted dark:bg-white/5 dark:text-zinc-400">No MCP calls logged yet.</div>
+              )}
+            </div>
+          </div>
+          <div className="rounded-3xl border border-black/10 p-5 dark:border-white/10">
+            <div className="text-sm font-semibold">Recent usage log</div>
+            <div className="mt-4 space-y-3">
+              {usageData.entries.length ? usageData.entries.map((entry, index) => (
+                <div key={`${entry.tool}-${entry.calledAt}-${index}`} className="rounded-2xl bg-black/5 px-4 py-3 text-sm dark:bg-white/5">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <div className="font-mono font-semibold">{entry.tool}</div>
+                      <div className="mt-1 text-xs text-xyn-muted dark:text-zinc-400">caller: {entry.caller}</div>
+                    </div>
+                    <div className="text-xs text-xyn-muted dark:text-zinc-400">{new Date(entry.calledAt).toLocaleString()}</div>
+                  </div>
+                  <div className="mt-2 text-xs text-xyn-muted dark:text-zinc-400">response time: {entry.responseTime}ms</div>
+                </div>
+              )) : (
+                <div className="rounded-2xl bg-black/5 px-4 py-3 text-sm text-xyn-muted dark:bg-white/5 dark:text-zinc-400">No usage records published yet.</div>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 

@@ -1,5 +1,6 @@
 const { runFullPipeline } = require('./pipeline');
 const { INTERVAL_MS } = require('./cycle-state');
+const { selfCallMcp } = require('./self-call-mcp');
 
 let lastRunAt = 0;
 
@@ -27,6 +28,12 @@ async function scheduledRun() {
     console.log(`Narrator TX: ${result.narratorPaymentHash || 'n/a'}`);
     console.log(`Leaderboard updated at: ${result.leaderboardUpdatedAt || 'n/a'}`);
     console.log(`OKLink: https://www.oklink.com/xlayer/tx/${result.txHash}`);
+
+    try {
+      await selfCallMcp();
+    } catch (mcpError) {
+      console.error(`MCP self-call failed: ${mcpError.message || mcpError}`);
+    }
   } catch (err) {
     console.error('Cycle failed:', err.message);
   }
