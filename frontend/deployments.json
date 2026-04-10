@@ -152,7 +152,9 @@
     "0x9caf8550d46821893cede5d97d20ea61ff6bac233b609261419dbd0af53998cf",
     "0x1160c6d07e311850bf50afdd329f3d35dd6359d0215a7b64134c17b95212ab85",
     "0xe47931a74c5fbab719684ef6df8dc235bf5bcdd98505cf4fadcb585c78e592e5",
-    "0xadae94774a78c94fc61c243e187119dcaa62124bb52795fd49ebfc8a4af096e5"
+    "0xadae94774a78c94fc61c243e187119dcaa62124bb52795fd49ebfc8a4af096e5",
+    "0x8ea80067367833a208026c547b65542379a8104aed185756b6a51ee72fda0e9d",
+    "0xbf050f7224b3fe9be3fe8d5f0c282b1cf21458a3bc6dec4f629b4161f4bed1e3"
   ],
   "decisionLogEntries": [
     {
@@ -903,6 +905,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · Price has increased by 1.71% in the last 24 hours. Analyst recommends waiting. Squad Nova's balanced risk mode aligns with holding position.",
       "timestamp": 1775851346
+    },
+    {
+      "txHash": "0x8ea80067367833a208026c547b65542379a8104aed185756b6a51ee72fda0e9d",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Market volatility is low, limiting trading opportunities. Analyst recommends waiting. Confidence score: 5.",
+      "timestamp": 1775853113
+    },
+    {
+      "txHash": "0xbf050f7224b3fe9be3fe8d5f0c282b1cf21458a3bc6dec4f629b4161f4bed1e3",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Price increased by 1.67% in 24h, indicating stability. Analyst recommends waiting with 70% confidence.",
+      "timestamp": 1775853113
     }
   ]
 }
