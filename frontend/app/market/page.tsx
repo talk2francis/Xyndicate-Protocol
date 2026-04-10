@@ -145,7 +145,7 @@ export default function MarketPage() {
   const [mySquad, setMySquad] = useState<Strategy | null>(null);
 
   const strategyLicenseAddress = (deployments as any)?.StrategyLicense?.address || "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186";
-  const directPaymentReceiver = (deployments as any)?.StrategyLicense?.address || "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186";
+  const directPaymentReceiver = "0x795009bb38a32348344a36a4cfcb36e4e84cb8d8";
   const strategyRegistryAddress = (deployments as any)?.StrategyRegistry?.address;
   const seasonManagerAddress = (deployments as any)?.SeasonManagerV2?.address || (deployments as any)?.x402Details?.contract || "0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1";
   const strategyVaultAddress = (deployments as any)?.StrategyVault?.address || "0x6002767f909B3049d5A65beAD84A843a385a61aC";
