@@ -3,19 +3,18 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 51,
+      "decisions": 52,
       "confidence": 0.84,
-      "lastAction": "HOLD ETH (0% treasury) · Market price change in the last 24 hours is relatively low. Analyst recommendation is to wait. Confidence score is 0.7.",
-      "latestTimestamp": 1775818867,
+      "lastAction": "HOLD ETH (100% treasury) · Market volatility is low, limiting arbitrage opportunities. Analyst recommends waiting. Confidence score: 0.6",
+      "latestTimestamp": 1775820799,
       "stats": {
         "buys": 17,
         "sells": 1,
-        "holds": 28,
+        "holds": 29,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x749441997d4a7fa20a559c032e73c690f746e1d187b1476a83be454042acfcd7",
         "0xf30f5e0077f60cef7d42e5c31e6adde15aa14f38b772a5ee8f2244c030d6b75d",
         "0xb16f38839efdcaaeff90a16c24864fd1ca99a517d3e435511e9a6ff620479cee",
         "0xa7a91c36689f8149b8e1a14b6c1507c7d666e2cc8a3fc405423060420886cae5",
@@ -24,25 +23,25 @@
         "0x99071c97910ee09a30c5db3138c7af39f2d395c067e6998e696f0091f72b4de0",
         "0x6ceb243fda02de0718cc639172c6376070d1832087da43f01ace7c21980fa3cf",
         "0x3d4170fa2c8e14d9355121c21ba40c61c9f1bef84ebc932cabaae33b281dcd75",
-        "0x1ae9c1f96f0260e55257f8cba3415e9b3aa5f6cd92a28264d514fd51d9e6e4eb"
+        "0x1ae9c1f96f0260e55257f8cba3415e9b3aa5f6cd92a28264d514fd51d9e6e4eb",
+        "0x9d6324db58d5885b2ab8b793a3e78853961aba95825a687932964be569d777d2"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 24,
+      "decisions": 25,
       "confidence": 0.84,
-      "lastAction": "BUY OKB (100% treasury) · Positive 24h price change with high analyst confidence score.",
-      "latestTimestamp": 1775818867,
+      "lastAction": "HOLD OKB (0% treasury) · OKB price increased by 1.41% in 24h, signaling stability. Squad Nova's balanced risk mode aligns with holding position. Confidence: 0.7",
+      "latestTimestamp": 1775820799,
       "stats": {
         "buys": 4,
         "sells": 0,
-        "holds": 20,
-        "lastTradeAction": "BUY",
+        "holds": 21,
+        "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x359e196551a815b50fab0b4200e5577d77d36d39126ee8521a972943da9b2fa6",
         "0x8e49bc302d1fab579e08e13a704e3015e57102f875ef5c185979a541f1dcb7a9",
         "0x4f3bdb2bbf49dd196f52b2a6e6abab4c8375b6d4d71683733b504559b438e5be",
         "0x7909bc2292fa325f72003ca3d8bb80027e115aa07f6640d18290abae5a66af89",
@@ -51,13 +50,14 @@
         "0xfa64fe78d842cb55d9a1ad9c15032a8b0bcd673cea6c76492539bc5471edb429",
         "0xb5c0af6a8a0efcef957ec037e579830ed13dc17bb59c2022d981d176783ec515",
         "0x4702dda272d561b8ae00e24c890ed44de33ce11e5880aee7fae6e8ce7b38bec4",
-        "0x1dcc973cb6a87afcead7abf57522c51754a500835e7faf9e770808f2bbaa397d"
+        "0x1dcc973cb6a87afcead7abf57522c51754a500835e7faf9e770808f2bbaa397d",
+        "0x414e9bacf200222952379d50e66ac64ab596ee045952baf7c1c87a7dc7f3992f"
       ]
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-10T11:01:09.500Z",
-  "totalDecisions": 75,
+  "updatedAt": "2026-04-10T11:33:21.221Z",
+  "totalDecisions": 77,
   "supportingProofs": {
     "narratorPayments": 1,
     "latestNarratorPayment": {
