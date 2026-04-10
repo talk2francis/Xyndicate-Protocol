@@ -388,11 +388,18 @@ export default function MarketPage() {
       } else {
         const tierMeta = tiers[tier];
         if (!tierMeta) throw new Error("Tier metadata unavailable");
-        const tx = await signer.sendTransaction({
-          to: directPaymentReceiver,
-          value: ethers.parseEther(tierMeta.amountOkb),
+        const injected = resolveProvider();
+        if (!injected?.request) throw new Error("Wallet provider unavailable");
+
+        const txHash = await injected.request({
+          method: "eth_sendTransaction",
+          params: [{
+            from: walletAddress,
+            to: directPaymentReceiver,
+            value: `0x${ethers.parseEther(tierMeta.amountOkb).toString(16)}`,
+          }],
         });
-        await tx.wait();
+        await provider.waitForTransaction(txHash);
 
         let purchaseRecord: { expiresAt?: number | null } = {};
         try {
@@ -403,7 +410,7 @@ export default function MarketPage() {
               walletAddress,
               squadId: selected.squadId,
               tier,
-              txHash: tx.hash,
+              txHash,
             }),
           });
           const recordPayload = await recordResponse.json();
@@ -419,7 +426,7 @@ export default function MarketPage() {
         setTierUnlocks((prev) => ({
           ...prev,
           [`${selected.squadId}:${tier}`]: {
-            txHash: tx.hash,
+            txHash,
             expiresAt: purchaseRecord?.expiresAt ?? (tier === "subscription-24h" ? Math.floor(Date.now() / 1000) + 86400 : null),
           },
         }));
@@ -430,7 +437,7 @@ export default function MarketPage() {
           if (!signalResponse.ok) throw new Error(signalPayload?.error || "Signal unlock failed");
           setUnlockJson(JSON.stringify({
             unlockedTier: "Signal Access",
-            txHash: tx.hash,
+            txHash,
             signal: signalPayload,
           }, null, 2));
         }
@@ -439,7 +446,7 @@ export default function MarketPage() {
           setUnlockJson(JSON.stringify({
             tier: "24h Subscription",
             squadId: selected.squadId,
-            txHash: tx.hash,
+            txHash,
             activeUntil: purchaseRecord?.expiresAt ?? Math.floor(Date.now() / 1000) + 86400,
             message: "All Oracle signals unlocked for 24 hours.",
           }, null, 2));
