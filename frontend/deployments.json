@@ -124,7 +124,9 @@
     "0x9d6324db58d5885b2ab8b793a3e78853961aba95825a687932964be569d777d2",
     "0x414e9bacf200222952379d50e66ac64ab596ee045952baf7c1c87a7dc7f3992f",
     "0x022ce7fee51b4de171c7a734a5ace0c491ab3702bcc7d55d84cf90320a201438",
-    "0xe5081e07c1324b09004f702f17dc31979a5b5ebf7cabad44dd5fbd5be122b884"
+    "0xe5081e07c1324b09004f702f17dc31979a5b5ebf7cabad44dd5fbd5be122b884",
+    "0xc184436965b2dad5c82684cb9e4c9af25ce2618f8ded04bee2f765d6d699544f",
+    "0x77c53bf4e22086e0343a4cf4e13e8d2156794412e06c7a9e78f398bf8810d511"
   ],
   "decisionLogEntries": [
     {
@@ -679,6 +681,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · Price change in the last 24 hours: 1.64% indicates stability.",
       "timestamp": 1775822492
+    },
+    {
+      "txHash": "0xc184436965b2dad5c82684cb9e4c9af25ce2618f8ded04bee2f765d6d699544f",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Low price spread and limited arbitrage opportunities. Analyst recommendation to wait. Confidence score of 0.7.",
+      "timestamp": 1775824270
+    },
+    {
+      "txHash": "0x77c53bf4e22086e0343a4cf4e13e8d2156794412e06c7a9e78f398bf8810d511",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY OKB (100% treasury) · Positive 24h price change with high analyst confidence score.",
+      "timestamp": 1775824270
     }
   ]
 }
