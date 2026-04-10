@@ -120,7 +120,9 @@
     "0x3d4170fa2c8e14d9355121c21ba40c61c9f1bef84ebc932cabaae33b281dcd75",
     "0x4702dda272d561b8ae00e24c890ed44de33ce11e5880aee7fae6e8ce7b38bec4",
     "0x1ae9c1f96f0260e55257f8cba3415e9b3aa5f6cd92a28264d514fd51d9e6e4eb",
-    "0x1dcc973cb6a87afcead7abf57522c51754a500835e7faf9e770808f2bbaa397d"
+    "0x1dcc973cb6a87afcead7abf57522c51754a500835e7faf9e770808f2bbaa397d",
+    "0x9d6324db58d5885b2ab8b793a3e78853961aba95825a687932964be569d777d2",
+    "0x414e9bacf200222952379d50e66ac64ab596ee045952baf7c1c87a7dc7f3992f"
   ],
   "decisionLogEntries": [
     {
@@ -647,6 +649,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "BUY OKB (100% treasury) · Positive 24h price change with high analyst confidence score.",
       "timestamp": 1775818867
+    },
+    {
+      "txHash": "0x9d6324db58d5885b2ab8b793a3e78853961aba95825a687932964be569d777d2",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Market volatility is low, limiting arbitrage opportunities. Analyst recommends waiting. Confidence score: 0.6",
+      "timestamp": 1775820799
+    },
+    {
+      "txHash": "0x414e9bacf200222952379d50e66ac64ab596ee045952baf7c1c87a7dc7f3992f",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (0% treasury) · OKB price increased by 1.41% in 24h, signaling stability. Squad Nova's balanced risk mode aligns with holding position. Confidence: 0.7",
+      "timestamp": 1775820799
     }
   ]
 }
