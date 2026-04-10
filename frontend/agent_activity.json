@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "13-strategist-1775779338865",
-      "agent": "strategist",
-      "cycle": 13,
-      "timestamp": 1775779338865,
-      "status": "complete",
-      "summary": "WAIT ETH (0% treasury) | High price spread between Uniswap and OKX, wait for spread to narrow for better entry point.",
-      "durationMs": 1
-    },
-    {
       "id": "13-router-1775779339790",
       "agent": "router",
       "cycle": 13,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "WAIT ETH | confidence 70%",
       "durationMs": 1
+    },
+    {
+      "id": "24-strategist-1775799086439",
+      "agent": "strategist",
+      "cycle": 24,
+      "timestamp": 1775799086439,
+      "status": "complete",
+      "summary": "HOLD ETH (100% treasury) | Low volatility and minimal price change in the last 24 hours limit trading opportunities. Waiting for a clearer market direction.",
+      "durationMs": 4
     }
   ]
 }
