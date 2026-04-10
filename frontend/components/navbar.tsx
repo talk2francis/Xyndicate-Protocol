@@ -12,6 +12,7 @@ const navItems = [
   { href: "/arena", label: "Arena" },
   { href: "/deploy", label: "Deploy" },
   { href: "/market", label: "Market" },
+  { href: "/economy", label: "Economy" },
   { href: "/proofs", label: "Proofs" },
   { href: "/docs", label: "Docs" },
 ];
