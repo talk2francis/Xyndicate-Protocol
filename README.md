@@ -1,11 +1,46 @@
 # Xyndicate Protocol
 
-Xyndicate Protocol is a Skills Arena submission for OKX Build X S2, built as a multi-agent autonomous trading system on X Layer. The project combines market intelligence, agent collaboration, on-chain proof logging, and emerging skill interfaces into a single product surface: an agent squad that reads market data, reasons through strategy, routes execution decisions, and records its actions on-chain for transparent verification. As of submission, the project is early-stage and not yet star-driven on GitHub, so positioning is based on shipped product depth, live contracts, and end-to-end judge-verifiable flows rather than repository social proof.
+Xyndicate Protocol is an OKX Build X S2 Skills Arena submission built on X Layer mainnet. It ships a live multi-agent trading arena, MCP skill layer, x402-powered strategy licensing, on-chain proof logging, StrategyVault PnL tracking, and a judge-facing Next.js product surface that is fully navigable in production.
 
-## Architecture Overview
+## Live URLs
+
+- Production app: `https://xyndicateprotocol.vercel.app`
+- MCP server: `https://xyndicateprotocol.vercel.app/api/mcp`
+- MCP usage telemetry: `https://xyndicateprotocol.vercel.app/api/mcp-usage`
+- Docs live tester: `https://xyndicateprotocol.vercel.app/docs`
+
+## Architecture
+
+- App: `https://xyndicateprotocol.vercel.app`
+- Architecture diagram: `https://xyndicateprotocol.vercel.app/docs`
+- Demo video: `RECORDING IN PROGRESS`
+
+## Deployed X Layer mainnet contracts
+
+| Contract | Address | Deploy TX |
+| --- | --- | --- |
+| DecisionLog | `0xC9E69be5ecD65a9106800E07E05eE44a63559F8b` | `0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34` |
+| SeasonManager | `0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1` | season contract in live history |
+| SeasonManagerV2 | `0x0E6619188f19872554789a84F6E9150EA7b78d48` | `0xe5023ee0a0074502acea7f0c0e99b00edf82b5d5f21e1faf40d92854b660b32b` |
+| StrategyVault | `0x6002767f909B3049d5A65beAD84A843a385a61aC` | `0xe371b795f2ac92d0c7919497f9a8e70f099ff5f1c88088c2c39955d835e0034c` |
+| StrategyLicense | `0x8AbaCE8Ea22A591CE3109599449776A2cb96B186` | `0x1ff8a1f8462003b2a17c5acddc5d856199c130b6df9c9fb4dbf6b92e6dfd915d` |
+| StrategyRegistry | `0x8d486C3d45dc9C23500e3bF9781124eF149277f0` | `0x6f45d581cc8b7aada8c7199a6cddcc0a4555c74aa39782763b914bc57087f4f9` |
+
+## Product surface
+
+Production pages:
+- `/`
+- `/arena`
+- `/deploy`
+- `/market`
+- `/economy`
+- `/proofs`
+- `/docs`
+
+## Agent pipeline
 
 ```text
-OKX Market API + Uniswap AI Skills
+OKX Market API + Uniswap v3 Subgraph
                 |
                 v
              Oracle
@@ -26,81 +61,53 @@ OKX Market API + Uniswap AI Skills
              Narrator
                 |
                 v
-DecisionLog.sol + StrategyVault.sol
+DecisionLog.sol + StrategyVault.sol + public proof artifacts
 ```
 
-## Deployment Addresses
+## Uniswap integration
 
-| Contract | Address | Status |
+| tool | file | output |
 | --- | --- | --- |
-| DecisionLog | `0xC9E69be5ecD65a9106800E07E05eE44a63559F8b` | Live on X Layer mainnet |
-| SeasonManager | `0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1` | Live on X Layer mainnet |
-| StrategyVault | `0x6002767f909B3049d5A65beAD84A843a385a61aC` | Live on X Layer mainnet |
-| StrategyLicense | `0x8AbaCE8Ea22A591CE3109599449776A2cb96B186` | Live on X Layer mainnet |
-| StrategyRegistry | `0x8d486C3d45dc9C23500e3bF9781124eF149277f0` | Live on X Layer mainnet |
-| SeasonManagerV2 | `0x0E6619188f19872554789a84F6E9150EA7b78d48` | Live on X Layer mainnet |
+| Uniswap v3 Subgraph ETH/USDC pool | `frontend/server/run-cycle-core.ts` Oracle step, `frontend/server/uniswap.mjs`, `frontend/app/api/signal/route.ts` | `spreadBps` + `betterRoute` |
 
-## Onchain OS Skills Usage
+Uniswap integration is surfaced live in:
+- Oracle runtime logs
+- Arena spread stats
+- signal API
+- Router/decision route badging
+- MCP market signal responses
 
-| API name | file used in | what it does |
-| --- | --- | --- |
-| OKX Market API | `frontend/api/run-cycle.js`, `agents/src/agents/oracle.ts` | Pulls live market ticker data that seeds the Oracle stage of each decision cycle. |
-| OKX Onchain OS client | `agents/src/lib/onchainOs.ts` | Creates signed OKX API clients for authenticated Onchain OS requests. |
-| OKX Wallet API | `agents/src/services/wallet.ts`, `agents/src/scripts/enrollSquad.ts` | Provisions squad wallets and supports agent enrollment and wallet-linked flows. |
-| x402 payment rail | `agents/src/services/wallet.ts`, `scripts/x402-entry.js`, `contracts/src/SeasonManager.sol` | Handles gated entry/payment flows tied to season participation and paid unlock mechanics. |
-| OKX DEX / execution hooks | `scripts/executor-swap.js` | Prepares authenticated execution requests for swap and route-related actions. |
+## MCP skill layer
 
-## Uniswap AI Skills Usage
-
-Uniswap-aware signal enrichment is live in the submission runtime path and is exposed through the market signal / routing surfaces.
-
-| tool name | file used in | what it does |
-| --- | --- | --- |
-| market signal enrichment | `frontend/server/run-cycle-core.ts`, `frontend/app/api/signal/route.ts` | Augments Oracle output with Uniswap-aware price context and spread calculations alongside OKX pricing. |
-| route intelligence | `agents/src/agents/router.ts`, `frontend/server/run-cycle-core.ts` | Helps the Router select execution path recommendations before handoff to execution. |
-| liquidity context | `frontend/app/api/mcp/route.ts`, `mcp/src/index.ts` | Supplies DEX-side context and pair normalization for live signal and MCP responses. |
-| trade path support | `frontend/server/mcp-route.ts`, `frontend/app/api/mcp/route.ts` | Supports route-query responses for assistant and demo execution flows. |
-
-## MCP Skill Documentation
-
-MCP server status: live.
-
-Install command:
+Confirmed live endpoint:
 
 ```bash
-curl -fsSL https://xyndicateprotocol.vercel.app/install.sh | bash
+curl -X POST https://xyndicateprotocol.vercel.app/api/mcp \
+  -H 'content-type: application/json' \
+  -d '{"tool":"get_market_signal","params":{"pair":"ETH/USDC"}}'
 ```
 
 Available tools:
 - `get_leaderboard`
 - `get_market_signal`
-- `get_squad_strategy` (license gated via StrategyLicense on X Layer)
+- `get_squad_strategy`
 - `execute_route_query`
+- `get_economy_snapshot`
 
-## Team
+## S1 → S2 evolution
 
-Solo builder:
-- `@talk2francis`
-- `@xyndicatepro`
+Season 1 used single-page HTML with 12h scheduler. Season 2 upgrades to multi-page Next.js, dual-squad 30min pipeline, MCP skill layer, real Uniswap v3 integration, and StrategyVault on-chain PnL tracking.
 
-## Scoring Criteria
+## What judges can verify immediately
 
-**Onchain OS / Uniswap integration**
-Xyndicate already uses OKX market and wallet-related infrastructure in the live codebase, with x402-linked payment logic and execution hooks present across the agent and scripting layers. The next submission milestone extends that foundation by wiring Uniswap AI Skills into the Oracle and Router path so market sensing and route planning become richer and more defensible.
+- Live dual-squad Arena with server-authoritative cycle state
+- Wallet-based Deploy and Market flows on X Layer
+- Proofs page with on-chain TX visibility and exportable evidence
+- Docs page with live MCP tester and MCP usage telemetry
+- Economy page with explicit earn → pay → earn loop visualization
+- StrategyVault, StrategyLicense, StrategyRegistry, and SeasonManagerV2 all live on X Layer mainnet
 
-**X Layer ecosystem**
-The protocol is built directly around X Layer deployment and verification. Decision logging already runs against a live X Layer contract, season logic is anchored in `SeasonManager`, and the product story is centered on persistent on-chain proof rather than simulated agent output. This keeps the project native to the ecosystem instead of merely integrating it at the edge.
+## Repository and live app
 
-**AI interactive experience**
-Xyndicate is designed as an interpretable agent product, not just a backend automation script. The user-facing experience surfaces strategy outputs, reasoning context, execution traces, and proof artifacts in a way that makes the AI system inspectable. The upcoming multi-page frontend and MCP skill layer push this further by making the system queryable, explorable, and useful to judges and users in real time.
-
-**Product completeness**
-The project already spans contracts, agents, API routes, scheduler automation, proof storage, and a live frontend deployment. The roadmap to submission is not a greenfield concept but an expansion of an existing working system. That improves product completeness because each remaining milestone, including the Router, MCP server, and new contracts, is being added onto a verifiable operational base.
-
-## Live Demo
-
-https://xyndicateprotocol.vercel.app
-
-## Demo Video
-
-To be inserted once the final recorded demo is uploaded.
+- GitHub: `https://github.com/talk2francis/Xyndicate-Protocol`
+- Live app: `https://xyndicateprotocol.vercel.app`
