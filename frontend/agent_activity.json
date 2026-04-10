@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "35-narrator-1775817191952",
-      "agent": "narrator",
-      "cycle": 35,
-      "timestamp": 1775817191952,
-      "status": "complete",
-      "summary": "Xyndicate Alpha held ETH (0% treasury) via okx. Market volatility is low with minimal 24h change. Analyst suggests waiting for better opportunities. Confidence moderate. | Squad Nova deployed OKB (100% treasury) via okx. Positive 24h price change with high confidence score.",
-      "durationMs": 1
-    },
-    {
       "id": "36-oracle-1775818862432",
       "agent": "oracle",
       "cycle": 36,
@@ -538,6 +529,15 @@
       "timestamp": 1775836871086,
       "status": "complete",
       "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "durationMs": 1
+    },
+    {
+      "id": "48-executor-1775836871849",
+      "agent": "executor",
+      "cycle": 48,
+      "timestamp": 1775836871849,
+      "status": "complete",
+      "summary": "HOLD executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
