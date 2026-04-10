@@ -142,7 +142,9 @@
     "0x62169c3b8808aee4e66a53f97bc84af164779b9e60d332bd1da932d1eb9c69ff",
     "0x850cf48816793875d3741d56475b799a118b1a2d7ca998b3f3c1e3ab14a1cc53",
     "0x597598e4926a8445ffaf89865adac8d83a34a79bbf66f9cc6f683352c0f30916",
-    "0x20ea2ca239c588321080263422f0f13c4aed45c79b7f630d6ad87665afcd36d3"
+    "0x20ea2ca239c588321080263422f0f13c4aed45c79b7f630d6ad87665afcd36d3",
+    "0x6fb6d65cf743177ff2fc82dd0815b7221882914c7fc71eaff544780107418079",
+    "0x16fce6a3effcc6bab97fe92d955ffda1bd18a4b0512b1ed5724090e5a9573a93"
   ],
   "decisionLogEntries": [
     {
@@ -823,6 +825,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (0% treasury) · Stable price with minimal spread and positive 24h change. Analyst recommends waiting for now.",
       "timestamp": 1775840574
+    },
+    {
+      "txHash": "0x6fb6d65cf743177ff2fc82dd0815b7221882914c7fc71eaff544780107418079",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · ETH price increased by 1.55% in 24h, showing potential stability. Low price spread and volatility limit short-term trading. Analyst recommends waiting.",
+      "timestamp": 1775842265
+    },
+    {
+      "txHash": "0x16fce6a3effcc6bab97fe92d955ffda1bd18a4b0512b1ed5724090e5a9573a93",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait, low confidence score.",
+      "timestamp": 1775842265
     }
   ]
 }
