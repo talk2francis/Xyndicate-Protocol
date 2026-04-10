@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -19,15 +20,15 @@ const navItems = [
 
 function Logo() {
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex h-8 w-8 items-center justify-center rounded-md border border-black/10 bg-white/80 dark:border-white/10 dark:bg-xyn-dark/80">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M4 3H7.2L9 6.2L10.8 3H14L10.9 8.95L14.2 15H11L9 11.45L7 15H3.8L7.1 8.95L4 3Z" fill="currentColor" />
-        </svg>
-      </div>
-      <span className="text-[11px] font-medium uppercase tracking-[0.32em] text-xyn-muted dark:text-zinc-300">
-        Xyndicate Protocol
-      </span>
+    <div className="flex items-center">
+      <Image
+        src="/xyndicate-wordmark.svg"
+        alt="Xyndicate Protocol"
+        width={180}
+        height={44}
+        priority
+        className="h-9 w-auto dark:invert"
+      />
     </div>
   );
 }

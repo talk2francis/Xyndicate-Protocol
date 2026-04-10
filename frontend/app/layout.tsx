@@ -19,6 +19,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Xyndicate Protocol",
   description: "Autonomous strategy squads on X Layer.",
+  icons: {
+    icon: "/xyndicate-icon.svg",
+    shortcut: "/xyndicate-icon.svg",
+    apple: "/xyndicate-icon.svg",
+  },
 };
 
 export default function RootLayout({
