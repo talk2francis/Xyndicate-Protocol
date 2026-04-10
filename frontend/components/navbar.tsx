@@ -24,10 +24,10 @@ function Logo() {
       <Image
         src="/xyndicate-wordmark.svg"
         alt="Xyndicate Protocol"
-        width={180}
-        height={44}
+        width={220}
+        height={56}
         priority
-        className="h-9 w-auto dark:invert"
+        className="h-10 w-auto object-contain opacity-95 dark:invert"
       />
     </div>
   );
@@ -66,8 +66,8 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:gap-6 sm:px-6">
-        <Link href="/" className="shrink-0">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:gap-6 sm:px-6">
+        <Link href="/" className="shrink-0 pr-2">
           <Logo />
         </Link>
 
