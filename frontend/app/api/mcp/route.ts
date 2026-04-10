@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AVAILABLE_TOOLS, executeMcpTool } from "@/server/mcp-runtime";
-import { appendMcpUsageEntry } from "@/server/mcp-usage";
 
 export async function GET() {
   return NextResponse.json({
@@ -43,14 +42,7 @@ export async function POST(req: NextRequest) {
     const result = await executeMcpTool(tool, params);
     const responseTime = Date.now() - startedAt;
 
-    await appendMcpUsageEntry({
-      tool,
-      calledAt: Date.now(),
-      caller,
-      responseTime,
-    });
-
-    return NextResponse.json({ tool, result, responseTime });
+    return NextResponse.json({ tool, result, responseTime, caller });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || "MCP request failed" }, { status: 500 });
   }
