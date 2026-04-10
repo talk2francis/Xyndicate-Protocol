@@ -17,17 +17,18 @@ export async function GET() {
     }
 
     const data = await response.json();
-    const entries = Array.isArray(data)
-      ? [...data].sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0)).slice(0, 20)
+    const allEntries = Array.isArray(data)
+      ? [...data].sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0))
       : [];
+    const entries = allEntries.slice(0, 20);
 
-    const totalOkb = entries.reduce((sum, entry) => {
+    const totalOkb = allEntries.reduce((sum, entry) => {
       const numeric = Number(String(entry?.amount || "0").replace(" OKB", ""));
       return sum + (Number.isFinite(numeric) ? numeric : 0);
     }, 0);
 
     return NextResponse.json(
-      { entries, totalOkb },
+      { entries, totalOkb, totalPayments: allEntries.length },
       { headers: { "Cache-Control": "s-maxage=5, stale-while-revalidate=5" } },
     );
   } catch (error: any) {

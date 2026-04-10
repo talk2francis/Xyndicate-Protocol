@@ -105,6 +105,7 @@ type PaymentEntry = {
 type PaymentsResponse = {
   entries?: PaymentEntry[];
   totalOkb?: number;
+  totalPayments?: number;
 };
 
 function parseDecisionText(text?: string) {
@@ -462,7 +463,7 @@ export default function ArenaPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Agent Economy</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Live Payment Stream</h2>
           </div>
-          <div className="text-sm text-xyn-muted dark:text-zinc-300">Agent Economy — {(paymentData?.totalOkb || 0).toFixed(5)} OKB circulated</div>
+          <div className="text-sm text-xyn-muted dark:text-zinc-300">Agent Economy — {(paymentData?.totalOkb || 0).toFixed(5)} OKB circulated across {paymentData?.totalPayments || 0} payments</div>
         </div>
 
         <div className="rounded-3xl border border-black/10 dark:border-white/10">

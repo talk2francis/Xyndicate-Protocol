@@ -573,6 +573,30 @@ export default function MarketPage() {
         </div>
       </section>
 
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">x402 Tiers</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight">Three live access products.</h2>
+            <p className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">Each tier uses a distinct payment amount so proofs can visibly separate config unlocks, signal access, and 24h subscription access.</p>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          {[
+            { key: "strategy-config", title: "Strategy Config", price: tiers["strategy-config"]?.displayPrice || priceLabel, detail: "Unlock the current squad configuration package." },
+            { key: "signal-access", title: "Signal Access", price: tiers["signal-access"]?.displayPrice || "0.10 USDC", detail: "Unlock the current Oracle signal with ETH price, Uniswap spread, and recommendation." },
+            { key: "subscription-24h", title: "24h Subscription", price: tiers["subscription-24h"]?.displayPrice || "1.00 USDC", detail: "Unlock all Oracle signals for 24 hours with countdown-based access." },
+          ].map((tier) => (
+            <div key={tier.key} className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-gold">{tier.title}</div>
+              <div className="mt-3 text-3xl font-semibold">{tier.price}</div>
+              <div className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">{tier.detail}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {loadingStrategies ? (
           Array.from({ length: 6 }).map((_, index) => <StrategySkeleton key={index} />)
@@ -634,13 +658,20 @@ export default function MarketPage() {
                 </svg>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setSelected(strategy)}
-                className="mt-6 w-full rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
-              >
-                License for {priceLabel}
-              </button>
+              <div className="mt-6 grid gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelected(strategy)}
+                  className="w-full rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
+                >
+                  Open 3-tier access panel
+                </button>
+                <div className="grid gap-2 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-black/10 px-3 py-2 text-center text-xs font-semibold dark:border-white/10">Config<br />{tiers["strategy-config"]?.displayPrice || priceLabel}</div>
+                  <div className="rounded-2xl border border-black/10 px-3 py-2 text-center text-xs font-semibold dark:border-white/10">Signal<br />{tiers["signal-access"]?.displayPrice || "0.10 USDC"}</div>
+                  <div className="rounded-2xl border border-black/10 px-3 py-2 text-center text-xs font-semibold dark:border-white/10">24h<br />{tiers["subscription-24h"]?.displayPrice || "1.00 USDC"}</div>
+                </div>
+              </div>
             </motion.div>
           );
         }) : (
