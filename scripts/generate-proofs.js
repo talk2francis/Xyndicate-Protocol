@@ -9,6 +9,7 @@ const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
 const DEPLOYMENTS_PATH = path.join(FRONTEND_DIR, 'deployments.json');
 const TXHASHES_PATH = path.join(FRONTEND_DIR, 'txhashes.json');
+const RECOVERY_PATH = path.join(FRONTEND_DIR, 'decision-log-recovery.json');
 const AGENT_PAYMENTS_PATH = path.join(FRONTEND_DIR, 'agentpayments.json');
 const OUTPUT_PATH = path.join(FRONTEND_DIR, 'proofs.json');
 const OUTPUT_REPO_PATH = 'frontend/proofs.json';
@@ -103,8 +104,8 @@ async function buildProofsArtifact() {
     DecisionLog: deployments?.DecisionLog || rootDeployments?.DecisionLog || null,
   };
   const txhashes = readJson(TXHASHES_PATH, {});
+  const recovery = readJson(RECOVERY_PATH, { recoveredByIndex: {} });
   const agentPayments = readJson(AGENT_PAYMENTS_PATH, []);
-  const fallbackHashes = Object.values(txhashes || {}).map(String);
 
   const provider = new ethers.JsonRpcProvider(XLAYER_RPC);
   const decisionLogAddress = mergedDeployments?.DecisionLog?.address;
@@ -122,16 +123,17 @@ async function buildProofsArtifact() {
 
   for (let i = 0; i < onchainCount; i += 1) {
     const row = await decisionContract.getDecision(i);
-    const txHash = fallbackHashes[i] || `decision-${i}`;
+    const txHash = txhashes?.[String(i)] || recovery?.recoveredByIndex?.[String(i)]?.txHash || `decision-${i}`;
     const normalizedSquadId = normalizeSquadId(row?.squadId || 'XYNDICATE_ALPHA');
     decisionItems.push({
       type: 'decision',
       label: `${normalizedSquadId} decision`,
       txHash,
       timestamp: normalizeTimestamp(row?.timestamp),
-      amount: null,
-      blockNumber: null,
-      explorerUrl: fallbackHashes[i] ? `${OKLINK_BASE}/${txHash}` : `${OKLINK_BASE}`,
+      amount: String(txHash).startsWith('0x') ? null : 'Pending recovery',
+      blockNumber: recovery?.recoveredByIndex?.[String(i)]?.blockNumber ?? null,
+      explorerUrl: String(txHash).startsWith('0x') ? `${OKLINK_BASE}/${txHash}` : `${OKLINK_BASE}`,
+      recoveryStatus: String(txHash).startsWith('0x') ? 'recovered' : 'pending',
     });
   }
 
@@ -236,6 +238,7 @@ async function buildProofsArtifact() {
     contracts,
     updatedAt: new Date().toISOString(),
     onchainDecisionCount: onchainCount,
+    recoveredDecisionCount: Object.keys(recovery?.recoveredByIndex || {}).length,
     source: 'scheduler-artifact',
   };
 }

@@ -12,6 +12,7 @@ type ProofRow = {
   amount?: string | null;
   blockNumber?: number | null;
   explorerUrl: string;
+  recoveryStatus?: "recovered" | "pending";
 };
 
 type ContractCard = {
@@ -26,12 +27,15 @@ type ProofsResponse = {
   proofs: ProofRow[];
   totalTxCount: number;
   contracts: ContractCard[];
+  onchainDecisionCount?: number;
+  recoveredDecisionCount?: number;
 };
 
 const PAGE_SIZE = 50;
 
 function truncateHash(value?: string | null) {
   if (!value) return "—";
+  if (!value.startsWith("0x")) return value;
   return `${value.slice(0, 10)}...${value.slice(-8)}`;
 }
 
@@ -130,8 +134,13 @@ export default function ProofsPage() {
             <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-6xl">Everything Has a Hash.</h1>
             <p className="mt-4 text-lg text-xyn-muted dark:text-zinc-300">Every decision, swap, and payment, on X Layer Mainnet.</p>
           </div>
-          <div className="inline-flex items-center rounded-full bg-xyn-gold/15 px-5 py-3 text-sm font-semibold text-xyn-gold">
-            {data?.totalTxCount || 0} total txs
+          <div className="flex flex-col gap-2 text-right">
+            <div className="inline-flex items-center rounded-full bg-xyn-gold/15 px-5 py-3 text-sm font-semibold text-xyn-gold">
+              {data?.totalTxCount || 0} total txs
+            </div>
+            <div className="text-xs text-xyn-muted dark:text-zinc-400">
+              Decision recovery: {data?.recoveredDecisionCount || 0}/{data?.onchainDecisionCount || 0}
+            </div>
           </div>
         </div>
       </section>
@@ -198,16 +207,22 @@ export default function ProofsPage() {
                   <div className="text-sm text-xyn-muted dark:text-zinc-300">{formatTimestamp(row.timestamp)}</div>
                   <div className="flex items-center gap-2 text-sm font-medium">
                     <span>{truncateHash(row.txHash)}</span>
-                    <button type="button" onClick={() => copyText(row.txHash)} className="text-xyn-muted transition hover:text-xyn-gold" aria-label="Copy tx hash">
-                      <Copy className="h-4 w-4" />
-                    </button>
+                    {row.txHash?.startsWith("0x") ? (
+                      <button type="button" onClick={() => copyText(row.txHash)} className="text-xyn-muted transition hover:text-xyn-gold" aria-label="Copy tx hash">
+                        <Copy className="h-4 w-4" />
+                      </button>
+                    ) : null}
                   </div>
-                  <div className="text-sm text-xyn-muted dark:text-zinc-300">{row.blockNumber ?? "—"}</div>
+                  <div className="text-sm text-xyn-muted dark:text-zinc-300">{row.blockNumber ?? (row.recoveryStatus === "pending" ? "Pending recovery" : "—")}</div>
                   <div className="text-sm text-xyn-muted dark:text-zinc-300">{row.amount || "—"}</div>
                   <div>
-                    <a href={row.explorerUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-gold">
-                      OKLink <ExternalLink className="h-4 w-4" />
-                    </a>
+                    {row.txHash?.startsWith("0x") ? (
+                      <a href={row.explorerUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-gold">
+                        OKLink <ExternalLink className="h-4 w-4" />
+                      </a>
+                    ) : (
+                      <span className="text-sm text-xyn-muted dark:text-zinc-400">Awaiting recovery</span>
+                    )}
                   </div>
                 </div>
               ))}
