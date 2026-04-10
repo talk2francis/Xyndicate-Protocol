@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "38-executor-1775822490540",
-      "agent": "executor",
-      "cycle": 38,
-      "timestamp": 1775822490540,
-      "status": "complete",
-      "summary": "HOLD executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
       "id": "38-narrator-1775822491415",
       "agent": "narrator",
       "cycle": 38,
@@ -538,6 +529,15 @@
       "timestamp": 1775842262626,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | ETH price increased by 1.55% in 24h, showing potential stability. Low price spread and volatility limit short-term trading. Analyst recommends waiting.",
+      "durationMs": 1
+    },
+    {
+      "id": "51-router-1775842263408",
+      "agent": "router",
+      "cycle": 51,
+      "timestamp": 1775842263408,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
