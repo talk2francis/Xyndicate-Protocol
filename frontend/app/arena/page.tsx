@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
+import { ExternalLink } from "lucide-react";
 
 const AGENTS = ["oracle", "analyst", "strategist", "router", "executor", "narrator"] as const;
 const AGENT_BADGE_STYLES: Record<string, string> = {
@@ -88,6 +89,22 @@ type ActivityEntry = {
 
 type ActivityResponse = {
   entries?: ActivityEntry[];
+};
+
+type PaymentEntry = {
+  type: "narrator-oracle" | "analyst-oracle" | "strategist-analyst";
+  from: string;
+  to: string;
+  amount: string;
+  txHash: string;
+  timestamp: number;
+  status: string;
+  note?: string;
+};
+
+type PaymentsResponse = {
+  entries?: PaymentEntry[];
+  totalOkb?: number;
 };
 
 function parseDecisionText(text?: string) {
@@ -238,6 +255,21 @@ export default function ArenaPage() {
     refetchInterval: 30000,
   });
 
+  const {
+    data: paymentData,
+    isLoading: paymentsLoading,
+    isError: paymentsError,
+    refetch: refetchPayments,
+  } = useQuery<PaymentsResponse>({
+    queryKey: ["arena-payments"],
+    queryFn: async () => {
+      const res = await fetch("/api/payments", { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to load payments");
+      return res.json();
+    },
+    refetchInterval: 5000,
+  });
+
   useEffect(() => {
     if (!copyToast) return;
     const timeout = window.setTimeout(() => setCopyToast(null), 1500);
@@ -283,6 +315,7 @@ export default function ArenaPage() {
   );
 
   const activityEntries = activityData?.entries || [];
+  const paymentEntries = paymentData?.entries || [];
 
   const copyNarratorToX = async () => {
     const payload = `${narratorText}\n\nLive on Xyndicate Protocol Arena`;
@@ -420,6 +453,65 @@ export default function ArenaPage() {
               )}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+        <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Agent Economy</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight">Live Payment Stream</h2>
+          </div>
+          <div className="text-sm text-xyn-muted dark:text-zinc-300">Agent Economy — {(paymentData?.totalOkb || 0).toFixed(5)} OKB circulated</div>
+        </div>
+
+        <div className="rounded-3xl border border-black/10 dark:border-white/10">
+          {paymentsLoading ? (
+            <div className="space-y-3 p-5">
+              {Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-16 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />)}
+            </div>
+          ) : paymentsError ? (
+            <div className="p-5 text-sm text-rose-700 dark:text-rose-300">
+              Failed to load payment stream.
+              <button type="button" onClick={() => refetchPayments()} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">
+                Retry
+              </button>
+            </div>
+          ) : paymentEntries.length ? (
+            <div className="space-y-3 p-5">
+              <AnimatePresence initial={false}>
+                {paymentEntries.map((entry) => {
+                  const tone = entry.type === "narrator-oracle"
+                    ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/20"
+                    : entry.type === "analyst-oracle"
+                      ? "bg-teal-500/10 text-teal-300 border-teal-500/20"
+                      : "bg-violet-500/10 text-violet-300 border-violet-500/20";
+                  return (
+                    <motion.div
+                      key={`${entry.txHash}-${entry.type}`}
+                      initial={{ opacity: 0, y: -16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      className="flex flex-col gap-3 rounded-2xl border border-black/10 bg-white/70 px-4 py-3 dark:border-white/10 dark:bg-black/20 sm:flex-row sm:items-center sm:justify-between"
+                    >
+                      <div className="flex flex-wrap items-center gap-2 text-sm">
+                        <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${tone}`}>{entry.from}</span>
+                        <span className="text-xyn-muted dark:text-zinc-400">→</span>
+                        <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${tone}`}>{entry.to}</span>
+                        <span className="font-semibold">{entry.amount}</span>
+                        <span className="text-xyn-muted dark:text-zinc-400">{formatTimeAgo(entry.timestamp * 1000)}</span>
+                      </div>
+                      <a href={`https://www.oklink.com/xlayer/tx/${entry.txHash}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-gold">
+                        OKLink <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <div className="p-5 text-sm text-xyn-muted dark:text-zinc-300">No agent payments recorded yet.</div>
+          )}
         </div>
       </section>
 

@@ -6,6 +6,7 @@ const { writeLeaderboardArtifact } = require('./generate-leaderboard');
 const { writeProofsArtifact } = require('./generate-proofs');
 const { persistRuntimeHistory } = require('./persist-runtime-history');
 const { createActivityEntry, appendAndPublishActivityEntry, summarizeFromResult } = require('./agent-activity');
+const { executeCyclePayments } = require('./agent-payments');
 const { buildStartCycleState, publishCycleState, readCycleState, advanceCycleState, completeCycleState } = require('./cycle-state');
 
 function invokeRunCycle() {
@@ -67,6 +68,10 @@ async function runFullPipeline() {
   cursor = Date.now();
   state = await logAgentStep('narrator', result, cycleNumber, cursor);
 
+  const cyclePayments = await executeCyclePayments().catch((error) => {
+    console.error(`Agent payment chain failed: ${error.message || error}`);
+    return [];
+  });
   const persisted = await persistRuntimeHistory(result);
   const leaderboard = await writeLeaderboardArtifact();
   const proofs = await writeProofsArtifact();
@@ -82,6 +87,7 @@ async function runFullPipeline() {
     activeSquads: result?.activeSquads || [],
     narratorSummary: result?.narratorSummary,
     narratorPaymentHash: result?.narratorPaymentHash,
+    cyclePayments,
     leaderboardUpdatedAt: leaderboard?.updatedAt,
     proofsUpdatedAt: proofs?.updatedAt,
     persistedHistoryCount: persisted?.decisionLogEntries,

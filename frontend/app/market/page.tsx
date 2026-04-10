@@ -23,6 +23,15 @@ type Strategy = {
   confidenceScores?: number[];
 };
 
+type TierKey = "strategy-config" | "signal-access" | "subscription-24h";
+
+type TierMeta = {
+  label: string;
+  displayPrice: string;
+  amountOkb: string;
+  durationSeconds?: number;
+};
+
 const LICENSE_ABI = [
   "function buyLicense(bytes32 squadId) external payable",
   "function isLicensed(address caller, bytes32 squadId) external view returns (bool)",
@@ -118,6 +127,8 @@ export default function MarketPage() {
   const [licensedMap, setLicensedMap] = useState<Record<string, boolean>>({});
   const [priceLabel, setPriceLabel] = useState("0.50 USDC");
   const [priceWei, setPriceWei] = useState<string>((deployments as any)?.StrategyLicense?.priceWei || "200000000000000");
+  const [tiers, setTiers] = useState<Record<string, TierMeta>>({});
+  const [tierUnlocks, setTierUnlocks] = useState<Record<string, { txHash: string; expiresAt?: number | null }>>({});
   const [unlockJson, setUnlockJson] = useState<string | null>(null);
   const [sheetError, setSheetError] = useState<string | null>(null);
   const [actionToast, setActionToast] = useState<string | null>(null);
@@ -185,6 +196,20 @@ export default function MarketPage() {
     },
     refetchInterval: 60000,
   });
+
+  useEffect(() => {
+    const loadTiers = async () => {
+      try {
+        const res = await fetch("/api/x402/tiers", { cache: "no-store" });
+        const json = await res.json();
+        if (res.ok) {
+          setTiers(json?.tiers || {});
+        }
+      } catch {}
+    };
+
+    loadTiers();
+  }, []);
 
   useEffect(() => {
     const loadLicenses = async () => {
@@ -329,7 +354,7 @@ export default function MarketPage() {
     return accounts?.[0] || null;
   };
 
-  const handleBuyLicense = async () => {
+  const handleBuyLicense = async (tier: TierKey = "strategy-config") => {
     if (!selected) return;
 
     try {
@@ -344,19 +369,69 @@ export default function MarketPage() {
 
       const provider = new ethers.BrowserProvider(injectedProvider as any);
       const signer = await provider.getSigner();
-      const contract = new ethers.Contract(strategyLicenseAddress, LICENSE_ABI, signer);
-      const tx = await contract.buyLicense(squadKey(selected.squadId), { value: BigInt(priceWei) });
-      await tx.wait();
 
-      const configResponse = await fetch(`/api/strategies/${selected.squadId}/config`, { cache: "no-store" });
-      const configPayload = await configResponse.json();
-      if (!configResponse.ok || !configPayload?.config) {
-        throw new Error(configPayload?.error || "Strategy config unlock failed");
+      if (tier === "strategy-config") {
+        const contract = new ethers.Contract(strategyLicenseAddress, LICENSE_ABI, signer);
+        const tx = await contract.buyLicense(squadKey(selected.squadId), { value: BigInt(priceWei) });
+        await tx.wait();
+
+        const configResponse = await fetch(`/api/strategies/${selected.squadId}/config`, { cache: "no-store" });
+        const configPayload = await configResponse.json();
+        if (!configResponse.ok || !configPayload?.config) {
+          throw new Error(configPayload?.error || "Strategy config unlock failed");
+        }
+
+        setLicensedMap((prev) => ({ ...prev, [selected.squadId]: true }));
+        setMyLicenses((prev) => (prev.find((item) => item.squadId === selected.squadId) ? prev : [...prev, selected]));
+        setUnlockJson(JSON.stringify(configPayload.config, null, 2));
+      } else {
+        const tierMeta = tiers[tier];
+        if (!tierMeta) throw new Error("Tier metadata unavailable");
+        const tx = await signer.sendTransaction({
+          to: strategyLicenseAddress,
+          value: ethers.parseEther(tierMeta.amountOkb),
+        });
+        await tx.wait();
+
+        const recordResponse = await fetch("/api/x402/purchase", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            walletAddress,
+            squadId: selected.squadId,
+            tier,
+            txHash: tx.hash,
+          }),
+        });
+        const recordPayload = await recordResponse.json();
+        if (!recordResponse.ok || !recordPayload?.purchase) {
+          throw new Error(recordPayload?.error || "Tier purchase recording failed");
+        }
+
+        setTierUnlocks((prev) => ({
+          ...prev,
+          [`${selected.squadId}:${tier}`]: {
+            txHash: tx.hash,
+            expiresAt: recordPayload.purchase.expiresAt,
+          },
+        }));
+
+        if (tier === "signal-access") {
+          const signalResponse = await fetch("/api/signal", { cache: "no-store" });
+          const signalPayload = await signalResponse.json();
+          if (!signalResponse.ok) throw new Error(signalPayload?.error || "Signal unlock failed");
+          setUnlockJson(JSON.stringify(signalPayload, null, 2));
+        }
+
+        if (tier === "subscription-24h") {
+          setUnlockJson(JSON.stringify({
+            tier: "24h Subscription",
+            squadId: selected.squadId,
+            activeUntil: recordPayload.purchase.expiresAt,
+            message: "All Oracle signals unlocked for 24 hours.",
+          }, null, 2));
+        }
       }
-
-      setLicensedMap((prev) => ({ ...prev, [selected.squadId]: true }));
-      setMyLicenses((prev) => (prev.find((item) => item.squadId === selected.squadId) ? prev : [...prev, selected]));
-      setUnlockJson(JSON.stringify(configPayload.config, null, 2));
     } catch (error: any) {
       setSheetError(error?.shortMessage || error?.message || "License purchase failed");
     } finally {
@@ -713,14 +788,32 @@ export default function MarketPage() {
                 >
                   Cancel
                 </button>
-                <button
-                  type="button"
-                  onClick={handleBuyLicense}
-                  disabled={buying}
-                  className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  {buying ? "Processing..." : "Pay & Unlock"}
-                </button>
+                <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => handleBuyLicense("strategy-config")}
+                    disabled={buying}
+                    className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {buying ? "Processing..." : `Strategy Config — ${tiers["strategy-config"]?.displayPrice || priceLabel}`}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleBuyLicense("signal-access")}
+                    disabled={buying}
+                    className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10"
+                  >
+                    {buying ? "Processing..." : `Signal Access — ${tiers["signal-access"]?.displayPrice || "0.10 USDC"}`}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleBuyLicense("subscription-24h")}
+                    disabled={buying}
+                    className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10"
+                  >
+                    {buying ? "Processing..." : `24h Subscription — ${tiers["subscription-24h"]?.displayPrice || "1.00 USDC"}`}
+                  </button>
+                </div>
                 {!address ? (
                   <button type="button" onClick={connect} className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10">
                     Connect Wallet
