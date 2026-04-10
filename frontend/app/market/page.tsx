@@ -867,7 +867,7 @@ export default function MarketPage() {
                     type="button"
                     onClick={() => handleBuyLicense("signal-access")}
                     disabled={buying}
-                    className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10"
+                    className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {buyingTier === "signal-access" ? "Processing..." : `Signal Access — ${tiers["signal-access"]?.displayPrice || "0.10 USDC"}`}
                   </button>
@@ -875,7 +875,7 @@ export default function MarketPage() {
                     type="button"
                     onClick={() => handleBuyLicense("subscription-24h")}
                     disabled={buying}
-                    className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10"
+                    className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {buyingTier === "subscription-24h" ? "Processing..." : `24h Subscription — ${tiers["subscription-24h"]?.displayPrice || "1.00 USDC"}`}
                   </button>

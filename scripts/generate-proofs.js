@@ -64,7 +64,7 @@ async function enrichWithChainData(provider, items) {
       continue;
     }
 
-    if (item.type === 'decision' && item.timestamp && item.blockNumber != null) {
+    if (item.type === 'decision') {
       enriched.push(item);
       continue;
     }
