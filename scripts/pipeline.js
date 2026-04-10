@@ -13,6 +13,10 @@ function invokeRunCycle() {
     const scriptPath = path.join(__dirname, 'run-cycle-bridge.mjs');
 
     execFile('node', [scriptPath], { cwd: path.join(__dirname, '..') }, (error, stdout, stderr) => {
+      if (stderr?.trim()) {
+        process.stderr.write(`${stderr.trim()}\n`);
+      }
+
       if (error) {
         return reject(new Error(stderr || error.message || 'Pipeline failed'));
       }
