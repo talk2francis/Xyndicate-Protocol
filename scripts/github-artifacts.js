@@ -51,8 +51,7 @@ async function getRemoteFileSha(repoPath) {
   }
 }
 
-async function publishJsonArtifact({ repoPath, content, message }) {
-  const sha = await getRemoteFileSha(repoPath);
+async function putJsonArtifact(repoPath, content, message, sha) {
   const body = {
     message,
     branch: BRANCH,
@@ -67,6 +66,22 @@ async function publishJsonArtifact({ repoPath, content, message }) {
   });
 
   return response.json();
+}
+
+async function publishJsonArtifact({ repoPath, content, message }) {
+  let sha = await getRemoteFileSha(repoPath);
+
+  try {
+    return await putJsonArtifact(repoPath, content, message, sha);
+  } catch (error) {
+    const messageText = String(error?.message || error || '');
+    if (!messageText.includes('GitHub API 409')) {
+      throw error;
+    }
+
+    sha = await getRemoteFileSha(repoPath);
+    return putJsonArtifact(repoPath, content, message, sha);
+  }
 }
 
 function writeLocalJson(filePath, content) {
