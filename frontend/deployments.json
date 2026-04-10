@@ -126,7 +126,9 @@
     "0x022ce7fee51b4de171c7a734a5ace0c491ab3702bcc7d55d84cf90320a201438",
     "0xe5081e07c1324b09004f702f17dc31979a5b5ebf7cabad44dd5fbd5be122b884",
     "0xc184436965b2dad5c82684cb9e4c9af25ce2618f8ded04bee2f765d6d699544f",
-    "0x77c53bf4e22086e0343a4cf4e13e8d2156794412e06c7a9e78f398bf8810d511"
+    "0x77c53bf4e22086e0343a4cf4e13e8d2156794412e06c7a9e78f398bf8810d511",
+    "0x29b29450e209c0b75d2e67a98a4795db45a9072406452f9a4ce5d085e6a92807",
+    "0x95c2b1d1b80500ac7f9d222fb181b6fb17de66a8a08bf0bb8a490b339925a664"
   ],
   "decisionLogEntries": [
     {
@@ -695,6 +697,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "BUY OKB (100% treasury) · Positive 24h price change with high analyst confidence score.",
       "timestamp": 1775824270
+    },
+    {
+      "txHash": "0x29b29450e209c0b75d2e67a98a4795db45a9072406452f9a4ce5d085e6a92807",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · Positive 24h price change indicates potential for growth, aligns with aggressive risk mode and high analyst confidence.",
+      "timestamp": 1775827972
+    },
+    {
+      "txHash": "0x95c2b1d1b80500ac7f9d222fb181b6fb17de66a8a08bf0bb8a490b339925a664",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Stable price with minimal spread and positive 24h change, recommended by analyst with 80% confidence",
+      "timestamp": 1775827972
     }
   ]
 }
