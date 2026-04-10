@@ -133,6 +133,7 @@ export default function MarketPage() {
   const [sheetError, setSheetError] = useState<string | null>(null);
   const [actionToast, setActionToast] = useState<string | null>(null);
   const [buying, setBuying] = useState(false);
+  const [activeTier, setActiveTier] = useState<TierKey>("strategy-config");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [myLicenses, setMyLicenses] = useState<Strategy[]>([]);
   const [selectedSquadId, setSelectedSquadId] = useState("");
@@ -359,6 +360,7 @@ export default function MarketPage() {
     if (!selected) return;
 
     try {
+      setActiveTier(tier);
       setBuying(true);
       setSheetError(null);
       setUnlockJson(null);
@@ -828,7 +830,17 @@ export default function MarketPage() {
               </div>
 
               <div className="mt-6 rounded-2xl border border-black/10 bg-white/70 p-5 text-sm dark:border-white/10 dark:bg-white/5">
-                You get the live squad configuration summary, licensing proof tied to your wallet, and unlock state visible across the marketplace.
+                <div className="font-semibold">Selected rail</div>
+                <div className="mt-2 text-xyn-muted dark:text-zinc-300">
+                  {activeTier === "strategy-config"
+                    ? `Contract rail → ${strategyLicenseAddress}`
+                    : `Direct wallet rail → ${directPaymentReceiver}`}
+                </div>
+                <div className="mt-3 text-xyn-muted dark:text-zinc-300">
+                  {activeTier === "strategy-config"
+                    ? "You get the live squad configuration summary, licensing proof tied to your wallet, and unlock state visible across the marketplace."
+                    : "This tier uses a direct wallet payment rail, then records wallet-linked unlock state for demo access."}
+                </div>
               </div>
 
               <div className="mt-6 flex flex-wrap gap-3">
