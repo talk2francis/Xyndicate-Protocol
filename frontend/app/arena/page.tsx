@@ -469,6 +469,7 @@ export default function ArenaPage() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Agent Economy</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Live Payment Stream</h2>
+            <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-400">Agent micropayments settle every 12 hours, and the frontend updates automatically after each successful scheduler publish.</div>
           </div>
           <div className="text-sm text-xyn-muted dark:text-zinc-300">Agent Economy — {(paymentData?.totalOkb || 0).toFixed(5)} OKB circulated across {paymentData?.totalPayments || 0} payments</div>
         </div>
