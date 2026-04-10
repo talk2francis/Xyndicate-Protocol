@@ -64,6 +64,11 @@ async function enrichWithChainData(provider, items) {
       continue;
     }
 
+    if (item.type === 'decision' && item.timestamp && item.blockNumber != null) {
+      enriched.push(item);
+      continue;
+    }
+
     try {
       const tx = await provider.getTransaction(item.txHash);
       const receipt = await provider.getTransactionReceipt(item.txHash);
@@ -106,6 +111,7 @@ async function buildProofsArtifact() {
   const txhashes = readJson(TXHASHES_PATH, {});
   const recovery = readJson(RECOVERY_PATH, { recoveredByIndex: {} });
   const agentPayments = readJson(AGENT_PAYMENTS_PATH, []);
+  const embeddedDecisionEntries = Array.isArray(mergedDeployments?.decisionLogEntries) ? mergedDeployments.decisionLogEntries : [];
 
   const provider = new ethers.JsonRpcProvider(XLAYER_RPC);
   const decisionLogAddress = mergedDeployments?.DecisionLog?.address;
@@ -123,15 +129,17 @@ async function buildProofsArtifact() {
 
   for (let i = 0; i < onchainCount; i += 1) {
     const row = await decisionContract.getDecision(i);
-    const txHash = txhashes?.[String(i)] || recovery?.recoveredByIndex?.[String(i)]?.txHash || `decision-${i}`;
-    const normalizedSquadId = normalizeSquadId(row?.squadId || 'XYNDICATE_ALPHA');
+    const embedded = embeddedDecisionEntries[i] || null;
+    const recovered = recovery?.recoveredByIndex?.[String(i)] || null;
+    const txHash = embedded?.txHash || txhashes?.[String(i)] || recovered?.txHash || `decision-${i}`;
+    const normalizedSquadId = normalizeSquadId(row?.squadId || embedded?.squadId || 'XYNDICATE_ALPHA');
     decisionItems.push({
       type: 'decision',
       label: `${normalizedSquadId} decision`,
       txHash,
-      timestamp: normalizeTimestamp(row?.timestamp),
+      timestamp: normalizeTimestamp(row?.timestamp || embedded?.timestamp),
       amount: String(txHash).startsWith('0x') ? null : 'Pending recovery',
-      blockNumber: recovery?.recoveredByIndex?.[String(i)]?.blockNumber ?? null,
+      blockNumber: recovered?.blockNumber ?? embedded?.blockNumber ?? null,
       explorerUrl: String(txHash).startsWith('0x') ? `${OKLINK_BASE}/${txHash}` : `${OKLINK_BASE}`,
       recoveryStatus: String(txHash).startsWith('0x') ? 'recovered' : 'pending',
     });
