@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "13-router-1775779339790",
-      "agent": "router",
-      "cycle": 13,
-      "timestamp": 1775779339790,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "13-executor-1775779340424",
       "agent": "executor",
       "cycle": 13,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | Low volatility and minimal price change in the last 24 hours limit trading opportunities. Waiting for a clearer market direction.",
       "durationMs": 4
+    },
+    {
+      "id": "24-router-1775799087294",
+      "agent": "router",
+      "cycle": 24,
+      "timestamp": 1775799087294,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "durationMs": 1
     }
   ]
 }
