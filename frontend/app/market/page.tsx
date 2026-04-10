@@ -393,26 +393,33 @@ export default function MarketPage() {
         });
         await tx.wait();
 
-        const recordResponse = await fetch("/api/x402/purchase", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            walletAddress,
-            squadId: selected.squadId,
-            tier,
-            txHash: tx.hash,
-          }),
-        });
-        const recordPayload = await recordResponse.json();
-        if (!recordResponse.ok || !recordPayload?.purchase) {
-          throw new Error(recordPayload?.error || "Tier purchase recording failed");
+        let purchaseRecord: { expiresAt?: number | null } = {};
+        try {
+          const recordResponse = await fetch("/api/x402/purchase", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              walletAddress,
+              squadId: selected.squadId,
+              tier,
+              txHash: tx.hash,
+            }),
+          });
+          const recordPayload = await recordResponse.json();
+          if (recordResponse.ok && recordPayload?.purchase) {
+            purchaseRecord = recordPayload.purchase;
+          } else {
+            setSheetError(recordPayload?.error || "Purchase recorded on-chain but registry sync is pending.");
+          }
+        } catch {
+          setSheetError("Purchase confirmed, but registry sync is pending.");
         }
 
         setTierUnlocks((prev) => ({
           ...prev,
           [`${selected.squadId}:${tier}`]: {
             txHash: tx.hash,
-            expiresAt: recordPayload.purchase.expiresAt,
+            expiresAt: purchaseRecord?.expiresAt ?? (tier === "subscription-24h" ? Math.floor(Date.now() / 1000) + 86400 : null),
           },
         }));
 
@@ -420,14 +427,19 @@ export default function MarketPage() {
           const signalResponse = await fetch("/api/signal", { cache: "no-store" });
           const signalPayload = await signalResponse.json();
           if (!signalResponse.ok) throw new Error(signalPayload?.error || "Signal unlock failed");
-          setUnlockJson(JSON.stringify(signalPayload, null, 2));
+          setUnlockJson(JSON.stringify({
+            unlockedTier: "Signal Access",
+            txHash: tx.hash,
+            signal: signalPayload,
+          }, null, 2));
         }
 
         if (tier === "subscription-24h") {
           setUnlockJson(JSON.stringify({
             tier: "24h Subscription",
             squadId: selected.squadId,
-            activeUntil: recordPayload.purchase.expiresAt,
+            txHash: tx.hash,
+            activeUntil: purchaseRecord?.expiresAt ?? Math.floor(Date.now() / 1000) + 86400,
             message: "All Oracle signals unlocked for 24 hours.",
           }, null, 2));
         }

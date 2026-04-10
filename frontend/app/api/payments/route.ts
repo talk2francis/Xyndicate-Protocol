@@ -27,8 +27,10 @@ export async function GET() {
       return sum + (Number.isFinite(numeric) ? numeric : 0);
     }, 0);
 
+    const hasFreshPayments = entries.some((entry) => Number(entry?.timestamp || 0) > (Math.floor(Date.now() / 1000) - 7200));
+
     return NextResponse.json(
-      { entries, totalOkb, totalPayments: allEntries.length },
+      { entries, totalOkb, totalPayments: allEntries.length, hasFreshPayments },
       { headers: { "Cache-Control": "s-maxage=5, stale-while-revalidate=5" } },
     );
   } catch (error: any) {

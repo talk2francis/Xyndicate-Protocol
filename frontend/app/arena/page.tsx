@@ -106,6 +106,7 @@ type PaymentsResponse = {
   entries?: PaymentEntry[];
   totalOkb?: number;
   totalPayments?: number;
+  hasFreshPayments?: boolean;
 };
 
 function parseDecisionText(text?: string) {
@@ -357,35 +358,41 @@ export default function ArenaPage() {
       </section>
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
-        <div className="grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
+        <div className="grid gap-8 xl:grid-cols-1">
           <div>
-            <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-gold">Pipeline</div>
+                <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-300">{cycleError ? "Cycle state unavailable" : `Next cycle in ${formatCountdown(countdownMs)}`}</div>
+              </div>
+              <div className="text-sm text-xyn-muted dark:text-zinc-300">Cycle #{cycleState?.cycleNumber || 0}</div>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
               {AGENTS.map((agent) => {
                 const isCurrent = cycleState?.currentAgent === agent;
                 const isCompleted = cycleState?.currentAgent === "idle" && completedAgents.has(agent);
                 const label = pipelinePillLabel(agent, cycleState?.currentAgent, completedAgents);
                 const [title, sublabel] = label.split(" — ");
                 return (
-                  <div
+                  <motion.div
                     key={agent}
-                    className={`min-h-[92px] rounded-[24px] px-3 py-4 text-center text-sm font-semibold ${
+                    animate={isCurrent ? { y: [0, -4, 0], boxShadow: ["0 0 0 rgba(201,168,76,0)", "0 14px 40px rgba(201,168,76,0.18)", "0 0 0 rgba(201,168,76,0)"] } : { y: 0, boxShadow: "0 0 0 rgba(0,0,0,0)" }}
+                    transition={isCurrent ? { repeat: Infinity, duration: 2.4, ease: "easeInOut" } : { duration: 0.2 }}
+                    className={`min-h-[108px] rounded-[28px] border px-4 py-5 text-left text-sm font-semibold ${
                       isCurrent
-                        ? "bg-xyn-gold text-xyn-dark"
+                        ? "border-xyn-gold/40 bg-xyn-gold text-xyn-dark"
                         : isCompleted
-                          ? "bg-emerald-500/15 text-emerald-300"
-                          : "bg-black/5 text-xyn-muted dark:bg-white/10 dark:text-zinc-300"
+                          ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-300"
+                          : "border-black/10 bg-black/5 text-xyn-muted dark:border-white/10 dark:bg-white/10 dark:text-zinc-300"
                     }`}
                   >
-                    <div className={`flex h-full flex-col items-center justify-center gap-1 ${isCurrent ? "animate-pulse" : ""}`}>
-                      <span className="text-sm font-semibold leading-tight">{title}</span>
-                      <span className="text-xs font-medium leading-tight opacity-80">{sublabel || (isCompleted ? "complete" : "standby")}</span>
+                    <div className="flex h-full flex-col justify-between gap-4">
+                      <div className="text-base font-semibold leading-tight">{title}</div>
+                      <div className="text-xs font-medium uppercase tracking-[0.18em] opacity-80">{sublabel || (isCompleted ? "complete" : "standby")}</div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
-            </div>
-            <div className="mt-5 text-sm text-xyn-muted dark:text-zinc-300">
-              {cycleError ? "Cycle state unavailable" : `Next cycle in ${formatCountdown(countdownMs)}`}
             </div>
           </div>
 
@@ -480,6 +487,11 @@ export default function ArenaPage() {
             </div>
           ) : paymentEntries.length ? (
             <div className="space-y-3 p-5">
+              {!paymentData?.hasFreshPayments ? (
+                <div className="rounded-2xl bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">
+                  Showing historical payment history. Fresh cycle micropayments have not landed yet.
+                </div>
+              ) : null}
               <AnimatePresence initial={false}>
                 {paymentEntries.map((entry) => {
                   const tone = entry.type === "narrator-oracle"
