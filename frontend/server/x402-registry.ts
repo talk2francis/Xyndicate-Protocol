@@ -36,8 +36,21 @@ export function readLocalRegistry() {
   return JSON.parse(fs.readFileSync(REGISTRY_PATH, "utf8"));
 }
 
+function tryWriteLocalRegistry(content: unknown) {
+  try {
+    fs.writeFileSync(REGISTRY_PATH, `${JSON.stringify(content, null, 2)}\n`);
+  } catch (error: any) {
+    const message = String(error?.message || error || "");
+    if (message.includes("read-only file system") || message.includes("EROFS")) {
+      return false;
+    }
+    throw error;
+  }
+  return true;
+}
+
 export async function publishRegistry(content: unknown, message: string) {
-  fs.writeFileSync(REGISTRY_PATH, `${JSON.stringify(content, null, 2)}\n`);
+  tryWriteLocalRegistry(content);
   const repoPath = "frontend/x402_tiers.json";
   const shaResponse = await fetch(`${API_BASE}/${repoPath}?ref=${encodeURIComponent(BRANCH)}`, {
     headers: {

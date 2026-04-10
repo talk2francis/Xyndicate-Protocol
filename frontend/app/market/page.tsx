@@ -134,6 +134,7 @@ export default function MarketPage() {
   const [actionToast, setActionToast] = useState<string | null>(null);
   const [buying, setBuying] = useState(false);
   const [activeTier, setActiveTier] = useState<TierKey>("strategy-config");
+  const [buyingTier, setBuyingTier] = useState<TierKey | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [myLicenses, setMyLicenses] = useState<Strategy[]>([]);
   const [selectedSquadId, setSelectedSquadId] = useState("");
@@ -362,6 +363,7 @@ export default function MarketPage() {
     try {
       setActiveTier(tier);
       setBuying(true);
+      setBuyingTier(tier);
       setSheetError(null);
       setUnlockJson(null);
 
@@ -458,6 +460,7 @@ export default function MarketPage() {
       setSheetError(error?.shortMessage || error?.message || "License purchase failed");
     } finally {
       setBuying(false);
+      setBuyingTier(null);
     }
   };
 
@@ -858,7 +861,7 @@ export default function MarketPage() {
                     disabled={buying}
                     className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    {buying ? "Processing..." : `Strategy Config — ${tiers["strategy-config"]?.displayPrice || priceLabel}`}
+                    {buyingTier === "strategy-config" ? "Processing..." : `Strategy Config — ${tiers["strategy-config"]?.displayPrice || priceLabel}`}
                   </button>
                   <button
                     type="button"
@@ -866,7 +869,7 @@ export default function MarketPage() {
                     disabled={buying}
                     className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10"
                   >
-                    {buying ? "Processing..." : `Signal Access — ${tiers["signal-access"]?.displayPrice || "0.10 USDC"}`}
+                    {buyingTier === "signal-access" ? "Processing..." : `Signal Access — ${tiers["signal-access"]?.displayPrice || "0.10 USDC"}`}
                   </button>
                   <button
                     type="button"
@@ -874,7 +877,7 @@ export default function MarketPage() {
                     disabled={buying}
                     className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10"
                   >
-                    {buying ? "Processing..." : `24h Subscription — ${tiers["subscription-24h"]?.displayPrice || "1.00 USDC"}`}
+                    {buyingTier === "subscription-24h" ? "Processing..." : `24h Subscription — ${tiers["subscription-24h"]?.displayPrice || "1.00 USDC"}`}
                   </button>
                 </div>
                 {!address ? (
