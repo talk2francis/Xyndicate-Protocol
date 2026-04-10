@@ -13,6 +13,7 @@ const MAX_ENTRIES = 120;
 const RPC_URL = process.env.XLAYER_RPC || process.env.NEXT_PUBLIC_XLAYER_RPC || 'https://rpc.xlayer.tech';
 const STRATEGIST_KEY = (process.env.STRATEGIST_KEY || '').trim();
 const ORACLE_WALLET_ADDRESS = (process.env.ORACLE_WALLET_ADDRESS || '').trim();
+const PAYMENT_INTERVAL_SECONDS = Number(process.env.AGENT_PAYMENT_INTERVAL_SECONDS || 12 * 60 * 60);
 
 const PAYMENT_TYPES = {
   'narrator-oracle': {
@@ -95,9 +96,25 @@ async function appendAndPublishPayment(entry) {
   return next;
 }
 
+function getLatestPaymentTimestamp() {
+  const current = Array.isArray(readPayments()) ? readPayments() : [];
+  return current.reduce((latest, entry) => Math.max(latest, Number(entry?.timestamp || 0)), 0);
+}
+
+function shouldRunPayments(nowSeconds = Math.floor(Date.now() / 1000)) {
+  const latestPaymentAt = getLatestPaymentTimestamp();
+  if (!latestPaymentAt) return true;
+  return nowSeconds - latestPaymentAt >= PAYMENT_INTERVAL_SECONDS;
+}
+
 async function executeCyclePayments() {
   if (!STRATEGIST_KEY || !ORACLE_WALLET_ADDRESS) {
     console.error('Agent payment chain skipped: missing STRATEGIST_KEY or ORACLE_WALLET_ADDRESS');
+    return [];
+  }
+
+  if (!shouldRunPayments()) {
+    console.log(`Agent payment chain skipped: last payment is still within ${PAYMENT_INTERVAL_SECONDS}s window`);
     return [];
   }
 
@@ -119,5 +136,7 @@ module.exports = {
   writePayments,
   publishPayments,
   appendAndPublishPayment,
+  getLatestPaymentTimestamp,
+  shouldRunPayments,
   executeCyclePayments,
 };
