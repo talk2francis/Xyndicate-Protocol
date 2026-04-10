@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "36-router-1775818865095",
-      "agent": "router",
-      "cycle": 36,
-      "timestamp": 1775818865095,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "36-executor-1775818866066",
       "agent": "executor",
       "cycle": 36,
@@ -538,6 +529,15 @@
       "timestamp": 1775838652214,
       "status": "complete",
       "summary": "ACT ETH | confidence 80%",
+      "durationMs": 1
+    },
+    {
+      "id": "49-strategist-1775838653251",
+      "agent": "strategist",
+      "cycle": 49,
+      "timestamp": 1775838653251,
+      "status": "complete",
+      "summary": "BUY ETH (100% treasury) | Positive 24h price change indicates potential for growth, supported by analyst confidence score of 0.8.",
       "durationMs": 1
     }
   ]
