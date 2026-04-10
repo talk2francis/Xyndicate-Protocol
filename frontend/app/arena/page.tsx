@@ -4,25 +4,18 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { Activity, Brain, Clock3, ExternalLink, GitBranch, Radio, Route, Wallet } from "lucide-react";
 
 const AGENTS = ["oracle", "analyst", "strategist", "router", "executor", "narrator"] as const;
-const AGENT_BADGE_STYLES: Record<string, string> = {
-  oracle: "bg-teal-500/15 text-teal-300 border border-teal-500/20",
-  analyst: "bg-amber-500/15 text-amber-300 border border-amber-500/20",
-  strategist: "bg-violet-500/15 text-violet-300 border border-violet-500/20",
-  router: "bg-orange-500/15 text-orange-300 border border-orange-500/20",
-  executor: "bg-sky-500/15 text-sky-300 border border-sky-500/20",
-  narrator: "bg-zinc-500/15 text-zinc-300 border border-zinc-500/20",
-  system: "bg-emerald-500/15 text-emerald-300 border border-emerald-500/20",
-};
-const ACTIVE_SUBSTATUS: Record<string, string> = {
-  oracle: "scanning",
-  analyst: "scoring",
-  strategist: "planning",
-  router: "routing",
-  executor: "executing",
-  narrator: "narrating",
+const CYCLE_INTERVAL_MS = 30 * 60 * 1000;
+
+const AGENT_META: Record<string, { label: string; color: string; icon: typeof Activity }> = {
+  oracle: { label: "Oracle", color: "text-teal-300 border-teal-500/20 bg-teal-500/10", icon: Radio },
+  analyst: { label: "Analyst", color: "text-amber-300 border-amber-500/20 bg-amber-500/10", icon: Brain },
+  strategist: { label: "Strategist", color: "text-violet-300 border-violet-500/20 bg-violet-500/10", icon: Activity },
+  router: { label: "Router", color: "text-orange-300 border-orange-500/20 bg-orange-500/10", icon: Route },
+  executor: { label: "Executor", color: "text-sky-300 border-sky-500/20 bg-sky-500/10", icon: Wallet },
+  narrator: { label: "Narrator", color: "text-zinc-300 border-zinc-500/20 bg-zinc-500/10", icon: GitBranch },
 };
 
 type LeaderboardSquad = {
@@ -55,6 +48,7 @@ type SignalPair = {
   spreadBps: number;
   betterRoute?: string;
   uniswapPoolId?: string | null;
+  recommendation?: string;
 };
 
 type SignalResponse = {
@@ -74,6 +68,7 @@ type CycleStateResponse = {
   cycleStartTime: number;
   nextCycleTime: number;
   lastCycleComplete: number;
+  activeSquads?: string[];
   agentLog: CycleLogEntry[];
 };
 
@@ -109,14 +104,26 @@ type PaymentsResponse = {
   hasFreshPayments?: boolean;
 };
 
-function parseDecisionText(text?: string) {
-  const value = text || "Active strategy cycle";
-  const action = (value.match(/\b(BUY|SELL|HOLD)\b/i)?.[1] || "HOLD").toUpperCase();
-  const asset = value.match(/\b(BUY|SELL|HOLD)\s+([A-Z0-9_-]+)/i)?.[2] || "ETH";
-  const route = value.toLowerCase().includes("uniswap") ? "Uniswap" : "OKX";
+type TxHashesResponse = Record<string, string>;
 
-  return { action, asset, route, rationale: value };
-}
+type DecisionChainStep = {
+  agent: string;
+  short: string;
+  full: string;
+};
+
+type FeedEntry = {
+  id: string;
+  squadId: string;
+  timestamp?: number;
+  action: string;
+  asset: string;
+  rationale: string;
+  route: "Uniswap" | "OKX";
+  spreadBps: number;
+  savedBps: number;
+  chain: DecisionChainStep[];
+};
 
 function formatCountdown(msRemaining: number) {
   const totalSeconds = Math.max(0, Math.floor(msRemaining / 1000));
@@ -127,16 +134,14 @@ function formatCountdown(msRemaining: number) {
 
 function formatTimestamp(timestamp?: number) {
   if (!timestamp) return "Pending";
-  return (
-    new Date(timestamp).toLocaleString("en-US", {
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-      timeZone: "UTC",
-    }) + " UTC"
-  );
+  return new Date(timestamp).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "UTC",
+  }) + " UTC";
 }
 
 function formatTimeAgo(timestamp?: number) {
@@ -153,27 +158,145 @@ function formatDuration(durationMs?: number) {
   return `${ms}ms`;
 }
 
-function confidenceBarClass(value: number) {
-  if (value > 0.75) return "bg-emerald-500";
-  if (value >= 0.5) return "bg-amber-500";
-  return "bg-rose-500";
+function parseDecisionText(text?: string) {
+  const value = text || "Active strategy cycle";
+  const action = (value.match(/\b(BUY|SELL|HOLD)\b/i)?.[1] || "HOLD").toUpperCase();
+  const asset = value.match(/\b(BUY|SELL|HOLD)\s+([A-Z0-9_-]+)/i)?.[2] || "ETH";
+  const route = value.toLowerCase().includes("uniswap") ? "Uniswap" : "OKX";
+  return { action, asset, route, rationale: value };
 }
 
-function agentLabel(agent: string) {
-  return agent.charAt(0).toUpperCase() + agent.slice(1);
+function summarizeStep(agent: string, summary?: string, fallback?: string) {
+  const value = String(summary || fallback || "");
+  if (agent === "oracle") {
+    const price = value.match(/\$([0-9,.]+)/)?.[1];
+    return `ETH $${price || "-"}`;
+  }
+  if (agent === "analyst") {
+    const action = value.match(/\b(ACT|WAIT|BUY|SELL|HOLD)\b/i)?.[1] || "WAIT";
+    const confidence = value.match(/(\d+)%/)?.[1];
+    return `${action.toUpperCase()} signal ${confidence ? (Number(confidence) / 100).toFixed(2) : "0.70"}`;
+  }
+  if (agent === "strategist") {
+    const allocation = value.match(/\((\d+)% treasury\)/)?.[1];
+    return `${allocation || "0"}% allocation`;
+  }
+  if (agent === "router") {
+    const route = value.toLowerCase().includes("uniswap") ? "Uniswap" : "OKX";
+    const spread = value.match(/(\d+)bps/i)?.[1] || "0";
+    return `${route} +${spread}bps`;
+  }
+  if (agent === "executor") {
+    return value.toLowerCase().includes("tx") ? "TX confirmed" : "Execution ready";
+  }
+  if (agent === "narrator") {
+    return "Narration ready";
+  }
+  return value.slice(0, 42) || "Ready";
 }
 
-function pipelinePillLabel(agent: string, currentAgent?: string, completedAgents?: Set<string>) {
-  if (currentAgent === agent) {
-    const sub = ACTIVE_SUBSTATUS[agent] || "active";
-    return `${agentLabel(agent)} — ${sub}`;
+function buildDecisionChain(squad: LeaderboardSquad, activityEntries: ActivityEntry[], signal?: SignalPair): DecisionChainStep[] {
+  const latestByAgent = new Map<string, ActivityEntry>();
+  for (const agent of AGENTS) {
+    const found = activityEntries.find((entry) => entry.agent === agent && entry.timestamp <= Number((squad.latestTimestamp || 0) * 1000 + 60000));
+    if (found) latestByAgent.set(agent, found);
   }
 
-  if (currentAgent === "idle" && completedAgents?.has(agent)) {
-    return `${agentLabel(agent)} ✓ complete`;
-  }
+  return AGENTS.map((agent) => {
+    const summary = latestByAgent.get(agent)?.summary;
+    const fallback = agent === "router" && signal
+      ? `${signal.betterRoute === "uniswap" ? "Uniswap" : "OKX"} selected | ${signal.spreadBps}bps`
+      : squad.lastAction;
+    return {
+      agent,
+      short: summarizeStep(agent, summary, fallback),
+      full: summary || fallback || `${AGENT_META[agent].label} waiting for next cycle.`,
+    };
+  });
+}
 
-  return agentLabel(agent);
+function AgentStatusBoard({
+  cycleState,
+  activityEntries,
+}: {
+  cycleState?: CycleStateResponse;
+  activityEntries: ActivityEntry[];
+}) {
+  const agentCards = useMemo(() => {
+    return AGENTS.map((agent, index) => {
+      const latest = activityEntries.find((entry) => entry.agent === agent);
+      const totalRuns = activityEntries.filter((entry) => entry.agent === agent).length;
+      const durations = activityEntries.filter((entry) => entry.agent === agent).map((entry) => Number(entry.durationMs || 0));
+      const avgDurationMs = durations.length ? durations.reduce((sum, value) => sum + value, 0) / durations.length : 0;
+      const currentAgent = cycleState?.currentAgent;
+
+      let status = "queued";
+      if (currentAgent === agent) status = "running...";
+      else if (latest) status = "complete ✓";
+      else if (currentAgent === "idle") status = "idle";
+      else if (currentAgent && AGENTS.indexOf(currentAgent as (typeof AGENTS)[number]) > index) status = "complete ✓";
+
+      return {
+        agent,
+        latest,
+        totalRuns,
+        avgDurationMs,
+        status,
+        isActive: currentAgent === agent,
+      };
+    });
+  }, [activityEntries, cycleState?.currentAgent]);
+
+  return (
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {agentCards.map((card) => {
+        const meta = AGENT_META[card.agent];
+        const Icon = meta.icon;
+        return (
+          <motion.div
+            key={card.agent}
+            className={`relative overflow-hidden rounded-[28px] border p-5 ${card.isActive ? "border-xyn-gold bg-xyn-gold/5" : "border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5"}`}
+            animate={card.isActive ? { boxShadow: ["0 0 0 rgba(201,168,76,0)", "0 0 32px rgba(201,168,76,0.18)", "0 0 0 rgba(201,168,76,0)"] } : { boxShadow: "0 0 0 rgba(0,0,0,0)" }}
+            transition={card.isActive ? { repeat: Infinity, duration: 3.6, ease: "easeInOut" } : { duration: 0.2 }}
+          >
+            {card.isActive ? <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(201,168,76,0.16),transparent)] animate-[pulse_4s_ease-in-out_infinite]" /> : null}
+            <div className="relative z-10 flex h-full flex-col gap-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className={`inline-flex h-10 w-10 items-center justify-center rounded-2xl border ${meta.color}`}>
+                    <Icon className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <div className="text-lg font-semibold">{meta.label}</div>
+                    <div className="text-xs uppercase tracking-[0.2em] text-xyn-muted dark:text-zinc-400">{card.status}</div>
+                  </div>
+                </div>
+                <span className={`h-2.5 w-2.5 rounded-full ${card.isActive ? "bg-xyn-gold animate-pulse" : card.latest ? "bg-emerald-500" : "bg-zinc-500/60"}`} />
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Last run</div>
+                  <div className="mt-1 text-sm">{card.latest ? formatTimeAgo(card.latest.timestamp) : "Never"}</div>
+                </div>
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Avg duration</div>
+                  <div className="mt-1 text-sm">{formatDuration(card.avgDurationMs)}</div>
+                </div>
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Total runs this season</div>
+                  <div className="mt-1 text-sm">{card.totalRuns}</div>
+                </div>
+                <div>
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Last output</div>
+                  <div className="mt-1 line-clamp-2 text-sm text-xyn-muted dark:text-zinc-300">{card.latest?.summary || "Awaiting next cycle."}</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
 }
 
 function FilterTab({ active, label, onClick }: { active: boolean; label: string; onClick: () => void }) {
@@ -181,9 +304,7 @@ function FilterTab({ active, label, onClick }: { active: boolean; label: string;
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-        active ? "bg-xyn-gold text-xyn-dark" : "border border-black/10 dark:border-white/10"
-      }`}
+      className={`rounded-full px-4 py-2 text-sm font-semibold transition ${active ? "bg-xyn-gold text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}
     >
       {label}
     </button>
@@ -196,11 +317,12 @@ export default function ArenaPage() {
   const [visibleFeedCount, setVisibleFeedCount] = useState(20);
   const [copyToast, setCopyToast] = useState<string | null>(null);
   const [countdownMs, setCountdownMs] = useState(0);
+  const [selectedStep, setSelectedStep] = useState<DecisionChainStep | null>(null);
 
   const { data, isLoading, isError, refetch } = useQuery<LeaderboardResponse>({
     queryKey: ["arena-leaderboard"],
     queryFn: async () => {
-      const res = await fetch("/api/leaderboard");
+      const res = await fetch("/api/leaderboard", { cache: "no-store" });
       if (!res.ok) throw new Error("Failed to load leaderboard");
       return res.json();
     },
@@ -237,17 +359,7 @@ export default function ArenaPage() {
     refetchInterval: 5000,
   });
 
-  useEffect(() => {
-    if (!cycleState?.nextCycleTime) return;
-    const update = () => setCountdownMs(Math.max(0, cycleState.nextCycleTime - Date.now()));
-    update();
-    const timer = window.setInterval(update, 1000);
-    return () => window.clearInterval(timer);
-  }, [cycleState?.nextCycleTime]);
-
-  const {
-    data: signalData,
-  } = useQuery<SignalResponse>({
+  const { data: signalData } = useQuery<SignalResponse>({
     queryKey: ["arena-signal"],
     queryFn: async () => {
       const res = await fetch("/api/signal", { cache: "no-store" });
@@ -272,6 +384,24 @@ export default function ArenaPage() {
     refetchInterval: 5000,
   });
 
+  const { data: txHashes } = useQuery<TxHashesResponse>({
+    queryKey: ["arena-txhashes"],
+    queryFn: async () => {
+      const res = await fetch("https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/txhashes.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to load tx hashes");
+      return res.json();
+    },
+    refetchInterval: 30000,
+  });
+
+  useEffect(() => {
+    if (!cycleState?.nextCycleTime) return;
+    const update = () => setCountdownMs(Math.max(0, cycleState.nextCycleTime - Date.now()));
+    update();
+    const timer = window.setInterval(update, 1000);
+    return () => window.clearInterval(timer);
+  }, [cycleState?.nextCycleTime]);
+
   useEffect(() => {
     if (!copyToast) return;
     const timeout = window.setTimeout(() => setCopyToast(null), 1500);
@@ -286,38 +416,41 @@ export default function ArenaPage() {
 
   const totalDecisions = data?.totalDecisions || squads.reduce((sum, squad) => sum + squad.decisions, 0);
   const totalSwaps = squads.reduce((sum, squad) => sum + (squad.stats?.buys || 0) + (squad.stats?.sells || 0), 0);
-  const avgConfidence = squads.length
-    ? squads.reduce((sum, squad) => sum + (squad.confidence || 0.84), 0) / squads.length
-    : 0.84;
+  const avgConfidence = squads.length ? squads.reduce((sum, squad) => sum + (squad.confidence || 0.84), 0) / squads.length : 0.84;
   const lastSpreadBps = signalData?.pairs?.find((item) => item.pair === "ETH/USDT")?.spreadBps ?? 0;
-
-  const feed = useMemo(() => {
-    return squads.flatMap((squad) => {
-      const parsed = parseDecisionText(squad.lastAction);
-      return [
-        {
-          id: `${squad.squadId}-${squad.latestTimestamp}`,
-          squadId: squad.squadId,
-          timestamp: squad.latestTimestamp,
-          ...parsed,
-        },
-      ];
-    });
-  }, [squads]);
-
-  const narratorText = useMemo(() => {
-    const latest = squads[0];
-    if (!latest?.lastAction) return "Narrator awaiting next strategy cycle.";
-    return `${latest.squadId}: ${latest.lastAction}`;
-  }, [squads]);
-
-  const completedAgents = useMemo(
-    () => new Set((cycleState?.agentLog || []).map((entry) => entry.agent).filter((agent) => agent !== "system")),
-    [cycleState?.agentLog],
-  );
-
   const activityEntries = activityData?.entries || [];
   const paymentEntries = paymentData?.entries || [];
+  const activeSquadsCount = cycleState?.activeSquads?.length || squads.length || 2;
+  const lastTxMinutesAgo = Math.max(0, Math.floor((Date.now() - Number((squads[0]?.latestTimestamp || 0) * 1000 || Date.now())) / 60000));
+  const totalTxs = Object.keys(txHashes || {}).length;
+  const cycleProgressPct = cycleState?.cycleStartTime
+    ? Math.min(100, Math.max(0, ((Date.now() - cycleState.cycleStartTime) / CYCLE_INTERVAL_MS) * 100))
+    : 0;
+
+  const feed = useMemo<FeedEntry[]>(() => {
+    return squads.map((squad) => {
+      const parsed = parseDecisionText(squad.lastAction);
+      const signal = signalData?.pairs?.find((item) => item.pair === `${parsed.asset}/USDT`) || signalData?.pairs?.[0];
+      const route: "Uniswap" | "OKX" = signal?.betterRoute === "uniswap" || parsed.route === "Uniswap" ? "Uniswap" : "OKX";
+      return {
+        id: `${squad.squadId}-${squad.latestTimestamp}`,
+        squadId: squad.squadId,
+        timestamp: squad.latestTimestamp,
+        action: parsed.action,
+        asset: parsed.asset,
+        rationale: parsed.rationale,
+        route,
+        spreadBps: Number(signal?.spreadBps || 0),
+        savedBps: Number(signal?.spreadBps || 0),
+        chain: buildDecisionChain(squad, activityEntries, signal),
+      };
+    });
+  }, [activityEntries, signalData?.pairs, squads]);
+
+  const narratorText = useMemo(() => {
+    const latest = activityEntries.find((entry) => entry.agent === "narrator");
+    return latest?.summary || "Narrator awaiting next strategy cycle.";
+  }, [activityEntries]);
 
   const copyNarratorToX = async () => {
     const payload = `${narratorText}\n\nLive on Xyndicate Protocol Arena`;
@@ -340,128 +473,64 @@ export default function ArenaPage() {
             </div>
             <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-6xl">Season 1 Arena</h1>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-            {[
-              { label: "Total Decisions", value: totalDecisions },
-              { label: "Active Squads", value: squads.length },
-              { label: "Total Swaps", value: totalSwaps },
-              { label: "Avg Confidence", value: `${Math.round(avgConfidence * 100)}%` },
-              { label: "Avg Uniswap Spread", value: `${lastSpreadBps}bps` },
-            ].map((chip) => (
-              <div key={chip.label} className="rounded-2xl border border-black/10 bg-xyn-surface px-4 py-3 dark:border-white/10 dark:bg-xyn-dark">
-                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">{chip.label}</div>
-                <div className="mt-2 text-2xl font-semibold">{chip.value}</div>
-              </div>
-            ))}
+          <div className="flex flex-col items-start gap-3 rounded-3xl border border-black/10 bg-black/5 px-5 py-4 text-sm dark:border-white/10 dark:bg-white/5 lg:items-end">
+            <div className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-500">
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" /> Arena is Live
+            </div>
+            <div className="text-xyn-muted dark:text-zinc-300">{activeSquadsCount} squads active · last TX {lastTxMinutesAgo}m ago · {totalTxs} on-chain</div>
           </div>
+        </div>
+
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          {[
+            { label: "Total Decisions", value: totalDecisions },
+            { label: "Active Squads", value: squads.length },
+            { label: "Total Swaps", value: totalSwaps },
+            { label: "Avg Confidence", value: `${Math.round(avgConfidence * 100)}%` },
+            { label: "Avg Uniswap Spread", value: `${lastSpreadBps}bps` },
+          ].map((chip) => (
+            <div key={chip.label} className="rounded-2xl border border-black/10 bg-xyn-surface px-4 py-3 dark:border-white/10 dark:bg-xyn-dark">
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">{chip.label}</div>
+              <div className="mt-2 text-2xl font-semibold">{chip.value}</div>
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
-        <div className="grid gap-8 xl:grid-cols-1">
+        <div className="mb-6 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <div className="mb-5 flex items-center justify-between gap-4">
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-gold">Pipeline</div>
-                <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-300">{cycleError ? "Cycle state unavailable" : `Next cycle in ${formatCountdown(countdownMs)}`}</div>
-              </div>
-              <div className="text-sm text-xyn-muted dark:text-zinc-300">Cycle #{cycleState?.cycleNumber || 0}</div>
-            </div>
-            <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
-              {AGENTS.map((agent) => {
-                const isCurrent = cycleState?.currentAgent === agent;
-                const isCompleted = cycleState?.currentAgent === "idle" && completedAgents.has(agent);
-                const label = pipelinePillLabel(agent, cycleState?.currentAgent, completedAgents);
-                const [title, sublabel] = label.split(" — ");
-                return (
-                  <motion.div
-                    key={agent}
-                    animate={isCurrent ? { y: [0, -4, 0], boxShadow: ["0 0 0 rgba(201,168,76,0)", "0 14px 40px rgba(201,168,76,0.18)", "0 0 0 rgba(201,168,76,0)"] } : { y: 0, boxShadow: "0 0 0 rgba(0,0,0,0)" }}
-                    transition={isCurrent ? { repeat: Infinity, duration: 2.4, ease: "easeInOut" } : { duration: 0.2 }}
-                    className={`min-h-[108px] rounded-[28px] border px-4 py-5 text-left text-sm font-semibold ${
-                      isCurrent
-                        ? "border-xyn-gold/40 bg-xyn-gold text-xyn-dark"
-                        : isCompleted
-                          ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-300"
-                          : "border-black/10 bg-black/5 text-xyn-muted dark:border-white/10 dark:bg-white/10 dark:text-zinc-300"
-                    }`}
-                  >
-                    <div className="flex h-full flex-col justify-between gap-4">
-                      <div className="text-base font-semibold leading-tight">{title}</div>
-                      <div className="text-xs font-medium uppercase tracking-[0.18em] opacity-80">{sublabel || (isCompleted ? "complete" : "standby")}</div>
-                    </div>
-                  </motion.div>
-                );
-              })}
+            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-gold">Agent Status Board</div>
+            <div className="mt-2 text-3xl font-semibold tracking-tight">Autonomous cycle status</div>
+            <div className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">Next cycle in {formatCountdown(countdownMs)}</div>
+            <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-400">Last cycle completed {formatTimeAgo(cycleState?.lastCycleComplete)} · Cycle #{cycleState?.cycleNumber || 0} · {activeSquadsCount} squads active</div>
+            <div className="mt-4 h-2 w-full max-w-xl overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
+              <div className="h-full rounded-full bg-xyn-gold transition-all duration-1000" style={{ width: `${cycleProgressPct}%` }} />
             </div>
           </div>
-
-          <div className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <div>
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">
-                  <span className={`h-2.5 w-2.5 rounded-full bg-emerald-500 ${cycleState?.currentAgent !== "idle" ? "animate-pulse" : "opacity-40"}`} />
-                  Live Agent Activity
-                </div>
-                <p className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">Cycle #{cycleState?.cycleNumber || 0}</p>
-              </div>
-              {(cycleError || activityError) ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    refetchCycleState();
-                    refetchActivity();
-                  }}
-                  className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10"
-                >
-                  Retry
-                </button>
-              ) : null}
-            </div>
-
-            <div className="max-h-[360px] space-y-3 overflow-y-auto pr-1">
-              {cycleLoading || activityLoading ? (
-                Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-20 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />)
-              ) : cycleError || activityError ? (
-                <div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">Failed to load agent activity.</div>
-              ) : activityEntries.length ? (
-                <AnimatePresence initial={false}>
-                  {activityEntries.map((entry) => {
-                    const isCurrentCycle = entry.cycle === cycleState?.cycleNumber;
-                    return (
-                      <motion.div
-                        key={entry.id}
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: isCurrentCycle ? 1 : 0.5, y: 0 }}
-                        exit={{ opacity: 0, y: -12 }}
-                        className="rounded-2xl border border-white/10 bg-white/70 px-4 py-3 dark:bg-black/20"
-                      >
-                        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                          <div className="min-w-0">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <span className={`rounded-full px-3 py-1 text-xs font-semibold ${AGENT_BADGE_STYLES[entry.agent] || AGENT_BADGE_STYLES.system}`}>
-                                {agentLabel(entry.agent)}
-                              </span>
-                              <span className="text-xs text-xyn-muted dark:text-zinc-400">{formatTimeAgo(entry.timestamp)}</span>
-                            </div>
-                            <p className="mt-2 break-words text-sm text-xyn-muted dark:text-zinc-300">{entry.summary}</p>
-                          </div>
-                          <span className="rounded-full border border-black/10 px-3 py-1 text-xs font-semibold dark:border-white/10">
-                            {formatDuration(entry.durationMs)}
-                          </span>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </AnimatePresence>
-              ) : (
-                <div className="rounded-2xl border border-dashed border-black/10 px-4 py-5 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">
-                  No agent activity logged yet.
-                </div>
-              )}
-            </div>
-          </div>
+          {(cycleError || activityError) ? (
+            <button
+              type="button"
+              onClick={() => {
+                refetchCycleState();
+                refetchActivity();
+              }}
+              className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10"
+            >
+              Retry
+            </button>
+          ) : null}
         </div>
+
+        {cycleLoading || activityLoading ? (
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, index) => <div key={index} className="h-48 animate-pulse rounded-[28px] bg-black/5 dark:bg-white/5" />)}
+          </div>
+        ) : cycleError || activityError ? (
+          <div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">Failed to load live agent board.</div>
+        ) : (
+          <AgentStatusBoard cycleState={cycleState} activityEntries={activityEntries} />
+        )}
       </section>
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
@@ -469,9 +538,7 @@ export default function ArenaPage() {
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Agent Economy</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Live Payment Stream</h2>
-            <div className="mt-3 max-w-2xl text-sm leading-6 text-xyn-muted dark:text-zinc-400">
-              Agent micropayments settle every 12 hours. The frontend updates automatically after each successful scheduler publish.
-            </div>
+            <div className="mt-3 max-w-2xl text-sm leading-6 text-xyn-muted dark:text-zinc-400">Agent micropayments settle every 12 hours. The frontend updates automatically after each successful scheduler publish.</div>
           </div>
           <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300 lg:min-w-[280px]">
             <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-gold">Economy Snapshot</div>
@@ -482,38 +549,17 @@ export default function ArenaPage() {
 
         <div className="rounded-3xl border border-black/10 dark:border-white/10">
           {paymentsLoading ? (
-            <div className="space-y-3 p-5">
-              {Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-16 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />)}
-            </div>
+            <div className="space-y-3 p-5">{Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-16 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />)}</div>
           ) : paymentsError ? (
-            <div className="p-5 text-sm text-rose-700 dark:text-rose-300">
-              Failed to load payment stream.
-              <button type="button" onClick={() => refetchPayments()} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">
-                Retry
-              </button>
-            </div>
+            <div className="p-5 text-sm text-rose-700 dark:text-rose-300">Failed to load payment stream.<button type="button" onClick={() => refetchPayments()} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">Retry</button></div>
           ) : paymentEntries.length ? (
             <div className="space-y-3 p-5">
-              {!paymentData?.hasFreshPayments ? (
-                <div className="rounded-2xl bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">
-                  Showing historical payment history. Fresh cycle micropayments have not landed yet.
-                </div>
-              ) : null}
+              {!paymentData?.hasFreshPayments ? <div className="rounded-2xl bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">Showing historical payment history. Fresh cycle micropayments have not landed yet.</div> : null}
               <AnimatePresence initial={false}>
                 {paymentEntries.map((entry) => {
-                  const tone = entry.type === "narrator-oracle"
-                    ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/20"
-                    : entry.type === "analyst-oracle"
-                      ? "bg-teal-500/10 text-teal-300 border-teal-500/20"
-                      : "bg-violet-500/10 text-violet-300 border-violet-500/20";
+                  const tone = entry.type === "narrator-oracle" ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/20" : entry.type === "analyst-oracle" ? "bg-teal-500/10 text-teal-300 border-teal-500/20" : "bg-violet-500/10 text-violet-300 border-violet-500/20";
                   return (
-                    <motion.div
-                      key={`${entry.txHash}-${entry.type}`}
-                      initial={{ opacity: 0, y: -16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
-                      className="flex flex-col gap-3 rounded-2xl border border-black/10 bg-white/70 px-4 py-3 dark:border-white/10 dark:bg-black/20 sm:flex-row sm:items-center sm:justify-between"
-                    >
+                    <motion.div key={`${entry.txHash}-${entry.type}`} initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} className="flex flex-col gap-3 rounded-2xl border border-black/10 bg-white/70 px-4 py-3 dark:border-white/10 dark:bg-black/20 sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex flex-wrap items-center gap-2 text-sm">
                         <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${tone}`}>{entry.from}</span>
                         <span className="text-xyn-muted dark:text-zinc-400">→</span>
@@ -521,9 +567,7 @@ export default function ArenaPage() {
                         <span className="font-semibold">{entry.amount}</span>
                         <span className="text-xyn-muted dark:text-zinc-400">{formatTimeAgo(entry.timestamp * 1000)}</span>
                       </div>
-                      <a href={`https://www.oklink.com/xlayer/tx/${entry.txHash}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-gold">
-                        OKLink <ExternalLink className="h-4 w-4" />
-                      </a>
+                      <a href={`https://www.oklink.com/xlayer/tx/${entry.txHash}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-gold">OKLink <ExternalLink className="h-4 w-4" /></a>
                     </motion.div>
                   );
                 })}
@@ -560,20 +604,9 @@ export default function ArenaPage() {
           </div>
 
           {isLoading ? (
-            <div className="space-y-3 p-5">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="h-20 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />
-              ))}
-            </div>
+            <div className="space-y-3 p-5">{Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-20 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />)}</div>
           ) : isError ? (
-            <div className="p-5">
-              <div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">
-                Failed to load leaderboard data.
-                <button type="button" onClick={() => refetch()} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">
-                  Retry
-                </button>
-              </div>
-            </div>
+            <div className="p-5"><div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">Failed to load leaderboard data.<button type="button" onClick={() => refetch()} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">Retry</button></div></div>
           ) : (
             <div className="divide-y divide-black/10 dark:divide-white/10">
               {filteredSquads.map((squad) => {
@@ -581,59 +614,17 @@ export default function ArenaPage() {
                 const confidence = squad.confidence || 0.84;
                 const isExpanded = expandedRow === squad.squadId;
                 const medal = squad.rank === 1 ? "🥇" : squad.rank === 2 ? "🥈" : squad.rank === 3 ? "🥉" : `#${squad.rank}`;
-                const decisionHistory = Array.from({ length: Math.min(5, squad.decisions) }).map((_, index) => ({
-                  id: `${squad.squadId}-${index}`,
-                  label: parsed.rationale,
-                }));
-
                 return (
                   <div key={squad.squadId}>
-                    <button
-                      type="button"
-                      onClick={() => setExpandedRow(isExpanded ? null : squad.squadId)}
-                      className="grid w-full gap-4 px-5 py-5 text-left lg:grid-cols-[0.8fr_1.4fr_0.9fr_1.2fr_2fr_1fr_1fr]"
-                    >
+                    <button type="button" onClick={() => setExpandedRow(isExpanded ? null : squad.squadId)} className="grid w-full gap-4 px-5 py-5 text-left lg:grid-cols-[0.8fr_1.4fr_0.9fr_1.2fr_2fr_1fr_1fr]">
                       <div className="font-semibold">{medal}</div>
                       <div className="font-semibold">{squad.squadId}</div>
                       <div>{squad.decisions}</div>
-                      <div>
-                        <div className="h-2 rounded-full bg-black/10 dark:bg-white/10">
-                          <div className={`h-2 rounded-full ${confidenceBarClass(confidence)}`} style={{ width: `${confidence * 100}%` }} />
-                        </div>
-                        <div className="mt-2 text-sm">{Math.round(confidence * 100)}%</div>
-                      </div>
+                      <div><div className="h-2 rounded-full bg-black/10 dark:bg-white/10"><div className={`h-2 rounded-full ${confidence > 0.75 ? "bg-emerald-500" : confidence >= 0.5 ? "bg-amber-500" : "bg-rose-500"}`} style={{ width: `${confidence * 100}%` }} /></div><div className="mt-2 text-sm">{Math.round(confidence * 100)}%</div></div>
                       <div className="text-sm text-xyn-muted dark:text-zinc-300">{parsed.rationale}</div>
-                      <div>
-                        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${parsed.route === "Uniswap" ? "bg-xyn-gold/15 text-xyn-gold" : "bg-black/5 dark:bg-white/10"}`}>
-                          {parsed.route}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-300">ACTIVE</span>
-                      </div>
+                      <div><span className={`rounded-full px-3 py-1 text-xs font-semibold ${parsed.route === "Uniswap" ? "bg-xyn-gold/15 text-xyn-gold" : "bg-black/5 dark:bg-white/10"}`}>{parsed.route}</span></div>
+                      <div><span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-300">ACTIVE</span></div>
                     </button>
-
-                    <AnimatePresence initial={false}>
-                      {isExpanded ? (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="overflow-hidden bg-black/5 px-5 pb-5 dark:bg-white/5"
-                        >
-                          <div className="pt-4">
-                            <div className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Last 5 decisions</div>
-                            <div className="space-y-2">
-                              {decisionHistory.map((item) => (
-                                <div key={item.id} className="rounded-2xl bg-white/80 px-4 py-3 text-sm dark:bg-black/20">
-                                  {item.label}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </motion.div>
-                      ) : null}
-                    </AnimatePresence>
                   </div>
                 );
               })}
@@ -653,37 +644,32 @@ export default function ArenaPage() {
             {isLoading ? (
               Array.from({ length: 4 }).map((_, index) => <div key={index} className="h-32 animate-pulse rounded-3xl bg-black/5 dark:bg-white/5" />)
             ) : isError ? (
-              <div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">
-                Failed to load live decision feed.
-                <button type="button" onClick={() => refetch()} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">
-                  Retry
-                </button>
-              </div>
+              <div className="rounded-2xl bg-rose-500/10 p-5 text-sm text-rose-700 dark:text-rose-300">Failed to load live decision feed.<button type="button" onClick={() => refetch()} className="ml-3 rounded-full border border-rose-500/20 px-4 py-2 font-semibold">Retry</button></div>
             ) : feed.slice(0, visibleFeedCount).map((entry) => (
               <div key={entry.id} className="rounded-3xl border border-black/10 bg-xyn-surface p-5 dark:border-white/10 dark:bg-xyn-dark">
-                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">
-                  {entry.squadId} · {formatTimestamp((entry.timestamp || 0) * 1000)}
+                <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">
+                  <span>{entry.squadId} · {formatTimestamp((entry.timestamp || 0) * 1000)}</span>
+                  <span className={`rounded-full px-3 py-1 text-xs font-semibold ${entry.route === "Uniswap" ? "bg-amber-500/15 text-amber-300" : "bg-black/5 text-xyn-muted dark:bg-white/10 dark:text-zinc-300"}`}>
+                    {entry.route === "Uniswap" ? `via Uniswap ↗ saved ${entry.savedBps}bps` : "via OKX"}
+                  </span>
                 </div>
                 <div className="mt-3 flex items-center gap-3">
-                  <span className={`rounded-full px-3 py-1 text-xs font-semibold ${entry.action === "BUY" ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300" : entry.action === "SELL" ? "bg-rose-500/15 text-rose-600 dark:text-rose-300" : "bg-black/5 text-xyn-muted dark:bg-white/10 dark:text-zinc-300"}`}>
-                    {entry.action}
-                  </span>
+                  <span className={`rounded-full px-3 py-1 text-xs font-semibold ${entry.action === "BUY" ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300" : entry.action === "SELL" ? "bg-rose-500/15 text-rose-600 dark:text-rose-300" : "bg-black/5 text-xyn-muted dark:bg-white/10 dark:text-zinc-300"}`}>{entry.action}</span>
                   <span className="text-sm font-medium">{entry.asset}</span>
                 </div>
-                <p className="mt-3 break-words text-sm text-xyn-muted dark:text-zinc-300">{entry.rationale}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {entry.chain.map((step) => (
+                    <button key={`${entry.id}-${step.agent}`} type="button" onClick={() => setSelectedStep(step)} className="rounded-full border border-black/10 bg-white/70 px-3 py-2 text-xs font-semibold text-xyn-muted transition hover:border-xyn-gold hover:text-xyn-gold dark:border-white/10 dark:bg-black/20 dark:text-zinc-300">
+                      [{AGENT_META[step.agent].label}: {step.short}]
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-4 break-words text-sm text-xyn-muted dark:text-zinc-300">{entry.rationale}</p>
               </div>
             ))}
           </div>
 
-          {!isLoading && !isError && visibleFeedCount < feed.length ? (
-            <button
-              type="button"
-              onClick={() => setVisibleFeedCount((prev) => prev + 10)}
-              className="mt-6 rounded-full border border-black/10 px-5 py-3 text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10"
-            >
-              Load 10 more
-            </button>
-          ) : null}
+          {!isLoading && !isError && visibleFeedCount < feed.length ? <button type="button" onClick={() => setVisibleFeedCount((prev) => prev + 10)} className="mt-6 rounded-full border border-black/10 px-5 py-3 text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10">Load 10 more</button> : null}
         </div>
 
         <div className="space-y-8">
@@ -693,24 +679,28 @@ export default function ArenaPage() {
               <h2 className="mt-2 text-3xl font-semibold tracking-tight">Narrator output</h2>
             </div>
             <div className="rounded-2xl bg-black/40 p-5 font-mono text-sm text-green-400">{narratorText}</div>
-            <button
-              type="button"
-              onClick={copyNarratorToX}
-              className={`mt-5 rounded-full px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 ${copyToast ? "bg-emerald-400" : "bg-xyn-gold"}`}
-            >
-              {copyToast || "Copy to X / Twitter"}
-            </button>
+            <button type="button" onClick={copyNarratorToX} className={`mt-5 rounded-full px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 ${copyToast ? "bg-emerald-400" : "bg-xyn-gold"}`}>{copyToast || "Copy to X / Twitter"}</button>
           </section>
 
           <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Join the arena</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Deploy your own squad.</h2>
-            <Link href="/deploy" className="mt-6 inline-flex rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90">
-              Deploy Your Squad →
-            </Link>
+            <Link href="/deploy" className="mt-6 inline-flex rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90">Deploy Your Squad →</Link>
           </section>
         </div>
       </section>
+
+      <AnimatePresence>
+        {selectedStep ? (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/60 p-4 backdrop-blur-sm" onClick={() => setSelectedStep(null)}>
+            <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} className="mx-auto mt-16 max-w-xl rounded-[32px] border border-white/10 bg-xyn-surface p-6 text-white dark:bg-xyn-dark" onClick={(event) => event.stopPropagation()}>
+              <div className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">{AGENT_META[selectedStep.agent].label} output</div>
+              <div className="mt-4 rounded-2xl bg-black/40 p-5 text-sm leading-7 text-zinc-200">{selectedStep.full}</div>
+              <button type="button" onClick={() => setSelectedStep(null)} className="mt-5 rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark">Close</button>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 }
