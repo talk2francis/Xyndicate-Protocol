@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { betterRouteForPrices, computeSpreadBps, fetchUniswapPrice } from "./uniswap";
+import { betterRouteForPrices, computeSpreadBps, fetchUniswapPrice } from "./uniswap.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

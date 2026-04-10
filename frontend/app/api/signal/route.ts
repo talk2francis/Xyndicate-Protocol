@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { betterRouteForPrices, computeSpreadBps, fetchUniswapPrice } from "@/server/uniswap";
+import { betterRouteForPrices, computeSpreadBps, fetchUniswapPrice } from "@/server/uniswap.mjs";
 
 const OKX_API_KEY = process.env.OKX_API_KEY || "";
 const PAIRS = [
