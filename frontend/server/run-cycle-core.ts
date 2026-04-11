@@ -43,12 +43,22 @@ async function fetchMarketSnapshot(pair: string) {
   const change24h = Number(
     ticker?.open24h ? ((Number(ticker.last) - Number(ticker.open24h)) / Number(ticker.open24h)) * 100 : 0,
   );
-  let uniswap = {
-    uniswapPrice: null as number | null,
-    uniswapPoolId: null as string | null,
-    sqrtPrice: null as string | null,
-    liquidity: null as string | null,
+  let uniswap: {
+    uniswapPrice: number | null;
+    uniswapPoolId: string | null;
+    sqrtPrice: string | null;
+    liquidity: string | null;
+    source: string;
+    uniswapError: string | null;
+    token0?: string;
+    token1?: string;
+  } = {
+    uniswapPrice: null,
+    uniswapPoolId: null,
+    sqrtPrice: null,
+    liquidity: null,
     source: "okx-fallback",
+    uniswapError: null,
   };
 
   try {
@@ -56,14 +66,16 @@ async function fetchMarketSnapshot(pair: string) {
     uniswap = await fetchUniswapPrice(graphPair);
     console.error(`Uniswap ${graphPair}: $${Number(uniswap.uniswapPrice || 0).toFixed(2)} | source=${uniswap.source} | pool=${uniswap.uniswapPoolId || 'n/a'}`);
   } catch (error: any) {
-    console.warn(`Uniswap subgraph fetch failed for ${pair}, falling back to OKX price:`, error.message);
+    const errorMessage = error?.message || String(error);
+    uniswap.uniswapError = errorMessage;
+    console.warn(`Uniswap reference fetch failed for ${pair}:`, errorMessage);
   }
 
   const uniswapPrice = uniswap.uniswapPrice ?? okxPrice;
   const spreadBps = computeSpreadBps(okxPrice, uniswap.uniswapPrice ?? okxPrice);
   const betterRoute = betterRouteForPrices(okxPrice, uniswap.uniswapPrice ?? okxPrice);
 
-  console.error(`Uniswap ${pair.startsWith("ETH-") ? "ETH" : pair.split("-")[0]} price: $${uniswapPrice.toFixed(2)} | Spread: ${spreadBps}bps`);
+  console.error(`Uniswap ${pair.startsWith("ETH-") ? "ETH" : pair.split("-")[0]} price: $${uniswapPrice.toFixed(2)} | Spread: ${spreadBps}bps | source=${uniswap.source}${uniswap.uniswapError ? ` | error=${uniswap.uniswapError}` : ""}`);
 
   return {
     pair,

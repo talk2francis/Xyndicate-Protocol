@@ -29,6 +29,7 @@ export async function fetchUniswapPrice(pair) {
       sqrtPrice: null,
       liquidity: null,
       source: "okx-fallback",
+      uniswapError: null,
     };
   }
 
@@ -51,11 +52,19 @@ export async function fetchUniswapPrice(pair) {
       sqrtPrice: slot0.sqrtPriceX96.toString(),
       liquidity: liquidity.toString(),
       source: "uniswap-v3-onchain",
+      uniswapError: null,
       token0,
       token1,
     };
   } catch (error) {
-    throw error;
+    return {
+      uniswapPrice: null,
+      uniswapPoolId: poolId,
+      sqrtPrice: null,
+      liquidity: null,
+      source: "uniswap-v3-onchain",
+      uniswapError: error?.message || String(error),
+    };
   }
 }
 
