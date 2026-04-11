@@ -483,7 +483,7 @@ export default function ArenaPage() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {[
             { label: "Total Decisions", value: totalDecisions, sub: "Live scheduler activity" },
             { label: "Active Squads", value: squads.length, sub: "Season squads online" },
