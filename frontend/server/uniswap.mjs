@@ -1,18 +1,23 @@
-const UNISWAP_V3_SUBGRAPH_URL = process.env.UNISWAP_V3_SUBGRAPH_URL || "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
-const UNISWAP_V3_QUERY_KEY = process.env.UNISWAP_V3_QUERY_KEY || process.env.THE_GRAPH_API_KEY || "";
-const DEFAULT_POOL_ID = "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640";
+const { Contract, JsonRpcProvider } = await import("ethers");
 
+const UNISWAP_V3_POOL_ADDRESS = process.env.UNISWAP_V3_POOL_ADDRESS || "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640";
+const UNISWAP_V3_RPC_URL = process.env.UNISWAP_V3_RPC_URL || process.env.XLAYER_RPC || "https://rpc.ankr.com/eth";
 const POOL_IDS = {
-  "ETH/USDC": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
+  "ETH/USDC": UNISWAP_V3_POOL_ADDRESS,
   "OKB/USDC": null,
 };
 
-function buildGraphUrls() {
-  const urls = [UNISWAP_V3_SUBGRAPH_URL];
-  if (UNISWAP_V3_QUERY_KEY) {
-    urls.unshift("https://gateway.thegraph.com/api/subgraphs/id/ELUcwgpm14LKPLrBRuVvPvNKHQ9HvwmtKgKSH6123cr7");
-  }
-  return urls;
+const UNISWAP_POOL_ABI = [
+  "function slot0() view returns (uint160 sqrtPriceX96, int24 tick, uint16 observationIndex, uint16 observationCardinality, uint16 observationCardinalityNext, uint8 feeProtocol, bool unlocked)",
+  "function liquidity() view returns (uint128)",
+  "function token0() view returns (address)",
+  "function token1() view returns (address)",
+];
+
+function sqrtPriceX96ToPrice(sqrtPriceX96) {
+  const q96 = 2n ** 96n;
+  const sqrt = Number(sqrtPriceX96) / Number(q96);
+  return sqrt * sqrt;
 }
 
 export async function fetchUniswapPrice(pair) {
@@ -27,76 +32,31 @@ export async function fetchUniswapPrice(pair) {
     };
   }
 
-  const primaryQuery = `
-    query PoolPrice($id: ID!) {
-      pool(id: $id) {
-        token0Price
-        token1Price
-        sqrtPrice
-        liquidity
-      }
-    }
-  `;
+  try {
+    const provider = new JsonRpcProvider(UNISWAP_V3_RPC_URL);
+    const contract = new Contract(poolId, UNISWAP_POOL_ABI, provider);
+    const [slot0, liquidity, token0, token1] = await Promise.all([
+      contract.slot0(),
+      contract.liquidity(),
+      contract.token0(),
+      contract.token1(),
+    ]);
 
-  const fallbackQuery = `
-    query Pools($first: Int!) {
-      pools(first: $first, orderBy: totalValueLockedETH, orderDirection: desc, where: { token0_: { symbol_in: [\"USDC\", \"USDT\"] }, token1_: { symbol: \"WETH\" } }) {
-        id
-        token0Price
-        token1Price
-        sqrtPrice
-        liquidity
-        feeTier
-        token0 { symbol }
-        token1 { symbol }
-      }
-    }
-  `;
+    const rawPrice = sqrtPriceX96ToPrice(slot0.sqrtPriceX96);
+    const uniswapPrice = Number((1 / rawPrice).toFixed(6));
 
-  let lastError = null;
-  for (const url of buildGraphUrls()) {
-    try {
-      const requests = [
-        JSON.stringify({ query: primaryQuery, variables: { id: (poolId || DEFAULT_POOL_ID).toLowerCase() } }),
-        JSON.stringify({ query: fallbackQuery, variables: { first: 5 } }),
-      ];
-
-      for (const body of requests) {
-        const resp = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body,
-          cache: "no-store",
-        });
-
-        if (!resp.ok) {
-          throw new Error(`Uniswap subgraph request failed with ${resp.status}`);
-        }
-
-        const data = await resp.json();
-        const pool = data?.data?.pool || data?.data?.pools?.[0];
-        const token0Price = Number(pool?.token0Price || 0);
-        if (!token0Price) {
-          continue;
-        }
-
-        const resolvedPoolId = pool?.id || poolId || DEFAULT_POOL_ID;
-        const uniswapPrice = Number((1 / token0Price).toFixed(6));
-
-        return {
-          uniswapPrice,
-          uniswapPoolId: resolvedPoolId,
-          sqrtPrice: pool?.sqrtPrice || null,
-          liquidity: pool?.liquidity || null,
-          source: url.includes("gateway.thegraph.com") ? "uniswap-v3-gateway" : "uniswap-v3-subgraph",
-        };
-      }
-    } catch (error) {
-      lastError = error;
-    }
+    return {
+      uniswapPrice,
+      uniswapPoolId: poolId,
+      sqrtPrice: slot0.sqrtPriceX96.toString(),
+      liquidity: liquidity.toString(),
+      source: "uniswap-v3-onchain",
+      token0,
+      token1,
+    };
+  } catch (error) {
+    throw error;
   }
-
-  throw lastError || new Error("Uniswap subgraph request failed");
 }
 
 export function computeSpreadBps(okxPrice, uniswapPrice) {
