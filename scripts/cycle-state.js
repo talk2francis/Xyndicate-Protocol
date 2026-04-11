@@ -51,8 +51,9 @@ function buildStartCycleState(previous = readCycleState()) {
     cycleStartTime: now,
     nextCycleTime: now + INTERVAL_MS,
     lastCycleComplete: Number(previous?.lastCycleComplete || 0),
-    activeSquads: ['XYNDICATE_ALPHA', 'Squad Nova'],
+    activeSquads: ['XYNDICATE_ALPHA', 'Squad Nova', 'Phantom Protocol', 'Cipher Strategy', 'Nexus Quant'],
     squadResults: {},
+    slowSquadLastRunAt: {},
     agentLog: [
       {
         agent: 'system',
@@ -154,8 +155,9 @@ function seedTruthfulCycleState() {
     cycleStartTime: now - Math.min(5 * 60 * 1000, INTERVAL_MS),
     nextCycleTime: now + INTERVAL_MS,
     lastCycleComplete: now,
-    activeSquads: ['XYNDICATE_ALPHA', 'Squad Nova'],
+    activeSquads: ['XYNDICATE_ALPHA', 'Squad Nova', 'Phantom Protocol', 'Cipher Strategy', 'Nexus Quant'],
     squadResults: {},
+    slowSquadLastRunAt: {},
     agentLog: [
       {
         agent: 'system',

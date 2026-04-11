@@ -66,7 +66,13 @@ function buildLeaderboard() {
   const deployments = readJson(DEPLOYMENTS_PATH, {});
   const txhashes = readJson(TXHASHES_PATH, {});
   const agentPayments = readJson(AGENT_PAYMENTS_PATH, []);
+  const cycleState = readJson(STATE_PATH, {});
   const entries = Array.isArray(deployments.decisionLogEntries) ? deployments.decisionLogEntries : [];
+  const slowSquads = [
+    { squadId: 'PHANTOM', name: 'Phantom Protocol' },
+    { squadId: 'CIPHER', name: 'Cipher Strategy' },
+    { squadId: 'NEXUS', name: 'Nexus Quant' },
+  ];
 
   const squadMap = new Map();
 
@@ -110,6 +116,38 @@ function buildLeaderboard() {
     }
 
     squadMap.set(squadId, current);
+  }
+
+  const slowSquadResults = cycleState?.slowSquadResults || {};
+  for (const slowSquad of slowSquads) {
+    const existing = squadMap.get(slowSquad.squadId) || {
+      squadId: slowSquad.squadId,
+      decisions: 0,
+      buys: 0,
+      sells: 0,
+      holds: 0,
+      latestTimestamp: 0,
+      latestRationale: 'Awaiting next cycle',
+      lastAction: 'HOLD',
+      lastAsset: slowSquad.squadId === 'CIPHER' ? 'ETH' : 'OKB',
+      confidence: 0.66,
+      txHashes: [],
+    };
+    const lastRun = Number(cycleState?.slowSquadLastRunAt?.[`${slowSquad.squadId.toLowerCase()}_last_run`] || 0);
+    const result = slowSquadResults[slowSquad.squadId] || {};
+    squadMap.set(slowSquad.squadId, {
+      ...existing,
+      decisions: Math.max(existing.decisions, Number(result?.decisions || existing.decisions || 0)),
+      latestTimestamp: Math.max(existing.latestTimestamp, lastRun),
+      latestRationale: result?.rationale || existing.latestRationale,
+      lastAction: result?.action || existing.lastAction,
+      confidence: Number(result?.confidence || existing.confidence || 0.66),
+      txHashes: Array.from(new Set([...(existing.txHashes || []), result?.txHash].filter(Boolean))).slice(-10),
+      buys: existing.buys,
+      sells: existing.sells,
+      holds: existing.holds,
+      lastAsset: existing.lastAsset,
+    });
   }
 
   const squads = Array.from(squadMap.values())

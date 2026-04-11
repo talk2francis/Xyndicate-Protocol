@@ -7,7 +7,7 @@ const { writeProofsArtifact } = require('./generate-proofs');
 const { persistRuntimeHistory } = require('./persist-runtime-history');
 const { createActivityEntry, appendAndPublishActivityEntry, summarizeFromResult } = require('./agent-activity');
 const { executeCyclePayments } = require('./agent-payments');
-const { buildStartCycleState, publishCycleState, readCycleState, advanceCycleState, completeCycleState } = require('./cycle-state');
+const { buildStartCycleState, publishCycleState, readCycleState, advanceCycleState, completeCycleState, writeCycleState } = require('./cycle-state');
 
 function invokeRunCycle() {
   return new Promise((resolve, reject) => {
@@ -47,6 +47,73 @@ async function logAgentStep(agent, result, cycleNumber, startedAt) {
   return state;
 }
 
+const SLOW_SQUADS = [
+  {
+    id: 'PHANTOM',
+    name: 'Phantom Protocol',
+    riskMode: 'conservative',
+    baseAsset: 'OKB/USDC',
+    intervalHours: 12,
+    lastRunKey: 'phantom_last_run',
+  },
+  {
+    id: 'CIPHER',
+    name: 'Cipher Strategy',
+    riskMode: 'aggressive',
+    baseAsset: 'ETH/USDC',
+    intervalHours: 24,
+    lastRunKey: 'cipher_last_run',
+  },
+  {
+    id: 'NEXUS',
+    name: 'Nexus Quant',
+    riskMode: 'balanced',
+    baseAsset: 'OKB/USDC',
+    intervalHours: 48,
+    lastRunKey: 'nexus_last_run',
+  },
+];
+
+function minimalStrategistPrompt(priceLine) {
+  return `Given ${priceLine}, respond with JSON only: {\"action\":\"BUY|SELL|HOLD\",\"confidence\":0.XX,\"reason\":\"one sentence\"}`;
+}
+
+async function runSlowSquad({ slowSquad, market, cycleNumber, state }) {
+  const lastRunAt = Number(state?.slowSquadLastRunAt?.[slowSquad.lastRunKey] || 0);
+  const intervalMs = slowSquad.intervalHours * 3600 * 1000;
+  if (Date.now() - lastRunAt < intervalMs) return { skipped: true };
+
+  const prompt = minimalStrategistPrompt(`ETH at $${Number(market.okxPrice || 0).toFixed(2)} and OKB at $${Number(market.uniswapPrice || market.okxPrice || 0).toFixed(2)}`);
+  const strategist = await callOpenAI(prompt, { squad: slowSquad.name, market });
+  const txHash = `slow-${slowSquad.id}-${Date.now()}`;
+
+  const nextState = readCycleState();
+  nextState.slowSquadLastRunAt = { ...(nextState.slowSquadLastRunAt || {}), [slowSquad.lastRunKey]: Date.now() };
+  nextState.agentLog = [
+    ...(Array.isArray(nextState.agentLog) ? nextState.agentLog : []),
+    {
+      agent: `slow-${slowSquad.id.toLowerCase()}`,
+      status: 'complete',
+      completedAt: Date.now(),
+      summary: `${slowSquad.name} decision logged`,
+    },
+  ].slice(-50);
+  writeCycleState(nextState);
+
+  return {
+    slowSquadId: slowSquad.id,
+    squadId: slowSquad.id,
+    squadName: slowSquad.name,
+    riskMode: slowSquad.riskMode,
+    baseAsset: slowSquad.baseAsset,
+    action: strategist?.action || 'HOLD',
+    confidence: strategist?.confidence || 0.5,
+    rationale: strategist?.reason || 'slow squad evaluation',
+    txHash,
+    status: 'active',
+  };
+}
+
 async function runFullPipeline() {
   const startState = buildStartCycleState();
   await publishCycleState(startState, `Publish Arena cycle ${startState.cycleNumber} start state`);
@@ -72,6 +139,15 @@ async function runFullPipeline() {
     console.error(`Agent payment chain failed: ${error.message || error}`);
     return [];
   });
+
+  const slowSquadResults = {};
+  for (const slowSquad of SLOW_SQUADS) {
+    const slowResult = await runSlowSquad({ slowSquad, market: result?.squadResults?.XYNDICATE_ALPHA?.market || result?.market || {}, cycleNumber, state });
+    if (!slowResult?.skipped) {
+      slowSquadResults[slowSquad.id] = slowResult;
+    }
+  }
+
   const persisted = await persistRuntimeHistory(result);
   const leaderboard = await writeLeaderboardArtifact();
   const proofs = await writeProofsArtifact();
@@ -79,15 +155,17 @@ async function runFullPipeline() {
   await publishCycleState(state, `Publish Arena cycle ${state.cycleNumber} completion state`);
 
   const finalState = readCycleState();
+  const mergedSquadResults = { ...(result?.squadResults || {}), ...(slowSquadResults || {}) };
 
   return {
     txHash: result?.txHash,
     txHashes: result?.txHashes || [],
-    squadResults: result?.squadResults || {},
+    squadResults: mergedSquadResults,
     activeSquads: result?.activeSquads || [],
     narratorSummary: result?.narratorSummary,
     narratorPaymentHash: result?.narratorPaymentHash,
     cyclePayments,
+    slowSquadResults,
     leaderboardUpdatedAt: leaderboard?.updatedAt,
     proofsUpdatedAt: proofs?.updatedAt,
     persistedHistoryCount: persisted?.decisionLogEntries,

@@ -422,7 +422,7 @@ export default function ArenaPage() {
   const lastUniswapPrice = ethSignal?.uniswapPrice ?? 0;
   const activityEntries = activityData?.entries || [];
   const paymentEntries = paymentData?.entries || [];
-  const activeSquadsCount = cycleState?.activeSquads?.length || squads.length || 2;
+  const activeSquadsCount = 5;
   const lastTxMinutesAgo = Math.max(0, Math.floor((Date.now() - Number((squads[0]?.latestTimestamp || 0) * 1000 || Date.now())) / 60000));
   const totalTxs = Object.keys(txHashes || {}).length;
   const cycleProgressPct = cycleState?.cycleStartTime
