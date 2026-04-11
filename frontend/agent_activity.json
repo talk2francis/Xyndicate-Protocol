@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "71-executor-1775878389781",
-      "agent": "executor",
-      "cycle": 71,
-      "timestamp": 1775878389781,
-      "status": "complete",
-      "summary": "HOLD executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
       "id": "71-narrator-1775878390425",
       "agent": "narrator",
       "cycle": 71,
@@ -538,6 +529,15 @@
       "timestamp": 1775901725600,
       "status": "complete",
       "summary": "WAIT ETH | confidence 75%",
+      "durationMs": 1
+    },
+    {
+      "id": "84-strategist-1775901726194",
+      "agent": "strategist",
+      "cycle": 84,
+      "timestamp": 1775901726194,
+      "status": "complete",
+      "summary": "HOLD ETH (100% treasury) | Market volatility risk with 2.18% 24h price change. Analyst recommendation to wait. Confidence score: 7.5.",
       "durationMs": 1
     }
   ]
