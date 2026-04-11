@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "62-oracle-1775862129286",
-      "agent": "oracle",
-      "cycle": 62,
-      "timestamp": 1775862129286,
-      "status": "complete",
-      "summary": "ETH OKX: $2240.23 (+1.8%) | Uniswap: $2240.23 | Spread: 0bps",
-      "durationMs": 26423
-    },
-    {
       "id": "62-analyst-1775862130114",
       "agent": "analyst",
       "cycle": 62,
@@ -538,6 +529,15 @@
       "timestamp": 1775880092218,
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | Positive 24h price change with high analyst confidence score.",
+      "durationMs": 1
+    },
+    {
+      "id": "72-router-1775880092963",
+      "agent": "router",
+      "cycle": 72,
+      "timestamp": 1775880092963,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
