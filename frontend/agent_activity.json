@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "59-analyst-1775856797519",
-      "agent": "analyst",
-      "cycle": 59,
-      "timestamp": 1775856797519,
-      "status": "complete",
-      "summary": "WAIT ETH | confidence 80%",
-      "durationMs": 1
-    },
-    {
       "id": "59-strategist-1775856798370",
       "agent": "strategist",
       "cycle": 59,
@@ -538,6 +529,15 @@
       "timestamp": 1775874683426,
       "status": "complete",
       "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 1
+    },
+    {
+      "id": "69-executor-1775874684141",
+      "agent": "executor",
+      "cycle": 69,
+      "timestamp": 1775874684141,
+      "status": "complete",
+      "summary": "BUY executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
