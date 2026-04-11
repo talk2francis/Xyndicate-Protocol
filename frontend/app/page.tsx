@@ -174,7 +174,7 @@ export default function HomePage() {
   const countSquads = useCountUp(activeSquads);
 
   const liveFeed = useMemo(() => {
-    return (leaderboard?.squads || []).slice(0, 10).map((squad, index) => {
+    return (leaderboard?.squads || []).slice(0, 3).map((squad, index) => {
       const parsed = parseDecision(squad.lastAction, squad.confidence);
       return {
         id: `${squad.squadId}-${squad.latestTimestamp || index}`,
