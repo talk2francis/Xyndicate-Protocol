@@ -71,7 +71,8 @@ export async function fetchUniswapPrice(pair) {
 
 export function computeSpreadBps(okxPrice, uniswapPrice) {
   if (!okxPrice || !uniswapPrice) return 0;
-  return Math.round((Math.abs(uniswapPrice - okxPrice) / okxPrice) * 10000);
+  const bps = (Math.abs(uniswapPrice - okxPrice) / okxPrice) * 10000;
+  return Number(bps.toFixed(4));
 }
 
 export function betterRouteForPrices(okxPrice, uniswapPrice) {
