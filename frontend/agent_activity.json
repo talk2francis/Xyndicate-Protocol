@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "56-router-1775851343882",
-      "agent": "router",
-      "cycle": 56,
-      "timestamp": 1775851343882,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "56-executor-1775851344643",
       "agent": "executor",
       "cycle": 56,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | Positive 24h price change with high analyst confidence score.",
       "durationMs": 11
+    },
+    {
+      "id": "67-router-1775871078715",
+      "agent": "router",
+      "cycle": 67,
+      "timestamp": 1775871078715,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 24
     }
   ]
 }
