@@ -27,7 +27,7 @@ export async function fetchUniswapPrice(pair) {
     };
   }
 
-  const query = `
+  const primaryQuery = `
     query PoolPrice($id: ID!) {
       pool(id: $id) {
         token0Price
@@ -38,38 +38,59 @@ export async function fetchUniswapPrice(pair) {
     }
   `;
 
-  const requestBody = JSON.stringify({ query, variables: { id: (poolId || DEFAULT_POOL_ID).toLowerCase() } });
+  const fallbackQuery = `
+    query Pools($first: Int!) {
+      pools(first: $first, orderBy: totalValueLockedETH, orderDirection: desc, where: { token0_: { symbol_in: [\"USDC\", \"USDT\"] }, token1_: { symbol: \"WETH\" } }) {
+        id
+        token0Price
+        token1Price
+        sqrtPrice
+        liquidity
+        feeTier
+        token0 { symbol }
+        token1 { symbol }
+      }
+    }
+  `;
 
   let lastError = null;
   for (const url of buildGraphUrls()) {
     try {
-      const resp = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: requestBody,
-        cache: "no-store",
-      });
+      const requests = [
+        JSON.stringify({ query: primaryQuery, variables: { id: (poolId || DEFAULT_POOL_ID).toLowerCase() } }),
+        JSON.stringify({ query: fallbackQuery, variables: { first: 5 } }),
+      ];
 
-      if (!resp.ok) {
-        throw new Error(`Uniswap subgraph request failed with ${resp.status}`);
+      for (const body of requests) {
+        const resp = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body,
+          cache: "no-store",
+        });
+
+        if (!resp.ok) {
+          throw new Error(`Uniswap subgraph request failed with ${resp.status}`);
+        }
+
+        const data = await resp.json();
+        const pool = data?.data?.pool || data?.data?.pools?.[0];
+        const token0Price = Number(pool?.token0Price || 0);
+        if (!token0Price) {
+          continue;
+        }
+
+        const resolvedPoolId = pool?.id || poolId || DEFAULT_POOL_ID;
+        const uniswapPrice = Number((1 / token0Price).toFixed(6));
+
+        return {
+          uniswapPrice,
+          uniswapPoolId: resolvedPoolId,
+          sqrtPrice: pool?.sqrtPrice || null,
+          liquidity: pool?.liquidity || null,
+          source: url.includes("gateway.thegraph.com") ? "uniswap-v3-gateway" : "uniswap-v3-subgraph",
+        };
       }
-
-      const data = await resp.json();
-      const pool = data?.data?.pool;
-      const token0Price = Number(pool?.token0Price || 0);
-      if (!token0Price) {
-        throw new Error("Uniswap subgraph returned no token0Price");
-      }
-
-      const uniswapPrice = Number((1 / token0Price).toFixed(6));
-
-      return {
-        uniswapPrice,
-        uniswapPoolId: poolId,
-        sqrtPrice: pool?.sqrtPrice || null,
-        liquidity: pool?.liquidity || null,
-        source: url.includes("gateway.thegraph.com") ? "uniswap-v3-gateway" : "uniswap-v3-subgraph",
-      };
     } catch (error) {
       lastError = error;
     }
