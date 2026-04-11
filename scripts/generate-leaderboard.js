@@ -11,6 +11,11 @@ const TXHASHES_PATH = path.join(FRONTEND_DIR, 'txhashes.json');
 const AGENT_PAYMENTS_PATH = path.join(FRONTEND_DIR, 'agentpayments.json');
 const OUTPUT_PATH = path.join(FRONTEND_DIR, 'leaderboard.json');
 const OUTPUT_REPO_PATH = 'frontend/leaderboard.json';
+const SLOW_SQUADS = [
+  { squadId: 'PHANTOM', name: 'Phantom Protocol', lastAsset: 'OKB', confidence: 0.66 },
+  { squadId: 'CIPHER', name: 'Cipher Strategy', lastAsset: 'ETH', confidence: 0.66 },
+  { squadId: 'NEXUS', name: 'Nexus Quant', lastAsset: 'OKB', confidence: 0.66 },
+];
 
 function readJson(filePath, fallback) {
   try {
@@ -119,34 +124,21 @@ function buildLeaderboard() {
   }
 
   const slowSquadResults = cycleState?.slowSquadResults || {};
-  for (const slowSquad of slowSquads) {
-    const existing = squadMap.get(slowSquad.squadId) || {
+  for (const slowSquad of SLOW_SQUADS) {
+    const result = slowSquadResults[slowSquad.squadId] || {};
+    const lastRun = Number(cycleState?.slowSquadLastRunAt?.[`${slowSquad.squadId.toLowerCase()}_last_run`] || 0);
+    squadMap.set(slowSquad.squadId, {
       squadId: slowSquad.squadId,
-      decisions: 0,
+      decisions: Number(result?.decisions || 0),
       buys: 0,
       sells: 0,
-      holds: 0,
-      latestTimestamp: 0,
-      latestRationale: 'Awaiting next cycle',
-      lastAction: 'HOLD',
-      lastAsset: slowSquad.squadId === 'CIPHER' ? 'ETH' : 'OKB',
-      confidence: 0.66,
-      txHashes: [],
-    };
-    const lastRun = Number(cycleState?.slowSquadLastRunAt?.[`${slowSquad.squadId.toLowerCase()}_last_run`] || 0);
-    const result = slowSquadResults[slowSquad.squadId] || {};
-    squadMap.set(slowSquad.squadId, {
-      ...existing,
-      decisions: Math.max(existing.decisions, Number(result?.decisions || existing.decisions || 0)),
-      latestTimestamp: Math.max(existing.latestTimestamp, lastRun),
-      latestRationale: result?.rationale || existing.latestRationale,
-      lastAction: result?.action || existing.lastAction,
-      confidence: Number(result?.confidence || existing.confidence || 0.66),
-      txHashes: Array.from(new Set([...(existing.txHashes || []), result?.txHash].filter(Boolean))).slice(-10),
-      buys: existing.buys,
-      sells: existing.sells,
-      holds: existing.holds,
-      lastAsset: existing.lastAsset,
+      holds: Number(result?.action === 'HOLD' ? 1 : 0),
+      latestTimestamp: lastRun,
+      latestRationale: result?.rationale || 'Awaiting next cycle',
+      lastAction: result?.action || 'HOLD',
+      lastAsset: slowSquad.lastAsset,
+      confidence: Number(result?.confidence || slowSquad.confidence || 0.66),
+      txHashes: Array.isArray(result?.txHashes) ? result.txHashes.slice(-10) : (result?.txHash ? [result.txHash] : []),
     });
   }
 
