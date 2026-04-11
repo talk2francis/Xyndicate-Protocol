@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { writeAndPublishJson } = require('./github-artifacts');
 const { STATE_PATH } = require('./cycle-state');
+const { fetchExternalRegistry, normalizeExternalSquad } = require('./external-squads');
 
 const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
@@ -68,7 +69,7 @@ function deriveConfidence(rationale, lastAction) {
   return 0.66;
 }
 
-function buildLeaderboard() {
+async function buildLeaderboard() {
   const deployments = readJson(DEPLOYMENTS_PATH, {});
   const txhashes = readJson(TXHASHES_PATH, {});
   const agentPayments = readJson(AGENT_PAYMENTS_PATH, []);
@@ -143,6 +144,26 @@ function buildLeaderboard() {
     });
   }
 
+  const registry = await fetchExternalRegistry();
+  for (const external of Array.isArray(registry?.squads) ? registry.squads : []) {
+    const normalized = normalizeExternalSquad(external, cycleState);
+    squadMap.set(normalized.squadId, {
+      squadId: normalized.squadId,
+      decisions: normalized.decisions,
+      buys: normalized.stats.buys,
+      sells: normalized.stats.sells,
+      holds: normalized.stats.holds,
+      latestTimestamp: normalized.latestTimestamp,
+      latestRationale: normalized.lastAction,
+      lastAction: normalized.stats.lastTradeAction,
+      lastAsset: normalized.stats.lastAsset,
+      confidence: normalized.confidence,
+      txHashes: normalized.txHashes,
+      external: true,
+      status: normalized.status,
+    });
+  }
+
   const squads = Array.from(squadMap.values())
     .sort((a, b) => b.latestTimestamp - a.latestTimestamp)
     .map((squad, index) => ({
@@ -152,6 +173,8 @@ function buildLeaderboard() {
       confidence: squad.confidence,
       lastAction: squad.latestRationale,
       latestTimestamp: squad.latestTimestamp,
+      status: squad.status || (squad.external ? 'ACTIVE' : 'ACTIVE'),
+      badge: squad.external ? 'External' : undefined,
       stats: {
         buys: squad.buys,
         sells: squad.sells,
@@ -175,7 +198,7 @@ function buildLeaderboard() {
 }
 
 async function writeLeaderboardArtifact() {
-  const leaderboard = buildLeaderboard();
+  const leaderboard = await buildLeaderboard();
   await writeAndPublishJson({
     localPath: OUTPUT_PATH,
     repoPath: OUTPUT_REPO_PATH,

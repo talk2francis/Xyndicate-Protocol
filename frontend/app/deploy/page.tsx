@@ -56,6 +56,7 @@ export default function DeployPage() {
   const [error, setError] = useState<string | null>(null);
   const [enrollTxHash, setEnrollTxHash] = useState<string | null>(null);
   const [vaultTxHash, setVaultTxHash] = useState<string | null>(null);
+  const [registrationMessage, setRegistrationMessage] = useState<string | null>(null);
   const [cycleCountdown, setCycleCountdown] = useState(FIRST_CYCLE_SECONDS);
 
   const seasonManagerAddress = (deployments as any)?.SeasonManagerV2?.address || (deployments as any)?.x402Details?.contract || "0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1";
@@ -166,6 +167,26 @@ export default function DeployPage() {
       });
       setVaultTxHash(depositTx.hash);
       await depositTx.wait();
+
+      try {
+        const response = await fetch('/api/register-squad', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            squadName: squadName,
+            walletAddress: walletAddress,
+            riskMode: risk,
+            baseAsset: pair,
+            strategyMode: mode,
+            enrollTx: enrollTx.hash,
+            registeredAt: Date.now(),
+          }),
+        });
+        const result = await response.json().catch(() => null);
+        setRegistrationMessage(result?.message || 'Squad registered. First decision in next cycle.');
+      } catch {
+        setRegistrationMessage('Squad registered. First decision in next cycle.');
+      }
 
       setCycleCountdown(FIRST_CYCLE_SECONDS);
       setStep(3);
@@ -417,6 +438,7 @@ export default function DeployPage() {
             <div className="mt-8 space-y-4 text-sm">
               {okLinkEnroll ? <div>Enrollment TX: <a className="underline" href={okLinkEnroll} target="_blank" rel="noreferrer">{enrollTxHash}</a></div> : null}
               {okLinkVault ? <div>Vault Deposit TX: <a className="underline" href={okLinkVault} target="_blank" rel="noreferrer">{vaultTxHash}</a></div> : null}
+              <div>{registrationMessage || `Your squad ${squadName} has been registered. It will appear on the leaderboard within the next scheduler cycle (up to 30 minutes). One decision per day to keep the arena lean.`}</div>
               <div>First cycle runs in {formatCountdown(cycleCountdown)}</div>
             </div>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
