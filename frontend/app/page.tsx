@@ -304,7 +304,7 @@ export default function HomePage() {
             <RetryState message="Failed to load live decisions feed." onRetry={() => refetchLeaderboard()} />
           ) : (
             <AnimatePresence initial={false}>
-              {liveFeed.map((item) => (
+              {liveFeed.slice(0, 3).map((item) => (
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0, y: -16 }}

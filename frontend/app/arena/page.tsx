@@ -430,7 +430,7 @@ export default function ArenaPage() {
     : 0;
 
   const feed = useMemo<FeedEntry[]>(() => {
-    return squads.map((squad) => {
+    return squads.slice(0, 3).map((squad) => {
       const parsed = parseDecisionText(squad.lastAction);
       const signal = signalData?.pairs?.find((item) => item.pair === `${parsed.asset}/USDT`) || signalData?.pairs?.[0];
       const route: "Uniswap" | "OKX" = signal?.betterRoute === "uniswap" || parsed.route === "Uniswap" ? "Uniswap" : "OKX";
