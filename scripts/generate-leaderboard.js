@@ -40,6 +40,28 @@ function extractAsset(text) {
   return match?.[2] || 'ETH';
 }
 
+function deriveConfidence(rationale, lastAction) {
+  const text = String(rationale || '');
+  const explicitPercent = text.match(/confidence(?: score| level)?[:\s]+([0-9.]+)%/i);
+  if (explicitPercent) {
+    const value = Number(explicitPercent[1]);
+    if (!Number.isNaN(value)) return Math.max(0.4, Math.min(0.99, value / 100));
+  }
+
+  const decimalMatch = text.match(/confidence(?: score| level)?[:\s]+([0-9]*\.?[0-9]+)/i);
+  if (decimalMatch) {
+    const value = Number(decimalMatch[1]);
+    if (!Number.isNaN(value)) {
+      const normalized = value > 1 ? value / 10 : value;
+      return Math.max(0.4, Math.min(0.99, normalized));
+    }
+  }
+
+  if (lastAction === 'BUY' || lastAction === 'SELL') return 0.8;
+  if (text.toLowerCase().includes('wait')) return 0.7;
+  return 0.66;
+}
+
 function buildLeaderboard() {
   const deployments = readJson(DEPLOYMENTS_PATH, {});
   const txhashes = readJson(TXHASHES_PATH, {});
@@ -66,7 +88,7 @@ function buildLeaderboard() {
       latestRationale: 'Active strategy cycle',
       lastAction: 'UNKNOWN',
       lastAsset: 'ETH',
-      confidence: 0.84,
+      confidence: 0.66,
       txHashes: [],
     };
 
@@ -80,6 +102,7 @@ function buildLeaderboard() {
       current.latestRationale = rationale;
       current.lastAction = action;
       current.lastAsset = asset;
+      current.confidence = deriveConfidence(rationale, action);
     }
 
     if (txHash && !current.txHashes.includes(txHash)) {
