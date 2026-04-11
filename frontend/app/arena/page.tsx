@@ -489,7 +489,6 @@ export default function ArenaPage() {
             { label: "Active Squads", value: squads.length, sub: "Season squads online" },
             { label: "Total Swaps", value: totalSwaps, sub: "Executed route decisions" },
             { label: "UNISWAP ROUTING", value: "Active", sub: `ETH/USDC pool live · OKX $${lastOkxPrice.toFixed(2)} vs Uniswap $${lastUniswapPrice.toFixed(2)}` },
-            { label: "ROUTES EVALUATED", value: totalDecisions, sub: "Dual-source: OKX + Uniswap v3" },
           ].map((chip) => (
             <div key={chip.label} className="rounded-2xl border border-black/10 bg-xyn-surface px-4 py-3 dark:border-white/10 dark:bg-xyn-dark">
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">{chip.label}</div>

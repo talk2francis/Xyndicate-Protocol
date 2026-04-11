@@ -100,9 +100,8 @@ async function getMarketSignal(params: Record<string, any> = {}) {
         uniswapSource: pair === "ETH/USDC" ? "uniswap-v3-onchain" : "okx-fallback",
         spreadBps,
         spreadNote: "Near-zero spread indicates efficient market alignment",
-        routingDecision: recommendedAction === "HOLD" ? "okx" : recommendedAction.toLowerCase(),
-        recommendedAction,
-        confidence,
+        recommendation: recommendedAction,
+        routingDecision: "okx",
         timestamp: new Date().toISOString(),
         source: "okx+uniswap",
       });
