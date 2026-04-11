@@ -1,20 +1,162 @@
 {
-  "currentAgent": "oracle",
+  "currentAgent": "idle",
   "cycleNumber": 85,
   "cycleStartTime": 1775905282763,
-  "nextCycleTime": 1775907082763,
-  "lastCycleComplete": 1775901737322,
+  "nextCycleTime": 1775907128565,
+  "lastCycleComplete": 1775905328565,
   "activeSquads": [
-    "XYNDICATE_ALPHA",
+    "Xyndicate Alpha",
     "Squad Nova"
   ],
-  "squadResults": {},
+  "squadResults": {
+    "XYNDICATE_ALPHA": {
+      "squadId": "XYNDICATE_ALPHA",
+      "squadName": "Xyndicate Alpha",
+      "riskMode": "aggressive",
+      "baseAsset": "ETH",
+      "txHash": "0xd44efff20e06d02577d83b179e8209f55d8846437ddf9a5d7e6c17b2a8693839",
+      "vaultTxHash": "0x66cea87b7a00212b6c27fb5bc3859d310da46e5b9530b67650f0b71457f20307",
+      "pnlDelta": "0",
+      "action": "HOLD",
+      "asset": "ETH",
+      "sizePercent": 100,
+      "rationale": "Stable price with minimal spread and consistent performance. Market volatility may increase risk exposure. Wait for better opportunities.",
+      "route": "okx",
+      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "spreadBps": 0,
+      "narratorSummary": "Xyndicate Alpha held ETH (100% treasury) via okx. Stable price with minimal spread and consistent performance. Market volatility may increase risk exposure. Wait for better opportunities.",
+      "analyst": {
+        "opportunities": [
+          {
+            "asset": "ETH",
+            "type": "hold",
+            "rationale": "Stable price with minimal spread and consistent performance",
+            "confidence": 0.8
+          }
+        ],
+        "risks": [
+          {
+            "description": "Market volatility may increase risk exposure",
+            "severity": 0.7
+          }
+        ],
+        "recommendation": "wait",
+        "topAsset": "ETH",
+        "confidenceScore": 0.8
+      },
+      "market": {
+        "pair": "ETH-USDT",
+        "price": 2239.68,
+        "okxPrice": 2239.68,
+        "uniswapPrice": 2239.68,
+        "spreadBps": 0,
+        "betterRoute": "okx",
+        "uniswapPoolId": null,
+        "priceSpreads": {
+          "absolute": 0,
+          "bps": 0,
+          "source": "okx-fallback"
+        },
+        "change24h": 1.797158362649648
+      },
+      "narrative": "HOLD ETH (100% treasury) via okx · Stable price with minimal spread and consistent performance. Market volatility may increase risk exposure. Wait for better opportunities."
+    },
+    "SQUAD_NOVA": {
+      "squadId": "SQUAD_NOVA",
+      "squadName": "Squad Nova",
+      "riskMode": "balanced",
+      "baseAsset": "OKB",
+      "txHash": "0x088dbbe338d6c0edcb93f8c24bc1fc463b9ca646194db7d48c7c051ac4e22487",
+      "vaultTxHash": "0x4fe28d56b0b76ca5ccd517c1de0e8028d95fddd11d1d1bf6b30670b384592aa7",
+      "pnlDelta": "0",
+      "action": "HOLD",
+      "asset": "OKB",
+      "sizePercent": 100,
+      "rationale": "OKB price increased by 1.36% in 24h, suggesting stability. Squad Nova's balanced risk mode aligns with holding position. Confidence level: 0.7.",
+      "route": "okx",
+      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "spreadBps": 0,
+      "narratorSummary": "Squad Nova held OKB (100% treasury) via okx. OKB price increased by 1.36% in 24h, suggesting stability. Squad Nova's balanced risk mode aligns with holding position. Confidence level: 0.7.",
+      "analyst": {
+        "opportunities": [
+          {
+            "asset": "OKB",
+            "type": "hold",
+            "rationale": "The price of OKB has increased by 1.36% in the last 24 hours, indicating potential stability.",
+            "confidence": 0.7
+          }
+        ],
+        "risks": [],
+        "recommendation": "wait",
+        "topAsset": "OKB",
+        "confidenceScore": 0.7
+      },
+      "market": {
+        "pair": "OKB-USDT",
+        "price": 85.45,
+        "okxPrice": 85.45,
+        "uniswapPrice": 85.45,
+        "spreadBps": 0,
+        "betterRoute": "okx",
+        "uniswapPoolId": null,
+        "priceSpreads": {
+          "absolute": 0,
+          "bps": 0,
+          "source": "okx-fallback"
+        },
+        "change24h": 1.3641755634638264
+      },
+      "narrative": "HOLD OKB (100% treasury) via okx · OKB price increased by 1.36% in 24h, suggesting stability. Squad Nova's balanced risk mode aligns with holding position. Confidence level: 0.7."
+    }
+  },
   "agentLog": [
     {
       "agent": "system",
       "status": "started",
       "completedAt": 1775905282763,
       "summary": "Cycle 85 started. Oracle snapshot in progress."
+    },
+    {
+      "agent": "oracle",
+      "status": "complete",
+      "completedAt": 1775905315850,
+      "summary": "ETH $0.00 (0.00%) | Uniswap spread 0.00bps"
+    },
+    {
+      "agent": "analyst",
+      "status": "complete",
+      "completedAt": 1775905316797,
+      "summary": "wait on ETH | confidence 0"
+    },
+    {
+      "agent": "strategist",
+      "status": "complete",
+      "completedAt": 1775905317423,
+      "summary": "HOLD ETH (0% treasury)"
+    },
+    {
+      "agent": "router",
+      "status": "complete",
+      "completedAt": 1775905318030,
+      "summary": "okx selected | spread 0.00bps"
+    },
+    {
+      "agent": "executor",
+      "status": "complete",
+      "completedAt": 1775905318610,
+      "summary": "HOLD executed | tx 0xd44efff20e06d02577d83b179e8209f55d8846437ddf9a5d7e6c17b2a8693839"
+    },
+    {
+      "agent": "narrator",
+      "status": "complete",
+      "completedAt": 1775905319217,
+      "summary": "Xyndicate Alpha held ETH (100% treasury) via okx. Stable price with minimal spread and consistent performance. Market volatility may increase risk exposure. Wait for better opportunities. | Squad Nova held OKB (100% treasury) via okx. OKB price increased by 1.36% in 24h, suggesting stability. Squad Nova's balanced risk mode aligns with holding position. Confidence level: 0.7."
+    },
+    {
+      "agent": "system",
+      "status": "complete",
+      "completedAt": 1775905328565,
+      "summary": "Cycle 85 complete. Awaiting next scheduled run."
     }
   ]
 }
