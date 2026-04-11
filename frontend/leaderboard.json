@@ -3,19 +3,18 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 105,
-      "confidence": 0.8,
-      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change for ETH with high analyst confidence. Aggressive risk mode favors seizing this opportunity.",
-      "latestTimestamp": 1775935965,
+      "decisions": 106,
+      "confidence": 0.66,
+      "lastAction": "HOLD ETH (100% treasury) · Stable price with minimal spread, no significant change in the last 24 hours. Analyst confidence score is 0.8.",
+      "latestTimestamp": 1775937751,
       "stats": {
         "buys": 36,
         "sells": 1,
-        "holds": 63,
-        "lastTradeAction": "BUY",
+        "holds": 64,
+        "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xf6490f332ad8fbfb88274919542931dcd3ff7de14b9239045d6c1de10722760b",
         "0x1ac4729bfa534068c37c59ae3e06eb3cc02e687604675502f301884fe51d91c3",
         "0x937235eb3a3f9f20fd3876c275aea8debdcc9f2d94381f3aa4d0074b124a4a4c",
         "0x0be074d5757e4c979e873d7848858d4ce25a741a137244aeb7b5ce0a88e4078d",
@@ -24,25 +23,25 @@
         "0xa5ce4663ceaf52823c91efa04c8b3182920d23ae88a8810dc1d7336b160d8d6f",
         "0x63aa0e61539c2e66a02c06839104c8855e3b7fb44c01ab741f38b8be5f03a344",
         "0x9390bf377a39b0614f7f47e68918d03b206aeeab2a80ce590465effb2a7b2b50",
-        "0xa3685c819d1ae703ca939d92b6ed3a0a15aa1ecdc959579e265c71215f7d20f9"
+        "0xa3685c819d1ae703ca939d92b6ed3a0a15aa1ecdc959579e265c71215f7d20f9",
+        "0x249fe37bb79f67ad90edfe8a67ebacd0efafcf124949f9ed4107ce1252e342ca"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 78,
+      "decisions": 79,
       "confidence": 0.7,
-      "lastAction": "HOLD OKB (100% treasury) · Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait, low confidence score.",
-      "latestTimestamp": 1775935965,
+      "lastAction": "HOLD OKB (0% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait with 80% confidence score.",
+      "latestTimestamp": 1775937751,
       "stats": {
         "buys": 7,
         "sells": 0,
-        "holds": 71,
+        "holds": 72,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x4b86c18dceea2aa59fa8b470a3b17d290d2c17c0eb5d3d85e04ed5433ce8f8e9",
         "0x86479a6b7f93ef7be546732c651ee6b419502f85e75cad3aff6a082432ea6e8e",
         "0xa9125986254a21806d0523596b4ad91022af690a5c8e92f9dceebf2c82c3b2bc",
         "0xc44dcdfc275df3bb16d9a143aa31348b116c11bf1af1f55f93a1f99108f69af7",
@@ -51,13 +50,14 @@
         "0xb96f103e4450b69f8385cd13315b71d79617ba25e9ce096e0d413cdff24f76b6",
         "0x178bd9b6eabf7f0432adcaccb22f5250a64395dcddc775cc9d9c8609b6ed9b10",
         "0xb3435c4daff35e64e56264b2cd071b3c5c45d81c8e99f459df531af16b638412",
-        "0x041e0ab4472d88d752efa2c0c80b062a5bc0b788f5095121727c905acb1d2b7e"
+        "0x041e0ab4472d88d752efa2c0c80b062a5bc0b788f5095121727c905acb1d2b7e",
+        "0xb13b6011afad15820bd138d99101d299c6ae81368c480f3ad844781f26ad4bb3"
       ]
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-11T19:32:46.642Z",
-  "totalDecisions": 183,
+  "updatedAt": "2026-04-11T20:02:33.146Z",
+  "totalDecisions": 185,
   "supportingProofs": {
     "narratorPayments": 7,
     "latestNarratorPayment": {
