@@ -1,155 +1,20 @@
 {
-  "currentAgent": "idle",
-  "cycleNumber": 86,
-  "cycleStartTime": 1775907019359,
-  "nextCycleTime": 1775908858449,
-  "lastCycleComplete": 1775907058449,
+  "currentAgent": "oracle",
+  "cycleNumber": 87,
+  "cycleStartTime": 1775908814662,
+  "nextCycleTime": 1775910614662,
+  "lastCycleComplete": 1775905328565,
   "activeSquads": [
-    "Xyndicate Alpha",
+    "XYNDICATE_ALPHA",
     "Squad Nova"
   ],
-  "squadResults": {
-    "XYNDICATE_ALPHA": {
-      "squadId": "XYNDICATE_ALPHA",
-      "squadName": "Xyndicate Alpha",
-      "riskMode": "aggressive",
-      "baseAsset": "ETH",
-      "txHash": "0x2497fa258a605d5368d8c0d4c2d050d56e8ae8769701e6e7dca9475ef6020dfe",
-      "vaultTxHash": "0x53999b03ff33ef5129ea9718fc4dcb86bd3b85f3339df6d6fdb14e773c00ab26",
-      "pnlDelta": "0",
-      "action": "HOLD",
-      "asset": "ETH",
-      "sizePercent": 100,
-      "rationale": "Market volatility is low with no significant price movement in the last 24 hours. Analyst recommends waiting. Confidence level: 5.",
-      "route": "okx",
-      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "spreadBps": 0,
-      "narratorSummary": "Xyndicate Alpha held ETH (100% treasury) via okx. Market volatility is low with no significant price movement in the last 24 hours. Analyst recommends waiting. Confidence level: 5.",
-      "analyst": {
-        "opportunities": [],
-        "risks": [
-          {
-            "description": "Market volatility is low with no significant price movement in the last 24 hours.",
-            "severity": 2
-          }
-        ],
-        "recommendation": "wait",
-        "topAsset": "ETH",
-        "confidenceScore": 5
-      },
-      "market": {
-        "pair": "ETH-USDT",
-        "price": 2238.85,
-        "okxPrice": 2238.85,
-        "uniswapPrice": 2238.85,
-        "spreadBps": 0,
-        "betterRoute": "okx",
-        "uniswapPoolId": null,
-        "priceSpreads": {
-          "absolute": 0,
-          "bps": 0,
-          "source": "okx-fallback"
-        },
-        "change24h": 0.9309349923361326
-      },
-      "narrative": "HOLD ETH (100% treasury) via okx · Market volatility is low with no significant price movement in the last 24 hours. Analyst recommends waiting. Confidence level: 5."
-    },
-    "SQUAD_NOVA": {
-      "squadId": "SQUAD_NOVA",
-      "squadName": "Squad Nova",
-      "riskMode": "balanced",
-      "baseAsset": "OKB",
-      "txHash": "0x9fcf8e0a386e0534876c1a2de69e8c1424782d36cccb8196c4d7a9ace6dda4ef",
-      "vaultTxHash": "0x19e55e262ba9768d0db92fb5e8e00c31e6e6b71f478bb8c64cf9f7392a8ffa4d",
-      "pnlDelta": "0",
-      "action": "HOLD",
-      "asset": "OKB",
-      "sizePercent": 0,
-      "rationale": "Price change in the last 24 hours is positive. Analyst recommendation is to wait.",
-      "route": "okx",
-      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "spreadBps": 0,
-      "narratorSummary": "Squad Nova held OKB (0% treasury) via okx. Price change in the last 24 hours is positive. Analyst recommendation is to wait.",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "OKB",
-            "type": "hold",
-            "rationale": "Price change in the last 24 hours is positive.",
-            "confidence": 0.8
-          }
-        ],
-        "risks": [],
-        "recommendation": "wait",
-        "topAsset": "OKB",
-        "confidenceScore": 0.8
-      },
-      "market": {
-        "pair": "OKB-USDT",
-        "price": 85.42,
-        "okxPrice": 85.42,
-        "uniswapPrice": 85.42,
-        "spreadBps": 0,
-        "betterRoute": "okx",
-        "uniswapPoolId": null,
-        "priceSpreads": {
-          "absolute": 0,
-          "bps": 0,
-          "source": "okx-fallback"
-        },
-        "change24h": 1.172568992064426
-      },
-      "narrative": "HOLD OKB (0% treasury) via okx · Price change in the last 24 hours is positive. Analyst recommendation is to wait."
-    }
-  },
+  "squadResults": {},
   "agentLog": [
     {
       "agent": "system",
       "status": "started",
-      "completedAt": 1775907019359,
-      "summary": "Cycle 86 started. Oracle snapshot in progress."
-    },
-    {
-      "agent": "oracle",
-      "status": "complete",
-      "completedAt": 1775907045406,
-      "summary": "ETH $0.00 (0.00%) | Uniswap spread 0.00bps"
-    },
-    {
-      "agent": "analyst",
-      "status": "complete",
-      "completedAt": 1775907046218,
-      "summary": "wait on ETH | confidence 0"
-    },
-    {
-      "agent": "strategist",
-      "status": "complete",
-      "completedAt": 1775907046984,
-      "summary": "HOLD ETH (0% treasury)"
-    },
-    {
-      "agent": "router",
-      "status": "complete",
-      "completedAt": 1775907047663,
-      "summary": "okx selected | spread 0.00bps"
-    },
-    {
-      "agent": "executor",
-      "status": "complete",
-      "completedAt": 1775907048327,
-      "summary": "HOLD executed | tx 0x2497fa258a605d5368d8c0d4c2d050d56e8ae8769701e6e7dca9475ef6020dfe"
-    },
-    {
-      "agent": "narrator",
-      "status": "complete",
-      "completedAt": 1775907048934,
-      "summary": "Xyndicate Alpha held ETH (100% treasury) via okx. Market volatility is low with no significant price movement in the last 24 hours. Analyst recommends waiting. Confidence level: 5. | Squad Nova held OKB (0% treasury) via okx. Price change in the last 24 hours is positive. Analyst recommendation is to wait."
-    },
-    {
-      "agent": "system",
-      "status": "complete",
-      "completedAt": 1775907058449,
-      "summary": "Cycle 86 complete. Awaiting next scheduled run."
+      "completedAt": 1775908814662,
+      "summary": "Cycle 87 started. Oracle snapshot in progress."
     }
   ]
 }
