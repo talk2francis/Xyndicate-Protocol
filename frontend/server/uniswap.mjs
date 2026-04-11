@@ -44,7 +44,7 @@ export async function fetchUniswapPrice(pair) {
     ]);
 
     const rawPrice = sqrtPriceX96ToPrice(slot0.sqrtPriceX96);
-    const uniswapPrice = Number((1 / rawPrice).toFixed(6));
+    const uniswapPrice = 1 / rawPrice;
 
     return {
       uniswapPrice,
@@ -55,6 +55,7 @@ export async function fetchUniswapPrice(pair) {
       uniswapError: null,
       token0,
       token1,
+      rawPrice,
     };
   } catch (error) {
     return {

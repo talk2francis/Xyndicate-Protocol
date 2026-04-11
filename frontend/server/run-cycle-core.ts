@@ -72,10 +72,11 @@ async function fetchMarketSnapshot(pair: string) {
   }
 
   const uniswapPrice = uniswap.uniswapPrice ?? okxPrice;
-  const spreadBps = computeSpreadBps(okxPrice, uniswap.uniswapPrice ?? okxPrice);
+  const spreadRatio = uniswap.uniswapPrice ? Math.abs((uniswap.uniswapPrice - okxPrice) / okxPrice) : 0;
+  const spreadBps = Math.round(spreadRatio * 1000000) / 100;
   const betterRoute = betterRouteForPrices(okxPrice, uniswap.uniswapPrice ?? okxPrice);
 
-  console.error(`Uniswap ${pair.startsWith("ETH-") ? "ETH" : pair.split("-")[0]} price: $${uniswapPrice.toFixed(2)} | Spread: ${spreadBps}bps | source=${uniswap.source}${uniswap.uniswapError ? ` | error=${uniswap.uniswapError}` : ""}`);
+  console.error(`Uniswap ${pair.startsWith("ETH-") ? "ETH" : pair.split("-")[0]} price: $${uniswapPrice.toFixed(6)} | Spread: ${spreadBps}bps | source=${uniswap.source}${uniswap.uniswapError ? ` | error=${uniswap.uniswapError}` : ""}`);
 
   return {
     pair,
@@ -86,9 +87,12 @@ async function fetchMarketSnapshot(pair: string) {
     betterRoute,
     uniswapPoolId: uniswap.uniswapPoolId,
     priceSpreads: {
-      absolute: Number((uniswapPrice - okxPrice).toFixed(6)),
+      absolute: Number((uniswapPrice - okxPrice).toFixed(10)),
       bps: spreadBps,
       source: uniswap.source,
+      rawUniswapPrice: uniswap.uniswapPrice,
+      rawOkxPrice: okxPrice,
+      uniswapError: uniswap.uniswapError,
     },
     change24h,
   };
