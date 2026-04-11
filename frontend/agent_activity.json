@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "64-router-1775865750546",
-      "agent": "router",
-      "cycle": 64,
-      "timestamp": 1775865750546,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "64-executor-1775865751211",
       "agent": "executor",
       "cycle": 64,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. Positive 24h price change for ETH with high analyst confidence. Recommended to capitalize on the opportunity in an aggressive risk mode. | Squad Nova held OKB (100% treasury) via okx. Market stable with minimal spread and slight price increase in last 24 hours. Analyst confidence at 80%.",
       "durationMs": 1
+    },
+    {
+      "id": "75-oracle-1775885505802",
+      "agent": "oracle",
+      "cycle": 75,
+      "timestamp": 1775885505802,
+      "status": "complete",
+      "summary": "ETH OKX: $2235.89 (+1.6%) | Uniswap: $2235.89 | Spread: 0bps",
+      "durationMs": 21265
     }
   ]
 }
