@@ -80,11 +80,11 @@ function formatTimestamp(timestamp?: number) {
   }) + " UTC";
 }
 
-function parseDecision(decision?: string) {
+function parseDecision(decision?: string, confidenceValue?: number) {
   const text = decision || "";
   const actionMatch = text.match(/\b(BUY|SELL|HOLD)\b/i);
   const assetMatch = text.match(/\b(BUY|SELL|HOLD)\s+([A-Z0-9_-]+)/i);
-  const confidence = text.toLowerCase().includes("confidence") ? 88 : 84;
+  const confidence = Math.round((confidenceValue ?? 0.7) * 100);
 
   return {
     action: (actionMatch?.[1] || "HOLD").toUpperCase(),
@@ -175,7 +175,7 @@ export default function HomePage() {
 
   const liveFeed = useMemo(() => {
     return (leaderboard?.squads || []).slice(0, 10).map((squad, index) => {
-      const parsed = parseDecision(squad.lastAction);
+      const parsed = parseDecision(squad.lastAction, squad.confidence);
       return {
         id: `${squad.squadId}-${squad.latestTimestamp || index}`,
         squadId: squad.squadId,
