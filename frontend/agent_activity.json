@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "72-router-1775880092963",
-      "agent": "router",
-      "cycle": 72,
-      "timestamp": 1775880092963,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "72-executor-1775880093662",
       "agent": "executor",
       "cycle": 72,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "ETH OKX: $2239.68 (+1.8%) | Uniswap: $2239.68 | Spread: 0bps",
       "durationMs": 32196
+    },
+    {
+      "id": "85-analyst-1775905316797",
+      "agent": "analyst",
+      "cycle": 85,
+      "timestamp": 1775905316797,
+      "status": "complete",
+      "summary": "WAIT ETH | confidence 80%",
+      "durationMs": 1
     }
   ]
 }
