@@ -22,12 +22,20 @@ function Logo() {
   return (
     <div className="flex items-center">
       <Image
-        src="/xyndicate-wordmark.svg"
+        src="/xyndicate-wordmark-light.jpg"
         alt="Xyndicate Protocol"
-        width={220}
-        height={56}
+        width={320}
+        height={84}
         priority
-        className="h-10 w-auto object-contain opacity-95 dark:invert"
+        className="block h-12 w-auto object-contain dark:hidden"
+      />
+      <Image
+        src="/xyndicate-wordmark-dark.jpg"
+        alt="Xyndicate Protocol"
+        width={320}
+        height={84}
+        priority
+        className="hidden h-12 w-auto object-contain dark:block"
       />
     </div>
   );
@@ -66,8 +74,8 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:gap-6 sm:px-6">
-        <Link href="/" className="shrink-0 pr-2">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:gap-6 sm:px-6">
+        <Link href="/" className="shrink-0 pr-4">
           <Logo />
         </Link>
 
