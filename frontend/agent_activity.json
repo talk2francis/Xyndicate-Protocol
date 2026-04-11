@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "70-oracle-1775876501696",
-      "agent": "oracle",
-      "cycle": 70,
-      "timestamp": 1775876501696,
-      "status": "complete",
-      "summary": "ETH OKX: $2247.65 (+2.7%) | Uniswap: $2247.65 | Spread: 0bps",
-      "durationMs": 31480
-    },
-    {
       "id": "70-analyst-1775876502518",
       "agent": "analyst",
       "cycle": 70,
@@ -538,6 +529,15 @@
       "timestamp": 1775896361158,
       "status": "complete",
       "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 1
+    },
+    {
+      "id": "81-executor-1775896361827",
+      "agent": "executor",
+      "cycle": 81,
+      "timestamp": 1775896361827,
+      "status": "complete",
+      "summary": "BUY executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
