@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "61-router-1775860352863",
-      "agent": "router",
-      "cycle": 61,
-      "timestamp": 1775860352863,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "61-executor-1775860353459",
       "agent": "executor",
       "cycle": 61,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "Xyndicate Alpha held ETH (100% treasury) via okx. Market volatility is high with a 2.88% 24-hour price change for ETH. Analyst recommends waiting. Confidence score is 0.7. | Squad Nova held OKB (100% treasury) via okx. Price has increased by 1.79% in the last 24 hours. Analyst recommends waiting. Confidence level is 70%.",
       "durationMs": 1
+    },
+    {
+      "id": "72-oracle-1775880090679",
+      "agent": "oracle",
+      "cycle": 72,
+      "timestamp": 1775880090679,
+      "status": "complete",
+      "summary": "ETH OKX: $2236.62 (+2.3%) | Uniswap: $2236.62 | Spread: 0bps",
+      "durationMs": 31109
     }
   ]
 }
