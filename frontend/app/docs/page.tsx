@@ -56,7 +56,7 @@ const TOOL_CARDS: ToolCard[] = [
   },
   {
     name: "get_market_signal",
-    description: "Produces dual-source market signal output using OKX pricing plus simulated Uniswap spread context.",
+    description: "Produces dual-source market signal output using OKX pricing plus Uniswap v3 ETH/USDC pool (0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640) via The Graph subgraph.",
     params: [
       { name: "pair", type: "string", required: true, note: "ETH/USDC or OKB/USDC" },
     ],
