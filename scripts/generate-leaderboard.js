@@ -3,6 +3,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { writeAndPublishJson } = require('./github-artifacts');
+const { STATE_PATH } = require('./cycle-state');
 
 const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
