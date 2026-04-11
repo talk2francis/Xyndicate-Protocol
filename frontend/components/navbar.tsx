@@ -20,22 +20,22 @@ const navItems = [
 
 function Logo() {
   return (
-    <div className="flex items-center">
+    <div className="flex w-[160px] items-center sm:w-[172px]">
       <Image
         src="/xyndicate-exact-light.jpg"
         alt="Xyndicate Protocol"
-        width={340}
-        height={96}
+        width={160}
+        height={60}
         priority
-        className="block h-14 w-auto object-contain dark:hidden"
+        className="block h-auto w-full object-contain dark:hidden"
       />
       <Image
         src="/xyndicate-exact-dark.jpg"
         alt="Xyndicate Protocol"
-        width={340}
-        height={96}
+        width={160}
+        height={60}
         priority
-        className="hidden h-14 w-auto object-contain dark:block"
+        className="hidden h-auto w-full object-contain dark:block"
       />
     </div>
   );
@@ -74,7 +74,7 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:gap-6 sm:px-6">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:gap-6 sm:px-6">
         <Link href="/" className="shrink-0 pr-4">
           <Logo />
         </Link>
