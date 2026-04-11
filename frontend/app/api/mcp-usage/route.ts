@@ -35,7 +35,7 @@ export async function GET() {
       : 0;
 
     return NextResponse.json({
-      entries: entries.slice(0, 20),
+      entries,
       totalCallsToday: todayEntries.length,
       byTool,
       averageResponseTimeMs,
