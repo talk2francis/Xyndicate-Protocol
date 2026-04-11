@@ -3,19 +3,18 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 95,
+      "decisions": 96,
       "confidence": 0.7,
-      "lastAction": "HOLD ETH (100% treasury) · Negative 24h price change for ETH, wait for better opportunity. Confidence score: 0.7.",
-      "latestTimestamp": 1775917928,
+      "lastAction": "HOLD ETH (100% treasury) · Low volatility with minimal price change in the last 24 hours, suggesting a stable market. Waiting for potential opportunities to arise.",
+      "latestTimestamp": 1775919778,
       "stats": {
         "buys": 34,
         "sells": 1,
-        "holds": 55,
+        "holds": 56,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xa09064315ea341cf8910dbcc59f0f1748a8396a84ca2824854c19d371bca73b5",
         "0x4c9ae63e55b2d5580a6eda5bd3531ae83db8d59d1941cb42254e9a85d2b570de",
         "0xd0b3931b2a46ae1dc4eaa2c4f2225a9d3c47f6318a197101af718e3448c91e24",
         "0x01ccd20d8d36628f83d4f919c27891b522679082ff61d000c8fa5017bebba4c9",
@@ -24,25 +23,25 @@
         "0x2497fa258a605d5368d8c0d4c2d050d56e8ae8769701e6e7dca9475ef6020dfe",
         "0xcf72e9fb73206a3f3b77794ae49b5936477a7dae724feb08dbebd0558b6fd722",
         "0x5dff4018247158ac526a230a2c09a753d23d084903dd48480fc10a7b6e11ec05",
-        "0x5dc5ef28d7ede0370a1f4c027adf5e2f76b202d053be38a15095b6002401a1b4"
+        "0x5dc5ef28d7ede0370a1f4c027adf5e2f76b202d053be38a15095b6002401a1b4",
+        "0xf6490f332ad8fbfb88274919542931dcd3ff7de14b9239045d6c1de10722760b"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 68,
-      "confidence": 0.7,
-      "lastAction": "HOLD OKB (100% treasury) · Market conditions stable, no opportunities or risks identified. Analyst recommendation to wait. Confidence score is low.",
-      "latestTimestamp": 1775917928,
+      "decisions": 69,
+      "confidence": 0.66,
+      "lastAction": "HOLD OKB (0% treasury) · OKB price stable with minimal spread, balanced risk mode. Analyst recommendation to hold.",
+      "latestTimestamp": 1775919778,
       "stats": {
         "buys": 7,
         "sells": 0,
-        "holds": 61,
+        "holds": 62,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x235c57beaf7c72a3a2a65f6a8754af08685af914fad8ce322edb59660886352d",
         "0x79ec3245a8968f70256de8bdc5b51c5e6bf548241183fd711e0459fbbce2c3e3",
         "0x1851c3df87319320ba03727a49232ee7fe5f4aa2dbc714eef8592766beb78465",
         "0x2c227fd2084153a934f28ea63f1bba1bb1333e53d8e5c6d137c06b9d3ce6a44a",
@@ -51,13 +50,14 @@
         "0x9fcf8e0a386e0534876c1a2de69e8c1424782d36cccb8196c4d7a9ace6dda4ef",
         "0xf8c01ed930b5a9c46aa8409cca287aa1e5d42033e3bff7a1df8506d610c96cc7",
         "0xbec4381e44ac19604e1225e6faa1a2a67b85f41953d9f2dd559f968938e4b29d",
-        "0x937ada926eeee0bf5f28f8018568e4c879dbf772546bd3008c3a0b92d4d4da00"
+        "0x937ada926eeee0bf5f28f8018568e4c879dbf772546bd3008c3a0b92d4d4da00",
+        "0x4b86c18dceea2aa59fa8b470a3b17d290d2c17c0eb5d3d85e04ed5433ce8f8e9"
       ]
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-11T14:32:09.862Z",
-  "totalDecisions": 163,
+  "updatedAt": "2026-04-11T15:03:00.602Z",
+  "totalDecisions": 165,
   "supportingProofs": {
     "narratorPayments": 5,
     "latestNarratorPayment": {
