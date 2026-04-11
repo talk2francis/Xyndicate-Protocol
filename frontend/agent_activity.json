@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "74-oracle-1775883694121",
-      "agent": "oracle",
-      "cycle": 74,
-      "timestamp": 1775883694121,
-      "status": "complete",
-      "summary": "ETH OKX: $2241.56 (+2.1%) | Uniswap: $2241.56 | Spread: 0bps",
-      "durationMs": 31258
-    },
-    {
       "id": "74-analyst-1775883695047",
       "agent": "analyst",
       "cycle": 74,
@@ -538,6 +529,15 @@
       "timestamp": 1775907047663,
       "status": "complete",
       "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "durationMs": 1
+    },
+    {
+      "id": "86-executor-1775907048327",
+      "agent": "executor",
+      "cycle": 86,
+      "timestamp": 1775907048327,
+      "status": "complete",
+      "summary": "HOLD executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
