@@ -3,19 +3,18 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 97,
-      "confidence": 0.66,
-      "lastAction": "HOLD ETH (0% treasury) · Market volatility is low with minimal price change. Holding ETH is recommended due to limited trading opportunities and low risk.",
-      "latestTimestamp": 1775921446,
+      "decisions": 98,
+      "confidence": 0.7,
+      "lastAction": "HOLD ETH (100% treasury) · ETH price increased by 1.09% in 24h, indicating a potential bullish trend. Low price spread and volatility limit short-term trading opportunities. Analyst recommends waiting.",
+      "latestTimestamp": 1775923267,
       "stats": {
         "buys": 34,
         "sells": 1,
-        "holds": 57,
+        "holds": 58,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xd0b3931b2a46ae1dc4eaa2c4f2225a9d3c47f6318a197101af718e3448c91e24",
         "0x01ccd20d8d36628f83d4f919c27891b522679082ff61d000c8fa5017bebba4c9",
         "0xd661423b6c59ee6d71a8dc147bf4462e6cf5923d3203d67175f1d00cc6dfdc59",
         "0xd44efff20e06d02577d83b179e8209f55d8846437ddf9a5d7e6c17b2a8693839",
@@ -24,25 +23,25 @@
         "0x5dff4018247158ac526a230a2c09a753d23d084903dd48480fc10a7b6e11ec05",
         "0x5dc5ef28d7ede0370a1f4c027adf5e2f76b202d053be38a15095b6002401a1b4",
         "0xf6490f332ad8fbfb88274919542931dcd3ff7de14b9239045d6c1de10722760b",
-        "0x1ac4729bfa534068c37c59ae3e06eb3cc02e687604675502f301884fe51d91c3"
+        "0x1ac4729bfa534068c37c59ae3e06eb3cc02e687604675502f301884fe51d91c3",
+        "0x937235eb3a3f9f20fd3876c275aea8debdcc9f2d94381f3aa4d0074b124a4a4c"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 70,
-      "confidence": 0.66,
-      "lastAction": "HOLD OKB (100% treasury) · Price stability, minimal spread, and no significant price change in the last 24 hours indicate a hold position is advisable.",
-      "latestTimestamp": 1775921446,
+      "decisions": 71,
+      "confidence": 0.7,
+      "lastAction": "HOLD OKB (100% treasury) · Market conditions stable, no significant opportunities or risks identified. Wait for clearer signals.",
+      "latestTimestamp": 1775923267,
       "stats": {
         "buys": 7,
         "sells": 0,
-        "holds": 63,
+        "holds": 64,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x1851c3df87319320ba03727a49232ee7fe5f4aa2dbc714eef8592766beb78465",
         "0x2c227fd2084153a934f28ea63f1bba1bb1333e53d8e5c6d137c06b9d3ce6a44a",
         "0x2245c3609b172e698ad00d135d5fd77c64c0422f6699d12aa5afa81bad581c23",
         "0x088dbbe338d6c0edcb93f8c24bc1fc463b9ca646194db7d48c7c051ac4e22487",
@@ -51,22 +50,23 @@
         "0xbec4381e44ac19604e1225e6faa1a2a67b85f41953d9f2dd559f968938e4b29d",
         "0x937ada926eeee0bf5f28f8018568e4c879dbf772546bd3008c3a0b92d4d4da00",
         "0x4b86c18dceea2aa59fa8b470a3b17d290d2c17c0eb5d3d85e04ed5433ce8f8e9",
-        "0x86479a6b7f93ef7be546732c651ee6b419502f85e75cad3aff6a082432ea6e8e"
+        "0x86479a6b7f93ef7be546732c651ee6b419502f85e75cad3aff6a082432ea6e8e",
+        "0xa9125986254a21806d0523596b4ad91022af690a5c8e92f9dceebf2c82c3b2bc"
       ]
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-11T15:30:48.125Z",
-  "totalDecisions": 167,
+  "updatedAt": "2026-04-11T16:01:08.757Z",
+  "totalDecisions": 169,
   "supportingProofs": {
-    "narratorPayments": 5,
+    "narratorPayments": 7,
     "latestNarratorPayment": {
       "type": "strategist-analyst",
       "from": "Strategist Wallet",
       "to": "Analyst Wallet",
       "amount": "0.00005 OKB",
-      "txHash": "0xac81ce7f9f42f69b8c5248b86f4adafe08c4340ae66f38f2d1977ecc7d9c165f",
-      "timestamp": 1775878395,
+      "txHash": "0x24f32507c3583136746aeff938d9814b8be14112456adf60603aa045e9b47851",
+      "timestamp": 1775923266,
       "status": "confirmed",
       "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
     }
