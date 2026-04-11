@@ -283,8 +283,8 @@ export default function HomePage() {
             ) : (
               <div className="mt-4 text-lg font-medium break-words">
                 {edgePair
-                  ? `${edgePair.pair.split("/")[0] || "ETH"}: OKX $${edgePair.okxPrice.toFixed(2)} vs Uniswap $${edgePair.uniswapPrice.toFixed(2)} → Router sees ${Math.abs(edgePair.spreadBps / 100).toFixed(2)}% spread`
-                  : "OKX: $1,823.45 vs Uniswap: $1,829.12 → Router saves 0.31%"}
+                  ? `${edgePair.pair.split("/")[0] || "ETH"}: OKX $${edgePair.okxPrice.toFixed(2)} · Uniswap v3 $${edgePair.uniswapPrice.toFixed(2)} · Router selects best execution path each cycle`
+                  : "ETH: OKX $1,823.45 · Uniswap v3 $1,829.12 · Router selects best execution path each cycle"}
               </div>
             )}
           </div>

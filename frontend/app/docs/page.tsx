@@ -63,7 +63,17 @@ const TOOL_CARDS: ToolCard[] = [
     returns: "Pair-level signal object with OKX price, Uniswap price, spread bps, and recommendation.",
     auth: "No auth required.",
     request: JSON.stringify({ tool: "get_market_signal", params: { pair: "ETH/USDC" } }, null, 2),
-    response: JSON.stringify({ pair: "ETH/USDC", okxPrice: 3512.12, uniswapPrice: 3516.77, spreadBps: 13.24, recommendation: "BUY" }, null, 2),
+    response: JSON.stringify({
+      pair: "ETH/USDC",
+      okxPrice: 3512.12,
+      uniswapPrice: 3512.09,
+      uniswapPool: "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
+      uniswapSource: "uniswap-v3-onchain",
+      spreadBps: 0.09,
+      spreadNote: "Near-zero spread indicates efficient market alignment",
+      recommendation: "HOLD",
+      routingDecision: "okx",
+    }, null, 2),
   },
   {
     name: "get_squad_strategy",

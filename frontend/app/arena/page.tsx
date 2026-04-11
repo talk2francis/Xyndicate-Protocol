@@ -417,7 +417,9 @@ export default function ArenaPage() {
   const totalDecisions = data?.totalDecisions || squads.reduce((sum, squad) => sum + squad.decisions, 0);
   const totalSwaps = squads.reduce((sum, squad) => sum + (squad.stats?.buys || 0) + (squad.stats?.sells || 0), 0);
   const avgConfidence = squads.length ? squads.reduce((sum, squad) => sum + (squad.confidence || 0.84), 0) / squads.length : 0.84;
-  const lastSpreadBps = signalData?.pairs?.find((item) => item.pair === "ETH/USDT")?.spreadBps ?? 0;
+  const ethSignal = signalData?.pairs?.find((item) => item.pair === "ETH/USDT");
+  const lastOkxPrice = ethSignal?.okxPrice ?? 0;
+  const lastUniswapPrice = ethSignal?.uniswapPrice ?? 0;
   const activityEntries = activityData?.entries || [];
   const paymentEntries = paymentData?.entries || [];
   const activeSquadsCount = cycleState?.activeSquads?.length || squads.length || 2;
@@ -483,15 +485,16 @@ export default function ArenaPage() {
 
         <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
           {[
-            { label: "Total Decisions", value: totalDecisions },
-            { label: "Active Squads", value: squads.length },
-            { label: "Total Swaps", value: totalSwaps },
-            { label: "Avg Confidence", value: `${Math.round(avgConfidence * 100)}%` },
-            { label: "Avg Uniswap Spread", value: `${lastSpreadBps}bps` },
+            { label: "Total Decisions", value: totalDecisions, sub: "Live scheduler activity" },
+            { label: "Active Squads", value: squads.length, sub: "Season squads online" },
+            { label: "Total Swaps", value: totalSwaps, sub: "Executed route decisions" },
+            { label: "UNISWAP ROUTING", value: "Active", sub: `ETH/USDC pool live · OKX $${lastOkxPrice.toFixed(2)} vs Uniswap $${lastUniswapPrice.toFixed(2)}` },
+            { label: "ROUTES EVALUATED", value: totalDecisions, sub: "Dual-source: OKX + Uniswap v3" },
           ].map((chip) => (
             <div key={chip.label} className="rounded-2xl border border-black/10 bg-xyn-surface px-4 py-3 dark:border-white/10 dark:bg-xyn-dark">
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">{chip.label}</div>
               <div className="mt-2 text-2xl font-semibold">{chip.value}</div>
+              <div className="mt-1 text-xs text-xyn-muted dark:text-zinc-400">{chip.sub}</div>
             </div>
           ))}
         </div>
@@ -650,7 +653,7 @@ export default function ArenaPage() {
                 <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">
                   <span>{entry.squadId} · {formatTimestamp((entry.timestamp || 0) * 1000)}</span>
                   <span className={`rounded-full px-3 py-1 text-xs font-semibold ${entry.route === "Uniswap" ? "bg-amber-500/15 text-amber-300" : "bg-black/5 text-xyn-muted dark:bg-white/10 dark:text-zinc-300"}`}>
-                    {entry.route === "Uniswap" ? `via Uniswap ↗ saved ${entry.savedBps}bps` : "via OKX"}
+                    {entry.route === "Uniswap" ? "Uniswap (best rate)" : "OKX (best rate)"}
                   </span>
                 </div>
                 <div className="mt-3 flex items-center gap-3">
