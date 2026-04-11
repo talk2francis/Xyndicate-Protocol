@@ -32,6 +32,7 @@ const INSTALL_TABS = ["Plugin Store", "Direct MCP", "Manual"] as const;
 const GUIDE_TABS = ["Claude Code", "OpenClaw", "Raw HTTP"] as const;
 const TEST_TOOLS = ["get_market_signal", "get_leaderboard", "execute_route_query", "get_economy_snapshot"] as const;
 const TEST_PAIRS = ["ETH/USDC", "OKB/USDC"] as const;
+const USAGE_PAGE_SIZE = 12;
 
 const CURL_COMMAND = "curl -fsSL https://xyndicateprotocol.vercel.app/install.sh | bash";
 const MCP_JSON = JSON.stringify({
@@ -137,6 +138,7 @@ export default function DocsPage() {
   const [showOnchainDemo, setShowOnchainDemo] = useState(false);
   const [usageData, setUsageData] = useState<McpUsageResponse>({ entries: [], totalCallsToday: 0, byTool: {}, averageResponseTimeMs: 0 });
   const [usageLoading, setUsageLoading] = useState(true);
+  const [usagePage, setUsagePage] = useState(1);
 
   const installValue = useMemo(() => {
     if (installTab === "Plugin Store") return CURL_COMMAND;
@@ -171,7 +173,10 @@ export default function DocsPage() {
         const res = await fetch("/api/mcp-usage", { cache: "no-store" });
         const json = await res.json();
         if (!res.ok) throw new Error(json?.error || "Failed to load MCP usage");
-        if (!cancelled) setUsageData(json);
+        if (!cancelled) {
+          setUsageData(json);
+          setUsagePage((prev) => Math.min(prev, Math.max(1, Math.ceil((json.entries?.length || 0) / USAGE_PAGE_SIZE))));
+        }
       } catch {
         if (!cancelled) setUsageData({ entries: [], totalCallsToday: 0, byTool: {}, averageResponseTimeMs: 0 });
       } finally {
@@ -186,6 +191,10 @@ export default function DocsPage() {
       window.clearInterval(interval);
     };
   }, []);
+
+  const usageTotalPages = Math.max(1, Math.ceil((usageData.entries?.length || 0) / USAGE_PAGE_SIZE));
+  const safeUsagePage = Math.min(usagePage, usageTotalPages);
+  const pagedUsageEntries = (usageData.entries || []).slice((safeUsagePage - 1) * USAGE_PAGE_SIZE, safeUsagePage * USAGE_PAGE_SIZE);
 
   const runQuery = async () => {
     try {
@@ -403,7 +412,7 @@ export default function DocsPage() {
           <div className="rounded-3xl border border-black/10 p-5 dark:border-white/10">
             <div className="text-sm font-semibold">Recent usage log</div>
             <div className="mt-4 space-y-3">
-              {usageData.entries.length ? usageData.entries.map((entry, index) => (
+              {usageData.entries.length ? pagedUsageEntries.map((entry, index) => (
                 <div key={`${entry.tool}-${entry.calledAt}-${index}`} className="rounded-2xl bg-black/5 px-4 py-3 text-sm dark:bg-white/5">
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
@@ -418,6 +427,29 @@ export default function DocsPage() {
                 <div className="rounded-2xl bg-black/5 px-4 py-3 text-sm text-xyn-muted dark:bg-white/5 dark:text-zinc-400">No usage records published yet.</div>
               )}
             </div>
+            {usageData.entries.length ? (
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="text-sm text-xyn-muted dark:text-zinc-300">Page {safeUsagePage} of {usageTotalPages}</div>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setUsagePage((prev) => Math.max(1, prev - 1))}
+                    disabled={safeUsagePage === 1}
+                    className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold disabled:opacity-50 dark:border-white/10"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setUsagePage((prev) => Math.min(usageTotalPages, prev + 1))}
+                    disabled={safeUsagePage === usageTotalPages}
+                    className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold disabled:opacity-50 dark:border-white/10"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       </section>
