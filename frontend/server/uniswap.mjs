@@ -1,5 +1,6 @@
 const UNISWAP_V3_SUBGRAPH_URL = process.env.UNISWAP_V3_SUBGRAPH_URL || "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3";
 const UNISWAP_V3_QUERY_KEY = process.env.UNISWAP_V3_QUERY_KEY || process.env.THE_GRAPH_API_KEY || "";
+const DEFAULT_POOL_ID = "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640";
 
 const POOL_IDS = {
   "ETH/USDC": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
@@ -41,10 +42,12 @@ export async function fetchUniswapPrice(pair) {
     }
   `;
 
+  const requestBody = JSON.stringify({ query, variables: { id: (poolId || DEFAULT_POOL_ID).toLowerCase() } });
+
   const resp = await fetch(buildGraphUrl(), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables: { id: poolId.toLowerCase() } }),
+    body: requestBody,
     cache: "no-store",
   });
 

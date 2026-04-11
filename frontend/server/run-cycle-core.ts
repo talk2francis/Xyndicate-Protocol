@@ -54,6 +54,7 @@ async function fetchMarketSnapshot(pair: string) {
   try {
     const graphPair = pair.startsWith("ETH-") ? "ETH/USDC" : "OKB/USDC";
     uniswap = await fetchUniswapPrice(graphPair);
+    console.error(`Uniswap ${graphPair}: $${Number(uniswap.uniswapPrice || 0).toFixed(2)} | source=${uniswap.source} | pool=${uniswap.uniswapPoolId || 'n/a'}`);
   } catch (error: any) {
     console.warn(`Uniswap subgraph fetch failed for ${pair}, falling back to OKX price:`, error.message);
   }
