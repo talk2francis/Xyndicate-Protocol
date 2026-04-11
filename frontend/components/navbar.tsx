@@ -20,22 +20,14 @@ const navItems = [
 
 function Logo() {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center text-black dark:text-white">
       <Image
-        src="/xyndicate-wordmark-light.jpg"
+        src="/xyndicate-wordmark-cropped.svg"
         alt="Xyndicate Protocol"
-        width={320}
-        height={84}
+        width={340}
+        height={96}
         priority
-        className="block h-12 w-auto object-contain dark:hidden"
-      />
-      <Image
-        src="/xyndicate-wordmark-dark.jpg"
-        alt="Xyndicate Protocol"
-        width={320}
-        height={84}
-        priority
-        className="hidden h-12 w-auto object-contain dark:block"
+        className="h-12 w-auto object-contain"
       />
     </div>
   );
