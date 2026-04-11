@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "70-executor-1775876504566",
-      "agent": "executor",
-      "cycle": 70,
-      "timestamp": 1775876504566,
-      "status": "complete",
-      "summary": "BUY executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
       "id": "70-narrator-1775876505339",
       "agent": "narrator",
       "cycle": 70,
@@ -538,6 +529,15 @@
       "timestamp": 1775899953786,
       "status": "complete",
       "summary": "ACT ETH | confidence 80%",
+      "durationMs": 1
+    },
+    {
+      "id": "83-strategist-1775899954391",
+      "agent": "strategist",
+      "cycle": 83,
+      "timestamp": 1775899954391,
+      "status": "complete",
+      "summary": "BUY ETH (100% treasury) | Positive 24h price change for ETH with high analyst confidence score.",
       "durationMs": 1
     }
   ]
