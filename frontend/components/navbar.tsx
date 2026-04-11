@@ -20,7 +20,7 @@ const navItems = [
 
 function Logo() {
   return (
-    <div className="flex w-[160px] items-center sm:w-[172px]">
+    <div className="flex w-[80px] items-center sm:w-[86px]">
       <Image
         src="/xyndicate-exact-light.jpg"
         alt="Xyndicate Protocol"

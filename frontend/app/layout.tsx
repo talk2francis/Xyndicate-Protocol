@@ -20,9 +20,9 @@ export const metadata: Metadata = {
   title: "Xyndicate Protocol",
   description: "Autonomous strategy squads on X Layer.",
   icons: {
-    icon: "/xyndicate-favicon-final.jpg",
-    shortcut: "/xyndicate-favicon-final.jpg",
-    apple: "/xyndicate-favicon-final.jpg",
+    icon: "/xyndicate-favicon-final.jpg?v=2",
+    shortcut: "/xyndicate-favicon-final.jpg?v=2",
+    apple: "/xyndicate-favicon-final.jpg?v=2",
   },
 };
 
