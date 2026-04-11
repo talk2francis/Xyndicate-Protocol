@@ -3,19 +3,18 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 92,
-      "confidence": 0.5,
-      "lastAction": "HOLD ETH (100% treasury) · Market volatility is low with no significant price movement in the last 24 hours. Analyst recommends waiting. Confidence level: 5.",
-      "latestTimestamp": 1775907049,
+      "decisions": 93,
+      "confidence": 0.7,
+      "lastAction": "HOLD ETH (0% treasury) · Stable price with minimal spread, no immediate action required. Market volatility may increase risk exposure. Analyst recommendation is to wait.",
+      "latestTimestamp": 1775908850,
       "stats": {
         "buys": 34,
         "sells": 1,
-        "holds": 52,
+        "holds": 53,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xc14f62fc5c6f336a0494a7e11b09d954dc68133726b4d011b8fc96e477b99847",
         "0x8de20da1b222494fedb14981b6923604ab60d21b9682c84f6c0b3eaca9b977a2",
         "0x6364b514083970dee68044f2cb18f68e1efec15639e700d3220c496dba45370d",
         "0xa09064315ea341cf8910dbcc59f0f1748a8396a84ca2824854c19d371bca73b5",
@@ -24,25 +23,25 @@
         "0x01ccd20d8d36628f83d4f919c27891b522679082ff61d000c8fa5017bebba4c9",
         "0xd661423b6c59ee6d71a8dc147bf4462e6cf5923d3203d67175f1d00cc6dfdc59",
         "0xd44efff20e06d02577d83b179e8209f55d8846437ddf9a5d7e6c17b2a8693839",
-        "0x2497fa258a605d5368d8c0d4c2d050d56e8ae8769701e6e7dca9475ef6020dfe"
+        "0x2497fa258a605d5368d8c0d4c2d050d56e8ae8769701e6e7dca9475ef6020dfe",
+        "0xcf72e9fb73206a3f3b77794ae49b5936477a7dae724feb08dbebd0558b6fd722"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 65,
-      "confidence": 0.7,
-      "lastAction": "HOLD OKB (0% treasury) · Price change in the last 24 hours is positive. Analyst recommendation is to wait.",
-      "latestTimestamp": 1775907049,
+      "decisions": 66,
+      "confidence": 0.66,
+      "lastAction": "HOLD OKB (100% treasury) · Stable price with minimal spread and no significant change in the last 24 hours, indicating a hold position is suitable for Squad Nova's balanced risk mode.",
+      "latestTimestamp": 1775908850,
       "stats": {
         "buys": 7,
         "sells": 0,
-        "holds": 58,
+        "holds": 59,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0xf391c0342f1d2910e0016c5cb653c2f1af901a5971a6673c2a4f417f02f5a445",
         "0x3b2f08b0f43c060787c3340de7d94677d18269e37c3fadcc31f3bb91209617ec",
         "0x8221cff5253e6b92443c91f747376ed85157a877b013ec885afe6e5525889423",
         "0x235c57beaf7c72a3a2a65f6a8754af08685af914fad8ce322edb59660886352d",
@@ -51,13 +50,14 @@
         "0x2c227fd2084153a934f28ea63f1bba1bb1333e53d8e5c6d137c06b9d3ce6a44a",
         "0x2245c3609b172e698ad00d135d5fd77c64c0422f6699d12aa5afa81bad581c23",
         "0x088dbbe338d6c0edcb93f8c24bc1fc463b9ca646194db7d48c7c051ac4e22487",
-        "0x9fcf8e0a386e0534876c1a2de69e8c1424782d36cccb8196c4d7a9ace6dda4ef"
+        "0x9fcf8e0a386e0534876c1a2de69e8c1424782d36cccb8196c4d7a9ace6dda4ef",
+        "0xf8c01ed930b5a9c46aa8409cca287aa1e5d42033e3bff7a1df8506d610c96cc7"
       ]
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-11T11:30:51.506Z",
-  "totalDecisions": 157,
+  "updatedAt": "2026-04-11T12:00:52.477Z",
+  "totalDecisions": 159,
   "supportingProofs": {
     "narratorPayments": 5,
     "latestNarratorPayment": {
