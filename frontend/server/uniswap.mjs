@@ -7,16 +7,12 @@ const POOL_IDS = {
   "OKB/USDC": null,
 };
 
-function buildGraphUrl() {
-  if (UNISWAP_V3_SUBGRAPH_URL.includes("/api/subgraphs/id/")) {
-    if (!UNISWAP_V3_QUERY_KEY) {
-      throw new Error("Missing UNISWAP_V3_QUERY_KEY or THE_GRAPH_API_KEY for Uniswap subgraph access");
-    }
-
-    return UNISWAP_V3_SUBGRAPH_URL.replace("/api/subgraphs/id/", `/api/${UNISWAP_V3_QUERY_KEY}/subgraphs/id/`);
+function buildGraphUrls() {
+  const urls = [UNISWAP_V3_SUBGRAPH_URL];
+  if (UNISWAP_V3_QUERY_KEY) {
+    urls.unshift("https://gateway.thegraph.com/api/subgraphs/id/ELUcwgpm14LKPLrBRuVvPvNKHQ9HvwmtKgKSH6123cr7");
   }
-
-  return UNISWAP_V3_SUBGRAPH_URL;
+  return urls;
 }
 
 export async function fetchUniswapPrice(pair) {
@@ -44,33 +40,42 @@ export async function fetchUniswapPrice(pair) {
 
   const requestBody = JSON.stringify({ query, variables: { id: (poolId || DEFAULT_POOL_ID).toLowerCase() } });
 
-  const resp = await fetch(buildGraphUrl(), {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: requestBody,
-    cache: "no-store",
-  });
+  let lastError = null;
+  for (const url of buildGraphUrls()) {
+    try {
+      const resp = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: requestBody,
+        cache: "no-store",
+      });
 
-  if (!resp.ok) {
-    throw new Error(`Uniswap subgraph request failed with ${resp.status}`);
+      if (!resp.ok) {
+        throw new Error(`Uniswap subgraph request failed with ${resp.status}`);
+      }
+
+      const data = await resp.json();
+      const pool = data?.data?.pool;
+      const token0Price = Number(pool?.token0Price || 0);
+      if (!token0Price) {
+        throw new Error("Uniswap subgraph returned no token0Price");
+      }
+
+      const uniswapPrice = Number((1 / token0Price).toFixed(6));
+
+      return {
+        uniswapPrice,
+        uniswapPoolId: poolId,
+        sqrtPrice: pool?.sqrtPrice || null,
+        liquidity: pool?.liquidity || null,
+        source: url.includes("gateway.thegraph.com") ? "uniswap-v3-gateway" : "uniswap-v3-subgraph",
+      };
+    } catch (error) {
+      lastError = error;
+    }
   }
 
-  const data = await resp.json();
-  const pool = data?.data?.pool;
-  const token0Price = Number(pool?.token0Price || 0);
-  if (!token0Price) {
-    throw new Error("Uniswap subgraph returned no token0Price");
-  }
-
-  const uniswapPrice = Number((1 / token0Price).toFixed(6));
-
-  return {
-    uniswapPrice,
-    uniswapPoolId: poolId,
-    sqrtPrice: pool?.sqrtPrice || null,
-    liquidity: pool?.liquidity || null,
-    source: "uniswap-v3-subgraph",
-  };
+  throw lastError || new Error("Uniswap subgraph request failed");
 }
 
 export function computeSpreadBps(okxPrice, uniswapPrice) {
