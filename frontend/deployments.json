@@ -212,7 +212,9 @@
     "0xf6490f332ad8fbfb88274919542931dcd3ff7de14b9239045d6c1de10722760b",
     "0x4b86c18dceea2aa59fa8b470a3b17d290d2c17c0eb5d3d85e04ed5433ce8f8e9",
     "0x1ac4729bfa534068c37c59ae3e06eb3cc02e687604675502f301884fe51d91c3",
-    "0x86479a6b7f93ef7be546732c651ee6b419502f85e75cad3aff6a082432ea6e8e"
+    "0x86479a6b7f93ef7be546732c651ee6b419502f85e75cad3aff6a082432ea6e8e",
+    "0x937235eb3a3f9f20fd3876c275aea8debdcc9f2d94381f3aa4d0074b124a4a4c",
+    "0xa9125986254a21806d0523596b4ad91022af690a5c8e92f9dceebf2c82c3b2bc"
   ],
   "decisionLogEntries": [
     {
@@ -1383,6 +1385,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · Price stability, minimal spread, and no significant price change in the last 24 hours indicate a hold position is advisable.",
       "timestamp": 1775921446
+    },
+    {
+      "txHash": "0x937235eb3a3f9f20fd3876c275aea8debdcc9f2d94381f3aa4d0074b124a4a4c",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · ETH price increased by 1.09% in 24h, indicating a potential bullish trend. Low price spread and volatility limit short-term trading opportunities. Analyst recommends waiting.",
+      "timestamp": 1775923267
+    },
+    {
+      "txHash": "0xa9125986254a21806d0523596b4ad91022af690a5c8e92f9dceebf2c82c3b2bc",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Market conditions stable, no significant opportunities or risks identified. Wait for clearer signals.",
+      "timestamp": 1775923267
     }
   ]
 }
