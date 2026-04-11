@@ -190,7 +190,9 @@
     "0x6364b514083970dee68044f2cb18f68e1efec15639e700d3220c496dba45370d",
     "0x8221cff5253e6b92443c91f747376ed85157a877b013ec885afe6e5525889423",
     "0xa09064315ea341cf8910dbcc59f0f1748a8396a84ca2824854c19d371bca73b5",
-    "0x235c57beaf7c72a3a2a65f6a8754af08685af914fad8ce322edb59660886352d"
+    "0x235c57beaf7c72a3a2a65f6a8754af08685af914fad8ce322edb59660886352d",
+    "0x4c9ae63e55b2d5580a6eda5bd3531ae83db8d59d1941cb42254e9a85d2b570de",
+    "0x79ec3245a8968f70256de8bdc5b51c5e6bf548241183fd711e0459fbbce2c3e3"
   ],
   "decisionLogEntries": [
     {
@@ -1207,6 +1209,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · OKB price stable with minimal spread, balanced risk mode. Analyst recommendation to wait with 80% confidence.",
       "timestamp": 1775890871
+    },
+    {
+      "txHash": "0x4c9ae63e55b2d5580a6eda5bd3531ae83db8d59d1941cb42254e9a85d2b570de",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Market volatility with 2.23% change in the last 24 hours. Analyst recommendation to wait. Confidence score: 0.7.",
+      "timestamp": 1775892676
+    },
+    {
+      "txHash": "0x79ec3245a8968f70256de8bdc5b51c5e6bf548241183fd711e0459fbbce2c3e3",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (0% treasury) · Market conditions stable, no significant opportunities or risks identified. Wait for clearer signals before taking action.",
+      "timestamp": 1775892676
     }
   ]
 }
