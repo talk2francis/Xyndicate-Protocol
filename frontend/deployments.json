@@ -250,7 +250,9 @@
     "0x2c6530fe88f4a0a9e005d480be4a2575e1f344355b51c6baba8c2d423c5dfd9d",
     "0x1a8c814ace6688c606e6558a05d5ebf07dfc3c62601f59ca792c7b18263f839c",
     "0x1698d2ad0201a1784a29a34a1b87a5de7f2f7759860fd34fbb24bfba98b2feaf",
-    "0x066833d93964b56df7f4a3aed9d9d4980fe81faf01953973dafb8c33860dc689"
+    "0x066833d93964b56df7f4a3aed9d9d4980fe81faf01953973dafb8c33860dc689",
+    "0x7eda0404a3bdfa6e8bda6497c2d78299cf97e3c821e60eb124dfd009eb00b8bd",
+    "0x7819d4b61db98dbb27f20388c2ebf36bd4cf3314971bf07b06b77347a4603b56"
   ],
   "decisionLogEntries": [
     {
@@ -1687,6 +1689,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · OKB has a balanced risk profile with stable price and no significant spread or change. Analyst confidence is high.",
       "timestamp": 1776025904
+    },
+    {
+      "txHash": "0x7eda0404a3bdfa6e8bda6497c2d78299cf97e3c821e60eb124dfd009eb00b8bd",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · ETH price has potential for a rebound after a 24h decrease. High spread of 10000 bps may indicate temporary liquidity issues, presenting a buying opportunity.",
+      "timestamp": 1776027677
+    },
+    {
+      "txHash": "0x7819d4b61db98dbb27f20388c2ebf36bd4cf3314971bf07b06b77347a4603b56",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · The market is stable with minimal spread and no significant price difference between exchanges. Negative 24-hour price change indicates potential volatility ahead.",
+      "timestamp": 1776027677
     }
   ]
 }
