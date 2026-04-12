@@ -240,7 +240,9 @@
     "0xee434512f82b16a304e7988d45b2e009c0265c97b701a5577848a784c3ac7050",
     "0xf70450a795e4aeda759b8dd84ff128c26cfbfeeef6846350e7350368c4ece452",
     "0x7f089ebb5197e0bb24056eb2a888efcf18b6cad09c65507ac0f144ff74e037dd",
-    "0x56ede51e268f817a7714701a94f8d57f30525d4124275578a4341344f20f15f7"
+    "0x56ede51e268f817a7714701a94f8d57f30525d4124275578a4341344f20f15f7",
+    "0x1eb7b0cfd928abca12ab9ef6d4644a8e98b2bd63bb0429dde62b3d4cc74ef409",
+    "0xf27b89be3584ef1217a23af0c55729733c64cf39c572681e459501e45716a808"
   ],
   "decisionLogEntries": [
     {
@@ -1607,6 +1609,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (0% treasury) · Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait, low confidence score.",
       "timestamp": 1776016985
+    },
+    {
+      "txHash": "0x1eb7b0cfd928abca12ab9ef6d4644a8e98b2bd63bb0429dde62b3d4cc74ef409",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Market data shows high spread and arbitrage potential, but aggressive risk mode and high volatility suggest waiting for a better opportunity.",
+      "timestamp": 1776018774
+    },
+    {
+      "txHash": "0xf27b89be3584ef1217a23af0c55729733c64cf39c572681e459501e45716a808",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · The market is currently stable with a balanced risk mode, it is advisable to hold OKB for now.",
+      "timestamp": 1776018774
     }
   ]
 }
