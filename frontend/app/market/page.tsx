@@ -746,7 +746,11 @@ export default function MarketPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">My Squad</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight">Your live squad status.</h2>
 
-          {mySquad ? (
+          {!address ? (
+            <div className="mt-6 rounded-3xl border border-dashed border-black/10 p-6 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">
+              Connect the wallet that owns your squad to deactivate or relist it.
+            </div>
+          ) : mySquad ? (
             <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-6 dark:border-white/10 dark:bg-white/5">
               <div className="flex items-start justify-between gap-4">
                 <div>

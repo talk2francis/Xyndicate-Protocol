@@ -155,7 +155,7 @@ export default function DeployPage() {
 
       const existingSquad = await seasonManager.squads(signerAddress);
       if (existingSquad?.owner && existingSquad.owner !== ethers.ZeroAddress && existingSquad.active) {
-        throw new Error(`This wallet already has an active squad. Go to Market, deactivate that squad, then return here to create a new one.`);
+        throw new Error(`This wallet already has an active squad. Open Market with the owning wallet, deactivate that squad, then return here to create a new one.`);
       }
 
       const enrollTx = await seasonManager.enroll(signerAddress, { value: requiredFee });
