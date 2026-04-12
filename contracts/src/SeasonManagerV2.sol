@@ -18,6 +18,7 @@ contract SeasonManagerV2 {
     event EntryFeePaid(address indexed payer, uint256 amount, string seasonId);
     event SquadEnrolled(address indexed squadOwner, address agentWallet, uint256 amount, string seasonId);
     event SquadDeactivated(address indexed squadOwner);
+    event SquadClosed(address indexed squadOwner);
     event EntryFeeUpdated(uint256 newFee);
     event Withdrawn(address indexed recipient, uint256 amount);
 
@@ -34,7 +35,7 @@ contract SeasonManagerV2 {
 
     function enroll(address agentWallet) external payable {
         require(agentWallet != address(0), "invalid wallet");
-        require(squads[msg.sender].owner == address(0), "already enrolled");
+        require(squads[msg.sender].active == false || squads[msg.sender].owner == address(0), "already enrolled");
         require(msg.value >= entryFee, "fee too low");
 
         squads[msg.sender] = Squad({
@@ -55,6 +56,13 @@ contract SeasonManagerV2 {
         require(squad.active, "inactive");
         squad.active = false;
         emit SquadDeactivated(msg.sender);
+    }
+
+    function closeSquad() external {
+        Squad storage squad = squads[msg.sender];
+        require(squad.owner == msg.sender, "not squad");
+        delete squads[msg.sender];
+        emit SquadClosed(msg.sender);
     }
 
     function updateEntryFee(uint256 newFee) external onlyOwner {

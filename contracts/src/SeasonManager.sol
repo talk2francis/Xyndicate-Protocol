@@ -18,6 +18,7 @@ contract SeasonManager {
 
     event SquadEnrolled(address indexed squad, address agentWallet);
     event SquadDeactivated(address indexed squad);
+    event SquadClosed(address indexed squad);
     event X402PaymentReceived(address indexed agent, uint256 amount, string seasonId);
 
     constructor(address _paymentHub, uint256 _entryFee) {
@@ -27,7 +28,7 @@ contract SeasonManager {
 
     function enroll(address agentWallet) external {
         require(agentWallet != address(0), "invalid wallet");
-        require(squads[msg.sender].owner == address(0), "already enrolled");
+        require(squads[msg.sender].active == false || squads[msg.sender].owner == address(0), "already enrolled");
 
         paymentHub.pay(address(this), entryFee, "ENTRY_FEE");
 
@@ -46,6 +47,13 @@ contract SeasonManager {
         require(squad.active, "inactive");
         squad.active = false;
         emit SquadDeactivated(msg.sender);
+    }
+
+    function closeSquad() external {
+        Squad storage squad = squads[msg.sender];
+        require(squad.owner == msg.sender, "not squad");
+        delete squads[msg.sender];
+        emit SquadClosed(msg.sender);
     }
 
     function updateEntryFee(uint256 newFee) external {

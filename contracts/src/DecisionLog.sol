@@ -3,35 +3,31 @@ pragma solidity ^0.8.19;
 
 contract DecisionLog {
     struct Decision {
-        string squadId;
-        string agentChain;
-        string rationale;
+        bytes32 decisionHash;
+        string metadata;
         uint256 timestamp;
     }
 
     Decision[] public decisions;
 
-    event DecisionRecorded(
-        string indexed squadId,
-        string agentChain,
-        string rationale,
-        uint256 timestamp
-    );
+    event DecisionRecorded(bytes32 indexed decisionHash, string metadata, uint256 timestamp);
+
+    function _storeDecision(bytes32 decisionHash, string memory metadata) internal {
+        decisions.push(Decision({ decisionHash: decisionHash, metadata: metadata, timestamp: block.timestamp }));
+        emit DecisionRecorded(decisionHash, metadata, block.timestamp);
+    }
+
+    function recordDecision(bytes32 decisionHash, string calldata metadata) external {
+        _storeDecision(decisionHash, metadata);
+    }
 
     function logDecision(
         string calldata squadId,
         string calldata agentChain,
         string calldata rationale
     ) external {
-        decisions.push(
-            Decision({
-                squadId: squadId,
-                agentChain: agentChain,
-                rationale: rationale,
-                timestamp: block.timestamp
-            })
-        );
-        emit DecisionRecorded(squadId, agentChain, rationale, block.timestamp);
+        bytes32 decisionHash = keccak256(abi.encodePacked(squadId, agentChain, rationale, block.timestamp));
+        _storeDecision(decisionHash, string(abi.encodePacked(squadId, " | ", agentChain, " | ", rationale)));
     }
 
     function getDecisionCount() external view returns (uint256) {
@@ -41,9 +37,18 @@ contract DecisionLog {
     function getDecision(uint256 index)
         external
         view
-        returns (string memory, string memory, string memory, uint256)
+        returns (bytes32, string memory, uint256)
     {
         Decision memory d = decisions[index];
-        return (d.squadId, d.agentChain, d.rationale, d.timestamp);
+        return (d.decisionHash, d.metadata, d.timestamp);
+    }
+
+    function getRecord(uint256 index)
+        external
+        view
+        returns (bytes32 decisionHash, string memory metadata, uint256 timestamp)
+    {
+        Decision memory d = decisions[index];
+        return (d.decisionHash, d.metadata, d.timestamp);
     }
 }

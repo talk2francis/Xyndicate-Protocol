@@ -790,9 +790,9 @@ export default function MarketPage() {
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
                 <button type="button" onClick={handleDelistSquad} disabled={delistingBusy} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:hover:bg-white/10">
-                  {delistingBusy ? 'Delisting...' : 'Deactivate squad'}
+                  {delistingBusy ? 'Delisting...' : 'Close squad'}
                 </button>
-                <span className="text-sm text-xyn-muted dark:text-zinc-300">Deactivate to retire this squad and enroll again.</span>
+                <span className="text-sm text-xyn-muted dark:text-zinc-300">Close to fully retire this squad and enroll again. If you only want to pause, use deactivate in the contract flow.</span>
               </div>
               {delistingError ? <div className="mt-4 rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">{delistingError}</div> : null}
               {delistingSuccess ? <div className="mt-4 rounded-2xl bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">{delistingSuccess}</div> : null}
