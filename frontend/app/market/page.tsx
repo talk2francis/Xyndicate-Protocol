@@ -42,6 +42,7 @@ const REGISTRY_ABI = [
 ];
 const SEASON_MANAGER_ABI = [
   "function squads(address) external view returns (address owner, address agentWallet, bool active)",
+  "function deactivate() external",
 ];
 
 const STRATEGY_VAULT_ABI = [
@@ -142,6 +143,9 @@ export default function MarketPage() {
   const [listingError, setListingError] = useState<string | null>(null);
   const [listingSuccess, setListingSuccess] = useState<string | null>(null);
   const [listingBusy, setListingBusy] = useState(false);
+  const [delistingBusy, setDelistingBusy] = useState(false);
+  const [delistingError, setDelistingError] = useState<string | null>(null);
+  const [delistingSuccess, setDelistingSuccess] = useState<string | null>(null);
   const [enrolledOptions, setEnrolledOptions] = useState<Strategy[]>([]);
   const [listingHint, setListingHint] = useState<string | null>(null);
   const [mySquad, setMySquad] = useState<Strategy | null>(null);
@@ -310,6 +314,8 @@ export default function MarketPage() {
         setSelectedSquadId((current) => current || options[0]?.squadId || "");
         setMySquad(options[0] || null);
         setListingHint(null);
+        setDelistingError(null);
+        setDelistingSuccess(null);
       } catch {
         setEnrolledOptions([]);
         setSelectedSquadId("");
@@ -549,6 +555,35 @@ export default function MarketPage() {
     }
   };
 
+  const handleDelistSquad = async () => {
+    try {
+      setDelistingBusy(true);
+      setDelistingError(null);
+      setDelistingSuccess(null);
+
+      const walletAddress = address || (await ensureWallet());
+      if (!walletAddress) throw new Error("Wallet required");
+      const injectedProvider = resolveProvider();
+      if (!injectedProvider) throw new Error("Wallet provider unavailable");
+
+      const provider = new ethers.BrowserProvider(injectedProvider as any);
+      const signer = await provider.getSigner();
+      const seasonManager = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, signer);
+      const tx = await seasonManager.deactivate();
+      await tx.wait();
+
+      setDelistingSuccess("Squad delisted. You can now enroll a new one.");
+      setListingHint("Previous squad retired. Deploy a new squad when ready.");
+      setMySquad(null);
+      setEnrolledOptions([]);
+      setSelectedSquadId("");
+    } catch (error: any) {
+      setDelistingError(error?.shortMessage || error?.message || "Squad delist failed");
+    } finally {
+      setDelistingBusy(false);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
       <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
@@ -742,8 +777,16 @@ export default function MarketPage() {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <span className="rounded-full bg-xyn-gold/15 px-4 py-2 text-sm font-semibold text-xyn-gold">Listed on marketplace</span>
-                <span className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">One wallet, one squad in current season</span>
+                <span className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">One wallet, one active squad at a time</span>
               </div>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <button type="button" onClick={handleDelistSquad} disabled={delistingBusy} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:hover:bg-white/10">
+                  {delistingBusy ? 'Delisting...' : 'Deactivate squad'}
+                </button>
+                <span className="text-sm text-xyn-muted dark:text-zinc-300">Deactivate to retire this squad and enroll again.</span>
+              </div>
+              {delistingError ? <div className="mt-4 rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">{delistingError}</div> : null}
+              {delistingSuccess ? <div className="mt-4 rounded-2xl bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">{delistingSuccess}</div> : null}
             </div>
           ) : (
             <div className="mt-6 rounded-3xl border border-dashed border-black/10 p-6 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">

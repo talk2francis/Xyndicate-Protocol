@@ -154,8 +154,8 @@ export default function DeployPage() {
       const requiredFee = ethers.parseEther(entryFee || SYMBOLIC_DEPOSIT);
 
       const existingSquad = await seasonManager.squads(signerAddress);
-      if (existingSquad?.owner && existingSquad.owner !== ethers.ZeroAddress) {
-        throw new Error(`This wallet is already enrolled in Season 1 with squad wallet ${existingSquad.agentWallet}. Go to Market to list it.`);
+      if (existingSquad?.owner && existingSquad.owner !== ethers.ZeroAddress && existingSquad.active) {
+        throw new Error(`This wallet already has an active squad. Deactivate it in Market first, then come back here to enroll a new one.`);
       }
 
       const enrollTx = await seasonManager.enroll(signerAddress, { value: requiredFee });
