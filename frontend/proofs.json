@@ -2,6 +2,26 @@
   "proofs": [
     {
       "type": "decision",
+      "label": "XYNDICATE_ALPHA decision",
+      "txHash": "0x2c6530fe88f4a0a9e005d480be4a2575e1f344355b51c6baba8c2d423c5dfd9d",
+      "timestamp": 1776024075,
+      "amount": null,
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx/0x2c6530fe88f4a0a9e005d480be4a2575e1f344355b51c6baba8c2d423c5dfd9d",
+      "recoveryStatus": "recovered"
+    },
+    {
+      "type": "decision",
+      "label": "SQUAD_NOVA decision",
+      "txHash": "0x1a8c814ace6688c606e6558a05d5ebf07dfc3c62601f59ca792c7b18263f839c",
+      "timestamp": 1776024075,
+      "amount": null,
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx/0x1a8c814ace6688c606e6558a05d5ebf07dfc3c62601f59ca792c7b18263f839c",
+      "recoveryStatus": "recovered"
+    },
+    {
+      "type": "decision",
       "label": "SQUAD_NOVA decision",
       "txHash": "0x72705f542fd12ca37cdd5b68f75023ed09b1f92a5c847a7efbbaf512c0285393",
       "timestamp": 1776022398,
@@ -2184,6 +2204,26 @@
     {
       "type": "decision",
       "label": "SQUAD_NOVA decision",
+      "txHash": "decision-403",
+      "timestamp": 0,
+      "amount": "Pending recovery",
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx",
+      "recoveryStatus": "pending"
+    },
+    {
+      "type": "decision",
+      "label": "XYNDICATE_ALPHA decision",
+      "txHash": "decision-402",
+      "timestamp": 0,
+      "amount": "Pending recovery",
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx",
+      "recoveryStatus": "pending"
+    },
+    {
+      "type": "decision",
+      "label": "SQUAD_NOVA decision",
       "txHash": "decision-401",
       "timestamp": 0,
       "amount": "Pending recovery",
@@ -4170,29 +4210,9 @@
       "blockNumber": null,
       "explorerUrl": "https://www.oklink.com/xlayer/tx",
       "recoveryStatus": "pending"
-    },
-    {
-      "type": "decision",
-      "label": "XYNDICATE_ALPHA decision",
-      "txHash": "decision-202",
-      "timestamp": 0,
-      "amount": "Pending recovery",
-      "blockNumber": null,
-      "explorerUrl": "https://www.oklink.com/xlayer/tx",
-      "recoveryStatus": "pending"
-    },
-    {
-      "type": "decision",
-      "label": "SQUAD_NOVA decision",
-      "txHash": "decision-201",
-      "timestamp": 0,
-      "amount": "Pending recovery",
-      "blockNumber": null,
-      "explorerUrl": "https://www.oklink.com/xlayer/tx",
-      "recoveryStatus": "pending"
     }
   ],
-  "totalTxCount": 421,
+  "totalTxCount": 423,
   "contracts": [
     {
       "name": "DecisionLog",
@@ -4223,8 +4243,8 @@
       "oklinkUrl": "https://www.oklink.com/xlayer/tx/0x1ff8a1f8462003b2a17c5acddc5d856199c130b6df9c9fb4dbf6b92e6dfd915d"
     }
   ],
-  "updatedAt": "2026-04-12T19:33:29.139Z",
-  "onchainDecisionCount": 402,
+  "updatedAt": "2026-04-12T20:01:26.819Z",
+  "onchainDecisionCount": 404,
   "recoveredDecisionCount": 0,
   "source": "scheduler-artifact"
 }
