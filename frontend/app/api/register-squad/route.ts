@@ -86,7 +86,7 @@ export async function POST(request: Request) {
       strategyMode: String(body?.strategyMode || ""),
       enrollTx: String(body?.enrollTx || ""),
       registeredAt: Number(body?.registeredAt || Date.now()),
-      lastDecisionAt: 0,
+      lastDecisionAt: Number(body?.registeredAt || Date.now()),
       status: "ACTIVE",
       external: true,
     });

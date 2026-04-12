@@ -58,7 +58,7 @@ function normalizeExternalSquad(entry = {}, state = readCycleState()) {
   const registeredAt = Number(entry.registeredAt || 0);
   const lastDecisionAt = Number(state?.externalSquadLastRun?.[name] || entry.lastDecisionAt || 0);
   const ageMs = Date.now() - Math.max(registeredAt, lastDecisionAt);
-  const active = ageMs <= EXTERNAL_ACTIVE_WINDOW_MS || Boolean(lastDecisionAt);
+  const active = String(entry.status || '').toUpperCase() === 'PAUSED' ? false : (ageMs <= EXTERNAL_ACTIVE_WINDOW_MS || Boolean(lastDecisionAt));
 
   return {
     squadId: name,
