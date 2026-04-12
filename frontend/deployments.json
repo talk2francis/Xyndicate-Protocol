@@ -236,7 +236,9 @@
     "0x017b191782a19af07c8372b61d876fde2b2c5ee46a45b4337c1286b2bd7e3564",
     "0x123b437f18bc2344765120c5fcca8a3fadb5174ab5a8bca82eaeacf7359c7686",
     "0xedcffbd02c8756e880fbd3b158e97e50f37abbc79114fd1758ac74f56cc38746",
-    "0x0fde287f0f4d52d2d47e5f28e039ed10c350a893515fb31c56658721fb169745"
+    "0x0fde287f0f4d52d2d47e5f28e039ed10c350a893515fb31c56658721fb169745",
+    "0xee434512f82b16a304e7988d45b2e009c0265c97b701a5577848a784c3ac7050",
+    "0xf70450a795e4aeda759b8dd84ff128c26cfbfeeef6846350e7350368c4ece452"
   ],
   "decisionLogEntries": [
     {
@@ -1575,6 +1577,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · The market is currently stable with a balanced risk mode, it is advisable to hold OKB for now.",
       "timestamp": 1776014200
+    },
+    {
+      "txHash": "0xee434512f82b16a304e7988d45b2e009c0265c97b701a5577848a784c3ac7050",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · High spread of 10000 bps between OKX and Uniswap prices suggests potential arbitrage opportunities. However, aggressive risk mode and high spread advise holding position for now.",
+      "timestamp": 1776015204
+    },
+    {
+      "txHash": "0xf70450a795e4aeda759b8dd84ff128c26cfbfeeef6846350e7350368c4ece452",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY OKB (100% treasury) · Potential recovery after 24h price drop and price stability in balanced risk mode.",
+      "timestamp": 1776015204
     }
   ]
 }
