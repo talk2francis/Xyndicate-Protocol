@@ -2,28 +2,11 @@
   "squads": [
     {
       "rank": 1,
-      "squadId": "CIPHER",
-      "decisions": 0,
-      "confidence": 0.66,
-      "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776015204840,
-      "status": "ACTIVE",
-      "stats": {
-        "buys": 0,
-        "sells": 0,
-        "holds": 0,
-        "lastTradeAction": "HOLD",
-        "lastAsset": "ETH"
-      },
-      "txHashes": []
-    },
-    {
-      "rank": 2,
       "squadId": "NEXUS",
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776015204840,
+      "latestTimestamp": 1776016985803,
       "status": "ACTIVE",
       "stats": {
         "buys": 0,
@@ -35,12 +18,29 @@
       "txHashes": []
     },
     {
+      "rank": 2,
+      "squadId": "CIPHER",
+      "decisions": 0,
+      "confidence": 0.66,
+      "lastAction": "Awaiting next cycle",
+      "latestTimestamp": 1776016985799,
+      "status": "ACTIVE",
+      "stats": {
+        "buys": 0,
+        "sells": 0,
+        "holds": 0,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "ETH"
+      },
+      "txHashes": []
+    },
+    {
       "rank": 3,
       "squadId": "PHANTOM",
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776015204839,
+      "latestTimestamp": 1776016985798,
       "status": "ACTIVE",
       "stats": {
         "buys": 0,
@@ -54,20 +54,19 @@
     {
       "rank": 4,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 110,
+      "decisions": 111,
       "confidence": 0.66,
-      "lastAction": "HOLD ETH (100% treasury) · High spread of 10000 bps between OKX and Uniswap prices suggests potential arbitrage opportunities. However, aggressive risk mode and high spread advise holding position for now.",
-      "latestTimestamp": 1776015204,
+      "lastAction": "HOLD ETH (100% treasury) · High spread between OKX and Uniswap prices suggests potential arbitrage opportunities, but aggressive risk mode advises holding. Market inefficiencies pose risks.",
+      "latestTimestamp": 1776016985,
       "status": "ACTIVE",
       "stats": {
         "buys": 37,
         "sells": 2,
-        "holds": 66,
+        "holds": 67,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xc0402e9e203a0f3040ba383da93a249440c3d684874557ab43c539324e698b84",
         "0xa5ce4663ceaf52823c91efa04c8b3182920d23ae88a8810dc1d7336b160d8d6f",
         "0x63aa0e61539c2e66a02c06839104c8855e3b7fb44c01ab741f38b8be5f03a344",
         "0x9390bf377a39b0614f7f47e68918d03b206aeeab2a80ce590465effb2a7b2b50",
@@ -76,26 +75,26 @@
         "0x76298968dc7dce448429cc24e8c4cbb245de5c20488e0829782d4c1764f4ae69",
         "0x017b191782a19af07c8372b61d876fde2b2c5ee46a45b4337c1286b2bd7e3564",
         "0xedcffbd02c8756e880fbd3b158e97e50f37abbc79114fd1758ac74f56cc38746",
-        "0xee434512f82b16a304e7988d45b2e009c0265c97b701a5577848a784c3ac7050"
+        "0xee434512f82b16a304e7988d45b2e009c0265c97b701a5577848a784c3ac7050",
+        "0x7f089ebb5197e0bb24056eb2a888efcf18b6cad09c65507ac0f144ff74e037dd"
       ]
     },
     {
       "rank": 5,
       "squadId": "SQUAD_NOVA",
-      "decisions": 83,
-      "confidence": 0.8,
-      "lastAction": "BUY OKB (100% treasury) · Potential recovery after 24h price drop and price stability in balanced risk mode.",
-      "latestTimestamp": 1776015204,
+      "decisions": 84,
+      "confidence": 0.7,
+      "lastAction": "HOLD OKB (0% treasury) · Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait, low confidence score.",
+      "latestTimestamp": 1776016985,
       "status": "ACTIVE",
       "stats": {
         "buys": 8,
         "sells": 0,
-        "holds": 75,
-        "lastTradeAction": "BUY",
+        "holds": 76,
+        "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x8e833932ddd0c38c5435f008ee5b5e31369d1a9646f14b027c15b44523fdfd0f",
         "0xb96f103e4450b69f8385cd13315b71d79617ba25e9ce096e0d413cdff24f76b6",
         "0x178bd9b6eabf7f0432adcaccb22f5250a64395dcddc775cc9d9c8609b6ed9b10",
         "0xb3435c4daff35e64e56264b2cd071b3c5c45d81c8e99f459df531af16b638412",
@@ -104,7 +103,8 @@
         "0xf9461998d56e51cb136bb9096bf9ed11f7baabbfe315554cc4359a7594861d0b",
         "0x123b437f18bc2344765120c5fcca8a3fadb5174ab5a8bca82eaeacf7359c7686",
         "0x0fde287f0f4d52d2d47e5f28e039ed10c350a893515fb31c56658721fb169745",
-        "0xf70450a795e4aeda759b8dd84ff128c26cfbfeeef6846350e7350368c4ece452"
+        "0xf70450a795e4aeda759b8dd84ff128c26cfbfeeef6846350e7350368c4ece452",
+        "0x56ede51e268f817a7714701a94f8d57f30525d4124275578a4341344f20f15f7"
       ]
     },
     {
@@ -145,8 +145,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-12T17:33:26.472Z",
-  "totalDecisions": 193,
+  "updatedAt": "2026-04-12T18:03:07.484Z",
+  "totalDecisions": 195,
   "supportingProofs": {
     "narratorPayments": 11,
     "latestNarratorPayment": {
