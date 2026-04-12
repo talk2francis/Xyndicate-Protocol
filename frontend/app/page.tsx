@@ -109,7 +109,7 @@ function PipelineGraphic() {
         {labels.map((label, index) => (
           <div key={label} className="relative flex items-center justify-center">
             {index < labels.length - 1 ? (
-              <div className="absolute left-[58%] top-1/2 hidden h-[2px] w-[88%] -translate-y-1/2 bg-xyn-gold/25 md:block" />
+              <div className="absolute left-[58%] top-1/2 hidden h-[2px] w-[88%] -translate-y-1/2 bg-xyn-blue/25 md:block" />
             ) : null}
             <div className="relative z-10 w-full rounded-full border border-black/10 bg-xyn-surface px-4 py-3 text-center text-sm font-semibold dark:border-white/10 dark:bg-xyn-dark">
               {label}
@@ -117,7 +117,7 @@ function PipelineGraphic() {
           </div>
         ))}
       </div>
-      <div className="pointer-events-none absolute left-0 top-1/2 hidden h-3 w-3 -translate-y-1/2 rounded-full bg-xyn-gold shadow-[0_0_16px_rgba(201,168,76,0.8)] md:block animate-xyn-pulse-run" />
+      <div className="pointer-events-none absolute left-0 top-1/2 hidden h-3 w-3 -translate-y-1/2 rounded-full bg-xyn-blue shadow-[0_0_16px_rgba(123,200,246,0.8)] md:block animate-xyn-pulse-run" />
     </div>
   );
 }
@@ -199,7 +199,7 @@ export default function HomePage() {
 
             <div className="mt-8 max-w-4xl text-4xl font-bold leading-[0.95] tracking-tight sm:text-[56px] sm:leading-[1.05]">
               <h1>The Autonomous Strategy Skill.</h1>
-              <h2 className="text-xyn-gold">For X Layer.</h2>
+              <h2 className="text-xyn-blue">For X Layer.</h2>
             </div>
 
             <p className="mt-6 max-w-2xl text-xl text-xyn-muted dark:text-zinc-300">
@@ -207,7 +207,7 @@ export default function HomePage() {
             </p>
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-              <Link href="/deploy" className="rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90">
+              <Link href="/deploy" className="rounded-full bg-xyn-blue px-6 py-3 text-sm font-semibold text-[#0A1628] transition hover:opacity-90">
                 Deploy a Squad →
               </Link>
               <Link href="/arena" className="rounded-full border border-black/10 px-6 py-3 text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10">
@@ -241,7 +241,7 @@ export default function HomePage() {
             ].map((item) => (
               <div key={item.label} className="rounded-3xl border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">
                 <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">{item.label}</div>
-                <div className="mt-3 text-3xl font-semibold text-xyn-dark dark:text-white">{item.value}</div>
+                <div className="mt-3 text-3xl font-semibold text-xyn-blue dark:text-xyn-blue">{item.value}</div>
               </div>
             ))}
           </div>
@@ -250,7 +250,7 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">How the skill works</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">How the skill works</p>
           <h3 className="mt-3 text-3xl font-semibold tracking-tight">Install, query, route, verify.</h3>
         </div>
 
@@ -293,7 +293,7 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Live decisions feed</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Live decisions feed</p>
           <h3 className="mt-3 text-3xl font-semibold tracking-tight">Latest protocol activity</h3>
         </div>
 
@@ -327,7 +327,7 @@ export default function HomePage() {
                     <div className="w-full sm:min-w-[180px] sm:max-w-[220px]">
                       <div className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Confidence</div>
                       <div className="h-2 rounded-full bg-black/10 dark:bg-white/10">
-                        <div className="h-2 rounded-full bg-xyn-gold" style={{ width: `${item.confidence}%` }} />
+                        <div className="h-2 rounded-full bg-xyn-blue" style={{ width: `${item.confidence}%` }} />
                       </div>
                       <div className="mt-2 text-sm font-medium">{item.confidence}%</div>
                     </div>
@@ -342,7 +342,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <div className="rounded-[32px] bg-xyn-dark p-8 text-white">
           <div className="mb-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">MCP skill install</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">MCP skill install</p>
             <h3 className="mt-3 text-3xl font-semibold tracking-tight">Integrate the Skill</h3>
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
@@ -355,7 +355,7 @@ export default function HomePage() {
               <pre className="overflow-x-auto rounded-2xl bg-black/60 p-4 text-sm text-green-400">{SAMPLE_TOOL_CALL}</pre>
             </div>
           </div>
-          <Link href="/docs" className="mt-6 inline-block text-sm font-semibold text-xyn-gold">
+          <Link href="/docs" className="mt-6 inline-block text-sm font-semibold text-xyn-blue">
             View full docs →
           </Link>
         </div>

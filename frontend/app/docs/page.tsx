@@ -112,23 +112,23 @@ const TOOL_CARDS: ToolCard[] = [
 
 const ARCHITECTURE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" fill="none">
   <rect width="960" height="420" rx="28" fill="#0B0B0B"/>
-  <rect x="40" y="150" width="180" height="120" rx="24" fill="#151515" stroke="#C9A84C"/>
-  <text x="130" y="190" fill="#C9A84C" font-size="22" text-anchor="middle" font-family="Arial">OKX + Uniswap</text>
+  <rect x="40" y="150" width="180" height="120" rx="24" fill="#151515" stroke="#7BC8F6"/>
+  <text x="130" y="190" fill="#7BC8F6" font-size="22" text-anchor="middle" font-family="Arial">OKX + Uniswap</text>
   <text x="130" y="220" fill="#FFFFFF" font-size="16" text-anchor="middle" font-family="Arial">Market Inputs</text>
-  <rect x="280" y="70" width="120" height="60" rx="18" fill="#1A1A1A" stroke="#C9A84C"/><text x="340" y="106" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Oracle</text>
-  <rect x="280" y="150" width="120" height="60" rx="18" fill="#1A1A1A" stroke="#C9A84C"/><text x="340" y="186" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Analyst</text>
-  <rect x="280" y="230" width="120" height="60" rx="18" fill="#1A1A1A" stroke="#C9A84C"/><text x="340" y="266" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Strategist</text>
-  <rect x="460" y="110" width="120" height="60" rx="18" fill="#1A1A1A" stroke="#C9A84C"/><text x="520" y="146" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Router</text>
-  <rect x="460" y="210" width="120" height="60" rx="18" fill="#1A1A1A" stroke="#C9A84C"/><text x="520" y="246" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Executor</text>
-  <rect x="640" y="150" width="140" height="90" rx="20" fill="#151515" stroke="#C9A84C"/><text x="710" y="188" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Narrator</text><text x="710" y="214" fill="#C9A84C" font-size="14" text-anchor="middle" font-family="Arial">Proof Output</text>
-  <rect x="820" y="140" width="100" height="110" rx="20" fill="#151515" stroke="#C9A84C"/><text x="870" y="182" fill="#FFFFFF" font-size="16" text-anchor="middle" font-family="Arial">DecisionLog</text><text x="870" y="206" fill="#FFFFFF" font-size="16" text-anchor="middle" font-family="Arial">Vault</text>
-  <path d="M220 210H260" stroke="#C9A84C" stroke-width="4" stroke-linecap="round"/>
-  <path d="M400 100H440V140H460" stroke="#C9A84C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M400 180H460" stroke="#C9A84C" stroke-width="4" stroke-linecap="round"/>
-  <path d="M400 260H440V240H460" stroke="#C9A84C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M580 140H620V180H640" stroke="#C9A84C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M580 240H620V210H640" stroke="#C9A84C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M780 195H820" stroke="#C9A84C" stroke-width="4" stroke-linecap="round"/>
+  <rect x="280" y="70" width="120" height="60" rx="18" fill="#1A1A1A" stroke="#7BC8F6"/><text x="340" y="106" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Oracle</text>
+  <rect x="280" y="150" width="120" height="60" rx="18" fill="#1A1A1A" stroke="#7BC8F6"/><text x="340" y="186" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Analyst</text>
+  <rect x="280" y="230" width="120" height="60" rx="18" fill="#1A1A1A" stroke="#7BC8F6"/><text x="340" y="266" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Strategist</text>
+  <rect x="460" y="110" width="120" height="60" rx="18" fill="#1A1A1A" stroke="#7BC8F6"/><text x="520" y="146" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Router</text>
+  <rect x="460" y="210" width="120" height="60" rx="18" fill="#1A1A1A" stroke="#7BC8F6"/><text x="520" y="246" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Executor</text>
+  <rect x="640" y="150" width="140" height="90" rx="20" fill="#151515" stroke="#7BC8F6"/><text x="710" y="188" fill="#FFFFFF" font-size="18" text-anchor="middle" font-family="Arial">Narrator</text><text x="710" y="214" fill="#7BC8F6" font-size="14" text-anchor="middle" font-family="Arial">Proof Output</text>
+  <rect x="820" y="140" width="100" height="110" rx="20" fill="#151515" stroke="#7BC8F6"/><text x="870" y="182" fill="#FFFFFF" font-size="16" text-anchor="middle" font-family="Arial">DecisionLog</text><text x="870" y="206" fill="#FFFFFF" font-size="16" text-anchor="middle" font-family="Arial">Vault</text>
+  <path d="M220 210H260" stroke="#7BC8F6" stroke-width="4" stroke-linecap="round"/>
+  <path d="M400 100H440V140H460" stroke="#7BC8F6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M400 180H460" stroke="#7BC8F6" stroke-width="4" stroke-linecap="round"/>
+  <path d="M400 260H440V240H460" stroke="#7BC8F6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M580 140H620V180H640" stroke="#7BC8F6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M580 240H620V210H640" stroke="#7BC8F6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M780 195H820" stroke="#7BC8F6" stroke-width="4" stroke-linecap="round"/>
 </svg>`;
 
 function CodeBlock({ value }: { value: string }) {
@@ -265,7 +265,7 @@ export default function DocsPage() {
       <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="inline-flex rounded-full bg-xyn-gold/15 px-4 py-2 text-sm font-semibold text-xyn-gold">v2.0 · Skills Arena · X Layer</p>
+            <p className="inline-flex rounded-full bg-xyn-blue/15 px-4 py-2 text-sm font-semibold text-xyn-blue">v2.0 · Skills Arena · X Layer</p>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-6xl">Xyndicate Strategy Skill</h1>
             <p className="mt-4 max-w-3xl text-lg text-xyn-muted dark:text-zinc-300">A reusable agent skill delivering dual-source market signals and cross-protocol routing via MCP.</p>
           </div>
@@ -275,7 +275,7 @@ export default function DocsPage() {
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="flex flex-wrap gap-3">
           {INSTALL_TABS.map((tab) => (
-            <button key={tab} type="button" onClick={() => setInstallTab(tab)} className={`rounded-full px-4 py-2 text-sm font-semibold ${installTab === tab ? "bg-xyn-gold text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}>
+            <button key={tab} type="button" onClick={() => setInstallTab(tab)} className={`rounded-full px-4 py-2 text-sm font-semibold ${installTab === tab ? "bg-xyn-blue text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}>
               {tab}
             </button>
           ))}
@@ -293,7 +293,7 @@ export default function DocsPage() {
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Tools reference</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Tools reference</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Skill tool surface</h2>
         </div>
         <div className="space-y-4">
@@ -353,7 +353,7 @@ export default function DocsPage() {
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Try it live</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Try it live</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Live tester</h2>
         </div>
         <div className="grid gap-4 lg:grid-cols-[0.9fr_0.9fr_auto]">
@@ -363,7 +363,7 @@ export default function DocsPage() {
           <select value={tool} onChange={(e) => setTool(e.target.value as (typeof TEST_TOOLS)[number])} className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark dark:border-white/10 dark:bg-zinc-900 dark:text-white">
             {TEST_TOOLS.map((item) => <option key={item}>{item}</option>)}
           </select>
-          <button type="button" onClick={runQuery} disabled={loading} className="inline-flex items-center justify-center gap-2 rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark disabled:opacity-60">
+          <button type="button" onClick={runQuery} disabled={loading} className="inline-flex items-center justify-center gap-2 rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark disabled:opacity-60">
             <Play className="h-4 w-4" /> {loading ? "Running..." : "Run Query →"}
           </button>
         </div>
@@ -373,7 +373,7 @@ export default function DocsPage() {
             <div className="mt-2 text-xs text-xyn-muted dark:text-zinc-400">Optional deeper demo: wallet-triggered on-chain flow available separately.</div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <div className="text-sm font-semibold text-xyn-gold">{responseMs != null ? `Response in ${responseMs}ms` : "Awaiting query"}</div>
+            <div className="text-sm font-semibold text-xyn-blue">{responseMs != null ? `Response in ${responseMs}ms` : "Awaiting query"}</div>
             <button type="button" onClick={() => setShowOnchainDemo(true)} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10">
               Run On-Chain Demo →
             </button>
@@ -387,20 +387,20 @@ export default function DocsPage() {
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">MCP Live Usage</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">MCP Live Usage</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Scheduler and tester activity</h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-white/5">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-gold">Calls today</div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Calls today</div>
               <div className="mt-2 text-2xl font-semibold">{usageLoading ? "..." : usageData.totalCallsToday}</div>
             </div>
             <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-white/5">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-gold">Avg response</div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Avg response</div>
               <div className="mt-2 text-2xl font-semibold">{usageLoading ? "..." : `${usageData.averageResponseTimeMs}ms`}</div>
             </div>
             <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-white/5">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-gold">Tools hit</div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Tools hit</div>
               <div className="mt-2 text-2xl font-semibold">{usageLoading ? "..." : Object.keys(usageData.byTool || {}).length}</div>
             </div>
           </div>
@@ -466,12 +466,12 @@ export default function DocsPage() {
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Integration guide</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Integration guide</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Connect it into your stack</h2>
         </div>
         <div className="flex flex-wrap gap-3">
           {GUIDE_TABS.map((tab) => (
-            <button key={tab} type="button" onClick={() => setGuideTab(tab)} className={`rounded-full px-4 py-2 text-sm font-semibold ${guideTab === tab ? "bg-xyn-gold text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}>
+            <button key={tab} type="button" onClick={() => setGuideTab(tab)} className={`rounded-full px-4 py-2 text-sm font-semibold ${guideTab === tab ? "bg-xyn-blue text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}>
               {tab}
             </button>
           ))}
@@ -490,7 +490,7 @@ export default function DocsPage() {
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="mb-6 flex items-center justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Architecture</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Architecture</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Agent pipeline diagram</h2>
           </div>
           <button type="button" onClick={() => setShowArchitecture(true)} className="inline-flex items-center gap-2 rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">
@@ -504,11 +504,11 @@ export default function DocsPage() {
         {showOnchainDemo ? (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/60 p-0 sm:p-6 backdrop-blur-sm" onClick={() => setShowOnchainDemo(false)}>
             <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} className="mx-auto mt-0 h-full w-full overflow-y-auto rounded-none border border-white/10 bg-xyn-surface p-6 sm:mt-24 sm:h-auto sm:max-w-2xl sm:rounded-[32px] sm:p-8 dark:bg-xyn-dark" onClick={(e) => e.stopPropagation()}>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">On-chain demo</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">On-chain demo</p>
               <h3 className="mt-3 text-3xl font-semibold tracking-tight">This runs the live wallet flow.</h3>
               <p className="mt-4 text-sm text-xyn-muted dark:text-zinc-300">You will connect a wallet, switch to X Layer if needed, and trigger the real Deploy/Enroll path. This is optional and separate from the zero-friction browser query demo.</p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <a href="/deploy" className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark">Continue to Deploy →</a>
+                <a href="/deploy" className="rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark">Continue to Deploy →</a>
                 <a href="/market" className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10">View Market →</a>
                 <button type="button" onClick={() => setShowOnchainDemo(false)} className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10">Cancel</button>
               </div>

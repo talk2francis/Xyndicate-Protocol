@@ -255,11 +255,11 @@ function AgentStatusBoard({
         return (
           <motion.div
             key={card.agent}
-            className={`relative overflow-hidden rounded-[28px] border p-5 ${card.isActive ? "border-xyn-gold bg-xyn-gold/5" : "border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5"}`}
-            animate={card.isActive ? { boxShadow: ["0 0 0 rgba(201,168,76,0)", "0 0 32px rgba(201,168,76,0.18)", "0 0 0 rgba(201,168,76,0)"] } : { boxShadow: "0 0 0 rgba(0,0,0,0)" }}
+            className={`relative overflow-hidden rounded-[28px] border p-5 ${card.isActive ? "border-xyn-blue bg-xyn-blue/5" : "border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5"}`}
+            animate={card.isActive ? { boxShadow: ["0 0 0 rgba(123,200,246,0)", "0 0 32px rgba(201,168,76,0.18)", "0 0 0 rgba(123,200,246,0)"] } : { boxShadow: "0 0 0 rgba(0,0,0,0)" }}
             transition={card.isActive ? { repeat: Infinity, duration: 3.6, ease: "easeInOut" } : { duration: 0.2 }}
           >
-            {card.isActive ? <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(201,168,76,0.16),transparent)] animate-[pulse_4s_ease-in-out_infinite]" /> : null}
+            {card.isActive ? <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(123,200,246,0.16),transparent)] animate-[pulse_4s_ease-in-out_infinite]" /> : null}
             <div className="relative z-10 flex h-full flex-col gap-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
@@ -271,7 +271,7 @@ function AgentStatusBoard({
                     <div className="text-xs uppercase tracking-[0.2em] text-xyn-muted dark:text-zinc-400">{card.status}</div>
                   </div>
                 </div>
-                <span className={`h-2.5 w-2.5 rounded-full ${card.isActive ? "bg-xyn-gold animate-pulse" : card.latest ? "bg-emerald-500" : "bg-zinc-500/60"}`} />
+                <span className={`h-2.5 w-2.5 rounded-full ${card.isActive ? "bg-xyn-blue animate-pulse" : card.latest ? "bg-emerald-500" : "bg-zinc-500/60"}`} />
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
@@ -304,7 +304,7 @@ function FilterTab({ active, label, onClick }: { active: boolean; label: string;
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full px-4 py-2 text-sm font-semibold transition ${active ? "bg-xyn-gold text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}
+      className={`rounded-full px-4 py-2 text-sm font-semibold transition ${active ? "bg-xyn-blue text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}
     >
       {label}
     </button>
@@ -419,10 +419,11 @@ export default function ArenaPage() {
   const avgConfidence = squads.length ? squads.reduce((sum, squad) => sum + (squad.confidence || 0.84), 0) / squads.length : 0.84;
   const ethSignal = signalData?.pairs?.find((item) => item.pair === "ETH/USDT");
   const lastOkxPrice = ethSignal?.okxPrice ?? 0;
-  const lastUniswapPrice = ethSignal?.uniswapPrice ?? 0;
+  const lastUniswapPrice = ethSignal?.uniswapPrice ?? ethSignal?.okxPrice ?? null;
+  const uniswapDisplay = lastUniswapPrice == null || !Number.isFinite(lastUniswapPrice) || lastUniswapPrice <= 0 ? null : lastUniswapPrice;
   const activityEntries = activityData?.entries || [];
   const paymentEntries = paymentData?.entries || [];
-  const activeSquadsCount = 5;
+  const activeSquadsCount = data?.squads?.length || squads.length;
   const lastTxMinutesAgo = Math.max(0, Math.floor((Date.now() - Number((squads[0]?.latestTimestamp || 0) * 1000 || Date.now())) / 60000));
   const totalTxs = Object.keys(txHashes || {}).length;
   const cycleProgressPct = cycleState?.cycleStartTime
@@ -488,7 +489,7 @@ export default function ArenaPage() {
             { label: "Total Decisions", value: totalDecisions, sub: "Live scheduler activity" },
             { label: "Active Squads", value: squads.length, sub: "Season squads online" },
             { label: "Total Swaps", value: totalSwaps, sub: "Executed route decisions" },
-            { label: "UNISWAP ROUTING", value: "Active", sub: `ETH/USDC pool live · OKX $${lastOkxPrice.toFixed(2)} vs Uniswap $${lastUniswapPrice.toFixed(2)}` },
+            { label: "UNISWAP ROUTING", value: "Active", sub: `ETH/USDC pool live · OKX $${lastOkxPrice.toFixed(2)} vs Uniswap ${uniswapDisplay == null ? 'N/A' : `$${uniswapDisplay.toFixed(2)}`}` },
           ].map((chip) => (
             <div key={chip.label} className="rounded-2xl border border-black/10 bg-xyn-surface px-4 py-3 dark:border-white/10 dark:bg-xyn-dark">
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">{chip.label}</div>
@@ -502,12 +503,12 @@ export default function ArenaPage() {
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="mb-6 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-gold">Agent Status Board</div>
+            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-blue">Agent Status Board</div>
             <div className="mt-2 text-3xl font-semibold tracking-tight">Autonomous cycle status</div>
             <div className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">Next cycle in {formatCountdown(countdownMs)}</div>
             <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-400">Last cycle completed {formatTimeAgo(cycleState?.lastCycleComplete)} · Cycle #{cycleState?.cycleNumber || 0} · {activeSquadsCount} squads active</div>
             <div className="mt-4 h-2 w-full max-w-xl overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
-              <div className="h-full rounded-full bg-xyn-gold transition-all duration-1000" style={{ width: `${cycleProgressPct}%` }} />
+              <div className="h-full rounded-full bg-xyn-blue transition-all duration-1000" style={{ width: `${cycleProgressPct}%` }} />
             </div>
           </div>
           {(cycleError || activityError) ? (
@@ -538,12 +539,12 @@ export default function ArenaPage() {
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="mb-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Agent Economy</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Agent Economy</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Live Payment Stream</h2>
             <div className="mt-3 max-w-2xl text-sm leading-6 text-xyn-muted dark:text-zinc-400">Agent micropayments settle every 12 hours. The frontend updates automatically after each successful scheduler publish.</div>
           </div>
           <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300 lg:min-w-[280px]">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-gold">Economy Snapshot</div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Economy Snapshot</div>
             <div className="mt-2 font-medium text-white dark:text-white">{(paymentData?.totalOkb || 0).toFixed(5)} OKB circulated</div>
             <div className="mt-1">{paymentData?.totalPayments || 0} recorded payments</div>
           </div>
@@ -569,7 +570,7 @@ export default function ArenaPage() {
                         <span className="font-semibold">{entry.amount}</span>
                         <span className="text-xyn-muted dark:text-zinc-400">{formatTimeAgo(entry.timestamp * 1000)}</span>
                       </div>
-                      <a href={`https://www.oklink.com/xlayer/tx/${entry.txHash}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-gold">OKLink <ExternalLink className="h-4 w-4" /></a>
+                      <a href={`https://www.oklink.com/xlayer/tx/${entry.txHash}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-blue">OKLink <ExternalLink className="h-4 w-4" /></a>
                     </motion.div>
                   );
                 })}
@@ -584,7 +585,7 @@ export default function ArenaPage() {
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Leaderboard</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Leaderboard</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Squad standings</h2>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -624,7 +625,7 @@ export default function ArenaPage() {
                       <div>{squad.decisions}</div>
                       <div><div className="h-2 rounded-full bg-black/10 dark:bg-white/10"><div className={`h-2 rounded-full ${confidence > 0.75 ? "bg-emerald-500" : confidence >= 0.5 ? "bg-amber-500" : "bg-rose-500"}`} style={{ width: `${confidence * 100}%` }} /></div><div className="mt-2 text-sm">{Math.round(confidence * 100)}%</div></div>
                       <div className="text-sm text-xyn-muted dark:text-zinc-300">{parsed.rationale}</div>
-                      <div><span className={`rounded-full px-3 py-1 text-xs font-semibold ${parsed.route === "Uniswap" ? "bg-xyn-gold/15 text-xyn-gold" : "bg-black/5 dark:bg-white/10"}`}>{parsed.route}</span></div>
+                      <div><span className={`rounded-full px-3 py-1 text-xs font-semibold ${parsed.route === "Uniswap" ? "bg-xyn-blue/15 text-xyn-blue" : "bg-black/5 dark:bg-white/10"}`}>{parsed.route}</span></div>
                       <div><span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-300">ACTIVE</span></div>
                     </button>
                   </div>
@@ -638,7 +639,7 @@ export default function ArenaPage() {
       <section className="mt-8 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
           <div className="mb-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Decision feed</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Decision feed</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Latest squad calls</h2>
           </div>
 
@@ -661,7 +662,7 @@ export default function ArenaPage() {
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {entry.chain.map((step) => (
-                    <button key={`${entry.id}-${step.agent}`} type="button" onClick={() => setSelectedStep(step)} className="rounded-full border border-black/10 bg-white/70 px-3 py-2 text-xs font-semibold text-xyn-muted transition hover:border-xyn-gold hover:text-xyn-gold dark:border-white/10 dark:bg-black/20 dark:text-zinc-300">
+                    <button key={`${entry.id}-${step.agent}`} type="button" onClick={() => setSelectedStep(step)} className="rounded-full border border-black/10 bg-white/70 px-3 py-2 text-xs font-semibold text-xyn-muted transition hover:border-xyn-blue hover:text-xyn-blue dark:border-white/10 dark:bg-black/20 dark:text-zinc-300">
                       [{AGENT_META[step.agent].label}: {step.short}]
                     </button>
                   ))}
@@ -677,17 +678,17 @@ export default function ArenaPage() {
         <div className="space-y-8">
           <section className="rounded-[32px] bg-xyn-dark p-8 text-white">
             <div className="mb-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Live commentary</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Live commentary</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-tight">Narrator output</h2>
             </div>
             <div className="rounded-2xl bg-black/40 p-5 font-mono text-sm text-green-400">{narratorText}</div>
-            <button type="button" onClick={copyNarratorToX} className={`mt-5 rounded-full px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 ${copyToast ? "bg-emerald-400" : "bg-xyn-gold"}`}>{copyToast || "Copy to X / Twitter"}</button>
+            <button type="button" onClick={copyNarratorToX} className={`mt-5 rounded-full px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 ${copyToast ? "bg-emerald-400" : "bg-xyn-blue"}`}>{copyToast || "Copy to X / Twitter"}</button>
           </section>
 
           <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Join the arena</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Join the arena</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Deploy your own squad.</h2>
-            <Link href="/deploy" className="mt-6 inline-flex rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90">Deploy Your Squad →</Link>
+            <Link href="/deploy" className="mt-6 inline-flex rounded-full bg-xyn-blue px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90">Deploy Your Squad →</Link>
           </section>
         </div>
       </section>
@@ -696,9 +697,9 @@ export default function ArenaPage() {
         {selectedStep ? (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-black/60 p-4 backdrop-blur-sm" onClick={() => setSelectedStep(null)}>
             <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 24, opacity: 0 }} className="mx-auto mt-16 max-w-xl rounded-[32px] border border-white/10 bg-xyn-surface p-6 text-white dark:bg-xyn-dark" onClick={(event) => event.stopPropagation()}>
-              <div className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">{AGENT_META[selectedStep.agent].label} output</div>
+              <div className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">{AGENT_META[selectedStep.agent].label} output</div>
               <div className="mt-4 rounded-2xl bg-black/40 p-5 text-sm leading-7 text-zinc-200">{selectedStep.full}</div>
-              <button type="button" onClick={() => setSelectedStep(null)} className="mt-5 rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark">Close</button>
+              <button type="button" onClick={() => setSelectedStep(null)} className="mt-5 rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark">Close</button>
             </motion.div>
           </motion.div>
         ) : null}

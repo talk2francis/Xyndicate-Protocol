@@ -591,17 +591,17 @@ export default function MarketPage() {
       <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Marketplace</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Marketplace</p>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-6xl">Strategy Marketplace</h1>
             <p className="mt-4 text-lg text-xyn-muted dark:text-zinc-300">License proven squad configurations via x402.</p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
             {address ? (
-              <button type="button" onClick={() => setDrawerOpen(true)} className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark">
+              <button type="button" onClick={() => setDrawerOpen(true)} className="rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark">
                 My Licenses
               </button>
             ) : (
-              <button type="button" onClick={connect} className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark">
+              <button type="button" onClick={connect} className="rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark">
                 Connect wallet to manage squad
               </button>
             )}
@@ -613,7 +613,7 @@ export default function MarketPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search strategies"
-            className="rounded-2xl border border-black/10 bg-transparent px-4 py-3 outline-none focus:border-xyn-gold dark:border-white/10"
+            className="rounded-2xl border border-black/10 bg-transparent px-4 py-3 outline-none focus:border-xyn-blue dark:border-white/10"
           />
           <div className="flex flex-wrap gap-2">
             {["All", "Top PnL", "Conservative", "Balanced", "Aggressive"].map((pill) => (
@@ -621,7 +621,7 @@ export default function MarketPage() {
                 key={pill}
                 type="button"
                 onClick={() => setFilter(pill)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold ${filter === pill ? "bg-xyn-gold text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}
+                className={`rounded-full px-4 py-2 text-sm font-semibold ${filter === pill ? "bg-xyn-blue text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}
               >
                 {pill}
               </button>
@@ -630,7 +630,7 @@ export default function MarketPage() {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark outline-none focus:border-xyn-gold dark:border-white/10 dark:bg-zinc-900 dark:text-white"
+            className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark outline-none focus:border-xyn-blue dark:border-white/10 dark:bg-zinc-900 dark:text-white"
           >
             <option>Best Performance</option>
             <option>Most Decisions</option>
@@ -642,7 +642,7 @@ export default function MarketPage() {
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">x402 Tiers</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">x402 Tiers</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight">Three live access products.</h2>
             <p className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">Each tier uses a distinct payment amount so proofs can visibly separate config unlocks, signal access, and 24h subscription access.</p>
           </div>
@@ -655,7 +655,7 @@ export default function MarketPage() {
             { key: "subscription-24h", title: "24h Subscription", price: tiers["subscription-24h"]?.displayPrice || "1.00 USDC", detail: "Unlock all Oracle signals for 24 hours with countdown-based access." },
           ].map((tier) => (
             <div key={tier.key} className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
-              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-gold">{tier.title}</div>
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-blue">{tier.title}</div>
               <div className="mt-3 text-3xl font-semibold">{tier.price}</div>
               <div className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">{tier.detail}</div>
             </div>
@@ -715,7 +715,7 @@ export default function MarketPage() {
                 <svg viewBox="0 0 112 48" className="h-12 w-full">
                   <polyline
                     fill="none"
-                    stroke="#C9A84C"
+                    stroke="#7BC8F6"
                     strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -728,7 +728,7 @@ export default function MarketPage() {
                 <button
                   type="button"
                   onClick={() => setSelected(strategy)}
-                  className="w-full rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
+                  className="w-full rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
                 >
                   Open 3-tier access panel
                 </button>
@@ -749,7 +749,7 @@ export default function MarketPage() {
 
       <section className="mt-10 grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">My Squad</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">My Squad</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight">Your live squad status.</h2>
 
           {!address ? (
@@ -786,7 +786,7 @@ export default function MarketPage() {
               </div>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <span className="rounded-full bg-xyn-gold/15 px-4 py-2 text-sm font-semibold text-xyn-gold">Listed on marketplace</span>
+                <span className="rounded-full bg-xyn-blue/15 px-4 py-2 text-sm font-semibold text-xyn-blue">Listed on marketplace</span>
                 <span className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">One wallet, one active squad at a time</span>
                 <span className="rounded-full bg-slate-500/15 px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300">Delist to create again</span>
               </div>
@@ -807,7 +807,7 @@ export default function MarketPage() {
         </div>
 
         <div className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">List your strategy</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">List your strategy</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight">Earning from your strategy? List it here.</h2>
           <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_auto]">
             <div className="space-y-4 rounded-2xl border border-black/10 p-5 dark:border-white/10">
@@ -816,7 +816,7 @@ export default function MarketPage() {
               <select
                 value={selectedSquadId}
                 onChange={(event) => setSelectedSquadId(event.target.value)}
-                className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark outline-none focus:border-xyn-gold dark:border-white/10 dark:bg-zinc-900 dark:text-white"
+                className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark outline-none focus:border-xyn-blue dark:border-white/10 dark:bg-zinc-900 dark:text-white"
                 disabled={!enrolledOptions.length}
               >
                 {enrolledOptions.length ? enrolledOptions.map((strategy) => (
@@ -830,7 +830,7 @@ export default function MarketPage() {
               <button
                 type="button"
                 onClick={() => setListingAvailable((prev) => !prev)}
-                className={`relative inline-flex h-7 w-14 items-center rounded-full transition ${listingAvailable ? "bg-xyn-gold" : "bg-black/10 dark:bg-white/10"}`}
+                className={`relative inline-flex h-7 w-14 items-center rounded-full transition ${listingAvailable ? "bg-xyn-blue" : "bg-black/10 dark:bg-white/10"}`}
               >
                 <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition ${listingAvailable ? "translate-x-8" : "translate-x-1"}`} />
               </button>
@@ -852,7 +852,7 @@ export default function MarketPage() {
             </div>
             <button
               type="button"
-              className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark disabled:cursor-not-allowed disabled:opacity-50"
               onClick={handleListStrategy}
               disabled={!strategyRegistryAddress || !selectedSquadId || listingBusy}
             >
@@ -878,7 +878,7 @@ export default function MarketPage() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">License flow</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">License flow</p>
                   <h3 className="mt-3 text-3xl font-semibold tracking-tight">{selected.name}</h3>
                   <div className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">Creator wallet: {truncateAddress((deployments as any)?.DecisionLog?.address)}</div>
                   <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">Price: {priceLabel}</div>
@@ -913,7 +913,7 @@ export default function MarketPage() {
                     type="button"
                     onClick={() => handleBuyLicense("strategy-config")}
                     disabled={buying}
-                    className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {buyingTier === "strategy-config" ? "Processing..." : `Strategy Config — ${tiers["strategy-config"]?.displayPrice || priceLabel}`}
                   </button>
@@ -921,7 +921,7 @@ export default function MarketPage() {
                     type="button"
                     onClick={() => handleBuyLicense("signal-access")}
                     disabled={buying}
-                    className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {buyingTier === "signal-access" ? "Processing..." : `Signal Access — ${tiers["signal-access"]?.displayPrice || "0.10 USDC"}`}
                   </button>
@@ -929,7 +929,7 @@ export default function MarketPage() {
                     type="button"
                     onClick={() => handleBuyLicense("subscription-24h")}
                     disabled={buying}
-                    className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {buyingTier === "subscription-24h" ? "Processing..." : `24h Subscription — ${tiers["subscription-24h"]?.displayPrice || "1.00 USDC"}`}
                   </button>

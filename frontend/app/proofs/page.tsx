@@ -130,12 +130,12 @@ export default function ProofsPage() {
       <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Proofs</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Proofs</p>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-6xl">Everything Has a Hash.</h1>
             <p className="mt-4 text-lg text-xyn-muted dark:text-zinc-300">Every decision, swap, and payment, on X Layer Mainnet.</p>
           </div>
           <div className="flex flex-col gap-2 text-right">
-            <div className="inline-flex items-center rounded-full bg-xyn-gold/15 px-5 py-3 text-sm font-semibold text-xyn-gold">
+            <div className="inline-flex items-center rounded-full bg-xyn-blue/15 px-5 py-3 text-sm font-semibold text-xyn-blue">
               {data?.totalTxCount || 0} total txs
             </div>
             <div className="text-xs text-xyn-muted dark:text-zinc-400">
@@ -156,7 +156,7 @@ export default function ProofsPage() {
                   setFilter(tab);
                   setPage(1);
                 }}
-                className={`rounded-full px-4 py-2 text-sm font-semibold ${filter === tab ? "bg-xyn-gold text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}
+                className={`rounded-full px-4 py-2 text-sm font-semibold ${filter === tab ? "bg-xyn-blue text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}
               >
                 {tab}
               </button>
@@ -165,7 +165,7 @@ export default function ProofsPage() {
           <button
             type="button"
             onClick={exportCsv}
-            className="inline-flex items-center gap-2 rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark"
+            className="inline-flex items-center gap-2 rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark"
           >
             <Download className="h-4 w-4" />
             Export CSV
@@ -208,7 +208,7 @@ export default function ProofsPage() {
                   <div className="flex items-center gap-2 text-sm font-medium">
                     <span>{truncateHash(row.txHash)}</span>
                     {row.txHash?.startsWith("0x") ? (
-                      <button type="button" onClick={() => copyText(row.txHash)} className="text-xyn-muted transition hover:text-xyn-gold" aria-label="Copy tx hash">
+                      <button type="button" onClick={() => copyText(row.txHash)} className="text-xyn-muted transition hover:text-xyn-blue" aria-label="Copy tx hash">
                         <Copy className="h-4 w-4" />
                       </button>
                     ) : null}
@@ -217,7 +217,7 @@ export default function ProofsPage() {
                   <div className="text-sm text-xyn-muted dark:text-zinc-300">{row.amount || "—"}</div>
                   <div>
                     {row.txHash?.startsWith("0x") ? (
-                      <a href={row.explorerUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-gold">
+                      <a href={row.explorerUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-blue">
                         OKLink <ExternalLink className="h-4 w-4" />
                       </a>
                     ) : (
@@ -255,7 +255,7 @@ export default function ProofsPage() {
 
       <section className="mt-8">
         <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Key contracts</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Key contracts</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Core on-chain surfaces</h2>
         </div>
 
@@ -271,7 +271,7 @@ export default function ProofsPage() {
                   <div className="mt-2 flex items-center gap-2 font-medium">
                     <span>{truncateHash(contract.address)}</span>
                     {contract.address ? (
-                      <button type="button" onClick={() => copyText(contract.address!)} className="text-xyn-muted transition hover:text-xyn-gold" aria-label="Copy contract address">
+                      <button type="button" onClick={() => copyText(contract.address!)} className="text-xyn-muted transition hover:text-xyn-blue" aria-label="Copy contract address">
                         <Copy className="h-4 w-4" />
                       </button>
                     ) : null}
@@ -284,7 +284,7 @@ export default function ProofsPage() {
                 </div>
 
                 {contract.oklinkUrl ? (
-                  <a href={contract.oklinkUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-gold">
+                  <a href={contract.oklinkUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-blue">
                     View on OKLink <ExternalLink className="h-4 w-4" />
                   </a>
                 ) : null}

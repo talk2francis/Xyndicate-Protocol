@@ -84,7 +84,7 @@ export function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`rounded-full px-3 py-2 text-sm transition ${pathname === item.href ? "bg-xyn-gold/15 font-semibold text-xyn-dark dark:text-xyn-gold" : "text-xyn-muted hover:text-xyn-dark dark:text-zinc-300 dark:hover:text-white"}`}
+              className={`rounded-full px-3 py-2 text-sm transition ${pathname === item.href ? "bg-xyn-blue-dark font-semibold text-xyn-blue dark:text-xyn-blue" : "text-xyn-muted hover:text-xyn-dark dark:text-zinc-300 dark:hover:text-white"}`}
             >
               {item.label}
             </Link>
@@ -105,7 +105,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={address ? () => setWalletMenuOpen((prev) => !prev) : connect}
-              className="flex max-w-[152px] items-center gap-2 rounded-full bg-xyn-gold px-3 py-2 text-sm font-semibold text-xyn-dark transition hover:opacity-90 sm:max-w-none sm:px-4"
+              className="flex max-w-[152px] items-center gap-2 rounded-full bg-xyn-blue px-3 py-2 text-sm font-semibold text-[#0A1628] transition hover:opacity-90 sm:max-w-none sm:px-4"
             >
               <span className="truncate">{buttonLabel}</span>
               {address ? <ChevronDown className="h-4 w-4" /> : null}
@@ -137,7 +137,7 @@ export function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-2xl px-4 py-3 text-sm transition ${pathname === item.href ? "bg-xyn-gold/15 font-semibold text-xyn-dark dark:text-xyn-gold" : "text-xyn-muted hover:bg-black/5 hover:text-xyn-dark dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"}`}
+                className={`rounded-2xl px-4 py-3 text-sm transition ${pathname === item.href ? "bg-xyn-blue-dark font-semibold text-xyn-blue dark:text-xyn-blue" : "text-xyn-muted hover:bg-black/5 hover:text-xyn-dark dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"}`}
               >
                 {item.label}
               </Link>

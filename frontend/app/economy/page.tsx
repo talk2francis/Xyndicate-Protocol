@@ -97,7 +97,7 @@ function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: Eco
         <svg viewBox="0 0 640 520" className="min-w-[640px]">
           <defs>
             <marker id="economy-arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="#C9A84C" />
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#7BC8F6" />
             </marker>
           </defs>
 
@@ -105,8 +105,8 @@ function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: Eco
             const pathId = `path-${edge.id}`;
             return (
               <g key={edge.id}>
-                <path d={edgePath(edge.from, edge.to)} fill="none" stroke="rgba(201,168,76,0.35)" strokeWidth="2.5" markerEnd="url(#economy-arrowhead)" />
-                <circle r="5" fill="#C9A84C">
+                <path d={edgePath(edge.from, edge.to)} fill="none" stroke="rgba(123,200,246,0.35)" strokeWidth="2.5" markerEnd="url(#economy-arrowhead)" />
+                <circle r="5" fill="#7BC8F6">
                   <animateMotion dur="4s" repeatCount="indefinite" rotate="auto">
                     <mpath href={`#${pathId}`} />
                   </animateMotion>
@@ -123,8 +123,8 @@ function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: Eco
             const labelY = (from.y + to.y) / 2;
             return (
               <g key={`${edge.id}-label`}>
-                <rect x={labelX - 72} y={labelY - 28} width="144" height="56" rx="14" fill="rgba(10,10,10,0.85)" stroke="rgba(201,168,76,0.35)" />
-                <text x={labelX} y={labelY - 8} textAnchor="middle" fill="#C9A84C" fontSize="11" fontWeight="700">{edge.paymentType}</text>
+                <rect x={labelX - 72} y={labelY - 28} width="144" height="56" rx="14" fill="rgba(10,10,10,0.85)" stroke="rgba(123,200,246,0.35)" />
+                <text x={labelX} y={labelY - 8} textAnchor="middle" fill="#7BC8F6" fontSize="11" fontWeight="700">{edge.paymentType}</text>
                 <text x={labelX} y={labelY + 10} textAnchor="middle" fill="#FFFFFF" fontSize="11">{edge.amount}</text>
                 <text x={labelX} y={labelY + 24} textAnchor="middle" fill="#9CA3AF" fontSize="10">last: {edge.last}</text>
               </g>
@@ -135,8 +135,8 @@ function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: Eco
             const pos = NODE_POSITIONS[node.id];
             return (
               <g key={node.id} transform={`translate(${pos.x - 82} ${pos.y - 42})`}>
-                <rect width="164" height="84" rx="24" fill="rgba(14,14,14,0.96)" stroke="rgba(201,168,76,0.45)" />
-                <text x="82" y="24" textAnchor="middle" fill="#C9A84C" fontSize="12" fontWeight="700">{node.label}</text>
+                <rect width="164" height="84" rx="24" fill="rgba(14,14,14,0.96)" stroke="rgba(123,200,246,0.45)" />
+                <text x="82" y="24" textAnchor="middle" fill="#7BC8F6" fontSize="12" fontWeight="700">{node.label}</text>
                 <text x="82" y="46" textAnchor="middle" fill="#FFFFFF" fontSize="11">{node.value}</text>
                 <text x="82" y="64" textAnchor="middle" fill="#9CA3AF" fontSize="10">{node.secondary}</text>
               </g>
@@ -151,7 +151,7 @@ function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: Eco
 function StatCard({ label, value, note }: { label: string; value: string; note?: string }) {
   return (
     <div className="rounded-[28px] border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">
-      <div className="text-xs font-semibold uppercase tracking-[0.24em] text-xyn-gold">{label}</div>
+      <div className="text-xs font-semibold uppercase tracking-[0.24em] text-xyn-blue">{label}</div>
       <div className="mt-4 text-4xl font-semibold tracking-tight">{value}</div>
       {note ? <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-400">{note}</div> : null}
     </div>
@@ -188,12 +188,12 @@ export default function EconomyPage() {
       <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Economy</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Economy</p>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-6xl">{data?.header.title || "The Agent Economy Loop"}</h1>
             <p className="mt-4 max-w-3xl text-lg text-xyn-muted dark:text-zinc-300">{data?.header.subtitle || "Real value circulating between autonomous agents on X Layer."}</p>
           </div>
           <div className="rounded-3xl border border-black/10 bg-black/5 px-5 py-4 text-sm dark:border-white/10 dark:bg-white/5">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-gold">Last updated</div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Last updated</div>
             <div className="mt-2 font-medium">{data?.lastUpdated ? new Date(data.lastUpdated).toLocaleString() : "Awaiting first load"}</div>
           </div>
         </div>
@@ -222,7 +222,7 @@ export default function EconomyPage() {
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Payment History</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Payment History</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Agent-to-agent settlement ledger</h2>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -235,7 +235,7 @@ export default function EconomyPage() {
                 key={option.key}
                 type="button"
                 onClick={() => setSortKey(option.key as "time" | "type" | "amount")}
-                className={`rounded-full px-4 py-2 text-sm font-semibold ${sortKey === option.key ? "bg-xyn-gold text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}
+                className={`rounded-full px-4 py-2 text-sm font-semibold ${sortKey === option.key ? "bg-xyn-blue text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}
               >
                 {option.label}
               </button>
@@ -264,7 +264,7 @@ export default function EconomyPage() {
                   <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-300">{entry.status}</span>
                 </div>
                 <div>
-                  <a href={`https://www.oklink.com/xlayer/tx/${entry.txHash}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-gold">
+                  <a href={`https://www.oklink.com/xlayer/tx/${entry.txHash}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-xyn-blue">
                     OKLink <ExternalLink className="h-4 w-4" />
                   </a>
                 </div>
@@ -277,11 +277,11 @@ export default function EconomyPage() {
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Participate</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Participate</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Participate in the economy — Deploy a squad or license a strategy</h2>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Link href="/deploy" className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark">Deploy a Squad →</Link>
+            <Link href="/deploy" className="rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark">Deploy a Squad →</Link>
             <Link href="/market" className="rounded-full border border-black/10 px-5 py-3 text-sm font-semibold dark:border-white/10">License a Strategy →</Link>
           </div>
         </div>

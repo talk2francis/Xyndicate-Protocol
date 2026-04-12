@@ -222,7 +222,7 @@ export default function DeployPage() {
             <div key={item.id} className="flex items-center gap-3">
               <div
                 className={`rounded-full px-4 py-2 text-sm font-semibold ${
-                  isActive ? "bg-xyn-gold text-xyn-dark" : completed ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300" : "border border-black/10 dark:border-white/10"
+                  isActive ? "bg-xyn-blue text-xyn-dark" : completed ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300" : "border border-black/10 dark:border-white/10"
                 }`}
               >
                 {completed ? `✓ Step ${item.id}` : `Step ${item.id}`}
@@ -253,7 +253,7 @@ export default function DeployPage() {
                     onChange={(e) => setSquadName(sanitizeSquadName(e.target.value))}
                     maxLength={20}
                     placeholder="ALPHAONE"
-                    className="w-full rounded-2xl border border-black/10 bg-transparent px-4 py-3 outline-none focus:border-xyn-gold dark:border-white/10"
+                    className="w-full rounded-2xl border border-black/10 bg-transparent px-4 py-3 outline-none focus:border-xyn-blue dark:border-white/10"
                   />
                   <div className="mt-2 text-right text-xs text-xyn-muted dark:text-zinc-400">{squadName.length}/20</div>
                 </div>
@@ -266,7 +266,7 @@ export default function DeployPage() {
                         key={option}
                         type="button"
                         onClick={() => setRisk(option)}
-                        className={`rounded-2xl border px-4 py-4 text-left ${risk === option ? "border-xyn-gold bg-xyn-gold/10" : "border-black/10 dark:border-white/10"}`}
+                        className={`rounded-2xl border px-4 py-4 text-left ${risk === option ? "border-xyn-blue bg-xyn-blue/10" : "border-black/10 dark:border-white/10"}`}
                       >
                         <div className="font-semibold">{option}</div>
                         <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">
@@ -286,7 +286,7 @@ export default function DeployPage() {
                   <select
                     value={pair}
                     onChange={(e) => setPair(e.target.value as Pair)}
-                    className="w-full rounded-2xl border border-black/10 bg-transparent px-4 py-3 outline-none focus:border-xyn-gold dark:border-white/10"
+                    className="w-full rounded-2xl border border-black/10 bg-transparent px-4 py-3 outline-none focus:border-xyn-blue dark:border-white/10"
                   >
                     <option>ETH/USDC</option>
                     <option>OKB/USDC</option>
@@ -302,7 +302,7 @@ export default function DeployPage() {
                         key={option}
                         type="button"
                         onClick={() => setMode(option)}
-                        className={`rounded-2xl border px-4 py-4 text-left ${mode === option ? "border-xyn-gold bg-xyn-gold/10" : "border-black/10 dark:border-white/10"}`}
+                        className={`rounded-2xl border px-4 py-4 text-left ${mode === option ? "border-xyn-blue bg-xyn-blue/10" : "border-black/10 dark:border-white/10"}`}
                       >
                         <div className="font-semibold">{option}</div>
                         <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">
@@ -332,7 +332,7 @@ export default function DeployPage() {
                   type="button"
                   onClick={() => setStep(2)}
                   disabled={!canContinue}
-                  className="w-full rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                  className="w-full rounded-full bg-xyn-blue px-6 py-3 text-sm font-semibold text-[#0A1628] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
                 >
                   Continue to Fund →
                 </button>
@@ -340,7 +340,7 @@ export default function DeployPage() {
             </div>
 
             <div className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-gold">Squad Preview</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Squad Preview</p>
               <div className="mt-6 rounded-3xl border border-black/10 bg-xyn-surface p-6 dark:border-white/10 dark:bg-xyn-dark">
                 <div className="flex items-center justify-between gap-4">
                   <div>
@@ -391,7 +391,7 @@ export default function DeployPage() {
                   <button
                     type="button"
                     onClick={connect}
-                    className="w-full rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 sm:w-auto"
+                    className="w-full rounded-full bg-xyn-blue px-6 py-3 text-sm font-semibold text-[#0A1628] transition hover:opacity-90 sm:w-auto"
                   >
                     Connect Wallet
                   </button>
@@ -399,7 +399,7 @@ export default function DeployPage() {
                   <button
                     type="button"
                     onClick={ensureWalletOnXLayer}
-                    className="w-full rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 sm:w-auto"
+                    className="w-full rounded-full bg-xyn-blue px-6 py-3 text-sm font-semibold text-[#0A1628] transition hover:opacity-90 sm:w-auto"
                   >
                     Switch to X Layer
                   </button>
@@ -408,7 +408,7 @@ export default function DeployPage() {
                     type="button"
                     onClick={handleEnroll}
                     disabled={submitting}
-                    className="w-full rounded-full bg-xyn-gold px-6 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                    className="w-full rounded-full bg-xyn-blue px-6 py-3 text-sm font-semibold text-[#0A1628] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                   >
                     {submitting ? "Submitting transaction..." : "Enroll Squad"}
                   </button>
@@ -442,7 +442,7 @@ export default function DeployPage() {
               <div>First cycle runs in {formatCountdown(cycleCountdown)}</div>
             </div>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
-              <Link href="/arena" className="w-full rounded-full bg-xyn-gold px-6 py-3 text-center text-sm font-semibold text-xyn-dark transition hover:opacity-90 sm:w-auto">
+              <Link href="/arena" className="w-full rounded-full bg-xyn-blue px-6 py-3 text-center text-sm font-semibold text-xyn-dark transition hover:opacity-90 sm:w-auto">
                 View in Arena →
               </Link>
               {tweetUrl ? (

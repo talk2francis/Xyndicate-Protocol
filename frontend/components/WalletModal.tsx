@@ -151,7 +151,7 @@ export function WalletModal() {
                   <div className="flex items-center gap-2">
                     <p className="font-medium">{wallet.name}</p>
                     {wallet.recommended ? (
-                      <span className="rounded-full bg-xyn-gold/15 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-xyn-gold">
+                      <span className="rounded-full bg-xyn-blue/15 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-xyn-blue">
                         Recommended
                       </span>
                     ) : null}
@@ -177,14 +177,14 @@ export function WalletModal() {
         ) : null}
 
         {address && !isCorrectChain ? (
-          <div className="mt-5 rounded-2xl border border-amber-400/40 bg-amber-400/10 p-4">
+          <div className="mt-5 rounded-2xl border border-xyn-blue/40 bg-xyn-blue/10 p-4">
             <p className="text-sm font-medium text-amber-700 dark:text-amber-300">
               Wrong network detected{chainId ? ` (chain ${chainId})` : ""}. Switch to X Layer mainnet.
             </p>
             <button
               type="button"
               onClick={switchToXLayer}
-              className="mt-3 rounded-full bg-xyn-gold px-4 py-2 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
+              className="mt-3 rounded-full bg-xyn-blue px-4 py-2 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
             >
               Switch to X Layer
             </button>
