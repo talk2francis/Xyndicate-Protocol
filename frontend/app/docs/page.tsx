@@ -28,6 +28,21 @@ type McpUsageResponse = {
   averageResponseTimeMs: number;
 };
 
+type CycleStateResponse = {
+  currentAgent: string;
+  cycleNumber: number;
+  cycleStartTime: number;
+  nextCycleTime: number;
+  lastCycleComplete: number;
+  activeSquads?: string[];
+  agentLog?: Array<{
+    agent: string;
+    status: string;
+    completedAt: number;
+    summary: string;
+  }>;
+};
+
 const INSTALL_TABS = ["Plugin Store", "Direct MCP", "Manual"] as const;
 const GUIDE_TABS = ["Claude Code", "OpenClaw", "Raw HTTP"] as const;
 const TEST_TOOLS = ["get_market_signal", "get_leaderboard", "execute_route_query", "get_economy_snapshot"] as const;
@@ -43,6 +58,21 @@ const MCP_JSON = JSON.stringify({
   },
 }, null, 2);
 const MANUAL_INSTALL = "npm install @xyndicate/strategy-skill";
+const ACP_SCHEMA_SNIPPET = `{
+  "version": "1.0",
+  "from": "oracle",
+  "to": "analyst",
+  "messageType": "market_signal",
+  "payload": {
+    "pair": "ETH/USDC",
+    "okxPrice": 0,
+    "uniswapPrice": 0,
+    "spreadBps": 0,
+    "timestamp": 0
+  },
+  "cycleId": 0
+}`;
+const ACP_GITHUB_URL = "https://github.com/talk2francis/Xyndicate-Protocol/tree/main/acp/schema/v1";
 
 const TOOL_CARDS: ToolCard[] = [
   {
@@ -348,6 +378,29 @@ export default function DocsPage() {
               ) : null}
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+        <div className="mb-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">OPEN STANDARD</p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight">Agent Collaboration Protocol (ACP)</h2>
+          <p className="mt-3 text-lg text-xyn-muted dark:text-zinc-300">Xyndicate published ACP v1, a reusable JSON schema for structured agent communication. Any agent on X Layer can use it.</p>
+          <div className="mt-4 inline-flex rounded-full bg-xyn-blue/15 px-4 py-2 text-xs font-semibold text-xyn-blue">First published Season 1 · Now powering the 6-agent pipeline</div>
+        </div>
+        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <div className="mb-3 text-sm font-semibold">Core ACP schema</div>
+            <pre className="overflow-x-auto rounded-2xl bg-black/90 p-4 text-sm text-green-400"><code>{ACP_SCHEMA_SNIPPET}</code></pre>
+            <div className="mt-4 text-sm text-xyn-muted dark:text-zinc-300">Every decision in the Xyndicate pipeline passes as an ACP message between agents.</div>
+            <a href={ACP_GITHUB_URL} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-[#0A1628]">
+              View on GitHub <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
+          <div className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
+            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-blue">ACP message preview</div>
+            <pre className="mt-4 overflow-x-auto rounded-2xl bg-black/90 p-4 text-sm text-green-400"><code>{JSON.stringify(acpPreview, null, 2)}</code></pre>
+          </div>
         </div>
       </section>
 
