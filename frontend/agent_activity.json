@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "100-router-1775932317088",
-      "agent": "router",
-      "cycle": 100,
-      "timestamp": 1775932317088,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "100-executor-1775932317780",
       "agent": "executor",
       "cycle": 100,
@@ -538,6 +529,15 @@
       "timestamp": 1775964685556,
       "status": "complete",
       "summary": "SELL ETH (100% treasury) | Market price change in the last 24 hours is negative, indicating potential downward trend. Analyst recommends waiting and selling ETH.",
+      "durationMs": 1
+    },
+    {
+      "id": "117-router-1775964686172",
+      "agent": "router",
+      "cycle": 117,
+      "timestamp": 1775964686172,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
