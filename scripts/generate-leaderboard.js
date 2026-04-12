@@ -154,6 +154,7 @@ async function buildLeaderboard() {
       sells: normalized.stats.sells,
       holds: normalized.stats.holds,
       latestTimestamp: normalized.latestTimestamp,
+      registeredAt: Number(external?.registeredAt || normalized.latestTimestamp || 0),
       latestRationale: normalized.lastAction,
       lastAction: normalized.stats.lastTradeAction,
       lastAsset: normalized.stats.lastAsset,
@@ -164,15 +165,13 @@ async function buildLeaderboard() {
     });
   }
 
-  const squads = Array.from(squadMap.values())
-    .sort((a, b) => {
-      const aExternal = Boolean(a.external);
-      const bExternal = Boolean(b.external);
-      if (aExternal && bExternal) return Number(a.registeredAt || a.latestTimestamp || 0) - Number(b.registeredAt || b.latestTimestamp || 0);
-      if (aExternal) return 1;
-      if (bExternal) return -1;
-      return Number(b.latestTimestamp || 0) - Number(a.latestTimestamp || 0);
-    })
+  const internalSquads = Array.from(squadMap.values()).filter((squad) => !squad.external).sort((a, b) => Number(b.latestTimestamp || 0) - Number(a.latestTimestamp || 0));
+  const externalSquads = Array.from(squadMap.values()).filter((squad) => squad.external).sort((a, b) => {
+    const registeredDelta = Number(a.registeredAt || 0) - Number(b.registeredAt || 0);
+    if (registeredDelta !== 0) return registeredDelta;
+    return String(a.squadId || '').localeCompare(String(b.squadId || ''));
+  });
+  const squads = [...internalSquads, ...externalSquads]
     .map((squad, index) => ({
       rank: index + 1,
       squadId: squad.squadId,
