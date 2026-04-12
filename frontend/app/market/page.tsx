@@ -778,6 +778,7 @@ export default function MarketPage() {
               <div className="mt-6 flex flex-wrap gap-3">
                 <span className="rounded-full bg-xyn-gold/15 px-4 py-2 text-sm font-semibold text-xyn-gold">Listed on marketplace</span>
                 <span className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold dark:border-white/10">One wallet, one active squad at a time</span>
+                <span className="rounded-full bg-slate-500/15 px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300">Delist to create again</span>
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
                 <button type="button" onClick={handleDelistSquad} disabled={delistingBusy} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:hover:bg-white/10">
