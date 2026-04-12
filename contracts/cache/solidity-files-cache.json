@@ -1,9 +1,9 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/chatwithnonso01/.openclaw/workspace/Xyndicate-Protocol/contracts/src/DecisionLog.sol": {
-      "lastModificationDate": 1774544658332,
-      "contentHash": "e04d6f8ef66b40f35ff045b0b242cf0b",
+    "/home/chatwithnonso01/.openclaw/workspace/xyndicate/contracts/src/DecisionLog.sol": {
+      "lastModificationDate": 1775982605252,
+      "contentHash": "421ba47d90d885ab4bb10c86e6a77f0b",
       "sourceName": "src/DecisionLog.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -37,9 +37,9 @@
         "DecisionLog"
       ]
     },
-    "/home/chatwithnonso01/.openclaw/workspace/Xyndicate-Protocol/contracts/src/SeasonManager.sol": {
-      "lastModificationDate": 1774575887311,
-      "contentHash": "fd66526d4e0d9953d9966ef25e7d9595",
+    "/home/chatwithnonso01/.openclaw/workspace/xyndicate/contracts/src/SeasonManager.sol": {
+      "lastModificationDate": 1775982518448,
+      "contentHash": "5a9c04fd125ef1b7e5f55a6c8b1ecc07",
       "sourceName": "src/SeasonManager.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -74,8 +74,152 @@
         "SeasonManager"
       ]
     },
-    "/home/chatwithnonso01/.openclaw/workspace/Xyndicate-Protocol/contracts/src/mocks/X402Mock.sol": {
-      "lastModificationDate": 1774445531277,
+    "/home/chatwithnonso01/.openclaw/workspace/xyndicate/contracts/src/SeasonManagerV2.sol": {
+      "lastModificationDate": 1775982510324,
+      "contentHash": "c014de885edd5af538a9ea61426f9ce7",
+      "sourceName": "src/SeasonManagerV2.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "SeasonManagerV2"
+      ]
+    },
+    "/home/chatwithnonso01/.openclaw/workspace/xyndicate/contracts/src/StrategyLicense.sol": {
+      "lastModificationDate": 1775684880857,
+      "contentHash": "e5b081ac51f62a653c22fe34499a2a99",
+      "sourceName": "src/StrategyLicense.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "StrategyLicense"
+      ]
+    },
+    "/home/chatwithnonso01/.openclaw/workspace/xyndicate/contracts/src/StrategyRegistry.sol": {
+      "lastModificationDate": 1775727014115,
+      "contentHash": "31d828467b3130aa0332ba0ec74db4f1",
+      "sourceName": "src/StrategyRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "StrategyRegistry"
+      ]
+    },
+    "/home/chatwithnonso01/.openclaw/workspace/xyndicate/contracts/src/StrategyVault.sol": {
+      "lastModificationDate": 1775682993386,
+      "contentHash": "71cc329723b42396149d71f2a6a3781f",
+      "sourceName": "src/StrategyVault.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "StrategyVault"
+      ]
+    },
+    "/home/chatwithnonso01/.openclaw/workspace/xyndicate/contracts/src/mocks/X402Mock.sol": {
+      "lastModificationDate": 1775680186792,
       "contentHash": "6629004a23d897124fcb3e6b8f928d56",
       "sourceName": "src/mocks/X402Mock.sol",
       "solcConfig": {

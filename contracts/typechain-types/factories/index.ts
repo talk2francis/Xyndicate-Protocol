@@ -4,3 +4,7 @@
 export * as seasonManagerSol from "./SeasonManager.sol";
 export * as mocks from "./mocks";
 export { DecisionLog__factory } from "./DecisionLog__factory";
+export { SeasonManagerV2__factory } from "./SeasonManagerV2__factory";
+export { StrategyLicense__factory } from "./StrategyLicense__factory";
+export { StrategyRegistry__factory } from "./StrategyRegistry__factory";
+export { StrategyVault__factory } from "./StrategyVault__factory";

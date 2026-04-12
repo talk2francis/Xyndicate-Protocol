@@ -21,27 +21,30 @@ import type {
   TypedLogDescription,
   TypedListener,
   TypedContractMethod,
-} from "../common";
+} from "./common";
 
-export interface SeasonManagerInterface extends Interface {
+export interface SeasonManagerV2Interface extends Interface {
   getFunction(
     nameOrSignature:
       | "closeSquad"
       | "deactivate"
       | "enroll"
       | "entryFee"
-      | "payEntryFee"
-      | "paymentHub"
+      | "owner"
+      | "seasonId"
       | "squads"
       | "updateEntryFee"
+      | "withdraw"
   ): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic:
+      | "EntryFeePaid"
+      | "EntryFeeUpdated"
       | "SquadClosed"
       | "SquadDeactivated"
       | "SquadEnrolled"
-      | "X402PaymentReceived"
+      | "Withdrawn"
   ): EventFragment;
 
   encodeFunctionData(
@@ -54,79 +57,41 @@ export interface SeasonManagerInterface extends Interface {
   ): string;
   encodeFunctionData(functionFragment: "enroll", values: [AddressLike]): string;
   encodeFunctionData(functionFragment: "entryFee", values?: undefined): string;
-  encodeFunctionData(functionFragment: "payEntryFee", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "paymentHub",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(functionFragment: "seasonId", values?: undefined): string;
   encodeFunctionData(functionFragment: "squads", values: [AddressLike]): string;
   encodeFunctionData(
     functionFragment: "updateEntryFee",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdraw",
+    values: [AddressLike]
   ): string;
 
   decodeFunctionResult(functionFragment: "closeSquad", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deactivate", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "enroll", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "entryFee", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "payEntryFee",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "paymentHub", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "seasonId", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "squads", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "updateEntryFee",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 }
 
-export namespace SquadClosedEvent {
-  export type InputTuple = [squad: AddressLike];
-  export type OutputTuple = [squad: string];
-  export interface OutputObject {
-    squad: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace SquadDeactivatedEvent {
-  export type InputTuple = [squad: AddressLike];
-  export type OutputTuple = [squad: string];
-  export interface OutputObject {
-    squad: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace SquadEnrolledEvent {
-  export type InputTuple = [squad: AddressLike, agentWallet: AddressLike];
-  export type OutputTuple = [squad: string, agentWallet: string];
-  export interface OutputObject {
-    squad: string;
-    agentWallet: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace X402PaymentReceivedEvent {
+export namespace EntryFeePaidEvent {
   export type InputTuple = [
-    agent: AddressLike,
+    payer: AddressLike,
     amount: BigNumberish,
     seasonId: string
   ];
-  export type OutputTuple = [agent: string, amount: bigint, seasonId: string];
+  export type OutputTuple = [payer: string, amount: bigint, seasonId: string];
   export interface OutputObject {
-    agent: string;
+    payer: string;
     amount: bigint;
     seasonId: string;
   }
@@ -136,11 +101,85 @@ export namespace X402PaymentReceivedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export interface SeasonManager extends BaseContract {
-  connect(runner?: ContractRunner | null): SeasonManager;
+export namespace EntryFeeUpdatedEvent {
+  export type InputTuple = [newFee: BigNumberish];
+  export type OutputTuple = [newFee: bigint];
+  export interface OutputObject {
+    newFee: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace SquadClosedEvent {
+  export type InputTuple = [squadOwner: AddressLike];
+  export type OutputTuple = [squadOwner: string];
+  export interface OutputObject {
+    squadOwner: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace SquadDeactivatedEvent {
+  export type InputTuple = [squadOwner: AddressLike];
+  export type OutputTuple = [squadOwner: string];
+  export interface OutputObject {
+    squadOwner: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace SquadEnrolledEvent {
+  export type InputTuple = [
+    squadOwner: AddressLike,
+    agentWallet: AddressLike,
+    amount: BigNumberish,
+    seasonId: string
+  ];
+  export type OutputTuple = [
+    squadOwner: string,
+    agentWallet: string,
+    amount: bigint,
+    seasonId: string
+  ];
+  export interface OutputObject {
+    squadOwner: string;
+    agentWallet: string;
+    amount: bigint;
+    seasonId: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace WithdrawnEvent {
+  export type InputTuple = [recipient: AddressLike, amount: BigNumberish];
+  export type OutputTuple = [recipient: string, amount: bigint];
+  export interface OutputObject {
+    recipient: string;
+    amount: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export interface SeasonManagerV2 extends BaseContract {
+  connect(runner?: ContractRunner | null): SeasonManagerV2;
   waitForDeployment(): Promise<this>;
 
-  interface: SeasonManagerInterface;
+  interface: SeasonManagerV2Interface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
@@ -183,21 +222,23 @@ export interface SeasonManager extends BaseContract {
 
   deactivate: TypedContractMethod<[], [void], "nonpayable">;
 
-  enroll: TypedContractMethod<[agentWallet: AddressLike], [void], "nonpayable">;
+  enroll: TypedContractMethod<[agentWallet: AddressLike], [void], "payable">;
 
   entryFee: TypedContractMethod<[], [bigint], "view">;
 
-  payEntryFee: TypedContractMethod<[seasonId: string], [void], "payable">;
+  owner: TypedContractMethod<[], [string], "view">;
 
-  paymentHub: TypedContractMethod<[], [string], "view">;
+  seasonId: TypedContractMethod<[], [string], "view">;
 
   squads: TypedContractMethod<
     [arg0: AddressLike],
     [
-      [string, string, boolean] & {
+      [string, string, boolean, bigint, bigint] & {
         owner: string;
         agentWallet: string;
         active: boolean;
+        entryFeePaid: bigint;
+        enrolledAt: bigint;
       }
     ],
     "view"
@@ -208,6 +249,8 @@ export interface SeasonManager extends BaseContract {
     [void],
     "nonpayable"
   >;
+
+  withdraw: TypedContractMethod<[recipient: AddressLike], [void], "nonpayable">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -221,25 +264,27 @@ export interface SeasonManager extends BaseContract {
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "enroll"
-  ): TypedContractMethod<[agentWallet: AddressLike], [void], "nonpayable">;
+  ): TypedContractMethod<[agentWallet: AddressLike], [void], "payable">;
   getFunction(
     nameOrSignature: "entryFee"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
-    nameOrSignature: "payEntryFee"
-  ): TypedContractMethod<[seasonId: string], [void], "payable">;
+    nameOrSignature: "owner"
+  ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "paymentHub"
+    nameOrSignature: "seasonId"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "squads"
   ): TypedContractMethod<
     [arg0: AddressLike],
     [
-      [string, string, boolean] & {
+      [string, string, boolean, bigint, bigint] & {
         owner: string;
         agentWallet: string;
         active: boolean;
+        entryFeePaid: bigint;
+        enrolledAt: bigint;
       }
     ],
     "view"
@@ -247,7 +292,24 @@ export interface SeasonManager extends BaseContract {
   getFunction(
     nameOrSignature: "updateEntryFee"
   ): TypedContractMethod<[newFee: BigNumberish], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "withdraw"
+  ): TypedContractMethod<[recipient: AddressLike], [void], "nonpayable">;
 
+  getEvent(
+    key: "EntryFeePaid"
+  ): TypedContractEvent<
+    EntryFeePaidEvent.InputTuple,
+    EntryFeePaidEvent.OutputTuple,
+    EntryFeePaidEvent.OutputObject
+  >;
+  getEvent(
+    key: "EntryFeeUpdated"
+  ): TypedContractEvent<
+    EntryFeeUpdatedEvent.InputTuple,
+    EntryFeeUpdatedEvent.OutputTuple,
+    EntryFeeUpdatedEvent.OutputObject
+  >;
   getEvent(
     key: "SquadClosed"
   ): TypedContractEvent<
@@ -270,14 +332,36 @@ export interface SeasonManager extends BaseContract {
     SquadEnrolledEvent.OutputObject
   >;
   getEvent(
-    key: "X402PaymentReceived"
+    key: "Withdrawn"
   ): TypedContractEvent<
-    X402PaymentReceivedEvent.InputTuple,
-    X402PaymentReceivedEvent.OutputTuple,
-    X402PaymentReceivedEvent.OutputObject
+    WithdrawnEvent.InputTuple,
+    WithdrawnEvent.OutputTuple,
+    WithdrawnEvent.OutputObject
   >;
 
   filters: {
+    "EntryFeePaid(address,uint256,string)": TypedContractEvent<
+      EntryFeePaidEvent.InputTuple,
+      EntryFeePaidEvent.OutputTuple,
+      EntryFeePaidEvent.OutputObject
+    >;
+    EntryFeePaid: TypedContractEvent<
+      EntryFeePaidEvent.InputTuple,
+      EntryFeePaidEvent.OutputTuple,
+      EntryFeePaidEvent.OutputObject
+    >;
+
+    "EntryFeeUpdated(uint256)": TypedContractEvent<
+      EntryFeeUpdatedEvent.InputTuple,
+      EntryFeeUpdatedEvent.OutputTuple,
+      EntryFeeUpdatedEvent.OutputObject
+    >;
+    EntryFeeUpdated: TypedContractEvent<
+      EntryFeeUpdatedEvent.InputTuple,
+      EntryFeeUpdatedEvent.OutputTuple,
+      EntryFeeUpdatedEvent.OutputObject
+    >;
+
     "SquadClosed(address)": TypedContractEvent<
       SquadClosedEvent.InputTuple,
       SquadClosedEvent.OutputTuple,
@@ -300,7 +384,7 @@ export interface SeasonManager extends BaseContract {
       SquadDeactivatedEvent.OutputObject
     >;
 
-    "SquadEnrolled(address,address)": TypedContractEvent<
+    "SquadEnrolled(address,address,uint256,string)": TypedContractEvent<
       SquadEnrolledEvent.InputTuple,
       SquadEnrolledEvent.OutputTuple,
       SquadEnrolledEvent.OutputObject
@@ -311,15 +395,15 @@ export interface SeasonManager extends BaseContract {
       SquadEnrolledEvent.OutputObject
     >;
 
-    "X402PaymentReceived(address,uint256,string)": TypedContractEvent<
-      X402PaymentReceivedEvent.InputTuple,
-      X402PaymentReceivedEvent.OutputTuple,
-      X402PaymentReceivedEvent.OutputObject
+    "Withdrawn(address,uint256)": TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
-    X402PaymentReceived: TypedContractEvent<
-      X402PaymentReceivedEvent.InputTuple,
-      X402PaymentReceivedEvent.OutputTuple,
-      X402PaymentReceivedEvent.OutputObject
+    Withdrawn: TypedContractEvent<
+      WithdrawnEvent.InputTuple,
+      WithdrawnEvent.OutputTuple,
+      WithdrawnEvent.OutputObject
     >;
   };
 }

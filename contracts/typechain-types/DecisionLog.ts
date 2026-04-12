@@ -28,7 +28,9 @@ export interface DecisionLogInterface extends Interface {
       | "decisions"
       | "getDecision"
       | "getDecisionCount"
+      | "getRecord"
       | "logDecision"
+      | "recordDecision"
   ): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "DecisionRecorded"): EventFragment;
@@ -46,8 +48,16 @@ export interface DecisionLogInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getRecord",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "logDecision",
     values: [string, string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "recordDecision",
+    values: [BytesLike, string]
   ): string;
 
   decodeFunctionResult(functionFragment: "decisions", data: BytesLike): Result;
@@ -59,29 +69,31 @@ export interface DecisionLogInterface extends Interface {
     functionFragment: "getDecisionCount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getRecord", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "logDecision",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "recordDecision",
     data: BytesLike
   ): Result;
 }
 
 export namespace DecisionRecordedEvent {
   export type InputTuple = [
-    squadId: string,
-    agentChain: string,
-    rationale: string,
+    decisionHash: BytesLike,
+    metadata: string,
     timestamp: BigNumberish
   ];
   export type OutputTuple = [
-    squadId: string,
-    agentChain: string,
-    rationale: string,
+    decisionHash: string,
+    metadata: string,
     timestamp: bigint
   ];
   export interface OutputObject {
-    squadId: string;
-    agentChain: string;
-    rationale: string;
+    decisionHash: string;
+    metadata: string;
     timestamp: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -136,10 +148,9 @@ export interface DecisionLog extends BaseContract {
   decisions: TypedContractMethod<
     [arg0: BigNumberish],
     [
-      [string, string, string, bigint] & {
-        squadId: string;
-        agentChain: string;
-        rationale: string;
+      [string, string, bigint] & {
+        decisionHash: string;
+        metadata: string;
         timestamp: bigint;
       }
     ],
@@ -148,14 +159,32 @@ export interface DecisionLog extends BaseContract {
 
   getDecision: TypedContractMethod<
     [index: BigNumberish],
-    [[string, string, string, bigint]],
+    [[string, string, bigint]],
     "view"
   >;
 
   getDecisionCount: TypedContractMethod<[], [bigint], "view">;
 
+  getRecord: TypedContractMethod<
+    [index: BigNumberish],
+    [
+      [string, string, bigint] & {
+        decisionHash: string;
+        metadata: string;
+        timestamp: bigint;
+      }
+    ],
+    "view"
+  >;
+
   logDecision: TypedContractMethod<
     [squadId: string, agentChain: string, rationale: string],
+    [void],
+    "nonpayable"
+  >;
+
+  recordDecision: TypedContractMethod<
+    [decisionHash: BytesLike, metadata: string],
     [void],
     "nonpayable"
   >;
@@ -169,10 +198,9 @@ export interface DecisionLog extends BaseContract {
   ): TypedContractMethod<
     [arg0: BigNumberish],
     [
-      [string, string, string, bigint] & {
-        squadId: string;
-        agentChain: string;
-        rationale: string;
+      [string, string, bigint] & {
+        decisionHash: string;
+        metadata: string;
         timestamp: bigint;
       }
     ],
@@ -182,16 +210,36 @@ export interface DecisionLog extends BaseContract {
     nameOrSignature: "getDecision"
   ): TypedContractMethod<
     [index: BigNumberish],
-    [[string, string, string, bigint]],
+    [[string, string, bigint]],
     "view"
   >;
   getFunction(
     nameOrSignature: "getDecisionCount"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
+    nameOrSignature: "getRecord"
+  ): TypedContractMethod<
+    [index: BigNumberish],
+    [
+      [string, string, bigint] & {
+        decisionHash: string;
+        metadata: string;
+        timestamp: bigint;
+      }
+    ],
+    "view"
+  >;
+  getFunction(
     nameOrSignature: "logDecision"
   ): TypedContractMethod<
     [squadId: string, agentChain: string, rationale: string],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "recordDecision"
+  ): TypedContractMethod<
+    [decisionHash: BytesLike, metadata: string],
     [void],
     "nonpayable"
   >;
@@ -205,7 +253,7 @@ export interface DecisionLog extends BaseContract {
   >;
 
   filters: {
-    "DecisionRecorded(string,string,string,uint256)": TypedContractEvent<
+    "DecisionRecorded(bytes32,string,uint256)": TypedContractEvent<
       DecisionRecordedEvent.InputTuple,
       DecisionRecordedEvent.OutputTuple,
       DecisionRecordedEvent.OutputObject

@@ -29,6 +29,22 @@ declare module "hardhat/types/runtime" {
       name: "SeasonManager",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.SeasonManager__factory>;
+    getContractFactory(
+      name: "SeasonManagerV2",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SeasonManagerV2__factory>;
+    getContractFactory(
+      name: "StrategyLicense",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StrategyLicense__factory>;
+    getContractFactory(
+      name: "StrategyRegistry",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StrategyRegistry__factory>;
+    getContractFactory(
+      name: "StrategyVault",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.StrategyVault__factory>;
 
     getContractAt(
       name: "DecisionLog",
@@ -50,6 +66,26 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.SeasonManager>;
+    getContractAt(
+      name: "SeasonManagerV2",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.SeasonManagerV2>;
+    getContractAt(
+      name: "StrategyLicense",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StrategyLicense>;
+    getContractAt(
+      name: "StrategyRegistry",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StrategyRegistry>;
+    getContractAt(
+      name: "StrategyVault",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.StrategyVault>;
 
     deployContract(
       name: "DecisionLog",
@@ -67,6 +103,22 @@ declare module "hardhat/types/runtime" {
       name: "SeasonManager",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.SeasonManager>;
+    deployContract(
+      name: "SeasonManagerV2",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.SeasonManagerV2>;
+    deployContract(
+      name: "StrategyLicense",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.StrategyLicense>;
+    deployContract(
+      name: "StrategyRegistry",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.StrategyRegistry>;
+    deployContract(
+      name: "StrategyVault",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.StrategyVault>;
 
     deployContract(
       name: "DecisionLog",
@@ -88,6 +140,26 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.SeasonManager>;
+    deployContract(
+      name: "SeasonManagerV2",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.SeasonManagerV2>;
+    deployContract(
+      name: "StrategyLicense",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.StrategyLicense>;
+    deployContract(
+      name: "StrategyRegistry",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.StrategyRegistry>;
+    deployContract(
+      name: "StrategyVault",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.StrategyVault>;
 
     // default types
     getContractFactory(
