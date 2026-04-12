@@ -116,7 +116,8 @@ async function buildProofsArtifact() {
 
   const onchainCount = Number(await decisionContract.getDecisionCount());
   const recoveredByIndex = recovery?.recoveredByIndex || {};
-  const decisionItems = Array.from({ length: onchainCount }, (_, i) => {
+  const totalDecisionCount = Math.max(onchainCount, embeddedDecisionEntries.length);
+  const decisionItems = Array.from({ length: totalDecisionCount }, (_, i) => {
     const embedded = embeddedDecisionEntries[i] || null;
     const recovered = recoveredByIndex[String(i)] || null;
     const txHash = embedded?.txHash || txhashes?.[String(i)] || recovered?.txHash || `decision-${i}`;
