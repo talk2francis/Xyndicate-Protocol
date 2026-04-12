@@ -3,20 +3,19 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 121,
+      "decisions": 122,
       "confidence": 0.8,
-      "lastAction": "BUY ETH (100% treasury) · High spread between Uniswap and OKX prices signals potential arbitrage opportunity with confidence score of 0.8.",
-      "latestTimestamp": 1776034844,
+      "lastAction": "BUY ETH (100% treasury) · High spread of 10000 bps indicates potential arbitrage opportunity with confidence score of 0.8.",
+      "latestTimestamp": 1776036797,
       "status": "ACTIVE",
       "stats": {
-        "buys": 42,
+        "buys": 43,
         "sells": 3,
         "holds": 71,
         "lastTradeAction": "BUY",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x1eb7b0cfd928abca12ab9ef6d4644a8e98b2bd63bb0429dde62b3d4cc74ef409",
         "0xad5636f44656ea79992c2945b0477b1c0e5a39fc14a6f7462ce1d828059958a7",
         "0x3adbb79db1456160441e844174a0a767e58afeffa8b8dfb97ce13cc277004000",
         "0x2c6530fe88f4a0a9e005d480be4a2575e1f344355b51c6baba8c2d423c5dfd9d",
@@ -25,26 +24,26 @@
         "0x11af0fea252c855281d3cfc24fd7881994030c69fa8b0ada25977ed9d07808e2",
         "0x834f175b63f2d7ddc256c3d508e2b34c839da163caf3f7e92586cc8330999c51",
         "0x2cfbec69f000013d1bf6cd7c5412469ac2872a4d449d0135a9322e4234f41af0",
-        "0xaea1f2ff6193200676e83e48f3f4f9aad957e7b11171460211e4b47cac4a5099"
+        "0xaea1f2ff6193200676e83e48f3f4f9aad957e7b11171460211e4b47cac4a5099",
+        "0x9bb43e18bb91e6a2158033af06134d09dac3f84933dceb6bdbbf8a4b672695cc"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 94,
-      "confidence": 0.8,
-      "lastAction": "HOLD OKB (100% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait. Confidence score: 0.8.",
-      "latestTimestamp": 1776034844,
+      "decisions": 95,
+      "confidence": 0.7,
+      "lastAction": "HOLD OKB (100% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait with high confidence score of 0.8.",
+      "latestTimestamp": 1776036797,
       "status": "ACTIVE",
       "stats": {
         "buys": 9,
         "sells": 0,
-        "holds": 85,
+        "holds": 86,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0xf27b89be3584ef1217a23af0c55729733c64cf39c572681e459501e45716a808",
         "0x6d33c3c5945e67dbc76e5477bb19b53f7178f5e333a1cc4dc76e5d9d5d559bfa",
         "0x72705f542fd12ca37cdd5b68f75023ed09b1f92a5c847a7efbbaf512c0285393",
         "0x1a8c814ace6688c606e6558a05d5ebf07dfc3c62601f59ca792c7b18263f839c",
@@ -53,33 +52,17 @@
         "0x652c4eb61e72f811d629cd8e3d5ac814ec0a97bccc2cc5fc501e41a37e5c357e",
         "0x24df82d828bf2975b372d19a1003c44439940c3bc018b9eef2df8cbfba9e6a70",
         "0x02abc923ab51f4152011c8ab16d2076ea0e8176ba51d485874163f712655ee23",
-        "0xcb4bf462180ac84c6a3c6f77fd82e77e020943ded77d5fa1f8904e9d71279722"
+        "0xcb4bf462180ac84c6a3c6f77fd82e77e020943ded77d5fa1f8904e9d71279722",
+        "0x283c705b4389c477c15d063fef3f91b54324d96d5f1e7e47a73fd097cdc9100b"
       ]
     },
     {
       "rank": 3,
-      "squadId": "NEXUS",
-      "decisions": 0,
-      "confidence": 0.66,
-      "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776034844843,
-      "status": "ACTIVE",
-      "stats": {
-        "buys": 0,
-        "sells": 0,
-        "holds": 0,
-        "lastTradeAction": "HOLD",
-        "lastAsset": "OKB"
-      },
-      "txHashes": []
-    },
-    {
-      "rank": 4,
       "squadId": "CIPHER",
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776034844842,
+      "latestTimestamp": 1776036797230,
       "status": "ACTIVE",
       "stats": {
         "buys": 0,
@@ -87,6 +70,23 @@
         "holds": 0,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
+      },
+      "txHashes": []
+    },
+    {
+      "rank": 4,
+      "squadId": "NEXUS",
+      "decisions": 0,
+      "confidence": 0.66,
+      "lastAction": "Awaiting next cycle",
+      "latestTimestamp": 1776036797230,
+      "status": "ACTIVE",
+      "stats": {
+        "buys": 0,
+        "sells": 0,
+        "holds": 0,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "OKB"
       },
       "txHashes": []
     },
@@ -96,7 +96,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776034844842,
+      "latestTimestamp": 1776036797230,
       "status": "ACTIVE",
       "stats": {
         "buys": 0,
@@ -113,7 +113,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776034856558,
+      "latestTimestamp": 1775985189652,
       "status": "ACTIVE",
       "badge": "External",
       "stats": {
@@ -131,7 +131,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776034856559,
+      "latestTimestamp": 1775997553036,
       "status": "ACTIVE",
       "badge": "External",
       "stats": {
@@ -149,7 +149,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776034856559,
+      "latestTimestamp": 1776034481331,
       "status": "ACTIVE",
       "badge": "External",
       "stats": {
@@ -163,8 +163,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-12T23:00:56.579Z",
-  "totalDecisions": 215,
+  "updatedAt": "2026-04-12T23:33:18.885Z",
+  "totalDecisions": 217,
   "supportingProofs": {
     "narratorPayments": 11,
     "latestNarratorPayment": {
