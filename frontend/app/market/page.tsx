@@ -602,8 +602,19 @@ export default function MarketPage() {
       const tx = await seasonManager.closeSquad();
       await tx.wait();
 
-      setDelistingSuccess("Squad closed. You can enroll a completely new squad now.");
-      setListingHint("Close clears the on-chain squad slot and allows a fresh deploy.");
+      await fetch('/api/register-squad', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          squadName: mySquad?.name || selectedSquadId || 'UNKNOWN',
+          action: 'close',
+          walletAddress: walletAddress,
+          registeredAt: Date.now(),
+        }),
+      });
+
+      setDelistingSuccess("Squad closed. It is removed from the leaderboard flow.");
+      setListingHint("Close clears the on-chain squad slot and removes the external registry entry.");
       setMySquad(null);
       setEnrolledOptions([]);
       setSelectedSquadId("");

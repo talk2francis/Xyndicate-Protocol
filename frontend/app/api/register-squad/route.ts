@@ -27,8 +27,37 @@ async function getRemoteRegistry() {
 
 async function publishRegistry(entry: any) {
   const current = await getRemoteRegistry();
+  const squadName = String(entry.squadName || entry.squadId || "UNKNOWN");
+
+  if (String(entry.action || "").toLowerCase() === "close") {
+    const squads = Array.isArray(current.squads) ? current.squads.filter((item: any) => String(item?.squadName || item?.squadId || "") !== squadName) : [];
+    const next = { squads, lastUpdated: Date.now() };
+    const response = await fetch(GITHUB_API, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        Accept: "application/vnd.github+json",
+        "User-Agent": "xyndicate-registry",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: `Close external squad ${squadName}`,
+        branch: "main",
+        content: Buffer.from(`${JSON.stringify(next, null, 2)}\n`, "utf8").toString("base64"),
+        ...(current.sha ? { sha: current.sha } : {}),
+      }),
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`Failed to publish registry close: ${response.status} ${text}`);
+    }
+
+    return next;
+  }
+
   const nextEntry = {
-    squadName: String(entry.squadName || entry.squadId || "UNKNOWN"),
+    squadName,
     squadId: String(entry.squadId || entry.squadName || "UNKNOWN"),
     walletAddress: String(entry.walletAddress || ""),
     riskMode: String(entry.riskMode || ""),

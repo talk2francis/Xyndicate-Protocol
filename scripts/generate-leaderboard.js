@@ -165,7 +165,14 @@ async function buildLeaderboard() {
   }
 
   const squads = Array.from(squadMap.values())
-    .sort((a, b) => b.latestTimestamp - a.latestTimestamp)
+    .sort((a, b) => {
+      const aExternal = Boolean(a.external);
+      const bExternal = Boolean(b.external);
+      if (aExternal && bExternal) return Number(a.registeredAt || a.latestTimestamp || 0) - Number(b.registeredAt || b.latestTimestamp || 0);
+      if (aExternal) return 1;
+      if (bExternal) return -1;
+      return Number(b.latestTimestamp || 0) - Number(a.latestTimestamp || 0);
+    })
     .map((squad, index) => ({
       rank: index + 1,
       squadId: squad.squadId,
