@@ -2,11 +2,30 @@
   "squads": [
     {
       "rank": 1,
+      "squadId": "HI",
+      "decisions": 0,
+      "confidence": 0.66,
+      "lastAction": "Awaiting next cycle",
+      "latestTimestamp": 1775985189652,
+      "status": "ACTIVE",
+      "badge": "External",
+      "stats": {
+        "buys": 0,
+        "sells": 0,
+        "holds": 0,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "ETH/USDC"
+      },
+      "txHashes": []
+    },
+    {
+      "rank": 2,
       "squadId": "XYNDICATE_ALPHA",
       "decisions": 108,
       "confidence": 0.8,
       "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and stable market conditions. Analyst recommendation to act with high confidence score of 0.8.",
       "latestTimestamp": 1775944935,
+      "status": "ACTIVE",
       "stats": {
         "buys": 37,
         "sells": 1,
@@ -28,12 +47,13 @@
       ]
     },
     {
-      "rank": 2,
+      "rank": 3,
       "squadId": "SQUAD_NOVA",
       "decisions": 81,
       "confidence": 0.7,
       "lastAction": "HOLD OKB (100% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait with high confidence score of 0.8.",
       "latestTimestamp": 1775944935,
+      "status": "ACTIVE",
       "stats": {
         "buys": 7,
         "sells": 0,
@@ -55,12 +75,13 @@
       ]
     },
     {
-      "rank": 3,
+      "rank": 4,
       "squadId": "PHANTOM",
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
       "latestTimestamp": 0,
+      "status": "ACTIVE",
       "stats": {
         "buys": 0,
         "sells": 0,
@@ -71,12 +92,13 @@
       "txHashes": []
     },
     {
-      "rank": 4,
+      "rank": 5,
       "squadId": "CIPHER",
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
       "latestTimestamp": 0,
+      "status": "ACTIVE",
       "stats": {
         "buys": 0,
         "sells": 0,
@@ -87,12 +109,13 @@
       "txHashes": []
     },
     {
-      "rank": 5,
+      "rank": 6,
       "squadId": "NEXUS",
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
       "latestTimestamp": 0,
+      "status": "ACTIVE",
       "stats": {
         "buys": 0,
         "sells": 0,
@@ -104,17 +127,17 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-11T23:07:27.775Z",
+  "updatedAt": "2026-04-12T09:19:34.135Z",
   "totalDecisions": 189,
   "supportingProofs": {
-    "narratorPayments": 7,
+    "narratorPayments": 9,
     "latestNarratorPayment": {
       "type": "strategist-analyst",
       "from": "Strategist Wallet",
       "to": "Analyst Wallet",
       "amount": "0.00005 OKB",
-      "txHash": "0x24f32507c3583136746aeff938d9814b8be14112456adf60603aa045e9b47851",
-      "timestamp": 1775923266,
+      "txHash": "0x69df3544822e8bbdadc4bb5d28acc7b098eccce4c9e6d8a4ca3aa8f7bb25ca38",
+      "timestamp": 1775968414,
       "status": "confirmed",
       "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
     }
