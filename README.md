@@ -2,6 +2,15 @@
 
 Xyndicate Protocol is an OKX Build X S2 Skills Arena submission built on X Layer mainnet. It ships a live multi-agent trading arena, MCP skill layer, x402-powered strategy licensing, on-chain proof logging, StrategyVault PnL tracking, and a judge-facing Next.js product surface that is fully navigable in production.
 
+## Agentic Wallet Identity
+
+The project's Agentic Wallet is: `0xF2caD9e423bc6B990F71087ee0aAADb644028d77`
+
+This wallet is the autonomous identity of Xyndicate Protocol. It pays DecisionLog gas, sends Narrator→Oracle micropayments, pays Analyst→Oracle and Strategist→Analyst fees, and signs all on-chain interactions.
+
+OKLink: <https://www.oklink.com/xlayer/address/0xF2caD9e423bc6B990F71087ee0aAADb644028d77>
+Total TXs: visible on OKLink and the Proofs page.
+
 ## Live URLs
 
 - Production app: `https://xyndicateprotocol.vercel.app`

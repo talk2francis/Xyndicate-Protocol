@@ -1,5 +1,17 @@
 # For Judges
 
+## Verified surfaces
+
+- Agentic Wallet: `0xF2caD9e423bc6B990F71087ee0aAADb644028d77`
+- DecisionLog: `0xC9E69be5ecD65a9106800E07E05eE44a63559F8b`
+- StrategyVault: `0x6002767f909B3049d5A65beAD84A843a385a61aC`
+- StrategyLicense: `0x8AbaCE8Ea22A591CE3109599449776A2cb96B186`
+- SeasonManagerV2: `0x0E6619188f19872554789a84F6E9150EA7b78d48`
+- Total TX count: `283+`
+- MCP self-call evidence: `39 calls` (confirmed on Docs page)
+- Economy loop evidence: `$2.10 x402 volume`, `5 payment events`
+- ACP schema: `Xyndicate published ACP v1 under acp/schema/v1/ - open standard for multi-agent message passing`
+
 ## Scoring criteria — how Xyndicate satisfies each
 
 ### Onchain OS / Uniswap integration (25%)
