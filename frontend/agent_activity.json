@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "149-router-1776014182141",
-      "agent": "router",
-      "cycle": 149,
-      "timestamp": 1776014182141,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "149-executor-1776014182854",
       "agent": "executor",
       "cycle": 149,
@@ -538,6 +529,15 @@
       "timestamp": 1776031246351,
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | High spread of 10000 bps indicates potential arbitrage opportunity with OKX. Analyst confidence score of 0.8 supports the decision.",
+      "durationMs": 1
+    },
+    {
+      "id": "159-router-1776031247127",
+      "agent": "router",
+      "cycle": 159,
+      "timestamp": 1776031247127,
+      "status": "complete",
+      "summary": "UNISWAP selected | Uniswap offers a better buy price beyond the 10 bps threshold.",
       "durationMs": 1
     }
   ]
