@@ -1,7 +1,7 @@
 const { Contract, JsonRpcProvider } = await import("ethers");
 
 const UNISWAP_V3_POOL_ADDRESS = process.env.UNISWAP_V3_POOL_ADDRESS || "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640";
-const UNISWAP_V3_RPC_URL = process.env.UNISWAP_V3_RPC_URL || "https://eth.llamarpc.com";
+const UNISWAP_V3_RPC_URL = process.env.UNISWAP_V3_RPC_URL || "https://rpc.ankr.com/eth";
 const POOL_IDS = {
   "ETH/USDC": UNISWAP_V3_POOL_ADDRESS,
   "OKB/USDC": null,

@@ -172,7 +172,8 @@ async function logDecisionOnChain(routedDecision: any, squad: any) {
   const contract = new ethers.Contract(logAddress, DECISION_LOG_ABI, wallet);
   const narrative = `${routedDecision.action} ${routedDecision.asset} (${routedDecision.sizePercent}% treasury) via ${routedDecision.route} · ${routedDecision.rationale}`;
   const agentChain = "Oracle→Analyst→Strategist→Router→Executor";
-  const tx = await contract.logDecision(squad.logId, agentChain, narrative);
+  const nonce = await provider.getTransactionCount(wallet.address, 'pending');
+  const tx = await contract.logDecision(squad.logId, agentChain, narrative, { nonce });
   await tx.wait(1);
   return { txHash: tx.hash, narrative };
 }
@@ -192,7 +193,8 @@ async function recordVaultPnL(routedDecision: any, squad: any) {
   if (routedDecision.action === "BUY") delta = 50n;
   if (routedDecision.action === "SELL") delta = 30n;
 
-  const tx = await contract.recordPnL(squad.id, delta);
+  const nonce = await provider.getTransactionCount(wallet.address, 'pending');
+  const tx = await contract.recordPnL(squad.id, delta, { nonce });
   await tx.wait(1);
   console.error(`StrategyVault: recorded PnL delta ${delta.toString()} for ${squad.displayName} (${tx.hash})`);
   return { pnlDelta: delta.toString(), vaultTxHash: tx.hash };
