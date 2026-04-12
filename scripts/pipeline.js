@@ -9,6 +9,10 @@ const { createActivityEntry, appendAndPublishActivityEntry, summarizeFromResult 
 const { executeCyclePayments } = require('./agent-payments');
 const { buildStartCycleState, publishCycleState, readCycleState, advanceCycleState, completeCycleState, writeCycleState } = require('./cycle-state');
 
+async function callOpenAI(prompt, context = {}) {
+  return { action: 'HOLD', confidence: 0.5, reason: `Fallback strategist for ${context?.squad || 'unknown squad'}` };
+}
+
 function invokeRunCycle() {
   return new Promise((resolve, reject) => {
     const scriptPath = path.join(__dirname, 'run-cycle-bridge.mjs');

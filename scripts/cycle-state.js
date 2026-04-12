@@ -51,7 +51,7 @@ function buildStartCycleState(previous = readCycleState()) {
     cycleStartTime: now,
     nextCycleTime: now + INTERVAL_MS,
     lastCycleComplete: Number(previous?.lastCycleComplete || 0),
-    activeSquads: ['XYNDICATE_ALPHA', 'Squad Nova', 'Phantom Protocol', 'Cipher Strategy', 'Nexus Quant'],
+    activeSquads: Array.isArray(previous?.activeSquads) && previous.activeSquads.length ? previous.activeSquads : ['XYNDICATE_ALPHA', 'Squad Nova', 'Phantom Protocol', 'Cipher Strategy', 'Nexus Quant', 'HI'],
     squadResults: {},
     slowSquadLastRunAt: {},
     agentLog: [
@@ -126,7 +126,7 @@ function completeCycleState() {
     currentAgent: 'idle',
     nextCycleTime: now + INTERVAL_MS,
     lastCycleComplete: now,
-    activeSquads: current?.activeSquads || ['XYNDICATE_ALPHA', 'Squad Nova'],
+    activeSquads: Array.isArray(current?.activeSquads) && current.activeSquads.length ? current.activeSquads : ['XYNDICATE_ALPHA', 'Squad Nova', 'Phantom Protocol', 'Cipher Strategy', 'Nexus Quant', 'HI'],
     squadResults: current?.squadResults || {},
     agentLog: [
       ...(Array.isArray(current.agentLog) ? current.agentLog : []),
