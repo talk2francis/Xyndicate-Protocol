@@ -16,6 +16,7 @@ async function main() {
   }
   console.log("Entry fee wei:", entryFee);
   console.log("Season ID:", seasonId);
+  console.log("Lifecycle: deactivate for pause, closeSquad for full re-enroll reset.");
 }
 
 main().catch((err) => {

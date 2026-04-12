@@ -144,6 +144,7 @@ export default function MarketPage() {
   const [listingSuccess, setListingSuccess] = useState<string | null>(null);
   const [listingBusy, setListingBusy] = useState(false);
   const [delistingBusy, setDelistingBusy] = useState(false);
+  const [closingBusy, setClosingBusy] = useState(false);
   const [delistingError, setDelistingError] = useState<string | null>(null);
   const [delistingSuccess, setDelistingSuccess] = useState<string | null>(null);
   const [enrolledOptions, setEnrolledOptions] = useState<Strategy[]>([]);
@@ -572,15 +573,44 @@ export default function MarketPage() {
       const tx = await seasonManager.deactivate();
       await tx.wait();
 
-      setDelistingSuccess("Squad delisted. You can now enroll a new one.");
-      setListingHint("Previous squad retired. Deploy a new squad when ready.");
+      setDelistingSuccess("Squad deactivated. Use Close squad for a full re-enroll reset.");
+      setListingHint("Deactivate keeps history visible. Close squad fully resets the slot.");
       setMySquad(null);
       setEnrolledOptions([]);
       setSelectedSquadId("");
     } catch (error: any) {
-      setDelistingError(error?.shortMessage || error?.message || "Squad delist failed");
+      setDelistingError(error?.shortMessage || error?.message || "Squad deactivation failed");
     } finally {
       setDelistingBusy(false);
+    }
+  };
+
+  const handleCloseSquad = async () => {
+    try {
+      setClosingBusy(true);
+      setDelistingError(null);
+      setDelistingSuccess(null);
+
+      const walletAddress = address || (await ensureWallet());
+      if (!walletAddress) throw new Error("Wallet required");
+      const injectedProvider = resolveProvider();
+      if (!injectedProvider) throw new Error("Wallet provider unavailable");
+
+      const provider = new ethers.BrowserProvider(injectedProvider as any);
+      const signer = await provider.getSigner();
+      const seasonManager = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, signer);
+      const tx = await seasonManager.closeSquad();
+      await tx.wait();
+
+      setDelistingSuccess("Squad closed. You can enroll a completely new squad now.");
+      setListingHint("Close clears the on-chain squad slot and allows a fresh deploy.");
+      setMySquad(null);
+      setEnrolledOptions([]);
+      setSelectedSquadId("");
+    } catch (error: any) {
+      setDelistingError(error?.shortMessage || error?.message || "Squad close failed");
+    } finally {
+      setClosingBusy(false);
     }
   };
 
@@ -789,10 +819,13 @@ export default function MarketPage() {
                 <span className="rounded-full bg-slate-500/15 px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300">Delist to create again</span>
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
-                <button type="button" onClick={handleDelistSquad} disabled={delistingBusy} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:hover:bg-white/10">
-                  {delistingBusy ? 'Delisting...' : 'Close squad'}
+                <button type="button" onClick={handleDelistSquad} disabled={delistingBusy || closingBusy} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:hover:bg-white/10">
+                  {delistingBusy ? 'Deactivating...' : 'Deactivate squad'}
                 </button>
-                <span className="text-sm text-xyn-muted dark:text-zinc-300">Close to fully retire this squad and enroll again. If you only want to pause, use deactivate in the contract flow.</span>
+                <button type="button" onClick={handleCloseSquad} disabled={closingBusy || delistingBusy} className="rounded-full bg-xyn-gold px-4 py-2 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
+                  {closingBusy ? 'Closing...' : 'Close squad'}
+                </button>
+                <span className="text-sm text-xyn-muted dark:text-zinc-300">Deactivate keeps history visible. Close clears the on-chain slot so you can enroll a fresh squad.</span>
               </div>
               {delistingError ? <div className="mt-4 rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">{delistingError}</div> : null}
               {delistingSuccess ? <div className="mt-4 rounded-2xl bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">{delistingSuccess}</div> : null}
