@@ -6,7 +6,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776029527895,
+      "latestTimestamp": 1776031249356,
       "status": "ACTIVE",
       "stats": {
         "buys": 0,
@@ -23,7 +23,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776029527893,
+      "latestTimestamp": 1776031249355,
       "status": "ACTIVE",
       "stats": {
         "buys": 0,
@@ -40,7 +40,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776029527893,
+      "latestTimestamp": 1776031249355,
       "status": "ACTIVE",
       "stats": {
         "buys": 0,
@@ -54,20 +54,19 @@
     {
       "rank": 4,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 118,
-      "confidence": 0.66,
-      "lastAction": "HOLD ETH (100% treasury) · High volatility and uncertainty in the market, advisable to hold current position. High spread between exchange prices increases risk of slippage.",
-      "latestTimestamp": 1776029527,
+      "decisions": 119,
+      "confidence": 0.8,
+      "lastAction": "BUY ETH (100% treasury) · High spread of 10000 bps indicates potential arbitrage opportunity with OKX. Analyst confidence score of 0.8 supports the decision.",
+      "latestTimestamp": 1776031249,
       "status": "ACTIVE",
       "stats": {
-        "buys": 39,
+        "buys": 40,
         "sells": 3,
         "holds": 71,
-        "lastTradeAction": "HOLD",
+        "lastTradeAction": "BUY",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xedcffbd02c8756e880fbd3b158e97e50f37abbc79114fd1758ac74f56cc38746",
         "0xee434512f82b16a304e7988d45b2e009c0265c97b701a5577848a784c3ac7050",
         "0x7f089ebb5197e0bb24056eb2a888efcf18b6cad09c65507ac0f144ff74e037dd",
         "0x1eb7b0cfd928abca12ab9ef6d4644a8e98b2bd63bb0429dde62b3d4cc74ef409",
@@ -76,26 +75,26 @@
         "0x2c6530fe88f4a0a9e005d480be4a2575e1f344355b51c6baba8c2d423c5dfd9d",
         "0x1698d2ad0201a1784a29a34a1b87a5de7f2f7759860fd34fbb24bfba98b2feaf",
         "0x7eda0404a3bdfa6e8bda6497c2d78299cf97e3c821e60eb124dfd009eb00b8bd",
-        "0x11af0fea252c855281d3cfc24fd7881994030c69fa8b0ada25977ed9d07808e2"
+        "0x11af0fea252c855281d3cfc24fd7881994030c69fa8b0ada25977ed9d07808e2",
+        "0x834f175b63f2d7ddc256c3d508e2b34c839da163caf3f7e92586cc8330999c51"
       ]
     },
     {
       "rank": 5,
       "squadId": "SQUAD_NOVA",
-      "decisions": 91,
+      "decisions": 92,
       "confidence": 0.7,
-      "lastAction": "HOLD OKB (100% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait with high confidence score of 0.8.",
-      "latestTimestamp": 1776029527,
+      "lastAction": "HOLD OKB (100% treasury) · Market conditions stable, no significant opportunities or risks identified. Wait for clearer signals.",
+      "latestTimestamp": 1776031249,
       "status": "ACTIVE",
       "stats": {
         "buys": 9,
         "sells": 0,
-        "holds": 82,
+        "holds": 83,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x0fde287f0f4d52d2d47e5f28e039ed10c350a893515fb31c56658721fb169745",
         "0xf70450a795e4aeda759b8dd84ff128c26cfbfeeef6846350e7350368c4ece452",
         "0x56ede51e268f817a7714701a94f8d57f30525d4124275578a4341344f20f15f7",
         "0xf27b89be3584ef1217a23af0c55729733c64cf39c572681e459501e45716a808",
@@ -104,7 +103,8 @@
         "0x1a8c814ace6688c606e6558a05d5ebf07dfc3c62601f59ca792c7b18263f839c",
         "0x066833d93964b56df7f4a3aed9d9d4980fe81faf01953973dafb8c33860dc689",
         "0x7819d4b61db98dbb27f20388c2ebf36bd4cf3314971bf07b06b77347a4603b56",
-        "0x652c4eb61e72f811d629cd8e3d5ac814ec0a97bccc2cc5fc501e41a37e5c357e"
+        "0x652c4eb61e72f811d629cd8e3d5ac814ec0a97bccc2cc5fc501e41a37e5c357e",
+        "0x24df82d828bf2975b372d19a1003c44439940c3bc018b9eef2df8cbfba9e6a70"
       ]
     },
     {
@@ -113,7 +113,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776029539208,
+      "latestTimestamp": 1775985189652,
       "status": "ACTIVE",
       "badge": "External",
       "stats": {
@@ -131,7 +131,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776029539210,
+      "latestTimestamp": 1775997553036,
       "status": "ACTIVE",
       "badge": "External",
       "stats": {
@@ -145,8 +145,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-12T21:32:19.217Z",
-  "totalDecisions": 209,
+  "updatedAt": "2026-04-12T22:00:51.128Z",
+  "totalDecisions": 211,
   "supportingProofs": {
     "narratorPayments": 11,
     "latestNarratorPayment": {
