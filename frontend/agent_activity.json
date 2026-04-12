@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "99-router-1775930540901",
-      "agent": "router",
-      "cycle": 99,
-      "timestamp": 1775930540901,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "99-executor-1775930541549",
       "agent": "executor",
       "cycle": 99,
@@ -538,6 +529,15 @@
       "timestamp": 1775962933065,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | Market data does not indicate a clear opportunity for a long or short position on ETH. Negative price change in the last 24 hours suggests potential volatility. Wait for more favorable conditions.",
+      "durationMs": 1
+    },
+    {
+      "id": "116-router-1775962933703",
+      "agent": "router",
+      "cycle": 116,
+      "timestamp": 1775962933703,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
