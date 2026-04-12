@@ -322,7 +322,7 @@ export default function ArenaPage() {
   const { data, isLoading, isError, refetch } = useQuery<LeaderboardResponse>({
     queryKey: ["arena-leaderboard"],
     queryFn: async () => {
-      const res = await fetch("/api/leaderboard", { cache: "no-store" });
+      const res = await fetch(`/api/leaderboard?ts=${Date.now()}`, { cache: "no-store" });
       if (!res.ok) throw new Error("Failed to load leaderboard");
       return res.json();
     },
