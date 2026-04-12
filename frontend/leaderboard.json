@@ -2,59 +2,37 @@
   "squads": [
     {
       "rank": 1,
-      "squadId": "XYNDICATE_ALPHA",
-      "decisions": 108,
-      "confidence": 0.8,
-      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and stable market conditions. Analyst recommendation to act with high confidence score of 0.8.",
-      "latestTimestamp": 1775944935,
+      "squadId": "NEXUS",
+      "decisions": 0,
+      "confidence": 0.66,
+      "lastAction": "Awaiting next cycle",
+      "latestTimestamp": 1776014200304,
       "status": "ACTIVE",
       "stats": {
-        "buys": 37,
-        "sells": 1,
-        "holds": 65,
-        "lastTradeAction": "BUY",
-        "lastAsset": "ETH"
-      },
-      "txHashes": [
-        "0x0be074d5757e4c979e873d7848858d4ce25a741a137244aeb7b5ce0a88e4078d",
-        "0xedae26e9a4c61c105572cc7825b9c315fc699c1dbdef4ff1364fecc8c5908ebc",
-        "0xc0402e9e203a0f3040ba383da93a249440c3d684874557ab43c539324e698b84",
-        "0xa5ce4663ceaf52823c91efa04c8b3182920d23ae88a8810dc1d7336b160d8d6f",
-        "0x63aa0e61539c2e66a02c06839104c8855e3b7fb44c01ab741f38b8be5f03a344",
-        "0x9390bf377a39b0614f7f47e68918d03b206aeeab2a80ce590465effb2a7b2b50",
-        "0xa3685c819d1ae703ca939d92b6ed3a0a15aa1ecdc959579e265c71215f7d20f9",
-        "0x249fe37bb79f67ad90edfe8a67ebacd0efafcf124949f9ed4107ce1252e342ca",
-        "0x76298968dc7dce448429cc24e8c4cbb245de5c20488e0829782d4c1764f4ae69",
-        "0x017b191782a19af07c8372b61d876fde2b2c5ee46a45b4337c1286b2bd7e3564"
-      ]
-    },
-    {
-      "rank": 2,
-      "squadId": "SQUAD_NOVA",
-      "decisions": 81,
-      "confidence": 0.7,
-      "lastAction": "HOLD OKB (100% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait with high confidence score of 0.8.",
-      "latestTimestamp": 1775944935,
-      "status": "ACTIVE",
-      "stats": {
-        "buys": 7,
+        "buys": 0,
         "sells": 0,
-        "holds": 74,
+        "holds": 0,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
-      "txHashes": [
-        "0xc44dcdfc275df3bb16d9a143aa31348b116c11bf1af1f55f93a1f99108f69af7",
-        "0x1cafead5eeb969ec39f348189081142e7030648261ec7af6af7f1617d3980957",
-        "0x8e833932ddd0c38c5435f008ee5b5e31369d1a9646f14b027c15b44523fdfd0f",
-        "0xb96f103e4450b69f8385cd13315b71d79617ba25e9ce096e0d413cdff24f76b6",
-        "0x178bd9b6eabf7f0432adcaccb22f5250a64395dcddc775cc9d9c8609b6ed9b10",
-        "0xb3435c4daff35e64e56264b2cd071b3c5c45d81c8e99f459df531af16b638412",
-        "0x041e0ab4472d88d752efa2c0c80b062a5bc0b788f5095121727c905acb1d2b7e",
-        "0xb13b6011afad15820bd138d99101d299c6ae81368c480f3ad844781f26ad4bb3",
-        "0xf9461998d56e51cb136bb9096bf9ed11f7baabbfe315554cc4359a7594861d0b",
-        "0x123b437f18bc2344765120c5fcca8a3fadb5174ab5a8bca82eaeacf7359c7686"
-      ]
+      "txHashes": []
+    },
+    {
+      "rank": 2,
+      "squadId": "CIPHER",
+      "decisions": 0,
+      "confidence": 0.66,
+      "lastAction": "Awaiting next cycle",
+      "latestTimestamp": 1776014200303,
+      "status": "ACTIVE",
+      "stats": {
+        "buys": 0,
+        "sells": 0,
+        "holds": 0,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "ETH"
+      },
+      "txHashes": []
     },
     {
       "rank": 3,
@@ -62,7 +40,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 0,
+      "latestTimestamp": 1776014200302,
       "status": "ACTIVE",
       "stats": {
         "buys": 0,
@@ -75,37 +53,59 @@
     },
     {
       "rank": 4,
-      "squadId": "CIPHER",
-      "decisions": 0,
-      "confidence": 0.66,
-      "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 0,
+      "squadId": "XYNDICATE_ALPHA",
+      "decisions": 109,
+      "confidence": 0.8,
+      "lastAction": "SELL ETH (100% treasury) · High spread of 10000 bps and negative 24h change of -2.98%. High risk of low liquidity and slippage. Analyst recommendation to act.",
+      "latestTimestamp": 1776014200,
       "status": "ACTIVE",
       "stats": {
-        "buys": 0,
-        "sells": 0,
-        "holds": 0,
-        "lastTradeAction": "HOLD",
+        "buys": 37,
+        "sells": 2,
+        "holds": 65,
+        "lastTradeAction": "SELL",
         "lastAsset": "ETH"
       },
-      "txHashes": []
+      "txHashes": [
+        "0xedae26e9a4c61c105572cc7825b9c315fc699c1dbdef4ff1364fecc8c5908ebc",
+        "0xc0402e9e203a0f3040ba383da93a249440c3d684874557ab43c539324e698b84",
+        "0xa5ce4663ceaf52823c91efa04c8b3182920d23ae88a8810dc1d7336b160d8d6f",
+        "0x63aa0e61539c2e66a02c06839104c8855e3b7fb44c01ab741f38b8be5f03a344",
+        "0x9390bf377a39b0614f7f47e68918d03b206aeeab2a80ce590465effb2a7b2b50",
+        "0xa3685c819d1ae703ca939d92b6ed3a0a15aa1ecdc959579e265c71215f7d20f9",
+        "0x249fe37bb79f67ad90edfe8a67ebacd0efafcf124949f9ed4107ce1252e342ca",
+        "0x76298968dc7dce448429cc24e8c4cbb245de5c20488e0829782d4c1764f4ae69",
+        "0x017b191782a19af07c8372b61d876fde2b2c5ee46a45b4337c1286b2bd7e3564",
+        "0xedcffbd02c8756e880fbd3b158e97e50f37abbc79114fd1758ac74f56cc38746"
+      ]
     },
     {
       "rank": 5,
-      "squadId": "NEXUS",
-      "decisions": 0,
+      "squadId": "SQUAD_NOVA",
+      "decisions": 82,
       "confidence": 0.66,
-      "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 0,
+      "lastAction": "HOLD OKB (100% treasury) · The market is currently stable with a balanced risk mode, it is advisable to hold OKB for now.",
+      "latestTimestamp": 1776014200,
       "status": "ACTIVE",
       "stats": {
-        "buys": 0,
+        "buys": 7,
         "sells": 0,
-        "holds": 0,
+        "holds": 75,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
-      "txHashes": []
+      "txHashes": [
+        "0x1cafead5eeb969ec39f348189081142e7030648261ec7af6af7f1617d3980957",
+        "0x8e833932ddd0c38c5435f008ee5b5e31369d1a9646f14b027c15b44523fdfd0f",
+        "0xb96f103e4450b69f8385cd13315b71d79617ba25e9ce096e0d413cdff24f76b6",
+        "0x178bd9b6eabf7f0432adcaccb22f5250a64395dcddc775cc9d9c8609b6ed9b10",
+        "0xb3435c4daff35e64e56264b2cd071b3c5c45d81c8e99f459df531af16b638412",
+        "0x041e0ab4472d88d752efa2c0c80b062a5bc0b788f5095121727c905acb1d2b7e",
+        "0xb13b6011afad15820bd138d99101d299c6ae81368c480f3ad844781f26ad4bb3",
+        "0xf9461998d56e51cb136bb9096bf9ed11f7baabbfe315554cc4359a7594861d0b",
+        "0x123b437f18bc2344765120c5fcca8a3fadb5174ab5a8bca82eaeacf7359c7686",
+        "0x0fde287f0f4d52d2d47e5f28e039ed10c350a893515fb31c56658721fb169745"
+      ]
     },
     {
       "rank": 6,
@@ -124,20 +124,38 @@
         "lastAsset": "ETH/USDC"
       },
       "txHashes": []
+    },
+    {
+      "rank": 7,
+      "squadId": "OPTIMUS",
+      "decisions": 0,
+      "confidence": 0.66,
+      "lastAction": "Awaiting next cycle",
+      "latestTimestamp": 1775997553036,
+      "status": "ACTIVE",
+      "badge": "External",
+      "stats": {
+        "buys": 0,
+        "sells": 0,
+        "holds": 0,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "ETH/USDC"
+      },
+      "txHashes": []
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-12T10:42:50.279Z",
-  "totalDecisions": 189,
+  "updatedAt": "2026-04-12T17:16:42.003Z",
+  "totalDecisions": 191,
   "supportingProofs": {
-    "narratorPayments": 9,
+    "narratorPayments": 11,
     "latestNarratorPayment": {
       "type": "strategist-analyst",
       "from": "Strategist Wallet",
       "to": "Analyst Wallet",
       "amount": "0.00005 OKB",
-      "txHash": "0x69df3544822e8bbdadc4bb5d28acc7b098eccce4c9e6d8a4ca3aa8f7bb25ca38",
-      "timestamp": 1775968414,
+      "txHash": "0x353f8435ca9f2e65ae85893f97a63b5616639d2f813a73690b0140fcfb858703",
+      "timestamp": 1776014199,
       "status": "confirmed",
       "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
     }
