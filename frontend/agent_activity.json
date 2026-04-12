@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "117-router-1775964686172",
-      "agent": "router",
-      "cycle": 117,
-      "timestamp": 1775964686172,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "117-executor-1775964686776",
       "agent": "executor",
       "cycle": 117,
@@ -538,6 +529,15 @@
       "timestamp": 1776014181491,
       "status": "complete",
       "summary": "SELL ETH (100% treasury) | High spread of 10000 bps and negative 24h change of -2.98%. High risk of low liquidity and slippage. Analyst recommendation to act.",
+      "durationMs": 1
+    },
+    {
+      "id": "149-router-1776014182141",
+      "agent": "router",
+      "cycle": 149,
+      "timestamp": 1776014182141,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
