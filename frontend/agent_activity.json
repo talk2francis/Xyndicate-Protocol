@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "98-router-1775928749577",
-      "agent": "router",
-      "cycle": 98,
-      "timestamp": 1775928749577,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "98-executor-1775928750173",
       "agent": "executor",
       "cycle": 98,
@@ -538,6 +529,15 @@
       "timestamp": 1775961040403,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | Negative 24-hour price change for ETH, wait for better opportunity. Confidence score: 0.6",
+      "durationMs": 1
+    },
+    {
+      "id": "115-router-1775961041007",
+      "agent": "router",
+      "cycle": 115,
+      "timestamp": 1775961041007,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
