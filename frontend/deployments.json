@@ -246,7 +246,9 @@
     "0xad5636f44656ea79992c2945b0477b1c0e5a39fc14a6f7462ce1d828059958a7",
     "0x6d33c3c5945e67dbc76e5477bb19b53f7178f5e333a1cc4dc76e5d9d5d559bfa",
     "0x3adbb79db1456160441e844174a0a767e58afeffa8b8dfb97ce13cc277004000",
-    "0x72705f542fd12ca37cdd5b68f75023ed09b1f92a5c847a7efbbaf512c0285393"
+    "0x72705f542fd12ca37cdd5b68f75023ed09b1f92a5c847a7efbbaf512c0285393",
+    "0x2c6530fe88f4a0a9e005d480be4a2575e1f344355b51c6baba8c2d423c5dfd9d",
+    "0x1a8c814ace6688c606e6558a05d5ebf07dfc3c62601f59ca792c7b18263f839c"
   ],
   "decisionLogEntries": [
     {
@@ -1655,6 +1657,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (0% treasury) · Price stable with balanced risk mode and no significant price spread.",
       "timestamp": 1776022398
+    },
+    {
+      "txHash": "0x2c6530fe88f4a0a9e005d480be4a2575e1f344355b51c6baba8c2d423c5dfd9d",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Market is volatile with significant spread between exchanges. Holding ETH is recommended due to high volatility and uncertainty in the market.",
+      "timestamp": 1776024075
+    },
+    {
+      "txHash": "0x1a8c814ace6688c606e6558a05d5ebf07dfc3c62601f59ca792c7b18263f839c",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY OKB (100% treasury) · Despite a slight decrease in price over the last 24 hours, the overall market conditions are favorable for a long position. The spread is minimal, making it a good time to buy.",
+      "timestamp": 1776024075
     }
   ]
 }
