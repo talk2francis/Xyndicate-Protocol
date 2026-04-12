@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "96-router-1775925065308",
-      "agent": "router",
-      "cycle": 96,
-      "timestamp": 1775925065308,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "96-executor-1775925065911",
       "agent": "executor",
       "cycle": 96,
@@ -538,6 +529,15 @@
       "timestamp": 1775952064276,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | Uniswap price data error poses risk, wait for resolution. Market stable, no opportunities identified. Confidence score: 0.7.",
+      "durationMs": 1
+    },
+    {
+      "id": "110-router-1775952064922",
+      "agent": "router",
+      "cycle": 110,
+      "timestamp": 1775952064922,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
