@@ -2,24 +2,6 @@
   "squads": [
     {
       "rank": 1,
-      "squadId": "HI",
-      "decisions": 0,
-      "confidence": 0.66,
-      "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1775985189652,
-      "status": "ACTIVE",
-      "badge": "External",
-      "stats": {
-        "buys": 0,
-        "sells": 0,
-        "holds": 0,
-        "lastTradeAction": "HOLD",
-        "lastAsset": "ETH/USDC"
-      },
-      "txHashes": []
-    },
-    {
-      "rank": 2,
       "squadId": "XYNDICATE_ALPHA",
       "decisions": 108,
       "confidence": 0.8,
@@ -47,7 +29,7 @@
       ]
     },
     {
-      "rank": 3,
+      "rank": 2,
       "squadId": "SQUAD_NOVA",
       "decisions": 81,
       "confidence": 0.7,
@@ -75,7 +57,7 @@
       ]
     },
     {
-      "rank": 4,
+      "rank": 3,
       "squadId": "PHANTOM",
       "decisions": 0,
       "confidence": 0.66,
@@ -92,7 +74,7 @@
       "txHashes": []
     },
     {
-      "rank": 5,
+      "rank": 4,
       "squadId": "CIPHER",
       "decisions": 0,
       "confidence": 0.66,
@@ -109,7 +91,7 @@
       "txHashes": []
     },
     {
-      "rank": 6,
+      "rank": 5,
       "squadId": "NEXUS",
       "decisions": 0,
       "confidence": 0.66,
@@ -124,10 +106,28 @@
         "lastAsset": "OKB"
       },
       "txHashes": []
+    },
+    {
+      "rank": 6,
+      "squadId": "HI",
+      "decisions": 0,
+      "confidence": 0.66,
+      "lastAction": "Awaiting next cycle",
+      "latestTimestamp": 1775985189652,
+      "status": "ACTIVE",
+      "badge": "External",
+      "stats": {
+        "buys": 0,
+        "sells": 0,
+        "holds": 0,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "ETH/USDC"
+      },
+      "txHashes": []
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-12T09:19:34.135Z",
+  "updatedAt": "2026-04-12T10:39:56.294Z",
   "totalDecisions": 189,
   "supportingProofs": {
     "narratorPayments": 9,
