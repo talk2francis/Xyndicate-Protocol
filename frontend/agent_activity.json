@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "134-router-1775995615893",
-      "agent": "router",
-      "cycle": 134,
-      "timestamp": 1775995615893,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "134-executor-1775995616521",
       "agent": "executor",
       "cycle": 134,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | ETH price has potential for a rebound after a 24h decrease. High spread of 10000 bps may indicate temporary liquidity issues, presenting a buying opportunity.",
       "durationMs": 1
+    },
+    {
+      "id": "157-router-1776027675442",
+      "agent": "router",
+      "cycle": 157,
+      "timestamp": 1776027675442,
+      "status": "complete",
+      "summary": "UNISWAP selected | Uniswap offers a better buy price beyond the 10 bps threshold.",
+      "durationMs": 3
     }
   ]
 }
