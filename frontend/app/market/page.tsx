@@ -598,7 +598,11 @@ export default function MarketPage() {
               <button type="button" onClick={() => setDrawerOpen(true)} className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark">
                 My Licenses
               </button>
-            ) : null}
+            ) : (
+              <button type="button" onClick={connect} className="rounded-full bg-xyn-gold px-5 py-3 text-sm font-semibold text-xyn-dark">
+                Connect wallet to manage squad
+              </button>
+            )}
           </div>
         </div>
 
