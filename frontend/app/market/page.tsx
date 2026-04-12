@@ -150,6 +150,7 @@ export default function MarketPage() {
   const [enrolledOptions, setEnrolledOptions] = useState<Strategy[]>([]);
   const [listingHint, setListingHint] = useState<string | null>(null);
   const [mySquad, setMySquad] = useState<Strategy | null>(null);
+  const [supportsCloseSquad, setSupportsCloseSquad] = useState(false);
 
   const strategyLicenseAddress = (deployments as any)?.StrategyLicense?.address || "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186";
   const directPaymentReceiver = "0x795009bb38a32348344a36a4cfcb36e4e84cb8d8";
@@ -262,6 +263,7 @@ export default function MarketPage() {
       try {
         const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_XLAYER_RPC || "https://rpc.xlayer.tech");
         const seasonManager = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, provider);
+        setSupportsCloseSquad(typeof seasonManager.closeSquad === 'function');
         const squad = await seasonManager.squads(address);
         const owner = String(squad?.owner || ethers.ZeroAddress);
         const active = Boolean(squad?.active);
@@ -833,10 +835,8 @@ export default function MarketPage() {
                 <button type="button" onClick={handleDelistSquad} disabled={delistingBusy || closingBusy} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:hover:bg-white/10">
                   {delistingBusy ? 'Deactivating...' : 'Deactivate squad'}
                 </button>
-                <button type="button" onClick={handleCloseSquad} disabled={closingBusy || delistingBusy} className="rounded-full bg-xyn-gold px-4 py-2 text-sm font-semibold text-xyn-dark transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
-                  {closingBusy ? 'Closing...' : 'Close squad'}
-                </button>
-                <span className="text-sm text-xyn-muted dark:text-zinc-300">Deactivate keeps history visible. Close clears the on-chain slot so you can enroll a fresh squad.</span>
+                {null}
+                <span className="text-sm text-xyn-muted dark:text-zinc-300">Deactivate keeps history visible. It pauses the squad without removing it.</span>
               </div>
               {delistingError ? <div className="mt-4 rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">{delistingError}</div> : null}
               {delistingSuccess ? <div className="mt-4 rounded-2xl bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">{delistingSuccess}</div> : null}
