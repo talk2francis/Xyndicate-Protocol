@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "100-executor-1775932317780",
-      "agent": "executor",
-      "cycle": 100,
-      "timestamp": 1775932317780,
-      "status": "complete",
-      "summary": "HOLD executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
       "id": "100-narrator-1775932318439",
       "agent": "narrator",
       "cycle": 100,
@@ -538,6 +529,15 @@
       "timestamp": 1775964686172,
       "status": "complete",
       "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 1
+    },
+    {
+      "id": "117-executor-1775964686776",
+      "agent": "executor",
+      "cycle": 117,
+      "timestamp": 1775964686776,
+      "status": "complete",
+      "summary": "SELL executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
