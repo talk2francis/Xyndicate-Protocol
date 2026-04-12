@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "111-router-1775953854522",
-      "agent": "router",
-      "cycle": 111,
-      "timestamp": 1775953854522,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "111-executor-1775953855160",
       "agent": "executor",
       "cycle": 111,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | Market data does not show a strong opportunity for buying or selling. Holding ETH is recommended given the current market conditions and price decrease in the last 24 hours.",
       "durationMs": 2
+    },
+    {
+      "id": "131-router-1775993495614",
+      "agent": "router",
+      "cycle": 131,
+      "timestamp": 1775993495614,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "durationMs": 1
     }
   ]
 }
