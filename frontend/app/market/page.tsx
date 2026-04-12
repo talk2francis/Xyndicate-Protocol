@@ -144,13 +144,11 @@ export default function MarketPage() {
   const [listingSuccess, setListingSuccess] = useState<string | null>(null);
   const [listingBusy, setListingBusy] = useState(false);
   const [delistingBusy, setDelistingBusy] = useState(false);
-  const [closingBusy, setClosingBusy] = useState(false);
   const [delistingError, setDelistingError] = useState<string | null>(null);
   const [delistingSuccess, setDelistingSuccess] = useState<string | null>(null);
   const [enrolledOptions, setEnrolledOptions] = useState<Strategy[]>([]);
   const [listingHint, setListingHint] = useState<string | null>(null);
   const [mySquad, setMySquad] = useState<Strategy | null>(null);
-  const [supportsCloseSquad, setSupportsCloseSquad] = useState(false);
 
   const strategyLicenseAddress = (deployments as any)?.StrategyLicense?.address || "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186";
   const directPaymentReceiver = "0x795009bb38a32348344a36a4cfcb36e4e84cb8d8";
@@ -263,7 +261,6 @@ export default function MarketPage() {
       try {
         const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_XLAYER_RPC || "https://rpc.xlayer.tech");
         const seasonManager = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, provider);
-        setSupportsCloseSquad(typeof seasonManager.closeSquad === 'function');
         const squad = await seasonManager.squads(address);
         const owner = String(squad?.owner || ethers.ZeroAddress);
         const active = Boolean(squad?.active);
@@ -278,11 +275,12 @@ export default function MarketPage() {
 
         const matched = strategies.filter((strategy) => strategy.creatorWallet?.toLowerCase() === address.toLowerCase());
         let options = matched;
+        const externalDisplayName = matched.find((strategy) => strategy.squadId === "HI")?.squadId || matched[0]?.squadId || "HI";
 
         if (!options.length) {
           const vault = new ethers.Contract(strategyVaultAddress, STRATEGY_VAULT_ABI, provider);
-          const candidateNames = ["SPARTANS", "XYNDICATE_ALPHA", "XYNDICATE_BETA", "ALPHA", "BETA"];
-          let detectedName = "SPARTANS";
+          const candidateNames = ["HI", "XYNDICATE_ALPHA", "XYNDICATE_BETA", "ALPHA", "BETA"];
+          let detectedName = externalDisplayName || "HI";
           let detectedPnl = 0;
 
           for (const name of candidateNames) {
@@ -587,45 +585,6 @@ export default function MarketPage() {
     }
   };
 
-  const handleCloseSquad = async () => {
-    try {
-      setClosingBusy(true);
-      setDelistingError(null);
-      setDelistingSuccess(null);
-
-      const walletAddress = address || (await ensureWallet());
-      if (!walletAddress) throw new Error("Wallet required");
-      const injectedProvider = resolveProvider();
-      if (!injectedProvider) throw new Error("Wallet provider unavailable");
-
-      const provider = new ethers.BrowserProvider(injectedProvider as any);
-      const signer = await provider.getSigner();
-      const seasonManager = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, signer);
-      const tx = await seasonManager.closeSquad();
-      await tx.wait();
-
-      await fetch('/api/register-squad', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          squadName: mySquad?.name || selectedSquadId || 'UNKNOWN',
-          action: 'close',
-          walletAddress: walletAddress,
-          registeredAt: Date.now(),
-        }),
-      });
-
-      setDelistingSuccess("Squad closed. It is removed from the leaderboard flow.");
-      setListingHint("Close clears the on-chain squad slot and removes the external registry entry.");
-      setMySquad(null);
-      setEnrolledOptions([]);
-      setSelectedSquadId("");
-    } catch (error: any) {
-      setDelistingError(error?.shortMessage || error?.message || "Squad close failed");
-    } finally {
-      setClosingBusy(false);
-    }
-  };
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
@@ -832,11 +791,10 @@ export default function MarketPage() {
                 <span className="rounded-full bg-slate-500/15 px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300">Delist to create again</span>
               </div>
               <div className="mt-6 flex flex-wrap gap-3">
-                <button type="button" onClick={handleDelistSquad} disabled={delistingBusy || closingBusy} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:hover:bg-white/10">
+                <button type="button" onClick={handleDelistSquad} disabled={delistingBusy} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:hover:bg-white/10">
                   {delistingBusy ? 'Deactivating...' : 'Deactivate squad'}
                 </button>
-                {null}
-                <span className="text-sm text-xyn-muted dark:text-zinc-300">Deactivate keeps history visible. It pauses the squad without removing it.</span>
+                <span className="text-sm text-xyn-muted dark:text-zinc-300">Deactivate keeps history visible and pauses the squad.</span>
               </div>
               {delistingError ? <div className="mt-4 rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">{delistingError}</div> : null}
               {delistingSuccess ? <div className="mt-4 rounded-2xl bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">{delistingSuccess}</div> : null}
