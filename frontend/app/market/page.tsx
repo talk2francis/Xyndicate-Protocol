@@ -747,31 +747,6 @@ export default function MarketPage() {
         )}
       </section>
 
-              <div className="rounded-2xl bg-amber-500/10 p-4 text-sm text-amber-700 dark:text-amber-300">
-                StrategyRegistry deployment is required before listing can go live.
-              </div>
-            ) : null}
-
-            {listingError ? <div className="rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">{listingError}</div> : null}
-            {listingSuccess ? <div className="rounded-2xl bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">{listingSuccess}</div> : null}
-            {listingHint ? <div className="rounded-2xl bg-amber-500/10 p-4 text-sm text-amber-700 dark:text-amber-300">{listingHint}</div> : null}
-
-              <div className="text-xs text-xyn-muted dark:text-zinc-400">
-                This live path uses a dedicated registry contract so existing license history stays intact.
-              </div>
-            </div>
-            <button
-              type="button"
-              className="rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark disabled:cursor-not-allowed disabled:opacity-50"
-              onClick={handleListStrategy}
-              disabled={!strategyRegistryAddress || !selectedSquadId || listingBusy}
-            >
-              {listingBusy ? "Listing..." : "List Strategy"}
-            </button>
-          </div>
-        </div>
-      </section>
-
       <AnimatePresence>
         {selected ? (
           <motion.div
