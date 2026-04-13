@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "186-strategist-1776079866036",
-      "agent": "strategist",
-      "cycle": 186,
-      "timestamp": 1776079866036,
-      "status": "complete",
-      "summary": "SELL ETH (100% treasury) | High spread of 10000 bps and negative 24h change indicate short opportunity with potential liquidity issues. Analyst confidence at 75%.",
-      "durationMs": 1
-    },
-    {
       "id": "186-router-1776079866997",
       "agent": "router",
       "cycle": 186,
@@ -538,6 +529,15 @@
       "timestamp": 1776101565174,
       "status": "complete",
       "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 1
+    },
+    {
+      "id": "196-executor-1776101566074",
+      "agent": "executor",
+      "cycle": 196,
+      "timestamp": 1776101566074,
+      "status": "complete",
+      "summary": "BUY executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
