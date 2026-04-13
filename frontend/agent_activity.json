@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "189-analyst-1776087198781",
-      "agent": "analyst",
-      "cycle": 189,
-      "timestamp": 1776087198781,
-      "status": "complete",
-      "summary": "WAIT ETH | confidence 80%",
-      "durationMs": 1
-    },
-    {
       "id": "189-strategist-1776087199510",
       "agent": "strategist",
       "cycle": 189,
@@ -538,6 +529,15 @@
       "timestamp": 1776108698563,
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | High spread between Uniswap and OKX prices suggests arbitrage opportunity with confidence 80%.",
+      "durationMs": 1
+    },
+    {
+      "id": "200-router-1776108699270",
+      "agent": "router",
+      "cycle": 200,
+      "timestamp": 1776108699270,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
