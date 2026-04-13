@@ -262,7 +262,9 @@
     "0xaea1f2ff6193200676e83e48f3f4f9aad957e7b11171460211e4b47cac4a5099",
     "0xcb4bf462180ac84c6a3c6f77fd82e77e020943ded77d5fa1f8904e9d71279722",
     "0x9bb43e18bb91e6a2158033af06134d09dac3f84933dceb6bdbbf8a4b672695cc",
-    "0x283c705b4389c477c15d063fef3f91b54324d96d5f1e7e47a73fd097cdc9100b"
+    "0x283c705b4389c477c15d063fef3f91b54324d96d5f1e7e47a73fd097cdc9100b",
+    "0x188c7de19bfcfa9589c5beab9d28aa6039350274652f7e1d56846363643e9ad4",
+    "0x4962a6f0179dce6f6ffc6ba3a5da85245a63c0f5e55ab8bb8a5804e79c48afd7"
   ],
   "decisionLogEntries": [
     {
@@ -1783,6 +1785,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait with high confidence score of 0.8.",
       "timestamp": 1776036797
+    },
+    {
+      "txHash": "0x188c7de19bfcfa9589c5beab9d28aa6039350274652f7e1d56846363643e9ad4",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · ETH price is low with a 4.18% decrease in 24h, showing potential for a rebound. Analyst confidence is high at 0.8.",
+      "timestamp": 1776038447
+    },
+    {
+      "txHash": "0x4962a6f0179dce6f6ffc6ba3a5da85245a63c0f5e55ab8bb8a5804e79c48afd7",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait. Confidence score: 0.8.",
+      "timestamp": 1776038447
     }
   ]
 }
