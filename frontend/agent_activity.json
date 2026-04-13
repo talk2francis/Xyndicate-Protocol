@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "171-executor-1776052944587",
-      "agent": "executor",
-      "cycle": 171,
-      "timestamp": 1776052944587,
-      "status": "complete",
-      "summary": "BUY executed on UNISWAP | 2 decision txs",
-      "durationMs": 59
-    },
-    {
       "id": "171-narrator-1776052945592",
       "agent": "narrator",
       "cycle": 171,
@@ -538,6 +529,15 @@
       "timestamp": 1776071011680,
       "status": "complete",
       "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 1
+    },
+    {
+      "id": "181-executor-1776071012605",
+      "agent": "executor",
+      "cycle": 181,
+      "timestamp": 1776071012605,
+      "status": "complete",
+      "summary": "SELL executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
