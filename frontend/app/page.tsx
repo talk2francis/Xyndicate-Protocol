@@ -143,7 +143,7 @@ function AgentPipelineHero({ currentAgent }: { currentAgent?: string }) {
   ];
 
   return (
-    <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#0D1117] p-5 shadow-[0_0_80px_rgba(0,0,0,0.35)] sm:p-6">
+    <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#0D1117] p-4 shadow-[0_0_80px_rgba(0,0,0,0.35)] sm:p-6">
       <style jsx global>{`
         @keyframes pulseGlow { 0%,100% { box-shadow: 0 0 0 rgba(123,200,246,0); } 50% { box-shadow: 0 0 20px rgba(123,200,246,0.3); } }
         @keyframes flowDot { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
@@ -151,21 +151,21 @@ function AgentPipelineHero({ currentAgent }: { currentAgent?: string }) {
         @media (max-width: 767px) { .pipeline-node { width: 60px; height: 44px; } .pipeline-data-tag { display: none; } .pipeline-dot { animation-duration: 2.2s !important; } }
         @media (prefers-reduced-motion: reduce) { .pipeline-node, .pipeline-dot { animation: none !important; transition: none !important; } }
       `}</style>
-      <div className="relative overflow-x-auto">
-        <div className="min-w-[720px]">
-          <div className="flex items-center justify-between gap-3">
+      <div className="relative overflow-x-hidden">
+        <div className="mx-auto max-w-[980px]">
+          <div className="flex items-center justify-between gap-1 sm:gap-2 md:gap-3">
             {nodes.map((node, index) => {
               const active = agentIndex === index;
               const tagVisible = pulse.visible && pulse.agent === node.id;
               const tagText = tags[node.id];
               return (
-                <div key={node.id} className="relative flex flex-1 flex-col items-center">
+                <div key={node.id} className="relative flex min-w-0 flex-1 flex-col items-center">
                   <div className={`pipeline-data-tag absolute -top-8 rounded-full border border-white/10 bg-black/60 px-3 py-1 font-mono text-[11px] text-[#7BC8F6] transition-all duration-300 ${tagVisible ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 -translate-y-2"}`}>{tagText}</div>
                   <motion.div animate={prefersReducedMotion ? false : active ? { scale: [1, 1.02, 1] } : { scale: 1 }} transition={{ duration: 1.5, repeat: prefersReducedMotion || !active ? 0 : Infinity, ease: "easeInOut" }} className={`pipeline-node relative z-10 flex items-center justify-center rounded-2xl border text-[12px] font-medium uppercase tracking-[0.16em] ${active ? "border-[#7BC8F6] bg-[rgba(123,200,246,0.12)] text-[#7BC8F6]" : "border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)] text-white"}`} style={active ? { boxShadow: "0 0 20px rgba(123,200,246,0.3)", animation: prefersReducedMotion ? undefined : "pulseGlow 1.5s ease-in-out infinite" } : undefined}>
                     {node.label}
                   </motion.div>
                   {index < nodes.length - 1 ? (
-                    <div className="absolute left-[52%] top-1/2 h-[2px] w-[96%] -translate-y-1/2 overflow-visible">
+                    <div className="absolute left-[52%] top-1/2 h-[2px] w-[88%] -translate-y-1/2 overflow-visible sm:w-[96%]">
                       {[0, 1, 2].map((dotIndex) => (
                         <span key={dotIndex} className="pipeline-dot absolute top-1/2 h-1 w-1 -translate-y-1/2 rounded-full bg-[#7BC8F6] shadow-[0_0_10px_rgba(123,200,246,0.9)]" style={{ left: `${dotIndex * 24}%`, animation: prefersReducedMotion ? undefined : `flowDot ${active ? 1.4 : 2.2}s linear infinite`, animationDelay: `${dotIndex * 0.25}s`, opacity: active ? 1 : 0.7 }} />
                       ))}
