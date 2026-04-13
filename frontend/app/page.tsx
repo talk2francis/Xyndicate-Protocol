@@ -260,8 +260,8 @@ export default function HomePage() {
   return (
     <div className="overflow-x-hidden bg-xyn-surface text-xyn-dark dark:bg-xyn-dark dark:text-xyn-surface">
       <section className="mx-auto flex min-h-[calc(100vh-73px)] max-w-7xl flex-col justify-center px-4 py-12 sm:px-6 sm:py-16">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-          <div>
+        <div className="grid gap-10">
+          <div className="max-w-4xl">
             <div className="inline-flex items-center gap-3 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-emerald-600 dark:text-emerald-300">
               <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
               LIVE ON X LAYER MAINNET
@@ -290,7 +290,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          <AgentPipelineHero currentAgent={cycleState?.currentAgent} />
+          <div className="mt-6">
+            <AgentPipelineHero currentAgent={cycleState?.currentAgent} />
+          </div>
         </div>
       </section>
 
