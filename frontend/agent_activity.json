@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "171-narrator-1776052945592",
-      "agent": "narrator",
-      "cycle": 171,
-      "timestamp": 1776052945592,
-      "status": "complete",
-      "summary": "Xyndicate Alpha deployed ETH (100% treasury) via uniswap. ETH price decreased by 0.86% in 24h with a significant 10000 bps spread between OKX and Uniswap prices, suggesting an arbitrage opportunity. | Squad Nova held OKB (100% treasury) via okx. Negative 24-hour price change of -0.78% for OKB. Analyst recommends waiting due to balanced risk mode and lack of opportunities. Confidence score: 0.7.",
-      "durationMs": 59
-    },
-    {
       "id": "172-oracle-1776054684821",
       "agent": "oracle",
       "cycle": 172,
@@ -538,6 +529,15 @@
       "timestamp": 1776071012605,
       "status": "complete",
       "summary": "SELL executed on OKX | 2 decision txs",
+      "durationMs": 1
+    },
+    {
+      "id": "181-narrator-1776071013348",
+      "agent": "narrator",
+      "cycle": 181,
+      "timestamp": 1776071013348,
+      "status": "complete",
+      "summary": "Xyndicate Alpha trimmed ETH (100% treasury) via okx. High spread of 10000 bps and negative 24h change indicate short opportunity with 80% confidence | Squad Nova held OKB (100% treasury) via okx. Market price stable with minimal spread and balanced risk mode.",
       "durationMs": 1
     }
   ]
