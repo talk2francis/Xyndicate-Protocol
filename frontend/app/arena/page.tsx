@@ -317,6 +317,7 @@ export default function ArenaPage() {
   const [visibleFeedCount, setVisibleFeedCount] = useState(20);
   const [copyToast, setCopyToast] = useState<string | null>(null);
   const [countdownMs, setCountdownMs] = useState(0);
+  const [sseConnected, setSseConnected] = useState(false);
   const [selectedStep, setSelectedStep] = useState<DecisionChainStep | null>(null);
 
   const { data, isLoading, isError, refetch } = useQuery<LeaderboardResponse>({
@@ -403,6 +404,26 @@ export default function ArenaPage() {
   }, [cycleState?.nextCycleTime]);
 
   useEffect(() => {
+    const es = new EventSource("/api/stream");
+    es.onopen = () => setSseConnected(true);
+    es.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        if (msg?.type === "cycle_state" && msg.payload) {
+          setCycleState(msg.payload);
+        }
+      } catch {
+        // ignore malformed messages
+      }
+    };
+    es.onerror = () => {
+      setSseConnected(false);
+      es.close();
+    };
+    return () => es.close();
+  }, []);
+
+  useEffect(() => {
     if (!copyToast) return;
     const timeout = window.setTimeout(() => setCopyToast(null), 1500);
     return () => window.clearTimeout(timeout);
@@ -477,8 +498,8 @@ export default function ArenaPage() {
             <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-6xl">Season 1 Arena</h1>
           </div>
           <div className="flex flex-col items-start gap-3 rounded-3xl border border-black/10 bg-black/5 px-5 py-4 text-sm dark:border-white/10 dark:bg-white/5 lg:items-end">
-            <div className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-500">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" /> Arena is Live
+            <div className={`inline-flex items-center gap-2 text-sm font-semibold ${sseConnected ? "text-emerald-500" : "text-zinc-400"}`}>
+              <span className={`h-2.5 w-2.5 rounded-full ${sseConnected ? "bg-emerald-500 animate-pulse" : "border border-zinc-400 bg-transparent"}`} /> {sseConnected ? "Live" : "Reconnecting"}
             </div>
             <div className="text-xyn-muted dark:text-zinc-300">{activeSquadsCount} squads active · last TX {lastTxMinutesAgo}m ago · {totalTxs} on-chain</div>
           </div>
