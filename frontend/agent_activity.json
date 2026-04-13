@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "181-router-1776071011680",
-      "agent": "router",
-      "cycle": 181,
-      "timestamp": 1776071011680,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "181-executor-1776071012605",
       "agent": "executor",
       "cycle": 181,
@@ -538,6 +529,15 @@
       "timestamp": 1776092592485,
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | Positive 24h price change indicates potential uptrend with high confidence score. Uniswap liquidity issue risk is manageable at current levels.",
+      "durationMs": 1
+    },
+    {
+      "id": "191-router-1776092593393",
+      "agent": "router",
+      "cycle": 191,
+      "timestamp": 1776092593393,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
