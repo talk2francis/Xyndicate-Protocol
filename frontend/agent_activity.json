@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "193-strategist-1776096099085",
-      "agent": "strategist",
-      "cycle": 193,
-      "timestamp": 1776096099085,
-      "status": "complete",
-      "summary": "BUY ETH (100% treasury) | Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence score of 0.8.",
-      "durationMs": 1
-    },
-    {
       "id": "193-router-1776096099894",
       "agent": "router",
       "cycle": 193,
@@ -538,6 +529,15 @@
       "timestamp": 1776114082081,
       "status": "complete",
       "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 1
+    },
+    {
+      "id": "205-executor-1776114083129",
+      "agent": "executor",
+      "cycle": 205,
+      "timestamp": 1776114083129,
+      "status": "complete",
+      "summary": "BUY executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
