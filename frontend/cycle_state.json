@@ -1,190 +1,22 @@
 {
-  "currentAgent": "idle",
-  "cycleNumber": 189,
-  "cycleStartTime": 1776087166950,
-  "nextCycleTime": 1776089014288,
+  "currentAgent": "oracle",
+  "cycleNumber": 190,
+  "cycleStartTime": 1776090706069,
+  "nextCycleTime": 1776092506069,
   "lastCycleComplete": 1776087214288,
   "activeSquads": [
     "Xyndicate Alpha",
     "Squad Nova"
   ],
-  "squadResults": {
-    "XYNDICATE_ALPHA": {
-      "squadId": "XYNDICATE_ALPHA",
-      "squadName": "Xyndicate Alpha",
-      "riskMode": "aggressive",
-      "baseAsset": "ETH",
-      "txHash": "0xdd0723c2868e126cac11361dae959c3a9303266dd19bb3d65d87b6a53fb91c7f",
-      "vaultTxHash": "0xeab44df010531608ef9b6746b68fb38a73c9e988720c9efaeb843f478edcc85a",
-      "pnlDelta": "50",
-      "action": "BUY",
-      "asset": "ETH",
-      "sizePercent": 100,
-      "rationale": "Positive 24h change and potential arbitrage opportunity with a 10000 bps spread on OKX. Analyst confidence is high at 0.8.",
-      "route": "uniswap",
-      "routingReason": "Uniswap offers a better buy price beyond the 10 bps threshold.",
-      "spreadBps": 10000,
-      "narratorSummary": "Xyndicate Alpha deployed ETH (100% treasury) via uniswap. Positive 24h change and potential arbitrage opportunity with a 10000 bps spread on OKX. Analyst confidence is high at 0.8.",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "ETH",
-            "type": "long",
-            "rationale": "Positive 24h change and potential arbitrage opportunity with a 10000 bps spread on OKX",
-            "confidence": 0.8
-          }
-        ],
-        "risks": [
-          {
-            "description": "High spread of 10000 bps indicates potential liquidity issues or market manipulation",
-            "severity": 0.9
-          }
-        ],
-        "recommendation": "wait",
-        "topAsset": "ETH",
-        "confidenceScore": 0.8
-      },
-      "market": {
-        "pair": "ETH-USDT",
-        "price": 2193.57,
-        "okxPrice": 2193.57,
-        "uniswapPrice": 2.1966581932705813e-9,
-        "spreadBps": 10000,
-        "betterRoute": "okx",
-        "uniswapPoolId": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
-        "priceSpreads": {
-          "absolute": -2193.5699999978,
-          "bps": 10000,
-          "source": "uniswap-v3-onchain",
-          "rawUniswapPrice": 2.1966581932705813e-9,
-          "rawOkxPrice": 2193.57,
-          "uniswapError": null
-        },
-        "change24h": 0.04378343617880226
-      },
-      "narrative": "BUY ETH (100% treasury) via uniswap · Positive 24h change and potential arbitrage opportunity with a 10000 bps spread on OKX. Analyst confidence is high at 0.8."
-    },
-    "SQUAD_NOVA": {
-      "squadId": "SQUAD_NOVA",
-      "squadName": "Squad Nova",
-      "riskMode": "balanced",
-      "baseAsset": "OKB",
-      "txHash": "0x742e3de9a60c51422b8600e8168cd9cb8ad9cded4382a23dcf06f02d66bee9c2",
-      "vaultTxHash": "0xe88c6d75dcbb6fc0f72f03620ad1b5ac797a5c5495793de8c9e4635aafc9e1ec",
-      "pnlDelta": "0",
-      "action": "HOLD",
-      "asset": "OKB",
-      "sizePercent": 100,
-      "rationale": "Price stability and balanced risk mode. Analyst recommendation to wait. Confidence score: 0.8.",
-      "route": "okx",
-      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "spreadBps": 0,
-      "narratorSummary": "Squad Nova held OKB (100% treasury) via okx. Price stability and balanced risk mode. Analyst recommendation to wait. Confidence score: 0.8.",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "OKB",
-            "type": "hold",
-            "rationale": "Price stability and balanced risk mode."
-          }
-        ],
-        "risks": [],
-        "recommendation": "wait",
-        "topAsset": "OKB",
-        "confidenceScore": 0.8
-      },
-      "market": {
-        "pair": "OKB-USDT",
-        "price": 82.91,
-        "okxPrice": 82.91,
-        "uniswapPrice": 82.91,
-        "spreadBps": 0,
-        "betterRoute": "okx",
-        "uniswapPoolId": null,
-        "priceSpreads": {
-          "absolute": 0,
-          "bps": 0,
-          "source": "okx-fallback",
-          "rawUniswapPrice": null,
-          "rawOkxPrice": 82.91,
-          "uniswapError": null
-        },
-        "change24h": -0.34855769230769984
-      },
-      "narrative": "HOLD OKB (100% treasury) via okx · Price stability and balanced risk mode. Analyst recommendation to wait. Confidence score: 0.8."
-    }
-  },
-  "slowSquadLastRunAt": {
-    "phantom_last_run": 1776087202359,
-    "cipher_last_run": 1776087202360,
-    "nexus_last_run": 1776087202360
-  },
+  "squadResults": {},
+  "slowSquadLastRunAt": {},
+  "uniswapQueriesSuccessful": 0,
   "agentLog": [
     {
       "agent": "system",
       "status": "started",
-      "completedAt": 1776087166950,
-      "summary": "Cycle 189 started. Oracle snapshot in progress."
-    },
-    {
-      "agent": "oracle",
-      "status": "complete",
-      "completedAt": 1776087197685,
-      "summary": "ETH $0.00 (0.00%) | Uniswap spread 0.00bps"
-    },
-    {
-      "agent": "analyst",
-      "status": "complete",
-      "completedAt": 1776087198781,
-      "summary": "wait on ETH | confidence 0"
-    },
-    {
-      "agent": "strategist",
-      "status": "complete",
-      "completedAt": 1776087199510,
-      "summary": "HOLD ETH (0% treasury)"
-    },
-    {
-      "agent": "router",
-      "status": "complete",
-      "completedAt": 1776087200202,
-      "summary": "okx selected | spread 0.00bps"
-    },
-    {
-      "agent": "executor",
-      "status": "complete",
-      "completedAt": 1776087200860,
-      "summary": "HOLD executed | tx 0xdd0723c2868e126cac11361dae959c3a9303266dd19bb3d65d87b6a53fb91c7f"
-    },
-    {
-      "agent": "narrator",
-      "status": "complete",
-      "completedAt": 1776087201562,
-      "summary": "Xyndicate Alpha deployed ETH (100% treasury) via uniswap. Positive 24h change and potential arbitrage opportunity with a 10000 bps spread on OKX. Analyst confidence is high at 0.8. | Squad Nova held OKB (100% treasury) via okx. Price stability and balanced risk mode. Analyst recommendation to wait. Confidence score: 0.8."
-    },
-    {
-      "agent": "slow-phantom",
-      "status": "complete",
-      "completedAt": 1776087202359,
-      "summary": "Phantom Protocol decision logged"
-    },
-    {
-      "agent": "slow-cipher",
-      "status": "complete",
-      "completedAt": 1776087202360,
-      "summary": "Cipher Strategy decision logged"
-    },
-    {
-      "agent": "slow-nexus",
-      "status": "complete",
-      "completedAt": 1776087202360,
-      "summary": "Nexus Quant decision logged"
-    },
-    {
-      "agent": "system",
-      "status": "complete",
-      "completedAt": 1776087214288,
-      "summary": "Cycle 189 complete. Awaiting next scheduled run."
+      "completedAt": 1776090706069,
+      "summary": "Cycle 190 started. Oracle snapshot in progress."
     }
   ]
 }
