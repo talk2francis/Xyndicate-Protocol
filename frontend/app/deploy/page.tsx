@@ -58,6 +58,9 @@ export default function DeployPage() {
   const [vaultTxHash, setVaultTxHash] = useState<string | null>(null);
   const [registrationMessage, setRegistrationMessage] = useState<string | null>(null);
   const [cycleCountdown, setCycleCountdown] = useState(FIRST_CYCLE_SECONDS);
+  const [mySquad, setMySquad] = useState<any>(null);
+  const [mySquadLoading, setMySquadLoading] = useState(false);
+  const [mySquadError, setMySquadError] = useState<string | null>(null);
 
   const seasonManagerAddress = (deployments as any)?.SeasonManagerV2?.address || (deployments as any)?.x402Details?.contract || "0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1";
   const strategyVaultAddress = (deployments as any)?.StrategyVault?.address || "0x6002767f909B3049d5A65beAD84A843a385a61aC";
@@ -197,16 +200,62 @@ export default function DeployPage() {
     }
   };
 
-  const preview = useMemo(
-    () => ({
-      squadName: squadName || "YOUR_SQUAD",
-      risk,
-      pair,
-      mode,
-      allocation,
-    }),
-    [allocation, mode, pair, risk, squadName],
-  );
+  useEffect(() => {
+    const loadMySquad = async () => {
+      if (!address) {
+        setMySquad(null);
+        setMySquadError(null);
+        return;
+      }
+      try {
+        setMySquadLoading(true);
+        const res = await fetch(`/api/my-squad?wallet=${encodeURIComponent(address)}`, { cache: "no-store" });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json?.error || "Failed to load squad");
+        setMySquad(json?.squad || null);
+        setMySquadError(null);
+      } catch (error: any) {
+        setMySquad(null);
+        setMySquadError(error?.message || "Failed to load squad");
+      } finally {
+        setMySquadLoading(false);
+      }
+    };
+
+    loadMySquad();
+  }, [address]);
+
+  const handleSquadAction = async (action: "deactivate" | "reactivate" | "cancel") => {
+    if (!address || !mySquad?.squadName) return;
+    const ok = window.confirm(
+      action === "cancel"
+        ? "This will permanently remove your squad from the leaderboard. This cannot be undone. Your on-chain enrollment transaction will remain on the blockchain. Confirm removal?"
+        : action === "reactivate"
+          ? "This will reactivate your squad on the leaderboard. Confirm?"
+          : "This will pause your squad on the leaderboard. It will no longer make decisions. Confirm?",
+    );
+    if (!ok) return;
+
+    try {
+      const res = await fetch("/api/squad-action", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action, squadId: mySquad.squadName, wallet: address }),
+      });
+      const json = await res.json();
+      if (!res.ok || !json?.success) throw new Error(json?.error || "Squad action failed");
+      if (action === "cancel") {
+        setMySquad(null);
+      } else {
+        setMySquad((prev: any) => prev ? { ...prev, deactivated: action === "deactivate" } : prev);
+      }
+    } catch (error: any) {
+      setMySquadError(error?.message || "Squad action failed");
+    }
+  };
+
+  const squadStatus = mySquad?.cancelled ? null : (mySquad?.deactivated ? "PAUSED" : "ACTIVE");
+
 
   return (
     <div className="mx-auto max-w-7xl overflow-x-hidden px-4 py-12 sm:px-6">
@@ -340,21 +389,37 @@ export default function DeployPage() {
             </div>
 
             <div className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Squad Preview</p>
-              <div className="mt-6 rounded-3xl border border-black/10 bg-xyn-surface p-6 dark:border-white/10 dark:bg-xyn-dark">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <div className="text-2xl font-semibold">{preview.squadName}</div>
-                    <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-300">{preview.pair}</div>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">My Squad</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight">Your live squad status.</h2>
+              {!address ? (
+                <div className="mt-6 rounded-3xl border border-dashed border-black/10 p-6 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">Connect a wallet to see your squad.</div>
+              ) : mySquadLoading ? (
+                <div className="mt-6 h-52 animate-pulse rounded-3xl bg-black/5 dark:bg-white/5" />
+              ) : mySquadError ? (
+                <div className="mt-6 rounded-3xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">{mySquadError}</div>
+              ) : !mySquad || mySquad.cancelled ? (
+                <div className="mt-6 rounded-3xl border border-dashed border-black/10 p-6 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">No active squad deployed. Complete the wizard above to deploy one.</div>
+              ) : (
+                <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-6 dark:border-white/10 dark:bg-white/5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-3xl font-semibold">{mySquad.squadName}</div>
+                      <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-300">{mySquad.strategyMode}</div>
+                    </div>
+                    <span className={`rounded-full px-3 py-1 text-xs font-semibold ${squadStatus === "ACTIVE" ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300" : "bg-amber-500/15 text-amber-700 dark:text-amber-300"}`}>{squadStatus}</span>
                   </div>
-                  <span className={`rounded-full px-3 py-1 text-xs font-semibold ${riskTone(preview.risk)}`}>{preview.risk}</span>
+                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10"><div className="text-xs uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Squad ID</div><div className="mt-2 font-semibold">{mySquad.squadName}</div></div>
+                    <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10"><div className="text-xs uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Wallet</div><div className="mt-2 font-semibold">{address?.slice(0, 6)}...{address?.slice(-4)}</div></div>
+                    <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10"><div className="text-xs uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Pair</div><div className="mt-2 font-semibold">{mySquad.baseAsset}</div></div>
+                    <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10"><div className="text-xs uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Risk</div><div className="mt-2 font-semibold">{mySquad.riskMode}</div></div>
+                  </div>
+                  <div className="mt-6 flex gap-3">
+                    <button type="button" onClick={() => handleSquadAction(mySquad.deactivated ? "reactivate" : "deactivate")} className="flex-1 rounded-full border border-amber-500/40 px-5 py-3 text-sm font-semibold text-amber-700 transition hover:bg-amber-500/10 dark:text-amber-300">{mySquad.deactivated ? "Reactivate" : "Deactivate Squad"}</button>
+                    <button type="button" onClick={() => handleSquadAction("cancel")} className="flex-1 rounded-full border border-rose-500/40 px-5 py-3 text-sm font-semibold text-rose-700 transition hover:bg-rose-500/10 dark:text-rose-300">Cancel Squad</button>
+                  </div>
                 </div>
-                <div className="mt-6 space-y-3 text-sm text-xyn-muted dark:text-zinc-300">
-                  <div>Mode: <span className="font-medium text-xyn-dark dark:text-white">{preview.mode}</span></div>
-                  <div>Allocation: <span className="font-medium text-xyn-dark dark:text-white">{preview.allocation}%</span></div>
-                  <div>Status: <span className="font-medium text-emerald-600 dark:text-emerald-300">Ready for enrollment</span></div>
-                </div>
-              </div>
+              )}
             </div>
           </motion.section>
         ) : null}
