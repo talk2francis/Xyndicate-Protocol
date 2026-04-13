@@ -442,6 +442,7 @@ export default function ArenaPage() {
   const lastOkxPrice = ethSignal?.okxPrice ?? 0;
   const lastUniswapPrice = ethSignal?.uniswapPrice ?? ethSignal?.okxPrice ?? null;
   const uniswapDisplay = lastUniswapPrice == null || !Number.isFinite(lastUniswapPrice) || lastUniswapPrice <= 0 ? null : lastUniswapPrice;
+  const okxDisplay = Number.isFinite(lastOkxPrice) && lastOkxPrice > 0 ? lastOkxPrice : 0;
   const activityEntries = activityData?.entries || [];
   const paymentEntries = paymentData?.entries || [];
   const activeSquadsCount = data?.squads?.length || squads.length;
