@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ethers } from "ethers";
 import deployments from "@/deployments.json";
@@ -61,6 +61,7 @@ export default function DeployPage() {
   const [mySquad, setMySquad] = useState<any>(null);
   const [mySquadLoading, setMySquadLoading] = useState(false);
   const [mySquadError, setMySquadError] = useState<string | null>(null);
+  const mySquadRef = useRef<HTMLDivElement | null>(null);
 
   const seasonManagerAddress = (deployments as any)?.SeasonManagerV2?.address || (deployments as any)?.x402Details?.contract || "0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1";
   const strategyVaultAddress = (deployments as any)?.StrategyVault?.address || "0x6002767f909B3049d5A65beAD84A843a385a61aC";
@@ -193,6 +194,9 @@ export default function DeployPage() {
 
       setCycleCountdown(FIRST_CYCLE_SECONDS);
       setStep(3);
+      window.setTimeout(() => {
+        mySquadRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 250);
     } catch (err: any) {
       setError(err?.shortMessage || err?.message || "Enrollment failed");
     } finally {
@@ -223,7 +227,7 @@ export default function DeployPage() {
     };
 
     loadMySquad();
-  }, [address]);
+  }, [address, step]);
 
   const handleSquadAction = async (action: "deactivate" | "reactivate" | "cancel") => {
     if (!address || !mySquad?.squadName) return;
@@ -388,7 +392,7 @@ export default function DeployPage() {
               </div>
             </div>
 
-            <div className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+            <div ref={mySquadRef} className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">My Squad</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight">Your live squad status.</h2>
               {!address ? (
@@ -503,7 +507,7 @@ export default function DeployPage() {
             <div className="mt-8 space-y-4 text-sm">
               {okLinkEnroll ? <div>Enrollment TX: <a className="underline" href={okLinkEnroll} target="_blank" rel="noreferrer">{enrollTxHash}</a></div> : null}
               {okLinkVault ? <div>Vault Deposit TX: <a className="underline" href={okLinkVault} target="_blank" rel="noreferrer">{vaultTxHash}</a></div> : null}
-              <div>{registrationMessage || `Your squad ${squadName} has been registered. It will appear on the leaderboard within the next scheduler cycle (up to 30 minutes). One decision per day to keep the arena lean.`}</div>
+              <div>{registrationMessage || `Squad ${squadName} is now registered. It will appear on the leaderboard within the next scheduler cycle (up to 30 minutes). It starts in PAUSED status and becomes ACTIVE after its first decision — within the next hour.`}</div>
               <div>First cycle runs in {formatCountdown(cycleCountdown)}</div>
             </div>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
