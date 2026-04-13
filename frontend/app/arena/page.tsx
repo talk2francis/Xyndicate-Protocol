@@ -318,6 +318,7 @@ export default function ArenaPage() {
   const [copyToast, setCopyToast] = useState<string | null>(null);
   const [countdownMs, setCountdownMs] = useState(0);
   const [sseConnected, setSseConnected] = useState(false);
+  const [cycleState, setCycleState] = useState<CycleStateResponse | undefined>(undefined);
   const [selectedStep, setSelectedStep] = useState<DecisionChainStep | null>(null);
 
   const { data, isLoading, isError, refetch } = useQuery<LeaderboardResponse>({
@@ -330,12 +331,7 @@ export default function ArenaPage() {
     refetchInterval: 30000,
   });
 
-  const {
-    data: cycleState,
-    isLoading: cycleLoading,
-    isError: cycleError,
-    refetch: refetchCycleState,
-  } = useQuery<CycleStateResponse>({
+  const { data: cycleStateData, isLoading: cycleLoading, isError: cycleError, refetch: refetchCycleState } = useQuery<CycleStateResponse>({
     queryKey: ["arena-cycle-state"],
     queryFn: async () => {
       const res = await fetch("/api/cycle-state", { cache: "no-store" });
@@ -394,6 +390,10 @@ export default function ArenaPage() {
     },
     refetchInterval: 30000,
   });
+
+  useEffect(() => {
+    setCycleState(cycleStateData);
+  }, [cycleStateData]);
 
   useEffect(() => {
     if (!cycleState?.nextCycleTime) return;
