@@ -234,7 +234,7 @@ export default function DocsPage() {
 
   const usageTotalPages = Math.max(1, Math.ceil((usageData.entries?.length || 0) / USAGE_PAGE_SIZE));
   const safeUsagePage = Math.min(usagePage, usageTotalPages);
-  const acpPreview = useMemo(() => ({
+  const acpPreview = {
     version: '1.0',
     from: 'oracle',
     to: 'analyst',
@@ -247,7 +247,7 @@ export default function DocsPage() {
       timestamp: cycleState?.cycleStartTime || 0,
     },
     cycleId: cycleState?.cycleNumber || 0,
-  }), [cycleState]);
+  };
   const pagedUsageEntries = (usageData.entries || []).slice((safeUsagePage - 1) * USAGE_PAGE_SIZE, safeUsagePage * USAGE_PAGE_SIZE);
 
   const runQuery = async () => {
