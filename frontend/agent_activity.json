@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "157-router-1776027675442",
-      "agent": "router",
-      "cycle": 157,
-      "timestamp": 1776027675442,
-      "status": "complete",
-      "summary": "UNISWAP selected | Uniswap offers a better buy price beyond the 10 bps threshold.",
-      "durationMs": 3
-    },
-    {
       "id": "157-executor-1776027676106",
       "agent": "executor",
       "cycle": 157,
@@ -538,6 +529,15 @@
       "timestamp": 1776051175954,
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | High spread of 10000 bps indicates potential arbitrage opportunity with OKX price being higher than Uniswap price.",
+      "durationMs": 1
+    },
+    {
+      "id": "170-router-1776051176609",
+      "agent": "router",
+      "cycle": 170,
+      "timestamp": 1776051176609,
+      "status": "complete",
+      "summary": "UNISWAP selected | Uniswap offers a better buy price beyond the 10 bps threshold.",
       "durationMs": 1
     }
   ]
