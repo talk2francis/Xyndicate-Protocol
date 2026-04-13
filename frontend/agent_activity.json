@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "185-strategist-1776078092349",
-      "agent": "strategist",
-      "cycle": 185,
-      "timestamp": 1776078092349,
-      "status": "complete",
-      "summary": "BUY ETH (100% treasury) | High spread of 10000 bps indicates potential arbitrage opportunity with OKX, supported by analyst recommendation and confidence score of 0.8.",
-      "durationMs": 1
-    },
-    {
       "id": "185-router-1776078093065",
       "agent": "router",
       "cycle": 185,
@@ -538,6 +529,15 @@
       "timestamp": 1776099803789,
       "status": "complete",
       "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "durationMs": 1
+    },
+    {
+      "id": "195-executor-1776099804538",
+      "agent": "executor",
+      "cycle": 195,
+      "timestamp": 1776099804538,
+      "status": "complete",
+      "summary": "HOLD executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
