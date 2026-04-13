@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "185-analyst-1776078091564",
-      "agent": "analyst",
-      "cycle": 185,
-      "timestamp": 1776078091564,
-      "status": "complete",
-      "summary": "WAIT ETH | confidence 75%",
-      "durationMs": 1
-    },
-    {
       "id": "185-strategist-1776078092349",
       "agent": "strategist",
       "cycle": 185,
@@ -538,6 +529,15 @@
       "timestamp": 1776099803042,
       "status": "complete",
       "summary": "HOLD ETH (0% treasury) | ETH price increased by 1.62% in 24h, indicating bullish trend. High spread between Uniswap and OKX prices suggests arbitrage opportunities and higher volatility.",
+      "durationMs": 1
+    },
+    {
+      "id": "195-router-1776099803789",
+      "agent": "router",
+      "cycle": 195,
+      "timestamp": 1776099803789,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
