@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "168-strategist-1776047465806",
-      "agent": "strategist",
-      "cycle": 168,
-      "timestamp": 1776047465806,
-      "status": "complete",
-      "summary": "BUY ETH (100% treasury) | ETH price decreased by over 1% in 24h with significant spread between Uniswap and OKX prices, indicating arbitrage opportunity.",
-      "durationMs": 1
-    },
-    {
       "id": "168-router-1776047466425",
       "agent": "router",
       "cycle": 168,
@@ -538,6 +529,15 @@
       "timestamp": 1776065568901,
       "status": "complete",
       "summary": "ACT ETH | confidence 80%",
+      "durationMs": 1
+    },
+    {
+      "id": "178-strategist-1776065569607",
+      "agent": "strategist",
+      "cycle": 178,
+      "timestamp": 1776065569607,
+      "status": "complete",
+      "summary": "BUY ETH (100% treasury) | High spread of 10000 bps indicates potential arbitrage opportunity by longing ETH on Uniswap and shorting on OKX",
       "durationMs": 1
     }
   ]
