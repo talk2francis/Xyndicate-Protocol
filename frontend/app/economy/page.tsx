@@ -93,7 +93,7 @@ function edgePath(fromId: string, toId: string) {
 function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: EconomyEdge[] }) {
   return (
     <div className="rounded-[32px] border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">
-      <div className="overflow-x-auto">
+      <div className="economy-loop-container overflow-x-auto">
         <svg viewBox="0 0 640 520" className="min-w-[640px]">
           <defs>
             <marker id="economy-arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
@@ -160,6 +160,7 @@ function StatCard({ label, value, note }: { label: string; value: string; note?:
 
 export default function EconomyPage() {
   const [sortKey, setSortKey] = useState<"time" | "type" | "amount">("time");
+  const [ledgerPage, setLedgerPage] = useState(1);
 
   const { data, isLoading, isError, refetch } = useQuery<EconomyResponse>({
     queryKey: ["economy"],
@@ -182,6 +183,10 @@ export default function EconomyPage() {
     }
     return entries.sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0));
   }, [data?.paymentHistory, sortKey]);
+  const ledgerPageSize = 10;
+  const ledgerTotalPages = Math.max(1, Math.ceil(sortedHistory.length / ledgerPageSize));
+  const safeLedgerPage = Math.min(ledgerPage, ledgerTotalPages);
+  const pagedHistory = sortedHistory.slice((safeLedgerPage - 1) * ledgerPageSize, safeLedgerPage * ledgerPageSize);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
@@ -254,7 +259,7 @@ export default function EconomyPage() {
           </div>
 
           <div className="divide-y divide-black/10 dark:divide-white/10">
-            {sortedHistory.map((entry) => (
+            {pagedHistory.map((entry) => (
               <div key={`${entry.txHash}-${entry.timestamp}`} className="grid gap-4 px-5 py-5 lg:grid-cols-[1.1fr_1fr_0.8fr_1fr_0.8fr_0.7fr]">
                 <div className="font-semibold">{paymentTypeLabel(entry.type)}</div>
                 <div className="text-sm text-xyn-muted dark:text-zinc-300">{entry.from} → {entry.to}</div>
@@ -272,7 +277,16 @@ export default function EconomyPage() {
             ))}
           </div>
         </div>
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="text-sm text-xyn-muted dark:text-zinc-300">Page {safeLedgerPage} of {ledgerTotalPages}</div>
+          <div className="flex gap-3">
+            <button type="button" onClick={() => setLedgerPage((prev) => Math.max(1, prev - 1))} disabled={safeLedgerPage === 1} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold disabled:opacity-50 dark:border-white/10">Previous</button>
+            <button type="button" onClick={() => setLedgerPage((prev) => Math.min(ledgerTotalPages, prev + 1))} disabled={safeLedgerPage === ledgerTotalPages} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold disabled:opacity-50 dark:border-white/10">Next</button>
+          </div>
+        </div>
       </section>
+
+      <style jsx global>{`\n        @media (min-width: 768px) {\n          .economy-loop-container {\n            transform: scale(0.5);\n            transform-origin: top center;\n            margin-bottom: -260px;\n          }\n        }\n      `}</style>
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">

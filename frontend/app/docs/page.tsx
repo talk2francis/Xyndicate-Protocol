@@ -47,7 +47,7 @@ const INSTALL_TABS = ["Plugin Store", "Direct MCP", "Manual"] as const;
 const GUIDE_TABS = ["Plugin Store", "Claude Code", "OpenClaw", "Raw HTTP"] as const;
 const TEST_TOOLS = ["get_market_signal", "get_leaderboard", "execute_route_query", "get_economy_snapshot"] as const;
 const TEST_PAIRS = ["ETH/USDC", "OKB/USDC"] as const;
-const USAGE_PAGE_SIZE = 12;
+const USAGE_PAGE_SIZE = 3;
 
 const CURL_COMMAND = "curl -fsSL https://xyndicateprotocol.vercel.app/install.sh | bash";
 const MCP_JSON = JSON.stringify({
@@ -213,7 +213,7 @@ function CodeBlock({ value }: { value: string }) {
 export default function DocsPage() {
   const [installTab, setInstallTab] = useState<(typeof INSTALL_TABS)[number]>("Plugin Store");
   const [guideTab, setGuideTab] = useState<(typeof GUIDE_TABS)[number]>("Claude Code");
-  const [openCards, setOpenCards] = useState<Record<string, boolean>>(() => Object.fromEntries(TOOL_CARDS.map((card) => [card.name, true])));
+  const [openCards, setOpenCards] = useState<Record<string, boolean>>(() => Object.fromEntries(TOOL_CARDS.map((card) => [card.name, false])));
   const [pair, setPair] = useState<(typeof TEST_PAIRS)[number]>("ETH/USDC");
   const [tool, setTool] = useState<(typeof TEST_TOOLS)[number]>("get_market_signal");
   const [responseText, setResponseText] = useState<string>("{}");
@@ -393,7 +393,7 @@ export default function DocsPage() {
                   <div className="font-mono text-lg font-semibold">{card.name}</div>
                   <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-300">{card.description}</div>
                 </div>
-                <ChevronDown className={`h-5 w-5 transition ${openCards[card.name] ? "rotate-180" : ""}`} />
+                <ChevronDown className={`h-5 w-5 transition ${openCards[card.name] ? "rotate-180" : "rotate-0"}`} />
               </button>
               {openCards[card.name] ? (
                 <div className="border-t border-black/10 px-6 py-5 dark:border-white/10">
@@ -553,22 +553,8 @@ export default function DocsPage() {
               <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="text-sm text-xyn-muted dark:text-zinc-300">Page {safeUsagePage} of {usageTotalPages}</div>
                 <div className="flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setUsagePage((prev) => Math.max(1, prev - 1))}
-                    disabled={safeUsagePage === 1}
-                    className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold disabled:opacity-50 dark:border-white/10"
-                  >
-                    Previous
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setUsagePage((prev) => Math.min(usageTotalPages, prev + 1))}
-                    disabled={safeUsagePage === usageTotalPages}
-                    className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold disabled:opacity-50 dark:border-white/10"
-                  >
-                    Next
-                  </button>
+                  <button type="button" onClick={() => setUsagePage((prev) => Math.max(1, prev - 1))} disabled={safeUsagePage === 1} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold disabled:opacity-50 dark:border-white/10">Previous</button>
+                  <button type="button" onClick={() => setUsagePage((prev) => Math.min(usageTotalPages, prev + 1))} disabled={safeUsagePage === usageTotalPages} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold disabled:opacity-50 dark:border-white/10">Next</button>
                 </div>
               </div>
             ) : null}

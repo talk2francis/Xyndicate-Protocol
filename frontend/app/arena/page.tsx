@@ -315,6 +315,7 @@ export default function ArenaPage() {
   const [filter, setFilter] = useState<"All" | "Active" | "Paused">("All");
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [visibleFeedCount, setVisibleFeedCount] = useState(20);
+  const [paymentPage, setPaymentPage] = useState(1);
   const [copyToast, setCopyToast] = useState<string | null>(null);
   const [countdownMs, setCountdownMs] = useState(0);
   const [sseConnected, setSseConnected] = useState(false);
@@ -445,6 +446,10 @@ export default function ArenaPage() {
   const okxDisplay = Number.isFinite(lastOkxPrice) && lastOkxPrice > 0 ? lastOkxPrice : 0;
   const activityEntries = activityData?.entries || [];
   const paymentEntries = paymentData?.entries || [];
+  const paymentPageSize = 6;
+  const paymentTotalPages = Math.max(1, Math.ceil(paymentEntries.length / paymentPageSize));
+  const safePaymentPage = Math.min(paymentPage, paymentTotalPages);
+  const pagedPaymentEntries = paymentEntries.slice((safePaymentPage - 1) * paymentPageSize, safePaymentPage * paymentPageSize);
   const activeSquadsCount = data?.squads?.length || squads.length;
   const lastTxMinutesAgo = Math.max(0, Math.floor((Date.now() - Number((squads[0]?.latestTimestamp || 0) * 1000 || Date.now())) / 60000));
   const totalTxs = Object.keys(txHashes || {}).length;
@@ -581,7 +586,7 @@ export default function ArenaPage() {
             <div className="space-y-3 p-5">
               {!paymentData?.hasFreshPayments ? <div className="rounded-2xl bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">Showing historical payment history. Fresh cycle micropayments have not landed yet.</div> : null}
               <AnimatePresence initial={false}>
-                {paymentEntries.map((entry) => {
+                {pagedPaymentEntries.map((entry) => {
                   const tone = entry.type === "narrator-oracle" ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/20" : entry.type === "analyst-oracle" ? "bg-teal-500/10 text-teal-300 border-teal-500/20" : "bg-violet-500/10 text-violet-300 border-violet-500/20";
                   return (
                     <motion.div key={`${entry.txHash}-${entry.type}`} initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} className="flex flex-col gap-3 rounded-2xl border border-black/10 bg-white/70 px-4 py-3 dark:border-white/10 dark:bg-black/20 sm:flex-row sm:items-center sm:justify-between">
@@ -597,6 +602,13 @@ export default function ArenaPage() {
                   );
                 })}
               </AnimatePresence>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="text-sm text-xyn-muted dark:text-zinc-300">Page {safePaymentPage} of {paymentTotalPages}</div>
+                <div className="flex gap-3">
+                  <button type="button" onClick={() => setPaymentPage((prev) => Math.max(1, prev - 1))} disabled={safePaymentPage === 1} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold disabled:opacity-50 dark:border-white/10">Previous</button>
+                  <button type="button" onClick={() => setPaymentPage((prev) => Math.min(paymentTotalPages, prev + 1))} disabled={safePaymentPage === paymentTotalPages} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold disabled:opacity-50 dark:border-white/10">Next</button>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="p-5 text-sm text-xyn-muted dark:text-zinc-300">No agent payments recorded yet.</div>

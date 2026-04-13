@@ -31,7 +31,7 @@ type ProofsResponse = {
   recoveredDecisionCount?: number;
 };
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 25;
 
 function truncateHash(value?: string | null) {
   if (!value) return "—";
