@@ -241,10 +241,10 @@ export default function EconomyPage() {
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Squad treasury performance</h2>
         </div>
         <div className="grid gap-4 lg:grid-cols-2">
-          {Object.entries(treasuryData?.squads || {}).map(([squadId, squad]) => {
-            const roi = Number(squad?.roi || 0);
+          {Object.entries(treasuryData?.squads || {}).map(([squadId, squad]: [string, any]) => {
             const treasury = Number(squad?.currentTreasury || 1000);
-            const history: number[] = Array.isArray(squad?.treasuryHistory) ? (squad.treasuryHistory.slice(-10) as number[]) : [1000];
+            const roi = Number(squad?.roi || 0);
+            const history = Array.isArray(squad?.treasuryHistory) ? squad.treasuryHistory.slice(-10).map((entry: any) => Number(entry || 1000)) : [1000];
             const max = Math.max(...history);
             const min = Math.min(...history);
             const points = history.map((value: number, index: number) => {
@@ -252,13 +252,16 @@ export default function EconomyPage() {
               const y = max === min ? 50 : 100 - (((value - min) / (max - min)) * 100);
               return `${x},${y}`;
             }).join(' ');
+            const openPositions = Array.isArray(squad?.openPositions) ? squad.openPositions.length : 0;
+            const realized = Number(squad?.realizedPnl || 0);
+            const unrealized = Number(squad?.unrealizedPnl || 0);
             const color = treasury > 1000 ? 'text-emerald-400' : treasury < 1000 ? 'text-rose-400' : 'text-white';
             return (
               <div key={squadId} className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <div className="text-2xl font-semibold">{squadId.replace(/_/g, ' ')}</div>
-                    <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-400">{Array.isArray(squad?.openPositions) ? squad.openPositions.length : 0} open positions</div>
+                    <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-400">{openPositions} open positions · realized {realized.toFixed(2)} · unrealized {unrealized.toFixed(2)}</div>
                   </div>
                   <div className={`text-right font-semibold ${color}`}>ROI {roi >= 0 ? '+' : ''}{roi.toFixed(2)}%</div>
                 </div>
