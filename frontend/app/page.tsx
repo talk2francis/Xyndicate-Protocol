@@ -237,7 +237,7 @@ export default function HomePage() {
             {[
               { label: "Total Decisions Logged", value: countTotal },
               { label: "Active Squads", value: countSquads },
-              { label: "Uniswap Routes Found", value: 0 },
+              { label: "UNISWAP POOL QUERIES", value: uniswapPoolQueries },
               { label: "Season", value: "LIVE" },
             ].map((item) => (
               <div key={item.label} className="rounded-3xl border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">

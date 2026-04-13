@@ -71,10 +71,11 @@ async function fetchMarketSnapshot(pair: string) {
     console.warn(`Uniswap reference fetch failed for ${pair}:`, errorMessage);
   }
 
-  const uniswapPrice = uniswap.uniswapPrice ?? okxPrice;
-  const spreadRatio = uniswap.uniswapPrice ? Math.abs((uniswap.uniswapPrice - okxPrice) / okxPrice) : 0;
+  const validUniswapPrice = Number.isFinite(Number(uniswap.uniswapPrice)) && Number(uniswap.uniswapPrice) > 0 ? Number(uniswap.uniswapPrice) : null;
+  const uniswapPrice = validUniswapPrice ?? okxPrice;
+  const spreadRatio = validUniswapPrice ? Math.abs((validUniswapPrice - okxPrice) / okxPrice) : 0;
   const spreadBps = Math.round(spreadRatio * 1000000) / 100;
-  const betterRoute = betterRouteForPrices(okxPrice, uniswap.uniswapPrice ?? okxPrice);
+  const betterRoute = betterRouteForPrices(okxPrice, validUniswapPrice ?? okxPrice);
 
   console.error(`Uniswap ${pair.startsWith("ETH-") ? "ETH" : pair.split("-")[0]} price: $${uniswapPrice.toFixed(6)} | Spread: ${spreadBps}bps | source=${uniswap.source}${uniswap.uniswapError ? ` | error=${uniswap.uniswapError}` : ""}`);
 
