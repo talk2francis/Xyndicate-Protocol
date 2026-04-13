@@ -1,6 +1,18 @@
 {
   "entries": [
     {
+      "tool": "get_market_signal",
+      "calledAt": 1775923278648,
+      "caller": "scheduler-self-call",
+      "responseTime": 738
+    },
+    {
+      "tool": "get_economy_snapshot",
+      "calledAt": 1775923279570,
+      "caller": "scheduler-self-call",
+      "responseTime": 257
+    },
+    {
       "tool": "get_leaderboard",
       "calledAt": 1775926942603,
       "caller": "scheduler-self-call",
@@ -566,39 +578,27 @@
     },
     {
       "tool": "get_leaderboard",
-      "calledAt": 1776111334024,
+      "calledAt": 1776112101913,
       "caller": "scheduler-self-call",
-      "responseTime": 508
+      "responseTime": 566
     },
     {
       "tool": "get_market_signal",
-      "calledAt": 1776111335675,
+      "calledAt": 1776112103506,
       "caller": "scheduler-self-call",
-      "responseTime": 612
+      "responseTime": 631
     },
     {
       "tool": "get_economy_snapshot",
-      "calledAt": 1776111336614,
+      "calledAt": 1776112105515,
       "caller": "scheduler-self-call",
-      "responseTime": 121
+      "responseTime": 871
     },
     {
       "tool": "get_leaderboard",
-      "calledAt": 1776112413056,
+      "calledAt": 1776114100330,
       "caller": "scheduler-self-call",
-      "responseTime": 740
-    },
-    {
-      "tool": "get_market_signal",
-      "calledAt": 1776112414792,
-      "caller": "scheduler-self-call",
-      "responseTime": 892
-    },
-    {
-      "tool": "get_economy_snapshot",
-      "calledAt": 1776112415901,
-      "caller": "scheduler-self-call",
-      "responseTime": 263
+      "responseTime": 819
     }
   ]
 }
