@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "186-router-1776079866997",
-      "agent": "router",
-      "cycle": 186,
-      "timestamp": 1776079866997,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "186-executor-1776079867710",
       "agent": "executor",
       "cycle": 186,
@@ -538,6 +529,15 @@
       "timestamp": 1776101566074,
       "status": "complete",
       "summary": "BUY executed on OKX | 2 decision txs",
+      "durationMs": 1
+    },
+    {
+      "id": "196-narrator-1776101566946",
+      "agent": "narrator",
+      "cycle": 196,
+      "timestamp": 1776101566946,
+      "status": "complete",
+      "summary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. Positive 24h price change and potential arbitrage opportunity through Uniswap with high confidence score of 0.8. | Squad Nova held OKB (100% treasury) via okx. Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait, low confidence score.",
       "durationMs": 1
     }
   ]
