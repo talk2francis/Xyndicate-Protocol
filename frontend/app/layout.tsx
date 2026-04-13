@@ -18,7 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Xyndicate Protocol",
-  description: "Autonomous strategy squads on X Layer. Updated 2026-04-12.",
+  description: "Autonomous strategy squads on X Layer. Updated 2026-04-13 with ACP docs v1.",
   icons: {
     icon: "/xyndicate-favicon-final.jpg?v=2",
     shortcut: "/xyndicate-favicon-final.jpg?v=2",
