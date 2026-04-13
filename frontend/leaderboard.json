@@ -3,20 +3,19 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 131,
+      "decisions": 132,
       "confidence": 0.8,
-      "lastAction": "SELL ETH (100% treasury) · High spread of 10000 bps and negative 24h change of -1.37%. High spread indicates potential price manipulation risks and low liquidity. Analyst recommendation to act.",
-      "latestTimestamp": 1776058339,
+      "lastAction": "BUY ETH (100% treasury) · High spread of 10000 bps indicates potential arbitrage opportunity between OKX and Uniswap with analyst confidence of 80%.",
+      "latestTimestamp": 1776060090,
       "status": "ACTIVE",
       "stats": {
-        "buys": 50,
+        "buys": 51,
         "sells": 5,
         "holds": 71,
-        "lastTradeAction": "SELL",
+        "lastTradeAction": "BUY",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x9bb43e18bb91e6a2158033af06134d09dac3f84933dceb6bdbbf8a4b672695cc",
         "0x188c7de19bfcfa9589c5beab9d28aa6039350274652f7e1d56846363643e9ad4",
         "0x8d8fb0b2fcd236ec361aa0e39975b3f963f2c3b233a7dded52841e938c1c2369",
         "0xc6d9992def5a3af810982e0ebe0fa2e4521b97575e799e0a842efa52d480f522",
@@ -25,26 +24,26 @@
         "0xb533a651c97846518b99b4aa8da181f86d3d91c405063446c7dbec948d85ee84",
         "0x005928c395bbd6d3b2c58545615bb0f1c453714648e32c70a556b207fafa904b",
         "0xd798f07c16ee596308a7ffca11a1dd8239a9d353768045f84b067c4558fbfc22",
-        "0x5e4253c5810c517315383f3ac917f68234238ddc1bdf415ac84111fafb014666"
+        "0x5e4253c5810c517315383f3ac917f68234238ddc1bdf415ac84111fafb014666",
+        "0x2a5a7702d9da52e8727042f7ecd277294b71a69ec77f808019b52e7b5939ea3f"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 104,
-      "confidence": 0.7,
-      "lastAction": "HOLD OKB (100% treasury) · Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait, confidence score low.",
-      "latestTimestamp": 1776058339,
+      "decisions": 105,
+      "confidence": 0.8,
+      "lastAction": "HOLD OKB (100% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait. Confidence score: 0.8.",
+      "latestTimestamp": 1776060090,
       "status": "ACTIVE",
       "stats": {
         "buys": 9,
         "sells": 1,
-        "holds": 94,
+        "holds": 95,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x283c705b4389c477c15d063fef3f91b54324d96d5f1e7e47a73fd097cdc9100b",
         "0x4962a6f0179dce6f6ffc6ba3a5da85245a63c0f5e55ab8bb8a5804e79c48afd7",
         "0x9434d6672d629ab4472d934485e04419efa230afc6e6aab6dcf1174bd975d034",
         "0xa4fb396cb76a2e9ad23684ca86d910dba121e7d401af8127c24901b7d293ad53",
@@ -53,7 +52,8 @@
         "0xdaffcd24cd8568f1132b7ae902bef560d10a221be0087d75b01c4b39f1b7c15f",
         "0x41930135271edcb1067153bf560c15e6540737c619262aa0b17da795c25b3dc6",
         "0x0b9f58ca22621ccc7c9058b2008cc3d44b21d81168520fa78973146469b79291",
-        "0xec325aabcf318fdb171bada178bfaa11e0b1c4fbeb84fcb9cd7abb71d60adab6"
+        "0xec325aabcf318fdb171bada178bfaa11e0b1c4fbeb84fcb9cd7abb71d60adab6",
+        "0x2b993ea85fa1c999f0da8c70071bf4be99f28e141ad65cb28c8ad4edde46d31f"
       ]
     },
     {
@@ -62,7 +62,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776058339396,
+      "latestTimestamp": 1776060090108,
       "status": "ACTIVE",
       "stats": {
         "buys": 0,
@@ -79,7 +79,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776058339393,
+      "latestTimestamp": 1776060090107,
       "status": "ACTIVE",
       "stats": {
         "buys": 0,
@@ -96,7 +96,7 @@
       "decisions": 0,
       "confidence": 0.66,
       "lastAction": "Awaiting next cycle",
-      "latestTimestamp": 1776058339393,
+      "latestTimestamp": 1776060090107,
       "status": "ACTIVE",
       "stats": {
         "buys": 0,
@@ -163,8 +163,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-13T05:32:21.177Z",
-  "totalDecisions": 235,
+  "updatedAt": "2026-04-13T06:01:31.793Z",
+  "totalDecisions": 237,
   "supportingProofs": {
     "narratorPayments": 13,
     "latestNarratorPayment": {
