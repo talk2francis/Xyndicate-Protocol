@@ -94,6 +94,7 @@ async function fetchMarketSnapshot(pair: string) {
       rawOkxPrice: okxPrice,
       uniswapError: uniswap.uniswapError,
     },
+    uniswapPrice: uniswap.uniswapPrice,
     change24h,
   };
 }
@@ -258,6 +259,7 @@ export async function runCycleCore() {
     activeSquads: SQUADS.map((squad) => squad.displayName),
     squadResults: Object.fromEntries(results.map((result) => [result.squadId, result])),
     results,
+    uniswapQueriesSuccessful: results.filter((result) => Number(result?.market?.uniswapPrice || 0) > 0).length,
     txHashes: results.map((result) => result.txHash).filter(Boolean),
     txHash: results[0]?.txHash,
     narratorSummary: results.map((result) => result.narratorSummary).join(" | "),

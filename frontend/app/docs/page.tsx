@@ -131,7 +131,7 @@ const TOOL_CARDS: ToolCard[] = [
   },
   {
     name: "get_market_signal",
-    description: "Produces dual-source market signal output using OKX pricing plus a live Uniswap v3 ETH/USDC pool reference price.",
+    description: "Produces dual-source market signal output using OKX pricing plus a live Uniswap v3 ETH/USDC pool reference price. When Uniswap and OKX prices converge (spread < 5bps), OKX is selected as the execution route since it is native to X Layer.",
     params: [
       { name: "pair", type: "string", required: true, note: "ETH/USDC or OKB/USDC" },
     ],

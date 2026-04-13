@@ -7,7 +7,8 @@ const PAIRS = [
   { pair: "OKB-USDT", label: "OKB/USDT" },
 ];
 
-function recommendation(spreadBps: number) {
+function recommendation(spreadBps: number | null) {
+  if (spreadBps == null) return "HOLD";
   if (spreadBps > 12) return "BUY";
   if (spreadBps < -12) return "SELL";
   return "HOLD";
@@ -35,27 +36,32 @@ export async function GET() {
           throw new Error(`OKX returned no price for ${pair}`);
         }
 
-        let uniswap = {
-          uniswapPrice: null as number | null,
-          uniswapPoolId: null as string | null,
-        };
+        let uniswapPrice: number | null = null;
+        let uniswapPoolId: string | null = null;
 
         try {
-          uniswap = await fetchUniswapPrice(label === "ETH/USDT" ? "ETH/USDC" : "OKB/USDC");
+          const uniswap = await fetchUniswapPrice(label === "ETH/USDT" ? "ETH/USDC" : "OKB/USDC");
+          const candidate = Number(uniswap?.uniswapPrice);
+          if (Number.isFinite(candidate) && candidate > 0) {
+            uniswapPrice = candidate;
+            uniswapPoolId = uniswap?.uniswapPoolId || null;
+          }
         } catch {
-          uniswap = { uniswapPrice: null, uniswapPoolId: null };
+          uniswapPrice = null;
+          uniswapPoolId = null;
         }
 
-        const resolvedUniswapPrice = uniswap.uniswapPrice ?? okxPrice;
-        const spreadBps = computeSpreadBps(okxPrice, resolvedUniswapPrice);
+        const spreadBps = uniswapPrice ? computeSpreadBps(okxPrice, uniswapPrice) : null;
+        const betterRoute = uniswapPrice ? betterRouteForPrices(okxPrice, uniswapPrice) : "okx";
 
         return {
           pair: label,
           okxPrice,
-          uniswapPrice: resolvedUniswapPrice,
+          uniswapPrice,
           spreadBps,
-          betterRoute: betterRouteForPrices(okxPrice, resolvedUniswapPrice),
-          uniswapPoolId: uniswap.uniswapPoolId,
+          betterRoute,
+          uniswapPoolId,
+          uniswapSource: uniswapPrice ? "uniswap-v3-onchain" : "unavailable",
           recommendation: recommendation(spreadBps),
         };
       }),

@@ -186,6 +186,7 @@ export default function HomePage() {
   }, [leaderboard]);
 
   const edgePair = signal?.pairs?.[0];
+  const uniswapPoolQueries = Number((leaderboard as any)?.uniswapQueriesSuccessful || 0);
 
   return (
     <div className="overflow-x-hidden bg-xyn-surface text-xyn-dark dark:bg-xyn-dark dark:text-xyn-surface">
@@ -283,8 +284,8 @@ export default function HomePage() {
             ) : (
               <div className="mt-4 text-lg font-medium break-words">
                 {edgePair
-                  ? `${edgePair.pair.split("/")[0] || "ETH"}: OKX $${edgePair.okxPrice.toFixed(2)} · Uniswap v3 $${edgePair.uniswapPrice.toFixed(2)} · Router selects best execution path each cycle`
-                  : "ETH: OKX $1,823.45 · Uniswap v3 $1,829.12 · Router selects best execution path each cycle"}
+                  ? `${edgePair.pair.split("/")[0] || "ETH"}: OKX $${edgePair.okxPrice.toFixed(2)}${edgePair.uniswapPrice && edgePair.uniswapPrice > 0 ? ` · Uniswap v3 $${edgePair.uniswapPrice.toFixed(2)}` : " · Uniswap v3: fetching..."} · Router selects best execution path each cycle`
+                  : "ETH: OKX $1,823.45 · Uniswap v3: fetching... · Router selects best execution path each cycle"}
               </div>
             )}
           </div>
