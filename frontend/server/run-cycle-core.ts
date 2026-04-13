@@ -3,6 +3,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { betterRouteForPrices, computeSpreadBps, fetchUniswapPrice } from "./uniswap.mjs";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const { writeTreasuryStateFromDecision, initializeTreasuryState } = require("../../scripts/treasury");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -249,9 +253,17 @@ async function runSquadCycle(squad: (typeof SQUADS)[number]) {
 }
 
 export async function runCycleCore() {
+  initializeTreasuryState();
   const results = [];
   for (const squad of SQUADS) {
-    results.push(await runSquadCycle(squad));
+    const result = await runSquadCycle(squad);
+    results.push(result);
+    await writeTreasuryStateFromDecision({
+      squadId: result.squadId,
+      decision: { action: result.action, asset: result.asset, currentPrice: result.market?.okxPrice || result.market?.price || 0 },
+      currentPrice: result.market?.okxPrice || result.market?.price || 0,
+      allocationPercent: Number(result.sizePercent || 10),
+    });
   }
 
   return {
