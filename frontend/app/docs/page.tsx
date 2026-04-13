@@ -244,9 +244,9 @@ export default function DocsPage() {
       okxPrice: 0,
       uniswapPrice: 0,
       spreadBps: 0,
-      timestamp: cycleState?.cycleStartTime || 0,
+      timestamp: 0,
     },
-    cycleId: cycleState?.cycleNumber || 0,
+    cycleId: 0,
   };
   const pagedUsageEntries = (usageData.entries || []).slice((safeUsagePage - 1) * USAGE_PAGE_SIZE, safeUsagePage * USAGE_PAGE_SIZE);
 
