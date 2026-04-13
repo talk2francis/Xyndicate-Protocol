@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "185-oracle-1776078090600",
-      "agent": "oracle",
-      "cycle": 185,
-      "timestamp": 1776078090600,
-      "status": "complete",
-      "summary": "ETH OKX: $2183.43 (-0.8%) | Uniswap: $0.00 | Spread: 10000bps",
-      "durationMs": 21679
-    },
-    {
       "id": "185-analyst-1776078091564",
       "agent": "analyst",
       "cycle": 185,
@@ -538,6 +529,15 @@
       "timestamp": 1776099802261,
       "status": "complete",
       "summary": "WAIT ETH | confidence 80%",
+      "durationMs": 1
+    },
+    {
+      "id": "195-strategist-1776099803042",
+      "agent": "strategist",
+      "cycle": 195,
+      "timestamp": 1776099803042,
+      "status": "complete",
+      "summary": "HOLD ETH (0% treasury) | ETH price increased by 1.62% in 24h, indicating bullish trend. High spread between Uniswap and OKX prices suggests arbitrage opportunities and higher volatility.",
       "durationMs": 1
     }
   ]
