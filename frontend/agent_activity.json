@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "176-router-1776062000426",
-      "agent": "router",
-      "cycle": 176,
-      "timestamp": 1776062000426,
-      "status": "complete",
-      "summary": "UNISWAP selected | Uniswap offers a better buy price beyond the 10 bps threshold.",
-      "durationMs": 1
-    },
-    {
       "id": "176-executor-1776062001093",
       "agent": "executor",
       "cycle": 176,
@@ -538,6 +529,15 @@
       "timestamp": 1776079866036,
       "status": "complete",
       "summary": "SELL ETH (100% treasury) | High spread of 10000 bps and negative 24h change indicate short opportunity with potential liquidity issues. Analyst confidence at 75%.",
+      "durationMs": 1
+    },
+    {
+      "id": "186-router-1776079866997",
+      "agent": "router",
+      "cycle": 186,
+      "timestamp": 1776079866997,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
