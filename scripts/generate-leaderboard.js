@@ -5,6 +5,7 @@ const path = require('path');
 const { writeAndPublishJson } = require('./github-artifacts');
 const { STATE_PATH } = require('./cycle-state');
 const { fetchExternalRegistry, normalizeExternalSquad } = require('./external-squads');
+const { readTreasuryState } = require('./treasury');
 
 const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
@@ -69,12 +70,8 @@ async function buildLeaderboard() {
   const txhashes = readJson(TXHASHES_PATH, {});
   const agentPayments = readJson(AGENT_PAYMENTS_PATH, []);
   const cycleState = readJson(STATE_PATH, {});
+  const treasuryState = readTreasuryState();
   const entries = Array.isArray(deployments.decisionLogEntries) ? deployments.decisionLogEntries : [];
-  const slowSquads = [
-    { squadId: 'PHANTOM', name: 'Phantom Protocol' },
-    { squadId: 'CIPHER', name: 'Cipher Strategy' },
-    { squadId: 'NEXUS', name: 'Nexus Quant' },
-  ];
 
   const squadMap = new Map();
 
@@ -113,10 +110,7 @@ async function buildLeaderboard() {
       current.confidence = deriveConfidence(rationale, action);
     }
 
-    if (txHash && !current.txHashes.includes(txHash)) {
-      current.txHashes.push(txHash);
-    }
-
+    if (txHash && !current.txHashes.includes(txHash)) current.txHashes.push(txHash);
     squadMap.set(squadId, current);
   }
 
@@ -126,6 +120,9 @@ async function buildLeaderboard() {
     if (String(external?.cancelled).toLowerCase() === 'true') continue;
     const decisions = Number(normalized.decisions || 0);
     const paused = String(external?.deactivated).toLowerCase() === 'true' || decisions === 0;
+    const treasury = Number(treasuryState?.squads?.[normalized.squadId]?.currentTreasury || 1000);
+    const roi = Number(treasuryState?.squads?.[normalized.squadId]?.roi || 0);
+
     squadMap.set(normalized.squadId, {
       squadId: normalized.squadId,
       decisions,
@@ -142,17 +139,23 @@ async function buildLeaderboard() {
       external: true,
       status: paused ? 'PAUSED' : 'ACTIVE',
       routeUsed: decisions === 0 ? null : (normalized.stats.lastTradeAction || null),
+      treasury,
+      roi,
     });
   }
 
   const squadsOrdered = Array.from(squadMap.values()).sort((a, b) => {
-    const aExternal = Boolean(a.external);
-    const bExternal = Boolean(b.external);
-    if (aExternal !== bExternal) return aExternal ? 1 : -1;
+    const aRoi = Number(a.roi || 0);
+    const bRoi = Number(b.roi || 0);
+    if (aRoi !== bRoi) return bRoi - aRoi;
 
     const aDecisions = Number(a.decisions || 0);
     const bDecisions = Number(b.decisions || 0);
     if (aDecisions !== bDecisions) return bDecisions - aDecisions;
+
+    const aExternal = Boolean(a.external);
+    const bExternal = Boolean(b.external);
+    if (aExternal !== bExternal) return aExternal ? 1 : -1;
 
     const aRegistered = Number(a.registeredAt || 0);
     const bRegistered = Number(b.registeredAt || 0);
@@ -170,6 +173,8 @@ async function buildLeaderboard() {
     squadId: squad.squadId,
     decisions: squad.decisions,
     confidence: squad.confidence,
+    treasury: Number(squad.treasury || 1000),
+    roi: Number(squad.roi || 0),
     lastAction: squad.latestRationale,
     latestTimestamp: squad.latestTimestamp,
     status: squad.status || (squad.external ? 'PAUSED' : 'ACTIVE'),

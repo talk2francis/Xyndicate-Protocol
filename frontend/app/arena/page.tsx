@@ -23,6 +23,8 @@ type LeaderboardSquad = {
   squadId: string;
   decisions: number;
   confidence?: number;
+  treasury?: number;
+  roi?: number;
   lastAction?: string;
   latestTimestamp?: number;
   stats?: {
@@ -630,11 +632,13 @@ export default function ArenaPage() {
         </div>
 
         <div className="overflow-x-auto rounded-3xl border border-black/10 dark:border-white/10">
-          <div className="hidden grid-cols-[0.8fr_1.4fr_0.9fr_1.2fr_2fr_1fr_1fr] gap-4 bg-black/5 px-5 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:bg-white/5 dark:text-zinc-400 lg:grid">
+          <div className="hidden grid-cols-[0.7fr_1.3fr_0.8fr_0.9fr_0.9fr_1.4fr_1.6fr_1fr_1fr] gap-4 bg-black/5 px-5 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:bg-white/5 dark:text-zinc-400 lg:grid">
             <div>Rank</div>
             <div>Squad Name</div>
-            <div>Decisions</div>
+            <div>Decisions (rank)</div>
             <div>Confidence</div>
+            <div>Treasury</div>
+            <div>ROI ↓</div>
             <div>Last Action</div>
             <div>Route Used</div>
             <div>Status</div>
@@ -653,11 +657,13 @@ export default function ArenaPage() {
                 const medal = squad.rank === 1 ? "🥇" : squad.rank === 2 ? "🥈" : squad.rank === 3 ? "🥉" : `#${squad.rank}`;
                 return (
                   <div key={squad.squadId}>
-                    <button type="button" onClick={() => setExpandedRow(isExpanded ? null : squad.squadId)} className="grid w-full gap-4 px-5 py-5 text-left lg:grid-cols-[0.8fr_1.4fr_0.9fr_1.2fr_2fr_1fr_1fr]">
+                    <button type="button" onClick={() => setExpandedRow(isExpanded ? null : squad.squadId)} className="grid w-full gap-4 px-5 py-5 text-left lg:grid-cols-[0.7fr_1.3fr_0.8fr_0.9fr_0.9fr_1.4fr_1.6fr_1fr_1fr]">
                       <div className="font-semibold">{medal}</div>
                       <div className="font-semibold">{squad.squadId}</div>
                       <div>{squad.decisions}</div>
                       <div><div className="h-2 rounded-full bg-black/10 dark:bg-white/10"><div className={`h-2 rounded-full ${confidence > 0.75 ? "bg-emerald-500" : confidence >= 0.5 ? "bg-amber-500" : "bg-rose-500"}`} style={{ width: `${confidence * 100}%` }} /></div><div className="mt-2 text-sm">{Math.round(confidence * 100)}%</div></div>
+                      <div className={`font-semibold ${Number(squad.treasury || 1000) > 1000 ? "text-emerald-400" : Number(squad.treasury || 1000) < 1000 ? "text-rose-400" : "text-white"}`}>${Number(squad.treasury || 1000).toFixed(2)}</div>
+                      <div className={`font-semibold ${Number(squad.roi || 0) > 0 ? "text-emerald-400" : Number(squad.roi || 0) < 0 ? "text-rose-400" : "text-white"}`}>{Number(squad.roi || 0) >= 0 ? "+" : ""}{Number(squad.roi || 0).toFixed(2)}%</div>
                       <div className="text-sm text-xyn-muted dark:text-zinc-300">{parsed.rationale}</div>
                       <div><span className={`rounded-full px-3 py-1 text-xs font-semibold ${parsed.route === "Uniswap" ? "bg-xyn-blue/15 text-xyn-blue" : "bg-black/5 dark:bg-white/10"}`}>{parsed.route}</span></div>
                       <div><span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-300">ACTIVE</span></div>
@@ -667,6 +673,33 @@ export default function ArenaPage() {
               })}
             </div>
           )}
+        </div>
+      </section>
+
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+        <div className="mb-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Squad Treasury</p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight">Squad treasury performance</h2>
+        </div>
+        <div className="grid gap-4 lg:grid-cols-2">
+          {squads.map((squad) => {
+            const treasury = Number(squad.treasury || 1000);
+            const roi = Number(squad.roi || 0);
+            const openPositions = Math.max(0, Number(squad.stats?.buys || 0) - Number(squad.stats?.sells || 0));
+            return (
+              <div key={squad.squadId} className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-2xl font-semibold">{squad.squadId}</div>
+                    <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-400">Open positions: {openPositions}</div>
+                  </div>
+                  <div className={`font-semibold ${roi > 0 ? "text-emerald-400" : roi < 0 ? "text-rose-400" : "text-white"}`}>{roi >= 0 ? "+" : ""}{roi.toFixed(2)}%</div>
+                </div>
+                <div className={`mt-4 text-4xl font-semibold ${treasury > 1000 ? "text-emerald-400" : treasury < 1000 ? "text-rose-400" : "text-white"}`}>${treasury.toFixed(2)}</div>
+                <div className="mt-4 h-16 rounded-2xl border border-white/10 bg-black/20" />
+              </div>
+            );
+          })}
         </div>
       </section>
 

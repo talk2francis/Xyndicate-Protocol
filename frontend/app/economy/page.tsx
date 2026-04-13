@@ -173,6 +173,17 @@ export default function EconomyPage() {
     refetchInterval: 15000,
   });
 
+  const { data: treasuryData } = useQuery<{ lastUpdated: number; squads: Record<string, any>; initialized?: boolean }>({
+    queryKey: ["treasury"],
+    queryFn: async () => {
+      const res = await fetch("/api/treasury", { cache: "no-store" });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json?.error || "Failed to load treasury");
+      return json;
+    },
+    refetchInterval: 30000,
+  });
+
   const sortedHistory = useMemo(() => {
     const entries = [...(data?.paymentHistory || [])];
     if (sortKey === "type") {
@@ -222,6 +233,43 @@ export default function EconomyPage() {
         <StatCard label="Total x402 Volume USDC" value={`$${Number(data?.stats.totalX402VolumeUsdc || 0).toFixed(2)}`} />
         <StatCard label="Total Decisions Driving Economy" value={String(data?.stats.totalDecisionsDrivingEconomy || 0)} />
         <StatCard label="Economy Cycles Completed" value={String(data?.stats.economyCyclesCompleted || 0)} note="Computed from completed payment-loop pairs" />
+      </section>
+
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+        <div className="mb-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Squad Treasury</p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight">Squad treasury performance</h2>
+        </div>
+        <div className="grid gap-4 lg:grid-cols-2">
+          {Object.entries(treasuryData?.squads || {}).map(([squadId, squad]) => {
+            const roi = Number(squad?.roi || 0);
+            const treasury = Number(squad?.currentTreasury || 1000);
+            const history: number[] = Array.isArray(squad?.treasuryHistory) ? (squad.treasuryHistory.slice(-10) as number[]) : [1000];
+            const max = Math.max(...history);
+            const min = Math.min(...history);
+            const points = history.map((value: number, index: number) => {
+              const x = history.length === 1 ? 0 : (index / (history.length - 1)) * 100;
+              const y = max === min ? 50 : 100 - (((value - min) / (max - min)) * 100);
+              return `${x},${y}`;
+            }).join(' ');
+            const color = treasury > 1000 ? 'text-emerald-400' : treasury < 1000 ? 'text-rose-400' : 'text-white';
+            return (
+              <div key={squadId} className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-2xl font-semibold">{squadId.replace(/_/g, ' ')}</div>
+                    <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-400">{Array.isArray(squad?.openPositions) ? squad.openPositions.length : 0} open positions</div>
+                  </div>
+                  <div className={`text-right font-semibold ${color}`}>ROI {roi >= 0 ? '+' : ''}{roi.toFixed(2)}%</div>
+                </div>
+                <div className={`mt-4 text-4xl font-semibold ${color}`}>${treasury.toFixed(2)}</div>
+                <svg viewBox="0 0 100 100" className="mt-4 h-20 w-full">
+                  <polyline fill="none" stroke="#7BC8F6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" points={points} />
+                </svg>
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">

@@ -3,6 +3,7 @@ const { INTERVAL_MS, readCycleState, writeCycleState } = require('./cycle-state'
 const { selfCallMcp } = require('./self-call-mcp');
 const { fetchExternalRegistry, normalizeExternalSquad, touchExternalSquadRun, EXTERNAL_DECISION_INTERVAL_MS } = require('./external-squads');
 const { writeLeaderboardArtifact } = require('./generate-leaderboard');
+const { initializeTreasuryState, writeTreasuryStateFromDecision } = require('./treasury');
 
 let lastRunAt = 0;
 
@@ -36,6 +37,9 @@ function runExternalSquad(squad) {
     rationale: 'Awaiting first cycle',
     txHash: `external-${squad.squadId}-${now}`,
     registeredAt: squad.latestTimestamp || now,
+    currentPrice: Number(squad?.lastPrice || 0),
+    allocationPercent: 10,
+    asset: 'ETH',
   };
 
   state.externalSquadLastRun = state.externalSquadLastRun || {};
@@ -69,14 +73,40 @@ async function scheduledRun() {
   markRun();
 
   try {
+    const treasuryState = initializeTreasuryState();
     const result = await runFullPipeline();
+
+    const mainSquads = ['XYNDICATE_ALPHA', 'SQUAD_NOVA'];
+    const mainResults = mainSquads.map((squadId) => {
+      const squadResult = result?.squadResults?.[squadId] || {};
+      return {
+        squadId,
+        decision: {
+          action: squadResult.action || 'HOLD',
+          asset: squadResult.asset || 'ETH',
+          currentPrice: squadResult.currentPrice || result?.sharedMarket?.okxPrice || result?.sharedMarket?.price || 0,
+        },
+        currentPrice: squadResult.currentPrice || result?.sharedMarket?.okxPrice || result?.sharedMarket?.price || 0,
+        allocationPercent: Number(squadResult.allocationPercent || 10),
+      };
+    });
+
+    for (const item of mainResults) {
+      await writeTreasuryStateFromDecision(item);
+    }
+
     const external = await loadExternalSquads();
     for (const squad of external.dueSquads) {
-      await runExternalSquad(squad);
+      const extResult = runExternalSquad(squad);
+      await writeTreasuryStateFromDecision({
+        squadId: squad.squadId,
+        decision: extResult,
+        currentPrice: extResult.currentPrice || result?.sharedMarket?.okxPrice || result?.sharedMarket?.price || 0,
+        allocationPercent: 10,
+      });
     }
-    if (external.dueSquads.length) {
-      await writeLeaderboardArtifact();
-    }
+
+    await writeLeaderboardArtifact();
 
     console.log(`Decision TX: ${result.txHash}`);
     console.log(`Narrator TX: ${result.narratorPaymentHash || 'n/a'}`);
