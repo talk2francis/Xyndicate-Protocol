@@ -286,7 +286,9 @@
     "0x19b3d8f646dbb013fa9c5c7ddcf30c105ff7a581e01b18c0d4417342499e9352",
     "0xf27ae4adf09a5887de13ac6f6a860291f22c571bd7465cd8d2664f0e42eac0fe",
     "0xe2f9ba4f5ce7989a1b1368ec959b56bacb54d80f9cb97b97fb5b631846d6ecda",
-    "0x694f06b3b22abdd37c04cf6b6d893e1ed68b0a287c2f303be001cd9fa39b5362"
+    "0x694f06b3b22abdd37c04cf6b6d893e1ed68b0a287c2f303be001cd9fa39b5362",
+    "0xa0f44c2b6db2e6fd655dbcf63c62aa09d711386c82d790c14c1cac8e0d79af1c",
+    "0x50e1cf7da1ce7346443d240b827f2416afe411510b8ff17946eb8dd5bbd47459"
   ],
   "decisionLogEntries": [
     {
@@ -1975,6 +1977,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · Negative 24h price change for OKB with a balanced risk mode. Analyst recommendation to wait, low confidence score of 0.5.",
       "timestamp": 1776063775
+    },
+    {
+      "txHash": "0xa0f44c2b6db2e6fd655dbcf63c62aa09d711386c82d790c14c1cac8e0d79af1c",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · High spread of 10000 bps indicates potential arbitrage opportunity by longing ETH on Uniswap and shorting on OKX",
+      "timestamp": 1776065572
+    },
+    {
+      "txHash": "0x50e1cf7da1ce7346443d240b827f2416afe411510b8ff17946eb8dd5bbd47459",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · OKB price decreased by 0.72% in the last 24 hours. Analyst recommends waiting due to balanced risk mode and no identified opportunities. Confidence level is 60%.",
+      "timestamp": 1776065572
     }
   ]
 }
