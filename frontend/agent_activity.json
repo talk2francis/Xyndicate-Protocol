@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "155-router-1776024073463",
-      "agent": "router",
-      "cycle": 155,
-      "timestamp": 1776024073463,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "155-executor-1776024074245",
       "agent": "executor",
       "cycle": 155,
@@ -538,6 +529,15 @@
       "timestamp": 1776047465806,
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | ETH price decreased by over 1% in 24h with significant spread between Uniswap and OKX prices, indicating arbitrage opportunity.",
+      "durationMs": 1
+    },
+    {
+      "id": "168-router-1776047466425",
+      "agent": "router",
+      "cycle": 168,
+      "timestamp": 1776047466425,
+      "status": "complete",
+      "summary": "UNISWAP selected | Uniswap offers a better buy price beyond the 10 bps threshold.",
       "durationMs": 1
     }
   ]
