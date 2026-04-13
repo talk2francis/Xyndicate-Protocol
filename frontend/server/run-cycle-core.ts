@@ -94,7 +94,6 @@ async function fetchMarketSnapshot(pair: string) {
       rawOkxPrice: okxPrice,
       uniswapError: uniswap.uniswapError,
     },
-    uniswapPrice: uniswap.uniswapPrice,
     change24h,
   };
 }
