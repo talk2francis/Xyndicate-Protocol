@@ -190,6 +190,7 @@ async function buildLeaderboard() {
     source: 'scheduler-artifact',
     updatedAt: new Date().toISOString(),
     totalDecisions: entries.length,
+    uniswapQueriesSuccessful: Number(cycleState?.uniswapQueriesSuccessful || 0),
     supportingProofs: {
       narratorPayments: agentPayments.length,
       latestNarratorPayment: agentPayments[agentPayments.length - 1] || null,
