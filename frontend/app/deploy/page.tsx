@@ -195,7 +195,11 @@ export default function DeployPage() {
       setCycleCountdown(FIRST_CYCLE_SECONDS);
       setStep(3);
       window.setTimeout(() => {
-        mySquadRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        void fetch(`/api/my-squad?wallet=${encodeURIComponent(walletAddress)}`, { cache: "no-store" })
+          .then((res) => res.json())
+          .then((json) => setMySquad(json?.squad || null))
+          .catch(() => null)
+          .finally(() => mySquadRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
       }, 250);
     } catch (err: any) {
       setError(err?.shortMessage || err?.message || "Enrollment failed");

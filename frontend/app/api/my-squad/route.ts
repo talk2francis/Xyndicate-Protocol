@@ -29,7 +29,8 @@ export async function GET(request: Request) {
     const squads = Array.isArray(json?.squads) ? json.squads : [];
     const matched = squads
       .filter((squad: RegistrySquad) => String(squad?.walletAddress || "").toLowerCase() === wallet.toLowerCase())
-      .sort((a: RegistrySquad, b: RegistrySquad) => Number(b.registeredAt || 0) - Number(a.registeredAt || 0))[0] || null;
+      .sort((a: RegistrySquad, b: RegistrySquad) => Number(b.registeredAt || 0) - Number(a.registeredAt || 0))
+      .find((squad: RegistrySquad) => !squad?.cancelled) || null;
 
     if (!matched) return NextResponse.json({ squad: null }, { status: 200 });
 
