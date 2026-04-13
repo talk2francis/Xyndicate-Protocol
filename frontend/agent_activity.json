@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "156-executor-1776025902811",
-      "agent": "executor",
-      "cycle": 156,
-      "timestamp": 1776025902811,
-      "status": "complete",
-      "summary": "HOLD executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
       "id": "156-narrator-1776025903556",
       "agent": "narrator",
       "cycle": 156,
@@ -538,6 +529,15 @@
       "timestamp": 1776049236208,
       "status": "complete",
       "summary": "UNISWAP selected | Uniswap offers a better buy price beyond the 10 bps threshold.",
+      "durationMs": 1
+    },
+    {
+      "id": "169-executor-1776049236903",
+      "agent": "executor",
+      "cycle": 169,
+      "timestamp": 1776049236903,
+      "status": "complete",
+      "summary": "BUY executed on UNISWAP | 2 decision txs",
       "durationMs": 1
     }
   ]
