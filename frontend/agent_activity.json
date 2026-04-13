@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "190-executor-1776090737088",
-      "agent": "executor",
-      "cycle": 190,
-      "timestamp": 1776090737088,
-      "status": "complete",
-      "summary": "BUY executed on OKX | 2 decision txs",
-      "durationMs": 22
-    },
-    {
       "id": "190-narrator-1776090738449",
       "agent": "narrator",
       "cycle": 190,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence score of 0.8. | Squad Nova held OKB (0% treasury) via okx. Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait, confidence score 63.85%.",
       "durationMs": 1
+    },
+    {
+      "id": "203-oracle-1776112082457",
+      "agent": "oracle",
+      "cycle": 203,
+      "timestamp": 1776112082457,
+      "status": "complete",
+      "summary": "ETH OKX: $2252.00 (+2.5%) | Uniswap: $444016525.96 | Spread: 1971644200.53bps",
+      "durationMs": 21761
     }
   ]
 }
