@@ -13,11 +13,6 @@ const TXHASHES_PATH = path.join(FRONTEND_DIR, 'txhashes.json');
 const AGENT_PAYMENTS_PATH = path.join(FRONTEND_DIR, 'agentpayments.json');
 const OUTPUT_PATH = path.join(FRONTEND_DIR, 'leaderboard.json');
 const OUTPUT_REPO_PATH = 'frontend/leaderboard.json';
-const SLOW_SQUADS = [
-  { squadId: 'PHANTOM', name: 'Phantom Protocol', lastAsset: 'OKB', confidence: 0.66 },
-  { squadId: 'CIPHER', name: 'Cipher Strategy', lastAsset: 'ETH', confidence: 0.66 },
-  { squadId: 'NEXUS', name: 'Nexus Quant', lastAsset: 'OKB', confidence: 0.66 },
-];
 
 function readJson(filePath, fallback) {
   try {
@@ -125,43 +120,28 @@ async function buildLeaderboard() {
     squadMap.set(squadId, current);
   }
 
-  const slowSquadResults = cycleState?.slowSquadResults || {};
-  for (const slowSquad of SLOW_SQUADS) {
-    const result = slowSquadResults[slowSquad.squadId] || {};
-    const lastRun = Number(cycleState?.slowSquadLastRunAt?.[`${slowSquad.squadId.toLowerCase()}_last_run`] || 0);
-    squadMap.set(slowSquad.squadId, {
-      squadId: slowSquad.squadId,
-      decisions: Number(result?.decisions || 0),
-      buys: 0,
-      sells: 0,
-      holds: Number(result?.action === 'HOLD' ? 1 : 0),
-      latestTimestamp: lastRun,
-      latestRationale: result?.rationale || 'Awaiting next cycle',
-      lastAction: result?.action || 'HOLD',
-      lastAsset: slowSquad.lastAsset,
-      confidence: Number(result?.confidence || slowSquad.confidence || 0.66),
-      txHashes: Array.isArray(result?.txHashes) ? result.txHashes.slice(-10) : (result?.txHash ? [result.txHash] : []),
-    });
-  }
-
   const registry = await fetchExternalRegistry();
   for (const external of Array.isArray(registry?.squads) ? registry.squads : []) {
     const normalized = normalizeExternalSquad(external, cycleState);
+    if (String(external?.cancelled).toLowerCase() === 'true') continue;
+    const decisions = Number(normalized.decisions || 0);
+    const paused = String(external?.deactivated).toLowerCase() === 'true' || decisions === 0;
     squadMap.set(normalized.squadId, {
       squadId: normalized.squadId,
-      decisions: normalized.decisions,
+      decisions,
       buys: normalized.stats.buys,
       sells: normalized.stats.sells,
       holds: normalized.stats.holds,
       latestTimestamp: normalized.latestTimestamp,
       registeredAt: Number(external?.registeredAt || normalized.latestTimestamp || 0),
-      latestRationale: normalized.lastAction,
+      latestRationale: decisions === 0 ? 'Awaiting first cycle' : normalized.lastAction,
       lastAction: normalized.stats.lastTradeAction,
       lastAsset: normalized.stats.lastAsset,
-      confidence: normalized.confidence,
+      confidence: decisions === 0 ? 0 : normalized.confidence,
       txHashes: normalized.txHashes,
       external: true,
-      status: normalized.status,
+      status: paused ? 'PAUSED' : 'ACTIVE',
+      routeUsed: decisions === 0 ? null : (normalized.stats.lastTradeAction || null),
     });
   }
 
@@ -186,23 +166,24 @@ async function buildLeaderboard() {
   });
 
   const squads = squadsOrdered.map((squad, index) => ({
-      rank: index + 1,
-      squadId: squad.squadId,
-      decisions: squad.decisions,
-      confidence: squad.confidence,
-      lastAction: squad.latestRationale,
-      latestTimestamp: squad.latestTimestamp,
-      status: squad.status || (squad.external ? 'ACTIVE' : 'ACTIVE'),
-      badge: squad.external ? 'External' : undefined,
-      stats: {
-        buys: squad.buys,
-        sells: squad.sells,
-        holds: squad.holds,
-        lastTradeAction: squad.lastAction,
-        lastAsset: squad.lastAsset,
-      },
-      txHashes: squad.txHashes.slice(-10),
-    }));
+    rank: index + 1,
+    squadId: squad.squadId,
+    decisions: squad.decisions,
+    confidence: squad.confidence,
+    lastAction: squad.latestRationale,
+    latestTimestamp: squad.latestTimestamp,
+    status: squad.status || (squad.external ? 'PAUSED' : 'ACTIVE'),
+    badge: squad.external ? 'External' : undefined,
+    routeUsed: squad.routeUsed ?? null,
+    stats: {
+      buys: squad.buys,
+      sells: squad.sells,
+      holds: squad.holds,
+      lastTradeAction: squad.lastAction,
+      lastAsset: squad.lastAsset,
+    },
+    txHashes: squad.txHashes.slice(-10),
+  }));
 
   return {
     squads,

@@ -8,7 +8,7 @@ const FRONTEND_DIR = path.join(ROOT, 'frontend');
 const STATE_PATH = path.join(FRONTEND_DIR, 'cycle_state.json');
 const REGISTRY_PATH = path.join(FRONTEND_DIR, 'squad_registry.json');
 const REGISTRY_RAW_URL = 'https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/squad_registry.json';
-const EXTERNAL_DECISION_INTERVAL_MS = 24 * 60 * 60 * 1000;
+const EXTERNAL_DECISION_INTERVAL_MS = 60 * 60 * 1000;
 const EXTERNAL_ACTIVE_WINDOW_MS = 48 * 60 * 60 * 1000;
 
 function readJson(filePath, fallback) {
@@ -57,15 +57,13 @@ function normalizeExternalSquad(entry = {}, state = readCycleState()) {
   const name = String(entry.squadName || entry.squadId || 'UNKNOWN');
   const registeredAt = Number(entry.registeredAt || 0);
   const lastDecisionAt = Number(state?.externalSquadLastRun?.[name] || entry.lastDecisionAt || 0);
-  const ageMs = Date.now() - Math.max(registeredAt, lastDecisionAt);
-  const active = String(entry.status || '').toUpperCase() === 'PAUSED' ? false : (ageMs <= EXTERNAL_ACTIVE_WINDOW_MS || Boolean(lastDecisionAt));
 
   return {
     squadId: name,
     squadName: name,
     decisions: Number(entry.decisions || 0),
-    confidence: Number(entry.confidence || 0.66),
-    lastAction: entry.lastAction || 'Awaiting next cycle',
+    confidence: Number(entry.decisions || 0) > 0 ? Number(entry.confidence || 0.66) : 0,
+    lastAction: Number(entry.decisions || 0) > 0 ? (entry.lastAction || 'Awaiting next cycle') : 'Awaiting first cycle',
     latestTimestamp: lastDecisionAt || registeredAt || 0,
     stats: {
       buys: Number(entry.buys || 0),
@@ -76,7 +74,7 @@ function normalizeExternalSquad(entry = {}, state = readCycleState()) {
     },
     txHashes: Array.isArray(entry.txHashes) ? entry.txHashes : [],
     external: true,
-    status: active ? 'ACTIVE' : 'PAUSED',
+    status: Number(entry.decisions || 0) > 0 && String(entry.deactivated).toLowerCase() !== 'true' ? 'ACTIVE' : 'PAUSED',
     badge: 'External',
   };
 }

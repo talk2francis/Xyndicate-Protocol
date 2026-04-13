@@ -1,7 +1,7 @@
 const { runFullPipeline } = require('./pipeline');
 const { INTERVAL_MS, readCycleState, writeCycleState } = require('./cycle-state');
 const { selfCallMcp } = require('./self-call-mcp');
-const { fetchExternalRegistry, normalizeExternalSquad, touchExternalSquadRun, EXTERNAL_DECISION_INTERVAL_MS, EXTERNAL_ACTIVE_WINDOW_MS } = require('./external-squads');
+const { fetchExternalRegistry, normalizeExternalSquad, touchExternalSquadRun, EXTERNAL_DECISION_INTERVAL_MS } = require('./external-squads');
 const { writeLeaderboardArtifact } = require('./generate-leaderboard');
 
 let lastRunAt = 0;
@@ -22,7 +22,7 @@ async function loadExternalSquads() {
   return { squads, dueSquads };
 }
 
-async function runExternalSquad(squad) {
+function runExternalSquad(squad) {
   const state = readCycleState();
   const now = Date.now();
   const lastRun = Number(state?.externalSquadLastRun?.[squad.squadId] || 0);
@@ -32,8 +32,8 @@ async function runExternalSquad(squad) {
     squadId: squad.squadId,
     squadName: squad.squadName,
     action: 'HOLD',
-    confidence: 0.66,
-    rationale: 'External squad one-decision-per-day guard kept the arena lean.',
+    confidence: 0,
+    rationale: 'Awaiting first cycle',
     txHash: `external-${squad.squadId}-${now}`,
     registeredAt: squad.latestTimestamp || now,
   };
