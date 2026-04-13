@@ -44,7 +44,7 @@ type CycleStateResponse = {
 };
 
 const INSTALL_TABS = ["Plugin Store", "Direct MCP", "Manual"] as const;
-const GUIDE_TABS = ["Claude Code", "OpenClaw", "Raw HTTP"] as const;
+const GUIDE_TABS = ["Plugin Store", "Claude Code", "OpenClaw", "Raw HTTP"] as const;
 const TEST_TOOLS = ["get_market_signal", "get_leaderboard", "execute_route_query", "get_economy_snapshot"] as const;
 const TEST_PAIRS = ["ETH/USDC", "OKB/USDC"] as const;
 const USAGE_PAGE_SIZE = 12;
@@ -73,6 +73,51 @@ const ACP_SCHEMA_SNIPPET = `{
   "cycleId": 0
 }`;
 const ACP_GITHUB_URL = "https://github.com/talk2francis/Xyndicate-Protocol/tree/main/acp/schema/v1";
+const PLUGIN_STORE_MANIFEST = `{
+  "name": "xyndicate-strategy-skill",
+  "version": "2.0.0",
+  "description": "Dual-source market signals (OKX Market API + Uniswap v3), autonomous squad leaderboard, x402 strategy licensing, and agent economy snapshot for X Layer.",
+  "author": "Xyndicate Protocol",
+  "homepage": "https://xyndicateprotocol.vercel.app",
+  "repository": "https://github.com/talk2francis/Xyndicate-Protocol",
+  "mcp_endpoint": "https://xyndicateprotocol.vercel.app/api/mcp",
+  "install": "curl -fsSL https://xyndicateprotocol.vercel.app/install.sh | bash",
+  "tools": [
+    {
+      "name": "get_market_signal",
+      "description": "Real-time ETH/USDC + OKB/USDC price from OKX + Uniswap v3 with spread and routing recommendation",
+      "auth": "none"
+    },
+    {
+      "name": "get_leaderboard",
+      "description": "Live squad standings and decision history from X Layer DecisionLog contract",
+      "auth": "none"
+    },
+    {
+      "name": "execute_route_query",
+      "description": "Best execution route comparison: OKX DEX vs Uniswap v3 for any token pair",
+      "auth": "none"
+    },
+    {
+      "name": "get_squad_strategy",
+      "description": "Unlock squad strategy config, risk params, allocation logic, historical decisions",
+      "auth": "x402"
+    },
+    {
+      "name": "get_economy_snapshot",
+      "description": "Season economy metrics, OKB circulated, x402 volume, Uniswap route ratio, top squad PnL",
+      "auth": "none"
+    }
+  ],
+  "categories": ["defi", "market-data", "trading", "x-layer", "uniswap"],
+  "networks": ["xlayer-mainnet"],
+  "x_layer_contracts": {
+    "DecisionLog": "0xC9E69be5ecD65a9106800E07E05eE44a63559F8b",
+    "SeasonManager": "0x257A2842DBEcBDc6B6134B434BB0A224F1b8d4d1",
+    "StrategyVault": "0x6002767f909B3049d5A65beAD84A843a385a61aC",
+    "StrategyLicense": "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186"
+  }
+}`;
 
 const TOOL_CARDS: ToolCard[] = [
   {
