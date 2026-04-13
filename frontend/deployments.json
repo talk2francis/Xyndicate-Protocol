@@ -292,7 +292,9 @@
     "0xd7e5e44ec3fa283cb4eb03190ce2e457a759f36a646ed6a1870f8f9dd42fb65e",
     "0x9f62fbf063ba03d6b97530a01c46eff75b69b1377becefd73f4eb9c041834763",
     "0x7ca9d33f0c239e88bf351ae38b6816cdf0a30a54c2d733b8edf5e4a13c579c6f",
-    "0x5a54878f45796aa9c76827e14ce93f2350e93027e32ab66c5bd012651322564e"
+    "0x5a54878f45796aa9c76827e14ce93f2350e93027e32ab66c5bd012651322564e",
+    "0x159c74ad22246c30b6fd0e905b5a17081689d25dc6f5815e739ef1dc38ebc2bd",
+    "0x10ad5a2f0472f1ce62a78279af87feeadd0158995b9996706a5663366dd34488"
   ],
   "decisionLogEntries": [
     {
@@ -2023,6 +2025,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (0% treasury) · Negative 24h price change for OKB, wait for better opportunity.",
       "timestamp": 1776069143
+    },
+    {
+      "txHash": "0x159c74ad22246c30b6fd0e905b5a17081689d25dc6f5815e739ef1dc38ebc2bd",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "SELL ETH (100% treasury) · High spread of 10000 bps and negative 24h change indicate short opportunity with 80% confidence",
+      "timestamp": 1776071014
+    },
+    {
+      "txHash": "0x10ad5a2f0472f1ce62a78279af87feeadd0158995b9996706a5663366dd34488",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Market price stable with minimal spread and balanced risk mode.",
+      "timestamp": 1776071014
     }
   ]
 }
