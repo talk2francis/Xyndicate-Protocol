@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "159-router-1776031247127",
-      "agent": "router",
-      "cycle": 159,
-      "timestamp": 1776031247127,
-      "status": "complete",
-      "summary": "UNISWAP selected | Uniswap offers a better buy price beyond the 10 bps threshold.",
-      "durationMs": 1
-    },
-    {
       "id": "159-executor-1776031247894",
       "agent": "executor",
       "cycle": 159,
@@ -538,6 +529,15 @@
       "timestamp": 1776054686394,
       "status": "complete",
       "summary": "SELL ETH (100% treasury) | High spread of 10000 bps between OKX and Uniswap prices indicates inefficiency and potential price manipulation, supported by negative 24h change of -0.76%. Analyst confidence: 0.8",
+      "durationMs": 1
+    },
+    {
+      "id": "172-router-1776054687105",
+      "agent": "router",
+      "cycle": 172,
+      "timestamp": 1776054687105,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
