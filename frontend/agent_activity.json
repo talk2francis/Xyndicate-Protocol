@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "188-strategist-1776085405615",
-      "agent": "strategist",
-      "cycle": 188,
-      "timestamp": 1776085405615,
-      "status": "complete",
-      "summary": "BUY ETH (100% treasury) | Positive 24h price change and analyst confidence of 0.8 suggest potential upward trend. High spread of 10000 bps is a risk but outweighed by opportunities.",
-      "durationMs": 8
-    },
-    {
       "id": "188-router-1776085406629",
       "agent": "router",
       "cycle": 188,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 23
+    },
+    {
+      "id": "198-executor-1776105155598",
+      "agent": "executor",
+      "cycle": 198,
+      "timestamp": 1776105155598,
+      "status": "complete",
+      "summary": "BUY executed on OKX | 2 decision txs",
+      "durationMs": 31
     }
   ]
 }
