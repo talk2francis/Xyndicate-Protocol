@@ -234,6 +234,20 @@ export default function DocsPage() {
 
   const usageTotalPages = Math.max(1, Math.ceil((usageData.entries?.length || 0) / USAGE_PAGE_SIZE));
   const safeUsagePage = Math.min(usagePage, usageTotalPages);
+  const acpPreview = useMemo(() => ({
+    version: '1.0',
+    from: 'oracle',
+    to: 'analyst',
+    messageType: 'market_signal',
+    payload: {
+      pair: 'ETH/USDC',
+      okxPrice: 0,
+      uniswapPrice: 0,
+      spreadBps: 0,
+      timestamp: cycleState?.cycleStartTime || 0,
+    },
+    cycleId: cycleState?.cycleNumber || 0,
+  }), [cycleState]);
   const pagedUsageEntries = (usageData.entries || []).slice((safeUsagePage - 1) * USAGE_PAGE_SIZE, safeUsagePage * USAGE_PAGE_SIZE);
 
   const runQuery = async () => {
