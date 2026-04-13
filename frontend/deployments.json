@@ -334,7 +334,9 @@
     "0x3c8d3286c8cb47a9455912600f54514c2b9b8c5a1f4c12fbcf56d891b112f6c2",
     "0xb582f23c82915d68797f7b0911c5eaa54f1dcdd595f46d64f745f7c0fc4114cf",
     "0xffbfa70f7222c67ce012a1237dad868beddd3109afda9143a5a577f20e439981",
-    "0xc406eff346f7591cc9a498eb2769ea5a1f970f2fb6e6a9cf47d5c5638315c2fe"
+    "0xc406eff346f7591cc9a498eb2769ea5a1f970f2fb6e6a9cf47d5c5638315c2fe",
+    "0x558e4706bc0eccf53a1e778d860c1172a227ca1c770c7b34627ee5b42eca1a7c",
+    "0x3abffe02d0b5990669c0a87600b87ec6f2d79bc31795793fa106948a6d5eab37"
   ],
   "decisionLogEntries": [
     {
@@ -2359,6 +2361,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait, aligning with balanced risk mode of Squad Nova.",
       "timestamp": 1776114085
+    },
+    {
+      "txHash": "0x558e4706bc0eccf53a1e778d860c1172a227ca1c770c7b34627ee5b42eca1a7c",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · Positive 24h price change and potential arbitrage opportunity through Uniswap with high confidence score of 0.8.",
+      "timestamp": 1776115901
+    },
+    {
+      "txHash": "0x3abffe02d0b5990669c0a87600b87ec6f2d79bc31795793fa106948a6d5eab37",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Price stable with minimal spread, balanced risk mode. Analyst recommendation to wait with high confidence score of 0.8.",
+      "timestamp": 1776115901
     }
   ]
 }
