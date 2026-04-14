@@ -244,7 +244,7 @@ export default function DeployPage() {
             return json?.squad || null;
           }),
         ]);
-        const hasOnchainSquad = Boolean(onchainSquadRes?.owner && onchainSquadRes.owner !== ethers.ZeroAddress);
+        const hasOnchainSquad = Boolean(onchainSquadRes?.owner && onchainSquadRes.owner !== ethers.ZeroAddress && onchainSquadRes.active);
         const activeRegistrySquad = registryRes && !registryRes.cancelled ? registryRes : null;
         if (hasOnchainSquad && activeRegistrySquad) {
           setMySquad({
@@ -255,15 +255,15 @@ export default function DeployPage() {
             strategyMode: activeRegistrySquad.strategyMode || null,
             enrollTx: activeRegistrySquad.enrollTx || null,
             registeredAt: Number(activeRegistrySquad.registeredAt || 0),
-            deactivated: !onchainSquadRes.active,
-            cancelled: !onchainSquadRes.active,
+            deactivated: false,
+            cancelled: false,
             onchain: true,
           });
           setMySquadError(null);
           return;
         }
 
-        setMySquad(activeRegistrySquad);
+        setMySquad(null);
         setMySquadError(null);
       } catch (error: any) {
         setMySquad(null);
@@ -326,7 +326,7 @@ export default function DeployPage() {
       void fetch(`/api/my-squad?wallet=${encodeURIComponent(signerAddress)}`, { cache: "no-store" })
         .then((res) => res.json())
         .then((json) => setMySquad(json?.squad || null))
-        .catch(() => null);
+        .catch(() => setMySquad(null));
       if (!onchainActionWorked && action === "cancel") {
         setMySquadError("Stale squad record cleared from UI. You can enroll a new squad now.");
       }
