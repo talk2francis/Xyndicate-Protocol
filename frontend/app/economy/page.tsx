@@ -93,8 +93,8 @@ function edgePath(fromId: string, toId: string) {
 function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: EconomyEdge[] }) {
   return (
     <div className="rounded-[32px] border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">
-      <div className="economy-loop-wrapper economy-loop-container overflow-x-auto">
-        <svg viewBox="0 0 640 520" className="min-w-[640px]">
+      <div className="economy-loop-wrapper economy-loop-container overflow-x-auto md:overflow-hidden md:mx-auto md:w-full md:max-w-[640px] md:[transform:scale(0.5)] md:[transform-origin:top_center]">
+        <svg viewBox="0 0 640 520" className="min-w-[640px] w-full overflow-visible md:[transform:scale(1)] md:[transform-origin:top_center]">
           <defs>
             <marker id="economy-arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="#7BC8F6" />
@@ -124,9 +124,9 @@ function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: Eco
             return (
               <g key={`${edge.id}-label`}>
                 <rect x={labelX - 72} y={labelY - 28} width="144" height="56" rx="14" fill="rgba(10,10,10,0.85)" stroke="rgba(123,200,246,0.35)" />
-                <text x={labelX} y={labelY - 8} textAnchor="middle" fill="#7BC8F6" fontSize="11" fontWeight="700">{edge.paymentType}</text>
-                <text x={labelX} y={labelY + 10} textAnchor="middle" fill="#FFFFFF" fontSize="11">{edge.amount}</text>
-                <text x={labelX} y={labelY + 24} textAnchor="middle" fill="#9CA3AF" fontSize="10">last: {edge.last}</text>
+                <text x={labelX} y={labelY - 10} textAnchor="middle" fill="#7BC8F6" fontSize="8" fontWeight="700">{edge.paymentType}</text>
+                <text x={labelX} y={labelY + 5} textAnchor="middle" fill="#FFFFFF" fontSize="8">{edge.amount}</text>
+                <text x={labelX} y={labelY + 18} textAnchor="middle" fill="#9CA3AF" fontSize="7">last: {edge.last}</text>
               </g>
             );
           })}
@@ -136,9 +136,9 @@ function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: Eco
             return (
               <g key={node.id} transform={`translate(${pos.x - 82} ${pos.y - 42})`}>
                 <rect width="164" height="84" rx="24" fill="rgba(14,14,14,0.96)" stroke="rgba(123,200,246,0.45)" />
-                <text x="82" y="24" textAnchor="middle" fill="#7BC8F6" fontSize="12" fontWeight="700">{node.label}</text>
-                <text x="82" y="46" textAnchor="middle" fill="#FFFFFF" fontSize="11">{node.value}</text>
-                <text x="82" y="64" textAnchor="middle" fill="#9CA3AF" fontSize="10">{node.secondary}</text>
+                <text x="82" y="20" textAnchor="middle" fill="#7BC8F6" fontSize="9" fontWeight="700">{node.label}</text>
+                <text x="82" y="38" textAnchor="middle" fill="#FFFFFF" fontSize="8">{node.value}</text>
+                <text x="82" y="54" textAnchor="middle" fill="#9CA3AF" fontSize="7">{node.secondary}</text>
               </g>
             );
           })}
