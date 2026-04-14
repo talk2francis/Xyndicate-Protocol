@@ -1,197 +1,22 @@
 {
-  "currentAgent": "idle",
-  "cycleNumber": 220,
-  "cycleStartTime": 1776137469270,
-  "nextCycleTime": 1776139318475,
-  "lastCycleComplete": 1776137518475,
+  "currentAgent": "oracle",
+  "cycleNumber": 221,
+  "cycleStartTime": 1776139236259,
+  "nextCycleTime": 1776141036259,
+  "lastCycleComplete": 1776108718368,
   "activeSquads": [
     "Xyndicate Alpha",
     "Squad Nova"
   ],
-  "squadResults": {
-    "XYNDICATE_ALPHA": {
-      "squadId": "XYNDICATE_ALPHA",
-      "squadName": "Xyndicate Alpha",
-      "riskMode": "aggressive",
-      "baseAsset": "ETH",
-      "txHash": "0x7a5c9416c03204bd3832219e1f672742b3712f744f894ab122b43ed3ecb253e8",
-      "vaultTxHash": "0x11607317143c3b631eb2b3e54ed9920bef0be25090943f8f7d3a5d189d579b34",
-      "pnlDelta": "50",
-      "action": "BUY",
-      "asset": "ETH",
-      "sizePercent": 100,
-      "rationale": "Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence score of 0.8.",
-      "route": "okx",
-      "routingReason": "OKX remains within threshold, so default execution path is retained.",
-      "spreadBps": 1788416680.6096,
-      "narratorSummary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence score of 0.8.",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "ETH",
-            "type": "long",
-            "rationale": "Positive 24h price change and potential arbitrage opportunity on Uniswap",
-            "confidence": 0.8
-          }
-        ],
-        "risks": [
-          {
-            "description": "High spread between Uniswap and OKX prices may indicate liquidity issues or market manipulation",
-            "severity": 0.7
-          }
-        ],
-        "recommendation": "wait",
-        "topAsset": "ETH",
-        "confidenceScore": 0.8
-      },
-      "market": {
-        "pair": "ETH-USDT",
-        "price": 2364.87,
-        "okxPrice": 2364.87,
-        "uniswapPrice": 422939660.4173281,
-        "spreadBps": 1788416680.61,
-        "betterRoute": "uniswap",
-        "uniswapPoolId": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
-        "priceSpreads": {
-          "absolute": 422937295.5473281,
-          "bps": 1788416680.61,
-          "source": "uniswap-v3-onchain",
-          "rawUniswapPrice": 422939660.4173281,
-          "rawOkxPrice": 2364.87,
-          "uniswapError": null
-        },
-        "change24h": 7.746315237943367
-      },
-      "narrative": "BUY ETH (100% treasury) via okx · Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence score of 0.8."
-    },
-    "SQUAD_NOVA": {
-      "squadId": "SQUAD_NOVA",
-      "squadName": "Squad Nova",
-      "riskMode": "balanced",
-      "baseAsset": "OKB",
-      "txHash": "0x071aebc4c9fac20477099bcb3d8ed367bdfb457e0abd41e7be52fa1c04e67c51",
-      "vaultTxHash": "0xf1d65890f6925af6b97f729374a5a7363f6018e2e5fabda0d6b826618ae9c6a5",
-      "pnlDelta": "50",
-      "action": "BUY",
-      "asset": "OKB",
-      "sizePercent": 100,
-      "rationale": "Positive 24h price change with moderate confidence score of 0.8. Low arbitrage opportunities due to low price spread. Preferred pair OKB-USDT.",
-      "route": "okx",
-      "routingReason": "OKX remains within threshold, so default execution path is retained.",
-      "spreadBps": 0,
-      "narratorSummary": "Squad Nova deployed OKB (100% treasury) via okx. Positive 24h price change with moderate confidence score of 0.8. Low arbitrage opportunities due to low price spread. Preferred pair OKB-USDT.",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "OKB",
-            "type": "long",
-            "rationale": "Positive 24h price change",
-            "confidence": 0.8
-          }
-        ],
-        "risks": [
-          {
-            "description": "Low price spread indicates low arbitrage opportunities",
-            "severity": 0.6
-          }
-        ],
-        "recommendation": "wait",
-        "topAsset": "OKB",
-        "confidenceScore": 0.7
-      },
-      "market": {
-        "pair": "OKB-USDT",
-        "price": 84.45,
-        "okxPrice": 84.45,
-        "uniswapPrice": 84.45,
-        "spreadBps": 0,
-        "betterRoute": "okx",
-        "uniswapPoolId": null,
-        "priceSpreads": {
-          "absolute": 0,
-          "bps": 0,
-          "source": "okx-fallback",
-          "rawUniswapPrice": null,
-          "rawOkxPrice": 84.45,
-          "uniswapError": null
-        },
-        "change24h": 1.8451519536903054
-      },
-      "narrative": "BUY OKB (100% treasury) via okx · Positive 24h price change with moderate confidence score of 0.8. Low arbitrage opportunities due to low price spread. Preferred pair OKB-USDT."
-    }
-  },
-  "slowSquadLastRunAt": {
-    "phantom_last_run": 1776137505881,
-    "cipher_last_run": 1776137505882,
-    "nexus_last_run": 1776137505882
-  },
+  "squadResults": {},
+  "slowSquadLastRunAt": {},
   "uniswapQueriesSuccessful": 0,
   "agentLog": [
     {
       "agent": "system",
       "status": "started",
-      "completedAt": 1776137469270,
-      "summary": "Cycle 220 started. Oracle snapshot in progress."
-    },
-    {
-      "agent": "oracle",
-      "status": "complete",
-      "completedAt": 1776137501832,
-      "summary": "ETH $0.00 (0.00%) | Uniswap spread 0.00bps"
-    },
-    {
-      "agent": "analyst",
-      "status": "complete",
-      "completedAt": 1776137502822,
-      "summary": "wait on ETH | confidence 0"
-    },
-    {
-      "agent": "strategist",
-      "status": "complete",
-      "completedAt": 1776137503470,
-      "summary": "HOLD ETH (0% treasury)"
-    },
-    {
-      "agent": "router",
-      "status": "complete",
-      "completedAt": 1776137504056,
-      "summary": "okx selected | spread 0.00bps"
-    },
-    {
-      "agent": "executor",
-      "status": "complete",
-      "completedAt": 1776137504637,
-      "summary": "HOLD executed | tx 0x7a5c9416c03204bd3832219e1f672742b3712f744f894ab122b43ed3ecb253e8"
-    },
-    {
-      "agent": "narrator",
-      "status": "complete",
-      "completedAt": 1776137505247,
-      "summary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence score of 0.8. | Squad Nova deployed OKB (100% treasury) via okx. Positive 24h price change with moderate confidence score of 0.8. Low arbitrage opportunities due to low price spread. Preferred pair OKB-USDT."
-    },
-    {
-      "agent": "slow-phantom",
-      "status": "complete",
-      "completedAt": 1776137505881,
-      "summary": "Phantom Protocol decision logged"
-    },
-    {
-      "agent": "slow-cipher",
-      "status": "complete",
-      "completedAt": 1776137505882,
-      "summary": "Cipher Strategy decision logged"
-    },
-    {
-      "agent": "slow-nexus",
-      "status": "complete",
-      "completedAt": 1776137505882,
-      "summary": "Nexus Quant decision logged"
-    },
-    {
-      "agent": "system",
-      "status": "complete",
-      "completedAt": 1776137518475,
-      "summary": "Cycle 220 complete. Awaiting next scheduled run."
+      "completedAt": 1776139236259,
+      "summary": "Cycle 221 started. Oracle snapshot in progress."
     }
   ]
 }
