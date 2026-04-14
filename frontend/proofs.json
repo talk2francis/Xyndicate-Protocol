@@ -3,6 +3,44 @@
     {
       "type": "decision",
       "label": "XYNDICATE_ALPHA decision",
+      "txHash": "0xd917d8a1512171f25786f84228d089272408dea7ce11ee916166c7ac765ef076",
+      "timestamp": 1776200494,
+      "amount": null,
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx/0xd917d8a1512171f25786f84228d089272408dea7ce11ee916166c7ac765ef076",
+      "recoveryStatus": "recovered"
+    },
+    {
+      "type": "payment",
+      "label": "Strategist Wallet → Analyst Wallet",
+      "txHash": "0x238d34f970b218618e69160aa6688eb4d3dfb1a2db6590ef6dc3d0d08f56d0d0",
+      "timestamp": 1776200494,
+      "amount": "0.00005 OKB",
+      "blockNumber": 57431458,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx/0x238d34f970b218618e69160aa6688eb4d3dfb1a2db6590ef6dc3d0d08f56d0d0"
+    },
+    {
+      "type": "decision",
+      "label": "SQUAD_NOVA decision",
+      "txHash": "0x127c8311b9cd0115d7e77a693621bb7e9f772d9a1dc8984d99b108f0cd451ad1",
+      "timestamp": 1776200494,
+      "amount": null,
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx/0x127c8311b9cd0115d7e77a693621bb7e9f772d9a1dc8984d99b108f0cd451ad1",
+      "recoveryStatus": "recovered"
+    },
+    {
+      "type": "payment",
+      "label": "Analyst Wallet → Oracle Wallet",
+      "txHash": "0x12bbce36f77d458def675c57a616f1f717b4a7b096dacb3fb1bfe26549ba19a7",
+      "timestamp": 1776200491,
+      "amount": "0.00005 OKB",
+      "blockNumber": 57431455,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx/0x12bbce36f77d458def675c57a616f1f717b4a7b096dacb3fb1bfe26549ba19a7"
+    },
+    {
+      "type": "decision",
+      "label": "XYNDICATE_ALPHA decision",
       "txHash": "0xeb14428abd9f3d5a9f819e544c75d6b2e744cf155d3005558b77567c743c69db",
       "timestamp": 1776177088,
       "amount": null,
@@ -3858,6 +3896,26 @@
     {
       "type": "decision",
       "label": "SQUAD_NOVA decision",
+      "txHash": "decision-583",
+      "timestamp": 0,
+      "amount": "Pending recovery",
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx",
+      "recoveryStatus": "pending"
+    },
+    {
+      "type": "decision",
+      "label": "XYNDICATE_ALPHA decision",
+      "txHash": "decision-582",
+      "timestamp": 0,
+      "amount": "Pending recovery",
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx",
+      "recoveryStatus": "pending"
+    },
+    {
+      "type": "decision",
+      "label": "SQUAD_NOVA decision",
       "txHash": "decision-581",
       "timestamp": 0,
       "amount": "Pending recovery",
@@ -6024,29 +6082,9 @@
       "blockNumber": null,
       "explorerUrl": "https://www.oklink.com/xlayer/tx",
       "recoveryStatus": "pending"
-    },
-    {
-      "type": "decision",
-      "label": "XYNDICATE_ALPHA decision",
-      "txHash": "decision-364",
-      "timestamp": 0,
-      "amount": "Pending recovery",
-      "blockNumber": null,
-      "explorerUrl": "https://www.oklink.com/xlayer/tx",
-      "recoveryStatus": "pending"
-    },
-    {
-      "type": "decision",
-      "label": "SQUAD_NOVA decision",
-      "txHash": "decision-363",
-      "timestamp": 0,
-      "amount": "Pending recovery",
-      "blockNumber": null,
-      "explorerUrl": "https://www.oklink.com/xlayer/tx",
-      "recoveryStatus": "pending"
     }
   ],
-  "totalTxCount": 607,
+  "totalTxCount": 611,
   "contracts": [
     {
       "name": "DecisionLog",
@@ -6077,8 +6115,8 @@
       "oklinkUrl": "https://www.oklink.com/xlayer/tx/0x1ff8a1f8462003b2a17c5acddc5d856199c130b6df9c9fb4dbf6b92e6dfd915d"
     }
   ],
-  "updatedAt": "2026-04-14T14:31:48.032Z",
-  "onchainDecisionCount": 582,
+  "updatedAt": "2026-04-14T21:01:58.147Z",
+  "onchainDecisionCount": 584,
   "recoveredDecisionCount": 0,
   "source": "scheduler-artifact"
 }
