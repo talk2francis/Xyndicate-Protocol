@@ -235,10 +235,11 @@ export default function DeployPage() {
           }),
         ]);
         const hasOnchainSquad = Boolean(onchainSquadRes?.owner && onchainSquadRes.owner !== ethers.ZeroAddress);
-        if (hasOnchainSquad) {
+        const hasRegistrySquad = Boolean(registryRes && !registryRes.cancelled);
+        if (hasOnchainSquad && hasRegistrySquad) {
           setMySquad({
             squadName: registryRes?.squadName || registryRes?.squadId || "On-chain squad",
-            walletAddress: address,
+            walletAddress: registryRes?.walletAddress || address,
             riskMode: registryRes?.riskMode || null,
             baseAsset: registryRes?.baseAsset || null,
             strategyMode: registryRes?.strategyMode || null,
@@ -252,7 +253,7 @@ export default function DeployPage() {
           return;
         }
 
-        setMySquad(registryRes);
+        setMySquad(hasRegistrySquad ? registryRes : null);
         setMySquadError(null);
       } catch (error: any) {
         setMySquad(null);
