@@ -281,14 +281,22 @@ export default function DeployPage() {
       const signerAddress = await signer.getAddress();
       const seasonManager = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, signer);
 
-      if (action === "cancel") {
-        const tx = await seasonManager.closeSquad();
-        await tx.wait();
-      } else if (action === "deactivate") {
-        const tx = await seasonManager.deactivate();
-        await tx.wait();
-      } else if (action === "reactivate") {
-        throw new Error("Reactivate is not supported on-chain yet. Enroll a new squad instead.");
+      let onchainActionWorked = false;
+      try {
+        if (action === "cancel") {
+          const tx = await seasonManager.closeSquad();
+          await tx.wait();
+          onchainActionWorked = true;
+        } else if (action === "deactivate") {
+          const tx = await seasonManager.deactivate();
+          await tx.wait();
+          onchainActionWorked = true;
+        } else if (action === "reactivate") {
+          throw new Error("Reactivate is not supported on-chain yet. Enroll a new squad instead.");
+        }
+      } catch (chainError: any) {
+        const chainMessage = String(chainError?.shortMessage || chainError?.message || chainError || "");
+        if (!chainMessage.includes("not squad")) throw chainError;
       }
 
       const res = await fetch("/api/squad-action", {
@@ -299,6 +307,9 @@ export default function DeployPage() {
       const json = await res.json();
       if (!res.ok || !json?.success) throw new Error(json?.error || "Squad action failed");
       setMySquad(null);
+      if (!onchainActionWorked && action === "cancel") {
+        setMySquadError("Stale squad record cleared from UI. You can enroll a new squad now.");
+      }
     } catch (error: any) {
       setMySquadError(error?.message || "Squad action failed");
     }

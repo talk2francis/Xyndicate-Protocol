@@ -87,6 +87,7 @@ export async function POST(request: Request) {
     } else if (action === "cancel") {
       target.cancelled = true;
       target.cancelledAt = Date.now();
+      target.deactivated = true;
     } else {
       return NextResponse.json({ success: false, error: "Unsupported action" }, { status: 400 });
     }
