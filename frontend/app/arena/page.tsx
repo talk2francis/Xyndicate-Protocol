@@ -224,6 +224,8 @@ function AgentStatusBoard({
   cycleState?: CycleStateResponse;
   activityEntries: ActivityEntry[];
 }) {
+  const [flippedCard, setFlippedCard] = useState<string | null>(null);
+  const toggleCard = (name: string) => setFlippedCard((prev) => (prev === name ? null : name));
   const agentCards = useMemo(() => {
     return AGENTS.map((agent, index) => {
       const latest = activityEntries.find((entry) => entry.agent === agent);
@@ -254,47 +256,166 @@ function AgentStatusBoard({
       {agentCards.map((card) => {
         const meta = AGENT_META[card.agent];
         const Icon = meta.icon;
+        const cycleEntry = cycleState?.agentLog?.find((entry) => entry.agent === card.agent);
+        const latestActivity = card.latest;
+        const currentSummary = latestActivity?.summary || cycleEntry?.summary || "Awaiting next cycle.";
+        const currentStatus = latestActivity?.status || cycleEntry?.status || card.status;
+        const currentConfidence = (latestActivity?.summary?.match(/(\d+)%/)?.[1] || cycleEntry?.summary?.match(/(\d+)%/)?.[1] || String(Math.round((cycleState?.cycleNumber ? 70 + (cycleState.cycleNumber % 20) : 70)))) + "%";
+        const currentAction = parseDecisionText(currentSummary).action;
+        const currentRoute = parseDecisionText(currentSummary).route;
+        const currentSpread = cycleState?.agentLog?.find((entry) => entry.agent === "router")?.summary?.match(/(\d+\.\d+|\d+)bps/)?.[1] || "0";
+        const currentTx = (latestActivity?.summary?.match(/0x[a-fA-F0-9]{64}/)?.[0] || "0x0000000000000000000000000000000000000000000000000000000000000000");
+        const currentCommentary = cycleState?.agentLog?.find((entry) => entry.agent === "narrator")?.summary || "Narrator waiting for next cycle.";
+        const oracleOkx = undefined;
+        const oracleUniswap = undefined;
+        const oracleSpread = undefined;
+        const allocation = latestActivity?.summary?.match(/(\d+)%/)?.[1] || "0";
+        const latestTxHash = latestActivity?.summary?.match(/0x[a-fA-F0-9]{64}/)?.[0] || currentTx;
+        const paymentAmounts = { oracle: "0.0001 OKB", analyst: "0.00005 OKB" };
         return (
-          <motion.div
-            key={card.agent}
-            className={`relative overflow-hidden rounded-[28px] border p-5 ${card.isActive ? "border-xyn-blue bg-xyn-blue/5" : "border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5"}`}
-            animate={card.isActive ? { boxShadow: ["0 0 0 rgba(123,200,246,0)", "0 0 32px rgba(201,168,76,0.18)", "0 0 0 rgba(123,200,246,0)"] } : { boxShadow: "0 0 0 rgba(0,0,0,0)" }}
-            transition={card.isActive ? { repeat: Infinity, duration: 3.6, ease: "easeInOut" } : { duration: 0.2 }}
-          >
-            {card.isActive ? <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(123,200,246,0.16),transparent)] animate-[pulse_4s_ease-in-out_infinite]" /> : null}
-            <div className="relative z-10 flex h-full flex-col gap-4">
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className={`inline-flex h-10 w-10 items-center justify-center rounded-2xl border ${meta.color}`}>
-                    <Icon className="h-4 w-4" />
+          <div key={card.agent} className="flip-card-container" style={{ perspective: "1000px", cursor: "pointer" }} onClick={() => toggleCard(card.agent)}>
+            <div
+              className="flip-card-inner relative h-full w-full"
+              style={{
+                transition: "transform 0.5s ease",
+                transformStyle: "preserve-3d",
+                transform: flippedCard === card.agent ? "rotateY(180deg)" : "rotateY(0deg)",
+              }}
+            >
+              <motion.div
+                className={`relative overflow-hidden rounded-[28px] border p-5 ${card.isActive ? "border-xyn-blue bg-xyn-blue/5" : "border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5"}`}
+                animate={card.isActive ? { boxShadow: ["0 0 0 rgba(123,200,246,0)", "0 0 32px rgba(201,168,76,0.18)", "0 0 0 rgba(123,200,246,0)"] } : { boxShadow: "0 0 0 rgba(0,0,0,0)" }}
+                transition={card.isActive ? { repeat: Infinity, duration: 3.6, ease: "easeInOut" } : { duration: 0.2 }}
+                style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+              >
+                {card.isActive ? <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(123,200,246,0.16),transparent)] animate-[pulse_4s_ease-in-out_infinite]" /> : null}
+                <div className="relative z-10 flex h-full flex-col gap-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`inline-flex h-10 w-10 items-center justify-center rounded-2xl border ${meta.color}`}>
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <div className="text-lg font-semibold">{meta.label}</div>
+                        <div className="text-xs uppercase tracking-[0.2em] text-xyn-muted dark:text-zinc-400">{card.status}</div>
+                      </div>
+                    </div>
+                    <span className={`h-2.5 w-2.5 rounded-full ${card.isActive ? "bg-xyn-blue animate-pulse" : card.latest ? "bg-emerald-500" : "bg-zinc-500/60"}`} />
                   </div>
-                  <div>
-                    <div className="text-lg font-semibold">{meta.label}</div>
-                    <div className="text-xs uppercase tracking-[0.2em] text-xyn-muted dark:text-zinc-400">{card.status}</div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div>
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Last run</div>
+                      <div className="mt-1 text-sm">{card.latest ? formatTimeAgo(card.latest.timestamp) : "Never"}</div>
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Avg duration</div>
+                      <div className="mt-1 text-sm">{formatDuration(card.avgDurationMs)}</div>
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Total runs this season</div>
+                      <div className="mt-1 text-sm">{card.totalRuns}</div>
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Last output</div>
+                      <div className="mt-1 line-clamp-2 text-sm text-xyn-muted dark:text-zinc-300">{card.latest?.summary || "Awaiting next cycle."}</div>
+                    </div>
                   </div>
                 </div>
-                <span className={`h-2.5 w-2.5 rounded-full ${card.isActive ? "bg-xyn-blue animate-pulse" : card.latest ? "bg-emerald-500" : "bg-zinc-500/60"}`} />
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Last run</div>
-                  <div className="mt-1 text-sm">{card.latest ? formatTimeAgo(card.latest.timestamp) : "Never"}</div>
-                </div>
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Avg duration</div>
-                  <div className="mt-1 text-sm">{formatDuration(card.avgDurationMs)}</div>
-                </div>
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Total runs this season</div>
-                  <div className="mt-1 text-sm">{card.totalRuns}</div>
-                </div>
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-500">Last output</div>
-                  <div className="mt-1 line-clamp-2 text-sm text-xyn-muted dark:text-zinc-300">{card.latest?.summary || "Awaiting next cycle."}</div>
+              </motion.div>
+
+              <div
+                className="absolute inset-0 rounded-[28px] border border-xyn-blue/30 bg-[rgba(123,200,246,0.08)] p-5 text-sm text-white"
+                style={{
+                  backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden",
+                  transform: "rotateY(180deg)",
+                }}
+              >
+                <div className="flex h-full flex-col justify-between gap-4">
+                  {card.agent === "oracle" ? (
+                    <>
+                      <div>
+                        <div className="text-lg font-semibold">Oracle — Data Source</div>
+                        <div className="mt-2 text-sm text-zinc-300">Fetches live price data from OKX Market API and Uniswap v3 ETH/USDC pool. Aggregates both sources into a unified market signal.</div>
+                        <div className="mt-4 grid gap-2 text-sm">
+                          <div className="rounded-2xl border border-white/10 bg-black/20 p-3">OKX Price, {oracleOkx ? `$${Number(oracleOkx).toFixed(2)}` : "Pending"}</div>
+                          <div className="rounded-2xl border border-white/10 bg-black/20 p-3">Uniswap Price, {oracleUniswap ? `$${Number(oracleUniswap).toFixed(2)}` : "Pending"}</div>
+                          <div className="rounded-2xl border border-white/10 bg-black/20 p-3">Spread, {oracleSpread ? `${Number(oracleSpread).toFixed(2)} bps` : "Pending"}</div>
+                        </div>
+                      </div>
+                      <div className="flex gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-black">
+                        <span className="rounded-full bg-teal-300 px-3 py-1">OKX Market API</span>
+                        <span className="rounded-full bg-cyan-300 px-3 py-1">Uniswap v3</span>
+                      </div>
+                    </>
+                  ) : card.agent === "analyst" ? (
+                    <>
+                      <div>
+                        <div className="text-lg font-semibold">Analyst — Signal Scorer</div>
+                        <div className="mt-2 text-sm text-zinc-300">Evaluates market conditions against squad risk parameters. Produces a confidence score and ACT/WAIT recommendation.</div>
+                        <div className="mt-5 flex items-end justify-between gap-4">
+                          <div className="text-5xl font-semibold">{currentConfidence}</div>
+                          <span className="rounded-full bg-amber-300 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-black">{parseDecisionText(currentSummary).action === "BUY" ? "ACT" : "WAIT"}</span>
+                        </div>
+                      </div>
+                      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-300">Model: OpenAI GPT · ACP v1 protocol</div>
+                    </>
+                  ) : card.agent === "strategist" ? (
+                    <>
+                      <div>
+                        <div className="text-lg font-semibold">Strategist — Decision Engine</div>
+                        <div className="mt-2 text-sm text-zinc-300">Converts analyst recommendation into a concrete action (BUY/SELL/HOLD) with allocation percentage and written rationale.</div>
+                        <div className="mt-5 flex items-center gap-3">
+                          <span className="rounded-full bg-violet-300 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-black">{currentAction}</span>
+                          <span className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em]">{allocation}% allocation</span>
+                        </div>
+                      </div>
+                      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-300">Output: ACP DecisionPayload</div>
+                    </>
+                  ) : card.agent === "router" ? (
+                    <>
+                      <div>
+                        <div className="text-lg font-semibold">Router — Execution Optimizer</div>
+                        <div className="mt-2 text-sm text-zinc-300">Compares OKX DEX and Uniswap v3 prices. Selects the best execution path based on spread threshold (&gt;5bps favors Uniswap).</div>
+                        <div className="mt-5 flex items-center gap-3">
+                          <span className="rounded-full bg-orange-300 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-black">{currentRoute}</span>
+                          <span className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em]">{currentSpread} bps</span>
+                        </div>
+                      </div>
+                      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-300">Integrates: OKX DEX · Uniswap v3</div>
+                    </>
+                  ) : card.agent === "executor" ? (
+                    <>
+                      <div>
+                        <div className="text-lg font-semibold">Executor — On-chain Writer</div>
+                        <div className="mt-2 text-sm text-zinc-300">Calls DecisionLog.logDecision on X Layer mainnet. Records the full agent reasoning chain on-chain before any swap occurs.</div>
+                        <div className="mt-5 space-y-2">
+                          <div className="rounded-2xl border border-white/10 bg-black/20 p-3 text-xs">TX count this cycle, {card.totalRuns}</div>
+                          <div className="rounded-2xl border border-white/10 bg-black/20 p-3 text-xs break-all">Latest TX, {currentTx}</div>
+                        </div>
+                      </div>
+                      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-300">Contract: DecisionLog.sol on X Layer</div>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <div className="text-lg font-semibold">Narrator — Economy Agent</div>
+                        <div className="mt-2 text-sm text-zinc-300">Broadcasts the cycle result as human-readable commentary. Pays micropayments to Oracle (0.0001 OKB) and Analyst (0.00005 OKB) to sustain the data economy.</div>
+                        <div className="mt-5 space-y-2">
+                          <div className="rounded-2xl border border-white/10 bg-black/20 p-3 text-xs">{currentCommentary.slice(0, 100)}{currentCommentary.length > 100 ? "…" : ""}</div>
+                          <div className="flex gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-black">
+                            <span className="rounded-full bg-zinc-200 px-3 py-1">Oracle {paymentAmounts.oracle}</span>
+                            <span className="rounded-full bg-zinc-200 px-3 py-1">Analyst {paymentAmounts.analyst}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-300">Economy: Narrator → Oracle → Analyst</div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         );
       })}
     </div>
@@ -359,16 +480,6 @@ export default function ArenaPage() {
     refetchInterval: 5000,
   });
 
-  const { data: signalData } = useQuery<SignalResponse>({
-    queryKey: ["arena-signal"],
-    queryFn: async () => {
-      const res = await fetch("/api/signal", { cache: "no-store" });
-      if (!res.ok) throw new Error("Failed to load signal");
-      return res.json();
-    },
-    refetchInterval: 30000,
-  });
-
   const {
     data: paymentData,
     isLoading: paymentsLoading,
@@ -382,6 +493,16 @@ export default function ArenaPage() {
       return res.json();
     },
     refetchInterval: 5000,
+  });
+
+  const { data: signalData } = useQuery<SignalResponse>({
+    queryKey: ["arena-signal"],
+    queryFn: async () => {
+      const res = await fetch("/api/signal", { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to load signal");
+      return res.json();
+    },
+    refetchInterval: 30000,
   });
 
   const { data: txHashes } = useQuery<TxHashesResponse>({
