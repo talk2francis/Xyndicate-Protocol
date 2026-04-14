@@ -81,12 +81,12 @@ function generateSquadAvatar(squadName: string): string {
 
 function avatarClass(variant: number) {
   const variants = [
-    "rounded-[28%] bg-[radial-gradient(circle_at_30%_30%,rgba(201,168,76,0.9),rgba(10,10,10,0.95))]",
-    "rounded-[42%] bg-[linear-gradient(135deg,rgba(201,168,76,0.9),rgba(10,10,10,0.95))]",
-    "rounded-[18%] bg-[conic-gradient(from_180deg,rgba(201,168,76,0.95),rgba(10,10,10,0.92),rgba(201,168,76,0.95))]",
-    "rounded-[50%] bg-[radial-gradient(circle_at_70%_30%,rgba(201,168,76,0.9),rgba(10,10,10,0.95))]",
-    "rounded-[14%] bg-[linear-gradient(45deg,rgba(10,10,10,0.95),rgba(201,168,76,0.95))]",
-    "rounded-[36%] bg-[conic-gradient(from_90deg,rgba(10,10,10,0.95),rgba(201,168,76,0.95),rgba(10,10,10,0.95))]",
+    "rounded-xl",
+    "rounded-xl",
+    "rounded-xl",
+    "rounded-xl",
+    "rounded-xl",
+    "rounded-xl",
   ];
   return variants[variant];
 }
@@ -704,7 +704,7 @@ export default function MarketPage() {
                 <motion.button key={strategy.squadId} type="button" onClick={() => setSelected(strategy)} className="relative overflow-hidden rounded-[32px] border border-black/10 bg-black/5 p-5 text-left dark:border-white/10 dark:bg-white/5">
                   <div className="absolute right-4 top-4 text-[14px] text-white/30">↻</div>
                   <div className="flex items-start gap-4">
-                    <img src={avatarData} alt={`${strategy.name} avatar`} className={`h-16 w-16 shrink-0 ${avatarClass(variant)} border border-white/10 object-cover`} />
+                    <img src={avatarData} alt={strategy.name} className="w-16 h-16 rounded-xl" />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
