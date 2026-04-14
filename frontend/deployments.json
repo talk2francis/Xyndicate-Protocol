@@ -350,7 +350,9 @@
     "0x2a457047f538b9cdaefda41dc2f4759fd0678794fc83044a13c4e4d5e4b20ae1",
     "0xc9cc069b1f7b6552908b4f53027c76ec1c2c14ef49bb490c821c1c1ba962fb4b",
     "0x6e96f0b50850ae0d79b69e098ff39eb65c7721cfe4895e9ec7cc4432e5366701",
-    "0x08c906c3c5a6233f40e2a82d92ae8cb5a0d3dc3eea50ebdd796be1fa09d82b93"
+    "0x08c906c3c5a6233f40e2a82d92ae8cb5a0d3dc3eea50ebdd796be1fa09d82b93",
+    "0x511fc46b927628279df6cdb80fe44cdad4fd96f2163ee87c9360c2eaa579a55d",
+    "0xde62d8664019d7f82d1e8d2dadd5ebdd92ce3a3087c1f08eecdd44c812a893cb"
   ],
   "decisionLogEntries": [
     {
@@ -2487,6 +2489,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "BUY OKB (100% treasury) · Positive 24h price change and balanced risk mode. Analyst recommendation to act with high confidence.",
       "timestamp": 1776124930
+    },
+    {
+      "txHash": "0x511fc46b927628279df6cdb80fe44cdad4fd96f2163ee87c9360c2eaa579a55d",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence score of 0.8.",
+      "timestamp": 1776126803
+    },
+    {
+      "txHash": "0xde62d8664019d7f82d1e8d2dadd5ebdd92ce3a3087c1f08eecdd44c812a893cb",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY OKB (100% treasury) · Positive 24h price change and balanced risk mode. Analyst recommendation to act with high confidence.",
+      "timestamp": 1776126803
     }
   ]
 }
