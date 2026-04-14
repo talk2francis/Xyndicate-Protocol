@@ -260,10 +260,10 @@ export default function DeployPage() {
   }, [address, step, seasonManagerAddress]);
 
   const handleSquadAction = async (action: "deactivate" | "reactivate" | "cancel") => {
-    if (!address || !mySquad?.squadName) return;
+    if (!address || !mySquad?.walletAddress) return;
     const ok = window.confirm(
       action === "cancel"
-        ? "This will permanently remove your squad from the leaderboard. This cannot be undone. Your on-chain enrollment transaction will remain on the blockchain. Confirm removal?"
+        ? "This will permanently close your on-chain squad and remove it from the leaderboard. Confirm removal?"
         : action === "reactivate"
           ? "This will reactivate your squad on the leaderboard. Confirm?"
           : "This will pause your squad on the leaderboard. It will no longer make decisions. Confirm?",
@@ -271,18 +271,32 @@ export default function DeployPage() {
     if (!ok) return;
 
     try {
+      setMySquadError(null);
+      const injectedProvider = resolveProvider();
+      if (!injectedProvider) throw new Error("Wallet provider unavailable");
+      const provider = new ethers.BrowserProvider(injectedProvider as any);
+      const signer = await provider.getSigner();
+      const signerAddress = await signer.getAddress();
+      const seasonManager = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, signer);
+
+      if (action === "cancel") {
+        const tx = await seasonManager.closeSquad();
+        await tx.wait();
+      } else if (action === "deactivate") {
+        const tx = await seasonManager.deactivate();
+        await tx.wait();
+      } else if (action === "reactivate") {
+        throw new Error("Reactivate is not supported on-chain yet. Enroll a new squad instead.");
+      }
+
       const res = await fetch("/api/squad-action", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action, squadId: mySquad.squadName, wallet: address }),
+        body: JSON.stringify({ action, squadId: mySquad.squadName || "UNKNOWN", wallet: signerAddress }),
       });
       const json = await res.json();
       if (!res.ok || !json?.success) throw new Error(json?.error || "Squad action failed");
-      if (action === "cancel") {
-        setMySquad(null);
-      } else {
-        setMySquad((prev: any) => prev ? { ...prev, deactivated: action === "deactivate" } : prev);
-      }
+      setMySquad(null);
     } catch (error: any) {
       setMySquadError(error?.message || "Squad action failed");
     }
@@ -449,7 +463,7 @@ export default function DeployPage() {
                     <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10"><div className="text-xs uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Risk</div><div className="mt-2 font-semibold">{mySquad.riskMode}</div></div>
                   </div>
                   <div className="mt-6 flex gap-3">
-                    <button type="button" onClick={() => handleSquadAction(mySquad.deactivated ? "reactivate" : "deactivate")} className="flex-1 rounded-full border border-amber-500/40 px-5 py-3 text-sm font-semibold text-amber-700 transition hover:bg-amber-500/10 dark:text-amber-300">{mySquad.deactivated ? "Reactivate" : "Deactivate Squad"}</button>
+                    <button type="button" onClick={() => handleSquadAction("deactivate")} className="flex-1 rounded-full border border-amber-500/40 px-5 py-3 text-sm font-semibold text-amber-700 transition hover:bg-amber-500/10 dark:text-amber-300">Deactivate Squad</button>
                     <button type="button" onClick={() => handleSquadAction("cancel")} className="flex-1 rounded-full border border-rose-500/40 px-5 py-3 text-sm font-semibold text-rose-700 transition hover:bg-rose-500/10 dark:text-rose-300">Cancel Squad</button>
                   </div>
                 </div>
