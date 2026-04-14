@@ -222,6 +222,27 @@ export default function DeployPage() {
       }
       try {
         setMySquadLoading(true);
+        const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_XLAYER_RPC || "https://rpc.xlayer.tech");
+        const contract = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, provider);
+        const onchainSquad = await contract.squads(address);
+        const hasOnchainSquad = Boolean(onchainSquad?.owner && onchainSquad.owner !== ethers.ZeroAddress);
+        if (hasOnchainSquad) {
+          setMySquad({
+            squadName: "On-chain squad",
+            walletAddress: address,
+            riskMode: null,
+            baseAsset: null,
+            strategyMode: null,
+            enrollTx: null,
+            registeredAt: 0,
+            deactivated: !onchainSquad.active,
+            cancelled: !onchainSquad.active,
+            onchain: true,
+          });
+          setMySquadError(null);
+          return;
+        }
+
         const res = await fetch(`/api/my-squad?wallet=${encodeURIComponent(address)}`, { cache: "no-store" });
         const json = await res.json();
         if (!res.ok) throw new Error(json?.error || "Failed to load squad");
@@ -236,7 +257,7 @@ export default function DeployPage() {
     };
 
     loadMySquad();
-  }, [address, step]);
+  }, [address, step, seasonManagerAddress]);
 
   const handleSquadAction = async (action: "deactivate" | "reactivate" | "cancel") => {
     if (!address || !mySquad?.squadName) return;
