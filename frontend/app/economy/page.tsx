@@ -186,6 +186,19 @@ export default function EconomyPage() {
     refetchInterval: 30000,
   });
 
+  const { data: leaderboardData } = useQuery<{ squads?: Array<{ squadId: string; name?: string; rank?: number }> }>({
+    queryKey: ["economy-leaderboard"],
+    queryFn: async () => {
+      const res = await fetch("/api/leaderboard", { cache: "no-store" });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json?.error || "Failed to load leaderboard");
+      return json;
+    },
+    refetchInterval: 15000,
+  });
+
+  const liveLeaderboardSquads = useMemo(() => Array.isArray(leaderboardData?.squads) ? leaderboardData.squads : [], [leaderboardData]);
+
   const sortedHistory = useMemo(() => {
     const entries = [...(data?.paymentHistory || [])];
     if (sortKey === "type") {
@@ -243,7 +256,9 @@ export default function EconomyPage() {
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Squad treasury performance</h2>
         </div>
         <div className="grid gap-4 lg:grid-cols-2">
-          {Object.entries(treasuryData?.squads || {}).map(([squadId, squad]: [string, any]) => {
+          {liveLeaderboardSquads.map((leaderboardSquad) => {
+            const squadId = String(leaderboardSquad?.squadId || leaderboardSquad?.name || "UNKNOWN");
+            const squad = treasuryData?.squads?.[squadId] || leaderboardSquad || {};
             const treasury = Number(squad?.currentTreasury || 1000);
             const roi = Number(squad?.roi || 0);
             const history = Array.isArray(squad?.treasuryHistory) ? squad.treasuryHistory.slice(-10).map((entry: any) => Number(entry || 1000)) : [1000];
@@ -339,7 +354,7 @@ export default function EconomyPage() {
         </div>
       </section>
 
-      <style jsx global>{`\n        @media (min-width: 768px) {\n          .economy-loop-container {\n            transform: scale(0.5);\n            transform-origin: top center;\n            margin-bottom: -260px;\n          }\n        }\n      `}</style>
+      <style jsx global>{`\n        @media (min-width: 768px) {\n          .economy-loop-container {\n            overflow: visible;\n          }\n        }\n      `}</style>
 
       <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
