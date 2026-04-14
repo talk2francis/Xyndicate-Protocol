@@ -7,15 +7,12 @@ const BRANCH = process.env.GITHUB_BRANCH || 'main';
 const API_BASE = `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
 
 function getGithubToken() {
-  const token = (process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '').trim();
-  if (!token) {
-    throw new Error('Missing GITHUB_TOKEN for GitHub artifact publishing');
-  }
-  return token;
+  return (process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '').trim();
 }
 
 async function githubRequest(url, options = {}) {
   const token = getGithubToken();
+  if (!token) return null;
   const response = await fetch(url, {
     ...options,
     headers: {
@@ -36,16 +33,14 @@ async function githubRequest(url, options = {}) {
 
 async function getRemoteFileSha(repoPath) {
   const url = `${API_BASE}/${repoPath}?ref=${encodeURIComponent(BRANCH)}`;
+  const response = await githubRequest(url, { method: 'GET' });
+  if (!response) return null;
 
   try {
-    const response = await githubRequest(url, { method: 'GET' });
     const data = await response.json();
     return data.sha || null;
-  } catch (error) {
-    if (String(error.message || '').includes('GitHub API 404')) {
-      return null;
-    }
-    throw error;
+  } catch {
+    return null;
   }
 }
 
@@ -63,6 +58,7 @@ async function putJsonArtifact(repoPath, content, message, sha) {
     body: JSON.stringify(body),
   });
 
+  if (!response) return null;
   return response.json();
 }
 

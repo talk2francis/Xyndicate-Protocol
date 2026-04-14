@@ -7,6 +7,9 @@ const { fetchExternalRegistry, normalizeExternalSquad, touchExternalSquadRun, EX
 const { writeLeaderboardArtifact } = require('./generate-leaderboard');
 const { initializeTreasuryState, writeTreasuryStateFromDecision } = require('./treasury');
 const { writeAndPublishJson } = require('./github-artifacts');
+const HAS_GITHUB_TOKEN = Boolean((process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '').trim());
+const ROOT = path.resolve(__dirname, '..');
+const FRONTEND_DIR = path.join(ROOT, 'frontend');
 const REGISTRY_PATH = path.join(FRONTEND_DIR, 'squad_registry.json');
 
 let lastRunAt = 0;

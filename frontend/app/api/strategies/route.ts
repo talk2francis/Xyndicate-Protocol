@@ -28,13 +28,6 @@ export async function GET() {
 
     const leaderboardSquads = Array.isArray(leaderboard?.squads) ? leaderboard.squads : [];
     const registrySquads = Array.isArray(registry?.squads) ? registry.squads : [];
-    const listedNames = new Set(
-      registrySquads
-        .filter((squad: any) => squad?.listedOnMarket === true && squad?.cancelled !== true)
-        .map((squad: any) => String(squad?.squadName || "").trim().toUpperCase())
-        .filter(Boolean),
-    );
-
     const liveTemplates = seededStrategies.map((strategy: StrategyRecord) => {
       const match = leaderboardSquads.find((squad: any) => String(squad?.squadId || "").toUpperCase() === strategy.squadId.toUpperCase());
       const treasuryEntry = treasury?.squads?.[strategy.squadId] || {};

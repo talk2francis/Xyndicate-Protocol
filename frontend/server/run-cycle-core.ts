@@ -105,7 +105,25 @@ async function fetchMarketSnapshot(pair: string) {
 
 async function callOpenAI(systemPrompt: string, payload: unknown) {
   const apiKey = (process.env.OPENAI_API_KEY || "").trim();
-  if (!apiKey) throw new Error("OPENAI_API_KEY missing");
+  if (!apiKey) {
+    const body = JSON.stringify(payload || {});
+    if (systemPrompt.includes("Analyst")) {
+      return {
+        opportunities: [{ asset: "ETH", type: "hold", rationale: "Fallback analyst response while OPENAI_API_KEY is unavailable.", confidence: 35 }],
+        risks: [{ description: "OPENAI_API_KEY missing, using deterministic fallback.", severity: 4 }],
+        recommendation: "wait",
+        topAsset: "ETH",
+        confidenceScore: 35,
+      };
+    }
+    return {
+      action: "HOLD",
+      asset: JSON.parse(body)?.squad?.baseAsset || "ETH",
+      sizePercent: 10,
+      rationale: "Fallback strategist response while OPENAI_API_KEY is unavailable.",
+      confidence: 35,
+    };
+  }
 
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
@@ -170,13 +188,21 @@ async function logDecisionOnChain(routedDecision: any, squad: any) {
   const privateKey = (process.env.STRATEGIST_KEY || "").trim();
   const logAddress = (process.env.DECISION_LOG_ADDRESS || "").trim();
   const rpcUrl = (process.env.XLAYER_RPC || "https://rpc.xlayer.tech").trim();
-  if (!privateKey || !logAddress) throw new Error("Missing chain credentials");
+  const narrative = `${routedDecision.action} ${routedDecision.asset} (${routedDecision.sizePercent}% treasury) via ${routedDecision.route} · ${routedDecision.rationale}`;
+  const agentChain = "Oracle→Analyst→Strategist→Router→Executor";
+
+  if (!privateKey || !logAddress) {
+    return {
+      txHash: `fallback-log-${squad.logId}-${Date.now()}`,
+      narrative,
+      skipped: true,
+      reason: "Missing chain credentials",
+    };
+  }
 
   const provider = new ethers.JsonRpcProvider(rpcUrl);
   const wallet = new ethers.Wallet(privateKey, provider);
   const contract = new ethers.Contract(logAddress, DECISION_LOG_ABI, wallet);
-  const narrative = `${routedDecision.action} ${routedDecision.asset} (${routedDecision.sizePercent}% treasury) via ${routedDecision.route} · ${routedDecision.rationale}`;
-  const agentChain = "Oracle→Analyst→Strategist→Router→Executor";
   const nonce = await provider.getTransactionCount(wallet.address, 'pending');
   const tx = await contract.logDecision(squad.logId, agentChain, narrative, { nonce });
   await tx.wait(1);
@@ -188,15 +214,17 @@ async function recordVaultPnL(routedDecision: any, squad: any) {
   const rpcUrl = (process.env.XLAYER_RPC || "https://rpc.xlayer.tech").trim();
   const vaultAddress = process.env.STRATEGY_VAULT_ADDRESS || (deployments as any)?.StrategyVault?.address || "";
 
-  if (!privateKey || !vaultAddress) throw new Error("Missing StrategyVault credentials");
+  let delta = 0n;
+  if (routedDecision.action === "BUY") delta = 50n;
+  if (routedDecision.action === "SELL") delta = 30n;
+
+  if (!privateKey || !vaultAddress) {
+    return { pnlDelta: delta.toString(), vaultTxHash: `fallback-vault-${squad.logId}-${Date.now()}`, skipped: true };
+  }
 
   const provider = new ethers.JsonRpcProvider(rpcUrl);
   const wallet = new ethers.Wallet(privateKey, provider);
   const contract = new ethers.Contract(vaultAddress, STRATEGY_VAULT_ABI, wallet);
-
-  let delta = 0n;
-  if (routedDecision.action === "BUY") delta = 50n;
-  if (routedDecision.action === "SELL") delta = 30n;
 
   const nonce = await provider.getTransactionCount(wallet.address, 'pending');
   const tx = await contract.recordPnL(squad.id, delta, { nonce });
@@ -218,10 +246,17 @@ async function runSquadCycle(squad: (typeof SQUADS)[number]) {
     market,
     analyst,
   });
+  const sizePercent = Number(strategist?.sizePercent || 10);
+  const action = String(strategist?.action || 'HOLD').toUpperCase();
+  const asset = String(strategist?.asset || squad.baseAsset);
+  const rationale = String(strategist?.rationale || 'Fallback decision');
   const routedDecision = routeDecision(
     {
       ...strategist,
-      asset: strategist?.asset || squad.baseAsset,
+      action,
+      asset,
+      sizePercent,
+      rationale,
     },
     market,
     squad,
