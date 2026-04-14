@@ -406,7 +406,9 @@
     "0x5519f9cd5c048b4d827f7b737eaf0234063652672fd98dbb4769fb44b58197e4",
     "0xa1528faee9bdc84a8013faa6902096420b0ba560614436082342e15ec4bf603e",
     "0x0a2b73a41d39dbc8dc78dd0340160976f87b7429bc231e856010dcadb7d0c909",
-    "0x4c4836859e23113cc765a777d1f6ad766ca7b60a5086589c814747819cd159a4"
+    "0x4c4836859e23113cc765a777d1f6ad766ca7b60a5086589c814747819cd159a4",
+    "0xeb14428abd9f3d5a9f819e544c75d6b2e744cf155d3005558b77567c743c69db",
+    "0x6fca888c701d8c7a92518f87cc6a706fb0c648864bf3f0dc6099a8c7972c9b45"
   ],
   "decisionLogEntries": [
     {
@@ -2935,6 +2937,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "BUY OKB (100% treasury) · Positive 24h price change and balanced risk mode indicate a buying opportunity.",
       "timestamp": 1776175298
+    },
+    {
+      "txHash": "0xeb14428abd9f3d5a9f819e544c75d6b2e744cf155d3005558b77567c743c69db",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · Uniswap price significantly higher than OKX price, indicating potential arbitrage opportunity with high confidence score of 0.8",
+      "timestamp": 1776177088
+    },
+    {
+      "txHash": "0x6fca888c701d8c7a92518f87cc6a706fb0c648864bf3f0dc6099a8c7972c9b45",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY OKB (100% treasury) · Positive 24h price change and balanced risk mode indicate a buying opportunity with high confidence.",
+      "timestamp": 1776177088
     }
   ]
 }
