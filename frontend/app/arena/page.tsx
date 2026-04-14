@@ -107,14 +107,14 @@ function AgentStatusBoard({ cycleState, activityEntries }: { cycleState?: CycleS
                   <div className="flex h-full flex-col justify-between gap-3">
                     <div>
                       <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[rgba(123,200,246,0.7)]">{meta.label} — {titleSuffix}</div>
-                      <div className="mt-1 text-[13px] leading-5 text-white">{detailsBody}</div>
+                      <div className="mt-1 text-[12px] leading-4 text-white">{detailsBody}</div>
                       <div className="mt-3 space-y-2">
                         {card.agent === "oracle" ? (
-                          <>
-                            <div className="rounded-2xl border border-white/10 bg-black/20 p-2 text-[13px] text-white">OKX, pending</div>
-                            <div className="rounded-2xl border border-white/10 bg-black/20 p-2 text-[13px] text-white">Uniswap, pending</div>
-                            <div className="rounded-2xl border border-white/10 bg-black/20 p-2 text-[13px] text-white">Spread, pending</div>
-                          </>
+                          <div className="grid grid-cols-2 gap-2 text-[12px]">
+                            <div className="rounded-2xl border border-white/10 bg-black/20 px-2 py-2 text-white">OKX<br />pending</div>
+                            <div className="rounded-2xl border border-white/10 bg-black/20 px-2 py-2 text-white">Uniswap<br />pending</div>
+                            <div className="col-span-2 rounded-2xl border border-white/10 bg-black/20 px-2 py-2 text-white">Spread, pending</div>
+                          </div>
                         ) : card.agent === "analyst" ? (
                           <div className="rounded-2xl border border-white/10 bg-black/20 p-3 text-4xl font-semibold text-white">{currentConfidence}</div>
                         ) : card.agent === "strategist" ? (
@@ -124,7 +124,7 @@ function AgentStatusBoard({ cycleState, activityEntries }: { cycleState?: CycleS
                         ) : card.agent === "executor" ? (
                           <div className="space-y-2"><div className="rounded-2xl border border-white/10 bg-black/20 p-2 text-[13px] text-white">TX count, {card.totalRuns}</div><div className="rounded-2xl border border-white/10 bg-black/20 p-2 text-[13px] text-white">View on OKLink</div></div>
                         ) : (
-                          <div className="space-y-2"><div className="rounded-2xl border border-white/10 bg-black/20 p-2 text-[13px] text-white">{currentCommentary.slice(0, 48)}{currentCommentary.length > 48 ? "…" : ""}</div><div className="flex flex-wrap gap-2"><span className="rounded-full bg-zinc-200 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-black">Oracle {paymentAmounts.oracle}</span><span className="rounded-full bg-zinc-200 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-black">Analyst {paymentAmounts.analyst}</span></div></div>
+                          <div className="space-y-2"><div className="rounded-2xl border border-white/10 bg-black/20 p-2 text-[13px] text-white">{currentCommentary.slice(0, 44)}{currentCommentary.length > 44 ? "…" : ""}</div><div className="flex flex-wrap gap-2"><span className="rounded-full bg-zinc-200 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-black">Oracle {paymentAmounts.oracle}</span><span className="rounded-full bg-zinc-200 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-black">Analyst {paymentAmounts.analyst}</span></div></div>
                         )}
                       </div>
                     </div>
