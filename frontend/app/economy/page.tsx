@@ -52,11 +52,11 @@ type EconomyResponse = {
 };
 
 const NODE_POSITIONS: Record<string, { x: number; y: number }> = {
-  "squad-strategy": { x: 320, y: 80 },
-  "strategy-vault": { x: 570, y: 200 },
-  "x402-licensing": { x: 510, y: 430 },
-  "creator-wallet": { x: 130, y: 430 },
-  "oracle-data-feed": { x: 70, y: 200 },
+  "squad-strategy": { x: 320, y: 92 },
+  "strategy-vault": { x: 550, y: 210 },
+  "x402-licensing": { x: 500, y: 408 },
+  "creator-wallet": { x: 150, y: 408 },
+  "oracle-data-feed": { x: 90, y: 210 },
 };
 
 function paymentTypeLabel(value?: string) {
@@ -94,7 +94,7 @@ function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: Eco
   return (
     <div className="rounded-[32px] border border-black/10 bg-white/70 p-6 pb-10 overflow-hidden dark:border-white/10 dark:bg-white/5">
       <div className="economy-loop-wrapper economy-loop-container overflow-hidden md:overflow-hidden md:mx-auto md:w-full md:max-w-[1320px] md:px-10 md:py-8">
-        <svg viewBox="0 0 640 520" className="min-w-[640px] w-full overflow-visible md:mx-auto md:scale-125 md:origin-top" preserveAspectRatio="xMidYMid meet">
+        <svg viewBox="0 0 640 520" className="min-w-[640px] w-full overflow-visible md:mx-auto md:translate-y-6 md:scale-[1.08] md:origin-top" preserveAspectRatio="xMidYMid meet">
           <defs>
             <marker id="economy-arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
               <path d="M 0 0 L 10 5 L 0 10 z" fill="#7BC8F6" />
