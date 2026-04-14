@@ -158,8 +158,8 @@ export default function DeployPage() {
       const requiredFee = ethers.parseEther(entryFee || SYMBOLIC_DEPOSIT);
 
       const existingSquad = await seasonManager.squads(signerAddress);
-      if (existingSquad?.owner && existingSquad.owner !== ethers.ZeroAddress) {
-        console.log("Onchain squad exists, allowing enroll attempt to surface the contract result if needed.");
+      if (existingSquad?.owner && existingSquad.owner !== ethers.ZeroAddress && existingSquad.active) {
+        throw new Error("This wallet is still enrolled on-chain. Open My Squad and use Deactivate or Cancel Squad first, then try again.");
       }
 
       const enrollTx = await seasonManager.enroll(signerAddress, { value: requiredFee });
@@ -202,7 +202,12 @@ export default function DeployPage() {
           .finally(() => mySquadRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
       }, 250);
     } catch (err: any) {
-      setError(err?.shortMessage || err?.message || "Enrollment failed");
+      const message = String(err?.shortMessage || err?.message || "Enrollment failed");
+      if (message.includes("already enrolled")) {
+        setError("This wallet is still enrolled on-chain. Open My Squad and use Deactivate or Cancel Squad first, then try again.");
+      } else {
+        setError(message);
+      }
     } finally {
       setSubmitting(false);
     }
