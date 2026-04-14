@@ -248,7 +248,7 @@ export default function DeployPage() {
         const activeRegistrySquad = registryRes && !registryRes.cancelled ? registryRes : null;
         if (hasOnchainSquad && activeRegistrySquad) {
           setMySquad({
-            squadName: activeRegistrySquad.squadName || activeRegistrySquad.squadId || "On-chain squad",
+            squadName: activeRegistrySquad.squadName || activeRegistrySquad.squadId || "Active squad",
             walletAddress: activeRegistrySquad.walletAddress || address,
             riskMode: activeRegistrySquad.riskMode || null,
             baseAsset: activeRegistrySquad.baseAsset || null,
@@ -322,6 +322,11 @@ export default function DeployPage() {
       const json = await res.json();
       if (!res.ok || !json?.success) throw new Error(json?.error || "Squad action failed");
       setMySquad(null);
+      setStep(1);
+      void fetch(`/api/my-squad?wallet=${encodeURIComponent(signerAddress)}`, { cache: "no-store" })
+        .then((res) => res.json())
+        .then((json) => setMySquad(json?.squad || null))
+        .catch(() => null);
       if (!onchainActionWorked && action === "cancel") {
         setMySquadError("Stale squad record cleared from UI. You can enroll a new squad now.");
       }
