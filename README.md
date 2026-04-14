@@ -2,14 +2,15 @@
 
 Xyndicate Protocol is an OKX Build X S2 Skills Arena submission built on X Layer mainnet. It ships a live multi-agent trading arena, MCP skill layer, x402-powered strategy licensing, on-chain proof logging, StrategyVault PnL tracking, and a judge-facing Next.js product surface that is fully navigable in production.
 
-## Agentic Wallet Identity
-
-The project's Agentic Wallet is: `0xF2caD9e423bc6B990F71087ee0aAADb644028d77`
-
-This wallet is the autonomous identity of Xyndicate Protocol. It pays DecisionLog gas, sends Narrator→Oracle micropayments, pays Analyst→Oracle and Strategist→Analyst fees, and signs all on-chain interactions.
-
+## Agentic Wallet
+Address: `0xF2caD9e423bc6B990F71087ee0aAADb644028d77`
+This is the autonomous identity for Xyndicate Protocol. It:
+- Pays DecisionLog.logDecision gas on every cycle
+- Sends Narrator→Oracle micropayments (0.0001 OKB per cycle)
+- Sends Analyst→Oracle data fees (0.00005 OKB per cycle)
+- Sends Strategist→Analyst fees (0.00005 OKB per cycle)
+- Signs all on-chain interactions
 OKLink: <https://www.oklink.com/xlayer/address/0xF2caD9e423bc6B990F71087ee0aAADb644028d77>
-Total TXs: visible on OKLink and the Proofs page.
 
 ## Live URLs
 
@@ -26,14 +27,13 @@ Total TXs: visible on OKLink and the Proofs page.
 
 ## Deployed X Layer mainnet contracts
 
-| Contract | Address | Deploy TX |
+| Contract | Address | Purpose |
 | --- | --- | --- |
-| DecisionLog | `0xC9E69be5ecD65a9106800E07E05eE44a63559F8b` | `0xa067aca1038b431a789fa7a63cafeaee98af52382ef96df00f97e47fdcdc1d34` |
-| SeasonManager | `0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1` | season contract in live history |
-| SeasonManagerV2 | `0x0E6619188f19872554789a84F6E9150EA7b78d48` | `0xe5023ee0a0074502acea7f0c0e99b00edf82b5d5f21e1faf40d92854b660b32b` |
-| StrategyVault | `0x6002767f909B3049d5A65beAD84A843a385a61aC` | `0xe371b795f2ac92d0c7919497f9a8e70f099ff5f1c88088c2c39955d835e0034c` |
-| StrategyLicense | `0x8AbaCE8Ea22A591CE3109599449776A2cb96B186` | `0x1ff8a1f8462003b2a17c5acddc5d856199c130b6df9c9fb4dbf6b92e6dfd915d` |
-| StrategyRegistry | `0x8d486C3d45dc9C23500e3bF9781124eF149277f0` | `0x6f45d581cc8b7aada8c7199a6cddcc0a4555c74aa39782763b914bc57087f4f9` |
+| DecisionLog | `0xC9E69be5ecD65a9106800E07E05eE44a63559F8b` | Logs every agent decision on-chain |
+| SeasonManager | `0x3B1554B5cc9292884DCDcBaa69E4fA38DDe875B1` | Handles squad enrollment and seasons |
+| StrategyVault | `0x6002767f909B3049d5A65beAD84A843a385a61aC` | Tracks squad treasury and PnL |
+| StrategyLicense | `0x8AbaCE8Ea22A591CE3109599449776A2cb96B186` | Powers x402 strategy licensing |
+
 
 ## Product surface
 
