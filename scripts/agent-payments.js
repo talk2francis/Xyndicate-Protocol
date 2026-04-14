@@ -92,7 +92,11 @@ async function appendAndPublishPayment(entry) {
   const next = [...current, entry]
     .sort((a, b) => Number(a.timestamp || 0) - Number(b.timestamp || 0))
     .slice(-MAX_ENTRIES);
-  await publishPayments(next, `Append ${entry.type} payment ${entry.txHash}`);
+  try {
+    await publishPayments(next, `Append ${entry.type} payment ${entry.txHash}`);
+  } catch (error) {
+    console.error(`Publish payment artifact failed: ${error.message || error}`);
+  }
   return next;
 }
 

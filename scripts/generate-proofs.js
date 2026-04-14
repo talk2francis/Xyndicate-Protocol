@@ -243,13 +243,17 @@ async function buildProofsArtifact() {
 
 async function writeProofsArtifact() {
   const artifact = await buildProofsArtifact();
-  await writeAndPublishJson({
-    localPath: OUTPUT_PATH,
-    repoPath: OUTPUT_REPO_PATH,
-    content: artifact,
-    message: `Publish proofs artifact at ${artifact.updatedAt}`,
-  });
-  console.log(`Proofs artifact updated: ${OUTPUT_PATH}`);
+  try {
+    await writeAndPublishJson({
+      localPath: OUTPUT_PATH,
+      repoPath: OUTPUT_REPO_PATH,
+      content: artifact,
+      message: `Publish proofs artifact at ${artifact.updatedAt}`,
+    });
+    console.log(`Proofs artifact updated: ${OUTPUT_PATH}`);
+  } catch (error) {
+    console.error(`Proofs artifact publish failed: ${error.message || error}`);
+  }
   console.log(`Total TXs: ${artifact.totalTxCount} | On-chain decisions: ${artifact.onchainDecisionCount}`);
   return artifact;
 }

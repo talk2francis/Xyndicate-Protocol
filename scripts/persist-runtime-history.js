@@ -56,19 +56,27 @@ async function persistRuntimeHistory(result) {
     decisionLogEntries,
   };
 
-  await writeAndPublishJson({
-    localPath: DEPLOYMENTS_PATH,
-    repoPath: 'frontend/deployments.json',
-    content: nextDeployments,
-    message: `Persist runtime decision history at ${new Date().toISOString()}`,
-  });
+  try {
+    await writeAndPublishJson({
+      localPath: DEPLOYMENTS_PATH,
+      repoPath: 'frontend/deployments.json',
+      content: nextDeployments,
+      message: `Persist runtime decision history at ${new Date().toISOString()}`,
+    });
+  } catch (error) {
+    console.error(`Persist runtime history failed for deployments.json: ${error.message || error}`);
+  }
 
-  await writeAndPublishJson({
-    localPath: TXHASHES_PATH,
-    repoPath: 'frontend/txhashes.json',
-    content: txhashes,
-    message: `Persist runtime tx hashes at ${new Date().toISOString()}`,
-  });
+  try {
+    await writeAndPublishJson({
+      localPath: TXHASHES_PATH,
+      repoPath: 'frontend/txhashes.json',
+      content: txhashes,
+      message: `Persist runtime tx hashes at ${new Date().toISOString()}`,
+    });
+  } catch (error) {
+    console.error(`Persist runtime history failed for txhashes.json: ${error.message || error}`);
+  }
 
   return {
     decisionLogEntries: decisionLogEntries.length,
