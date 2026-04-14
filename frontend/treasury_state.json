@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776204092243,
+  "lastUpdated": 1776204105075,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -188,10 +188,10 @@
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
-      "currentTreasury": 0,
+      "currentTreasury": 1002.2783,
       "realizedPnl": 0,
-      "unrealizedPnl": -1000,
-      "roi": -100,
+      "unrealizedPnl": 2.2783,
+      "roi": 0.2278,
       "openPositions": [
         {
           "asset": "OKB",
@@ -246,6 +246,12 @@
           "entryPrice": 0,
           "allocationUsdc": 100.22783,
           "openedAt": 1776200521533
+        },
+        {
+          "asset": "OKB",
+          "entryPrice": 85.24,
+          "allocationUsdc": 0,
+          "openedAt": 1776204105075
         }
       ],
       "tradeHistory": [
@@ -320,6 +326,14 @@
           "allocationUsdc": 100.22783,
           "pnl": null,
           "timestamp": 1776200521533
+        },
+        {
+          "action": "BUY",
+          "asset": "OKB",
+          "price": 85.24,
+          "allocationUsdc": 0,
+          "pnl": null,
+          "timestamp": 1776204105075
         }
       ],
       "treasuryHistory": [
@@ -352,7 +366,8 @@
         1049.5236,
         -1052.4122,
         1002.2783,
-        0
+        0,
+        1002.2783
       ]
     },
     "SPARTAN": {
