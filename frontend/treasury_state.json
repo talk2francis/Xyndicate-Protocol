@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776173441563,
+  "lastUpdated": 1776173454415,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -83,10 +83,10 @@
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
-      "currentTreasury": 1013.1409,
+      "currentTreasury": 1011.0427,
       "realizedPnl": 0,
-      "unrealizedPnl": 13.1409,
-      "roi": 1.3141,
+      "unrealizedPnl": 11.0427,
+      "roi": 1.1043,
       "openPositions": [
         {
           "asset": "OKB",
@@ -99,6 +99,12 @@
           "entryPrice": 86.35,
           "allocationUsdc": 1000,
           "openedAt": 1776171742181
+        },
+        {
+          "asset": "OKB",
+          "entryPrice": 86.26,
+          "allocationUsdc": 1013.1409,
+          "openedAt": 1776173454415
         }
       ],
       "tradeHistory": [
@@ -117,6 +123,14 @@
           "allocationUsdc": 1000,
           "pnl": null,
           "timestamp": 1776171742181
+        },
+        {
+          "action": "BUY",
+          "asset": "OKB",
+          "price": 86.26,
+          "allocationUsdc": 1013.1409,
+          "pnl": null,
+          "timestamp": 1776173454415
         }
       ],
       "treasuryHistory": [
@@ -142,7 +156,8 @@
         1000,
         1000,
         1000,
-        1013.1409
+        1013.1409,
+        1011.0427
       ]
     }
   }
