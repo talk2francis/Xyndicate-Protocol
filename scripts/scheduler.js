@@ -1,9 +1,13 @@
+const fs = require('fs');
+const path = require('path');
 const { runFullPipeline } = require('./pipeline');
 const { INTERVAL_MS, readCycleState, writeCycleState } = require('./cycle-state');
 const { selfCallMcp } = require('./self-call-mcp');
 const { fetchExternalRegistry, normalizeExternalSquad, touchExternalSquadRun, EXTERNAL_DECISION_INTERVAL_MS } = require('./external-squads');
 const { writeLeaderboardArtifact } = require('./generate-leaderboard');
 const { initializeTreasuryState, writeTreasuryStateFromDecision } = require('./treasury');
+const { writeAndPublishJson } = require('./github-artifacts');
+const REGISTRY_PATH = path.join(FRONTEND_DIR, 'squad_registry.json');
 
 let lastRunAt = 0;
 
@@ -23,6 +27,37 @@ async function loadExternalSquads() {
   return { squads, dueSquads };
 }
 
+async function updateExternalRegistryStats(squad, result, now) {
+  const registry = await fetchExternalRegistry();
+  const squads = Array.isArray(registry?.squads) ? [...registry.squads] : [];
+  const index = squads.findIndex((entry) => String(entry?.squadName || entry?.squadId || '') === String(squad.squadId || squad.squadName || ''));
+  if (index < 0) return;
+  const current = squads[index] || {};
+  const decisionCount = Number(current.decisionCount || current.decisions || 0) + 1;
+  squads[index] = {
+    ...current,
+    decisionCount,
+    lastConfidence: Number(result.confidence || current.lastConfidence || 0),
+    lastDecision: String(result.rationale || current.lastDecision || 'Awaiting first cycle'),
+    lastRoute: String(result.route || current.lastRoute || 'OKX'),
+    lastDecisionAt: now,
+    deactivated: Boolean(current.deactivated),
+    cancelled: Boolean(current.cancelled),
+  };
+  const next = { squads, lastUpdated: now };
+  writeJson(REGISTRY_PATH, next);
+  try {
+    await writeAndPublishJson({
+      localPath: REGISTRY_PATH,
+      repoPath: 'frontend/squad_registry.json',
+      content: next,
+      message: `Update external squad stats for ${squad.squadId} at ${new Date(now).toISOString()}`,
+    });
+  } catch (error) {
+    console.error(`Failed to publish external registry stats: ${error.message || error}`);
+  }
+}
+
 function runExternalSquad(squad) {
   const state = readCycleState();
   const now = Date.now();
@@ -35,6 +70,7 @@ function runExternalSquad(squad) {
     action: 'HOLD',
     confidence: 0,
     rationale: 'Awaiting first cycle',
+    route: 'OKX',
     txHash: `external-${squad.squadId}-${now}`,
     registeredAt: squad.latestTimestamp || now,
     currentPrice: Number(squad?.lastPrice || 0),
@@ -59,6 +95,7 @@ function runExternalSquad(squad) {
   ].slice(-50);
   writeCycleState(state);
   touchExternalSquadRun(squad.squadId, now);
+  void updateExternalRegistryStats(squad, result, now);
   return result;
 }
 

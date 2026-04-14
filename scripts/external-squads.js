@@ -57,25 +57,30 @@ function normalizeExternalSquad(entry = {}, state = readCycleState()) {
   const name = String(entry.squadName || entry.squadId || 'UNKNOWN');
   const registeredAt = Number(entry.registeredAt || 0);
   const lastDecisionAt = Number(state?.externalSquadLastRun?.[name] || entry.lastDecisionAt || 0);
+  const decisionCount = Number(entry.decisionCount ?? entry.decisions ?? 0);
+  const lastRoute = entry.lastRoute || entry.routeUsed || null;
+  const lastDecision = entry.lastDecision || entry.lastAction || null;
+  const lastConfidence = Number(entry.lastConfidence ?? entry.confidence ?? 0);
 
   return {
     squadId: name,
     squadName: name,
-    decisions: Number(entry.decisions || 0),
-    confidence: Number(entry.decisions || 0) > 0 ? Number(entry.confidence || 0.66) : 0,
-    lastAction: Number(entry.decisions || 0) > 0 ? (entry.lastAction || 'Awaiting next cycle') : 'Awaiting first cycle',
+    decisions: decisionCount,
+    confidence: decisionCount > 0 ? lastConfidence : 0,
+    lastAction: decisionCount > 0 ? (lastDecision || 'Awaiting next cycle') : 'Awaiting first cycle',
     latestTimestamp: lastDecisionAt || registeredAt || 0,
     stats: {
       buys: Number(entry.buys || 0),
       sells: Number(entry.sells || 0),
       holds: Number(entry.holds || 0),
-      lastTradeAction: entry.lastTradeAction || 'HOLD',
+      lastTradeAction: lastRoute || 'HOLD',
       lastAsset: entry.baseAsset || 'ETH/USDC',
     },
     txHashes: Array.isArray(entry.txHashes) ? entry.txHashes : [],
     external: true,
-    status: Number(entry.decisions || 0) > 0 && String(entry.deactivated).toLowerCase() !== 'true' ? 'ACTIVE' : 'PAUSED',
+    status: Number(entry.decisionCount ?? entry.decisions ?? 0) > 0 && String(entry.deactivated).toLowerCase() !== 'true' ? 'ACTIVE' : 'PAUSED',
     badge: 'External',
+    routeUsed: lastRoute,
   };
 }
 

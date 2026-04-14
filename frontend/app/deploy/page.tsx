@@ -581,12 +581,12 @@ export default function DeployPage() {
             <div className="mt-8 space-y-4 text-sm">
               {okLinkEnroll ? <div>Enrollment TX: <a className="underline" href={okLinkEnroll} target="_blank" rel="noreferrer">{enrollTxHash}</a></div> : null}
               {okLinkVault ? <div>Vault Deposit TX: <a className="underline" href={okLinkVault} target="_blank" rel="noreferrer">{vaultTxHash}</a></div> : null}
-              <div>{registrationMessage || `Squad ${squadName} is now registered. It will appear on the leaderboard within the next scheduler cycle (up to 30 minutes). It starts in PAUSED status and becomes ACTIVE after its first decision — within the next hour.`}</div>
+              <div>{registrationMessage || `Squad ${squadName} is live on X Layer. It appears on the leaderboard now with PAUSED status. It will make its first autonomous decision within the next hour.`}</div>
               <div>First cycle runs in {formatCountdown(cycleCountdown)}</div>
             </div>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
               <Link href="/arena" className="w-full rounded-full bg-xyn-blue px-6 py-3 text-center text-sm font-semibold text-xyn-dark transition hover:opacity-90 sm:w-auto">
-                View in Arena →
+                View on Arena leaderboard →
               </Link>
               {tweetUrl ? (
                 <a href={tweetUrl} target="_blank" rel="noreferrer" className="w-full rounded-full border border-black/10 px-6 py-3 text-center text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10 sm:w-auto">
