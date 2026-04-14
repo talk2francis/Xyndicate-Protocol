@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 197,
+      "decisions": 198,
       "confidence": 0.8,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and potential arbitrage opportunity through Uniswap with high confidence score of 0.8.",
-      "latestTimestamp": 1776204110,
+      "lastAction": "BUY ETH (100% treasury) · Uniswap price significantly higher than OKX price, indicating potential arbitrage opportunity with high confidence score of 0.8",
+      "latestTimestamp": 1776205934,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 112,
+        "buys": 113,
         "sells": 8,
         "holds": 72,
         "lastTradeAction": "BUY",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xd312d37d1dc3ef66d00a7c12cf8325312fd77fbdba1cacda903afedcdb5c5a24",
         "0xa5bd60cece4173d7f97df52f9ff0488ff6da3923f0d1a18de328e5a2766946e6",
         "0xc2932d07592a6d0ebbe4806646815fcc345ff1727c27a315aeba192034303f91",
         "0x6fcd13f438e1f40da037612803750a1e083f533d1108fd90bb3c6d65cd05119d",
@@ -28,29 +27,29 @@
         "0x0a2b73a41d39dbc8dc78dd0340160976f87b7429bc231e856010dcadb7d0c909",
         "0xeb14428abd9f3d5a9f819e544c75d6b2e744cf155d3005558b77567c743c69db",
         "0xd917d8a1512171f25786f84228d089272408dea7ce11ee916166c7ac765ef076",
-        "0xc3e0a79d65419d9670d1d60d90f7f485bf9b1b822a42e855631e0e52dc409038"
+        "0xc3e0a79d65419d9670d1d60d90f7f485bf9b1b822a42e855631e0e52dc409038",
+        "0x783959b3662d5ce45cfcffe6f1ddece574ead8a9b8bc1a36d5e558f6c6ab811f"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 170,
+      "decisions": 171,
       "confidence": 0.8,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "BUY OKB (100% treasury) · Positive 24h price change and balanced risk mode signal a buying opportunity with high confidence.",
-      "latestTimestamp": 1776204110,
+      "lastAction": "HOLD OKB (100% treasury) · Price stable with minimal spread, balanced risk mode. Analyst recommendation to wait. Confidence score: 0.8.",
+      "latestTimestamp": 1776205934,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 48,
         "sells": 1,
-        "holds": 121,
-        "lastTradeAction": "BUY",
+        "holds": 122,
+        "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x0c1ce5fe21f11ad1fe36e444d9196851c5c90f4aff121b63f3d4d039afad4d77",
         "0x45ac3b31ca8200d550d7dc0f1c99ccde11e61b654562aa564c3b75c29e7ba3be",
         "0xa73def4e613bd036bcc44eebb583ba84987ec8d0de87e3698b678761b983d26a",
         "0x2d44bcf6ba6534e495bbf17b83992de9e53734a50ec7e90b9341db0b7a5677a7",
@@ -59,7 +58,8 @@
         "0x4c4836859e23113cc765a777d1f6ad766ca7b60a5086589c814747819cd159a4",
         "0x6fca888c701d8c7a92518f87cc6a706fb0c648864bf3f0dc6099a8c7972c9b45",
         "0x127c8311b9cd0115d7e77a693621bb7e9f772d9a1dc8984d99b108f0cd451ad1",
-        "0xf7243dbcca15714bce320e3fccdaaf9d6cd62db4cd86183bcfbe86f194dadc24"
+        "0xf7243dbcca15714bce320e3fccdaaf9d6cd62db4cd86183bcfbe86f194dadc24",
+        "0x47f5ee241b18b0b2d13623b3e37f2f666387f968ce1ea5f1d13766c2e3e794c0"
       ]
     },
     {
@@ -85,8 +85,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-14T22:01:53.007Z",
-  "totalDecisions": 367,
+  "updatedAt": "2026-04-14T22:32:16.961Z",
+  "totalDecisions": 369,
   "uniswapQueriesSuccessful": 0,
   "supportingProofs": {
     "narratorPayments": 19,
