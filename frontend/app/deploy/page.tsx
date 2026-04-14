@@ -467,15 +467,15 @@ export default function DeployPage() {
               ) : (
                 <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-6 dark:border-white/10 dark:bg-white/5">
                   <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="text-3xl font-semibold">{mySquad.squadName || mySquad.squadId || "On-chain squad"}</div>
-                      <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-300">{mySquad.strategyMode || mySquad.baseAsset || "On-chain squad"}</div>
+                    <div className="min-w-0">
+                      <div className="truncate text-3xl font-semibold">{mySquad.squadName || mySquad.squadId || "On-chain squad"}</div>
+                      <div className="mt-2 truncate text-sm text-xyn-muted dark:text-zinc-300">{mySquad.strategyMode || mySquad.baseAsset || "-"}</div>
                     </div>
                     <span className={`rounded-full px-3 py-1 text-xs font-semibold ${squadStatus === "ACTIVE" ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300" : "bg-amber-500/15 text-amber-700 dark:text-amber-300"}`}>{squadStatus}</span>
                   </div>
                   <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10"><div className="text-xs uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Squad ID</div><div className="mt-2 font-semibold">{mySquad.squadName || mySquad.squadId || "On-chain squad"}</div></div>
-                    <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10"><div className="text-xs uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Wallet</div><div className="mt-2 font-semibold">{mySquad.walletAddress || `${address?.slice(0, 6)}...${address?.slice(-4)}`}</div></div>
+                    <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10"><div className="text-xs uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Squad ID</div><div className="mt-2 truncate font-semibold">{mySquad.squadName || mySquad.squadId || "On-chain squad"}</div></div>
+                    <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10"><div className="text-xs uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Wallet</div><div className="mt-2 truncate font-semibold">{mySquad.walletAddress || `${address?.slice(0, 6)}...${address?.slice(-4)}`}</div></div>
                     <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10"><div className="text-xs uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Pair</div><div className="mt-2 font-semibold">{mySquad.baseAsset || "-"}</div></div>
                     <div className="rounded-2xl border border-black/10 p-4 dark:border-white/10"><div className="text-xs uppercase tracking-[0.22em] text-xyn-muted dark:text-zinc-400">Risk</div><div className="mt-2 font-semibold">{mySquad.riskMode || "-"}</div></div>
                   </div>
