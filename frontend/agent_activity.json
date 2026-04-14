@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "216-narrator-1776130267343",
-      "agent": "narrator",
-      "cycle": 216,
-      "timestamp": 1776130267343,
-      "status": "complete",
-      "summary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence score of 0.8. | Squad Nova deployed OKB (100% treasury) via okx. Positive 24h price change and balanced risk mode. Analyst recommendation to act with high confidence.",
-      "durationMs": 1
-    },
-    {
       "id": "217-oracle-1776132119800",
       "agent": "oracle",
       "cycle": 217,
@@ -538,6 +529,15 @@
       "timestamp": 1776149888232,
       "status": "complete",
       "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 1
+    },
+    {
+      "id": "228-executor-1776149889074",
+      "agent": "executor",
+      "cycle": 228,
+      "timestamp": 1776149889074,
+      "status": "complete",
+      "summary": "BUY executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
