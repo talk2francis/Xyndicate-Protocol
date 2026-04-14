@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "211-executor-1776122718631",
-      "agent": "executor",
-      "cycle": 211,
-      "timestamp": 1776122718631,
-      "status": "complete",
-      "summary": "BUY executed on OKX | 2 decision txs",
-      "durationMs": 2
-    },
-    {
       "id": "211-narrator-1776122719432",
       "agent": "narrator",
       "cycle": 211,
@@ -538,6 +529,15 @@
       "timestamp": 1776139260391,
       "status": "complete",
       "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 1
+    },
+    {
+      "id": "221-executor-1776139261060",
+      "agent": "executor",
+      "cycle": 221,
+      "timestamp": 1776139261060,
+      "status": "complete",
+      "summary": "BUY executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
