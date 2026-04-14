@@ -1,15 +1,125 @@
 {
-  "currentAgent": "oracle",
+  "currentAgent": "idle",
   "cycleNumber": 244,
   "cycleStartTime": 1776175254110,
-  "nextCycleTime": 1776177054110,
-  "lastCycleComplete": 1776173483823,
+  "nextCycleTime": 1776177117179,
+  "lastCycleComplete": 1776175317179,
   "activeSquads": [
     "Xyndicate Alpha",
     "Squad Nova"
   ],
-  "squadResults": {},
-  "slowSquadLastRunAt": {},
+  "squadResults": {
+    "XYNDICATE_ALPHA": {
+      "squadId": "XYNDICATE_ALPHA",
+      "squadName": "Xyndicate Alpha",
+      "riskMode": "aggressive",
+      "baseAsset": "ETH",
+      "txHash": "0x0a2b73a41d39dbc8dc78dd0340160976f87b7429bc231e856010dcadb7d0c909",
+      "vaultTxHash": "0xe0c298b7c00dd322bdda8b90f5e443592f2e5e4e324bf42d99ba210122f1a214",
+      "pnlDelta": "50",
+      "action": "BUY",
+      "asset": "ETH",
+      "sizePercent": 100,
+      "rationale": "Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence level of 0.8.",
+      "route": "okx",
+      "routingReason": "OKX remains within threshold, so default execution path is retained.",
+      "spreadBps": 1750465311.4794,
+      "narratorSummary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence level of 0.8.",
+      "analyst": {
+        "opportunities": [
+          {
+            "asset": "ETH",
+            "type": "long",
+            "rationale": "Positive 24h price change and potential arbitrage opportunity on Uniswap",
+            "confidence": 0.8
+          }
+        ],
+        "risks": [
+          {
+            "description": "High spread between Uniswap and OKX prices may indicate liquidity issues or market manipulation",
+            "severity": 0.9
+          }
+        ],
+        "recommendation": "wait",
+        "topAsset": "ETH",
+        "confidenceScore": 0.8
+      },
+      "market": {
+        "pair": "ETH-USDT",
+        "price": 2387.35,
+        "okxPrice": 2387.35,
+        "uniswapPrice": 417899723.4860261,
+        "spreadBps": 1750465311.48,
+        "betterRoute": "uniswap",
+        "uniswapPoolId": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
+        "priceSpreads": {
+          "absolute": 417897336.1360261,
+          "bps": 1750465311.48,
+          "source": "uniswap-v3-onchain",
+          "rawUniswapPrice": 417899723.4860261,
+          "rawOkxPrice": 2387.35,
+          "uniswapError": null
+        },
+        "change24h": 7.714415914310338
+      },
+      "narrative": "BUY ETH (100% treasury) via okx · Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence level of 0.8."
+    },
+    "SQUAD_NOVA": {
+      "squadId": "SQUAD_NOVA",
+      "squadName": "Squad Nova",
+      "riskMode": "balanced",
+      "baseAsset": "OKB",
+      "txHash": "0x4c4836859e23113cc765a777d1f6ad766ca7b60a5086589c814747819cd159a4",
+      "vaultTxHash": "0xf6365ec7d70a568f83b5884b77948821ed87684638f08f2688e822b35c68b5bf",
+      "pnlDelta": "50",
+      "action": "BUY",
+      "asset": "OKB",
+      "sizePercent": 100,
+      "rationale": "Positive 24h price change and balanced risk mode indicate a buying opportunity.",
+      "route": "okx",
+      "routingReason": "OKX remains within threshold, so default execution path is retained.",
+      "spreadBps": 0,
+      "narratorSummary": "Squad Nova deployed OKB (100% treasury) via okx. Positive 24h price change and balanced risk mode indicate a buying opportunity.",
+      "analyst": {
+        "opportunities": [
+          {
+            "asset": "OKB",
+            "type": "long",
+            "rationale": "Positive 24h price change and balanced risk mode",
+            "confidence": 0.8
+          }
+        ],
+        "risks": [],
+        "recommendation": "act",
+        "topAsset": "OKB",
+        "confidenceScore": 0.8
+      },
+      "market": {
+        "pair": "OKB-USDT",
+        "price": 87.44,
+        "okxPrice": 87.44,
+        "uniswapPrice": 87.44,
+        "spreadBps": 0,
+        "betterRoute": "okx",
+        "uniswapPoolId": null,
+        "priceSpreads": {
+          "absolute": 0,
+          "bps": 0,
+          "source": "okx-fallback",
+          "rawUniswapPrice": null,
+          "rawOkxPrice": 87.44,
+          "uniswapError": null
+        },
+        "change24h": 5.298651252408467
+      },
+      "narrative": "BUY OKB (100% treasury) via okx · Positive 24h price change and balanced risk mode indicate a buying opportunity."
+    }
+  },
+  "slowSquadLastRunAt": {
+    "phantom_last_run": 1776175298652,
+    "cipher_last_run": 1776175298652,
+    "nexus_last_run": 1776175298652
+  },
   "uniswapQueriesSuccessful": 0,
   "agentLog": [
     {
@@ -17,6 +127,66 @@
       "status": "started",
       "completedAt": 1776175254110,
       "summary": "Cycle 244 started. Oracle snapshot in progress."
+    },
+    {
+      "agent": "oracle",
+      "status": "complete",
+      "completedAt": 1776175293171,
+      "summary": "ETH $0.00 (0.00%) | Uniswap spread 0.00bps"
+    },
+    {
+      "agent": "analyst",
+      "status": "complete",
+      "completedAt": 1776175294435,
+      "summary": "wait on ETH | confidence 0"
+    },
+    {
+      "agent": "strategist",
+      "status": "complete",
+      "completedAt": 1776175295383,
+      "summary": "HOLD ETH (0% treasury)"
+    },
+    {
+      "agent": "router",
+      "status": "complete",
+      "completedAt": 1776175296241,
+      "summary": "okx selected | spread 0.00bps"
+    },
+    {
+      "agent": "executor",
+      "status": "complete",
+      "completedAt": 1776175297094,
+      "summary": "HOLD executed | tx 0x0a2b73a41d39dbc8dc78dd0340160976f87b7429bc231e856010dcadb7d0c909"
+    },
+    {
+      "agent": "narrator",
+      "status": "complete",
+      "completedAt": 1776175297944,
+      "summary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. Positive 24h price change and potential arbitrage opportunity on Uniswap with high confidence level of 0.8. | Squad Nova deployed OKB (100% treasury) via okx. Positive 24h price change and balanced risk mode indicate a buying opportunity."
+    },
+    {
+      "agent": "slow-phantom",
+      "status": "complete",
+      "completedAt": 1776175298652,
+      "summary": "Phantom Protocol decision logged"
+    },
+    {
+      "agent": "slow-cipher",
+      "status": "complete",
+      "completedAt": 1776175298652,
+      "summary": "Cipher Strategy decision logged"
+    },
+    {
+      "agent": "slow-nexus",
+      "status": "complete",
+      "completedAt": 1776175298652,
+      "summary": "Nexus Quant decision logged"
+    },
+    {
+      "agent": "system",
+      "status": "complete",
+      "completedAt": 1776175317179,
+      "summary": "Cycle 244 complete. Awaiting next scheduled run."
     }
   ]
 }
