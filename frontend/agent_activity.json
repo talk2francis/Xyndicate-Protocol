@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "221-executor-1776139261060",
-      "agent": "executor",
-      "cycle": 221,
-      "timestamp": 1776139261060,
-      "status": "complete",
-      "summary": "BUY executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
       "id": "223-oracle-1776142880111",
       "agent": "oracle",
       "cycle": 223,
@@ -538,6 +529,15 @@
       "timestamp": 1776155552822,
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | Positive 24h price change and potential arbitrage opportunity with Uniswap price. High spread between Uniswap and OKX prices may indicate liquidity issues, but the confidence in the opportunity is high.",
+      "durationMs": 1
+    },
+    {
+      "id": "233-router-1776155553561",
+      "agent": "router",
+      "cycle": 233,
+      "timestamp": 1776155553561,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
