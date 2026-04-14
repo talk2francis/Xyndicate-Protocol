@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "239-router-1776166346613",
-      "agent": "router",
-      "cycle": 239,
-      "timestamp": 1776166346613,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "239-executor-1776166347375",
       "agent": "executor",
       "cycle": 239,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | Uniswap price significantly higher than OKX price, indicating potential arbitrage opportunity with high confidence score of 0.8",
       "durationMs": 1
+    },
+    {
+      "id": "250-router-1776207657743",
+      "agent": "router",
+      "cycle": 250,
+      "timestamp": 1776207657743,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 2
     }
   ]
 }
