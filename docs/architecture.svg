@@ -1,0 +1,325 @@
+<svg width="900" viewBox="0 0 900 608" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Xyndicate Protocol v2 — Architecture</title>
+<desc>Six-agent pipeline on X Layer: dual data sources feed Oracle, which drives Analyst through Narrator. Four contracts record decisions, vault PnL, manage seasons, and enforce x402 licensing. Economy loop runs earn-pay-earn autonomously. Squad Registry admits user-deployed squads. MCP skill exposes five tools to the wider agent ecosystem. Seven-page frontend at xyndicateprotocol.vercel.app.</desc>
+
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ── Background ───────────────────────────────────────────────── -->
+<rect width="900" height="608" fill="#080D1A" rx="14"/>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- ROW 1 · DATA SOURCES + ORACLE                                  -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<text x="450" y="20" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="9.5" font-weight="600" fill="#3A4A68" letter-spacing="1.8">DATA SOURCES</text>
+
+<!-- OKX Market API -->
+<rect x="18" y="26" width="180" height="52" rx="7" fill="#072A22" stroke="#1D9E75" stroke-width="0.8"/>
+<text x="108" y="46" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#7ECFB0">OKX Market API</text>
+<text x="108" y="63" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#1D9E75">Price · depth · volume</text>
+
+<!-- Oracle Agent (center, amber) -->
+<rect x="360" y="26" width="180" height="52" rx="7" fill="#281802" stroke="#C9840A" stroke-width="0.9"/>
+<text x="450" y="45" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#E8A83A">Oracle Agent</text>
+<text x="450" y="62" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#9A6208">Aggregates both feeds</text>
+
+<!-- Uniswap v3 Pool -->
+<rect x="702" y="26" width="180" height="52" rx="7" fill="#16104A" stroke="#6B63C4" stroke-width="0.8"/>
+<text x="792" y="45" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#B0ACEC">Uniswap v3 Pool</text>
+<text x="792" y="62" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#6E68C0">ETH/USDC · best route</text>
+
+<!-- OKX → Oracle -->
+<line x1="198" y1="52" x2="358" y2="52"
+  stroke="#1D9E75" stroke-width="1.3" marker-end="url(#arr)"/>
+<!-- Uniswap → Oracle -->
+<line x1="702" y1="52" x2="542" y2="52"
+  stroke="#6B63C4" stroke-width="1.3" marker-end="url(#arr)"/>
+
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- ROW 2 · AGENT PIPELINE                                         -->
+<!-- 5 agents: w=148, gap=17, start=46                             -->
+<!-- centers: 120, 285, 450, 615, 780                              -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<text x="450" y="102" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="9.5" font-weight="600" fill="#3A4A68" letter-spacing="1.8">AGENT PIPELINE — ACP v1 MESSAGES</text>
+
+<!-- Oracle → Analyst: L-shaped connector -->
+<path d="M450 78 L450 98 L120 98 L120 110"
+  fill="none" stroke="#C9840A" stroke-width="1.3" marker-end="url(#arr)"/>
+
+<!-- Analyst (amber) -->
+<rect x="46" y="110" width="148" height="50" rx="7" fill="#281802" stroke="#C9840A" stroke-width="0.8"/>
+<text x="120" y="130" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#E8A83A">Analyst</text>
+<text x="120" y="147" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#9A6208">Score signals</text>
+
+<!-- Strategist (amber) -->
+<rect x="211" y="110" width="148" height="50" rx="7" fill="#281802" stroke="#C9840A" stroke-width="0.8"/>
+<text x="285" y="130" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#E8A83A">Strategist</text>
+<text x="285" y="147" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#9A6208">Form decision</text>
+
+<!-- Router (coral — unique, shows routing function) -->
+<rect x="376" y="110" width="148" height="50" rx="7" fill="#260E06" stroke="#993C1D" stroke-width="0.8"/>
+<text x="450" y="130" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#E09070">Router</text>
+<text x="450" y="147" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#883018">OKX vs Uniswap</text>
+
+<!-- Executor (amber) -->
+<rect x="541" y="110" width="148" height="50" rx="7" fill="#281802" stroke="#C9840A" stroke-width="0.8"/>
+<text x="615" y="130" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#E8A83A">Executor</text>
+<text x="615" y="147" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#9A6208">Sign + log TX</text>
+
+<!-- Narrator (muted — output/broadcast agent) -->
+<rect x="706" y="110" width="148" height="50" rx="7" fill="#161820" stroke="#485068" stroke-width="0.8"/>
+<text x="780" y="130" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#B0B8CC">Narrator</text>
+<text x="780" y="147" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#5E6878">Broadcast + tip</text>
+
+<!-- Pipeline arrows -->
+<line x1="194" y1="135" x2="209" y2="135" stroke="#7A7870" stroke-width="1.2" marker-end="url(#arr)"/>
+<line x1="359" y1="135" x2="374" y2="135" stroke="#7A7870" stroke-width="1.2" marker-end="url(#arr)"/>
+<line x1="524" y1="135" x2="539" y2="135" stroke="#7A7870" stroke-width="1.2" marker-end="url(#arr)"/>
+<line x1="689" y1="135" x2="704" y2="135" stroke="#7A7870" stroke-width="1.2" marker-end="url(#arr)"/>
+
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- ROW 3 · X LAYER CONTRACTS                                      -->
+<!-- 4 contracts: w=185, gap=20, start=50                          -->
+<!-- centers: 142, 347, 552, 757                                   -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<text x="450" y="184" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="9.5" font-weight="600" fill="#3A4A68" letter-spacing="1.8">X LAYER MAINNET CONTRACTS</text>
+
+<!-- DecisionLog.sol -->
+<rect x="50" y="192" width="185" height="50" rx="7" fill="#040C22" stroke="#2060A8" stroke-width="0.8"/>
+<text x="142" y="212" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#7BC8F6">DecisionLog.sol</text>
+<text x="142" y="229" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#3068A8">Reasoning on-chain</text>
+
+<!-- StrategyVault.sol -->
+<rect x="255" y="192" width="185" height="50" rx="7" fill="#040C22" stroke="#2060A8" stroke-width="0.8"/>
+<text x="347" y="212" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#7BC8F6">StrategyVault.sol</text>
+<text x="347" y="229" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#3068A8">Capital + PnL tracking</text>
+
+<!-- SeasonManager.sol -->
+<rect x="460" y="192" width="185" height="50" rx="7" fill="#040C22" stroke="#2060A8" stroke-width="0.8"/>
+<text x="552" y="212" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#7BC8F6">SeasonManager.sol</text>
+<text x="552" y="229" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#3068A8">Entry fees · seasons</text>
+
+<!-- StrategyLicense.sol -->
+<rect x="665" y="192" width="185" height="50" rx="7" fill="#040C22" stroke="#2060A8" stroke-width="0.8"/>
+<text x="757" y="212" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#7BC8F6">StrategyLicense.sol</text>
+<text x="757" y="229" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#3068A8">x402 access control</text>
+
+<!-- Executor → DecisionLog + StrategyVault -->
+<line x1="615" y1="160" x2="142" y2="192"
+  stroke="#2060A8" stroke-width="0.9" marker-end="url(#arr)"/>
+<line x1="615" y1="160" x2="347" y2="192"
+  stroke="#2060A8" stroke-width="0.9" marker-end="url(#arr)"/>
+<!-- Narrator → StrategyLicense (fee routing) -->
+<line x1="780" y1="160" x2="757" y2="192"
+  stroke="#485068" stroke-width="0.9" stroke-dasharray="3 2" marker-end="url(#arr)"/>
+
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- ROW 4 · ECONOMY LOOP                                           -->
+<!-- 3 boxes: w=200, gap=28, start=58                              -->
+<!-- centers: 158, 386, 614                                        -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<text x="450" y="268" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="9.5" font-weight="600" fill="#3A4A68" letter-spacing="1.8">ECONOMY LOOP — EARN · PAY · EARN</text>
+
+<!-- Strategy earns yield -->
+<rect x="58" y="276" width="200" height="50" rx="7" fill="#071A04" stroke="#3A7A12" stroke-width="0.8"/>
+<text x="158" y="296" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#8CC44E">Strategy earns yield</text>
+<text x="158" y="313" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#488E1A">Executor swap profit</text>
+
+<!-- Narrator tips agents -->
+<rect x="286" y="276" width="228" height="50" rx="7" fill="#071A04" stroke="#3A7A12" stroke-width="0.8"/>
+<text x="400" y="296" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#8CC44E">Narrator tips agents</text>
+<text x="400" y="313" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#488E1A">0.0001 + 0.00005 OKB / cycle</text>
+
+<!-- x402 licensing -->
+<rect x="532" y="276" width="210" height="50" rx="7" fill="#071A04" stroke="#3A7A12" stroke-width="0.8"/>
+<text x="637" y="296" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="13" font-weight="600" fill="#8CC44E">x402 licensing</text>
+<text x="637" y="313" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10.5" fill="#488E1A">0.10 · 0.50 · 1.00 USDC</text>
+
+<!-- Economy horizontal arrows -->
+<line x1="258" y1="301" x2="284" y2="301"
+  stroke="#3A7A12" stroke-width="1.2" marker-end="url(#arr)"/>
+<line x1="514" y1="301" x2="530" y2="301"
+  stroke="#3A7A12" stroke-width="1.2" marker-end="url(#arr)"/>
+
+<!-- Return loop arc (x402 → Strategy earns) -->
+<path d="M742 326 Q780 374 450 380 Q120 374 58 326"
+  fill="none" stroke="#3A7A12" stroke-width="0.9"
+  stroke-dasharray="3 2" marker-end="url(#arr)"/>
+
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- ROW 5 · SQUAD REGISTRY                                         -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<text x="450" y="400" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="9.5" font-weight="600" fill="#3A4A68" letter-spacing="1.8">USER SQUAD REGISTRY</text>
+
+<rect x="145" y="408" width="610" height="44" rx="7" fill="#050F1E" stroke="#2A5E88" stroke-width="0.8"/>
+<text x="450" y="426" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="12.5" font-weight="600" fill="#90C8F0">squad_registry.json  ·  Deploy wizard  →  SeasonManager.enroll</text>
+<text x="450" y="442" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10" fill="#365E80">User squads appear on leaderboard instantly  ·  1 decision / hour  ·  PAUSED → ACTIVE after first cycle</text>
+
+<!-- SeasonManager → Squad Registry (dashed) -->
+<line x1="552" y1="242" x2="450" y2="408"
+  stroke="#2A5E88" stroke-width="0.9" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- ROW 6 · MCP SKILL                                              -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<text x="450" y="472" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="9.5" font-weight="600" fill="#3A4A68" letter-spacing="1.8">MCP SKILL — xyndicate-strategy-skill</text>
+
+<rect x="90" y="480" width="720" height="50" rx="7" fill="#16104A" stroke="#534AB7" stroke-width="0.8"/>
+<text x="450" y="499" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="12" font-weight="600" fill="#B0ACEC">get_leaderboard  ·  get_market_signal  ·  execute_route_query  ·  get_squad_strategy  ·  get_economy_snapshot</text>
+<text x="450" y="515" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="10" fill="#6862B8">curl -fsSL https://xyndicateprotocol.vercel.app/install.sh | bash</text>
+
+<!-- Contracts → MCP (dashed) -->
+<line x1="142" y1="242" x2="230" y2="480"
+  stroke="#534AB7" stroke-width="0.7" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+<line x1="347" y1="242" x2="380" y2="480"
+  stroke="#534AB7" stroke-width="0.7" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- ROW 7 · FRONTEND PAGES                                         -->
+<!-- 7 pills: w=96, gap=11, start=79                               -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<text x="450" y="549" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="9.5" font-weight="600" fill="#3A4A68" letter-spacing="1.8">FRONTEND — 7 LIVE PAGES · xyndicateprotocol.vercel.app</text>
+
+<!-- Home -->
+<rect x="79" y="556" width="96" height="30" rx="6" fill="#101420" stroke="#364050" stroke-width="0.7"/>
+<text x="127" y="575" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="11.5" fill="#8898B0">Home</text>
+
+<!-- Arena -->
+<rect x="186" y="556" width="96" height="30" rx="6" fill="#101420" stroke="#364050" stroke-width="0.7"/>
+<text x="234" y="575" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="11.5" fill="#8898B0">Arena</text>
+
+<!-- Deploy -->
+<rect x="293" y="556" width="96" height="30" rx="6" fill="#101420" stroke="#364050" stroke-width="0.7"/>
+<text x="341" y="575" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="11.5" fill="#8898B0">Deploy</text>
+
+<!-- Market -->
+<rect x="400" y="556" width="96" height="30" rx="6" fill="#101420" stroke="#364050" stroke-width="0.7"/>
+<text x="448" y="575" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="11.5" fill="#8898B0">Market</text>
+
+<!-- Economy -->
+<rect x="507" y="556" width="96" height="30" rx="6" fill="#101420" stroke="#364050" stroke-width="0.7"/>
+<text x="555" y="575" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="11.5" fill="#8898B0">Economy</text>
+
+<!-- Proofs -->
+<rect x="614" y="556" width="96" height="30" rx="6" fill="#101420" stroke="#364050" stroke-width="0.7"/>
+<text x="662" y="575" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="11.5" fill="#8898B0">Proofs</text>
+
+<!-- Docs -->
+<rect x="721" y="556" width="96" height="30" rx="6" fill="#101420" stroke="#364050" stroke-width="0.7"/>
+<text x="769" y="575" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="11.5" fill="#8898B0">Docs</text>
+
+<!-- MCP → Frontend (dashed) -->
+<line x1="450" y1="530" x2="450" y2="554"
+  stroke="#534AB7" stroke-width="0.8" stroke-dasharray="3 2" marker-end="url(#arr)"/>
+
+<!-- ── Watermark ──────────────────────────────────────────────── -->
+<text x="450" y="600" text-anchor="middle"
+  font-family="-apple-system, ui-sans-serif, system-ui, sans-serif"
+  font-size="9" fill="#252D40">Xyndicate Protocol v2  ·  OKX Build X Season 2  ·  X Layer Mainnet</text>
+
+</svg>
