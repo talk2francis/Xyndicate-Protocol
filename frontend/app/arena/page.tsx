@@ -252,11 +252,6 @@ export default function ArenaPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
-        <div className="mb-6"><p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Squad Treasury</p><h2 className="mt-2 text-3xl font-semibold tracking-tight">Squad treasury performance</h2></div>
-        <div className="grid gap-4 lg:grid-cols-2">{squads.map((squad) => { const treasury = Number(squad.treasury || 1000); const roi = Number(squad.roi || 0); const openPositions = Math.max(0, Number(squad.stats?.buys || 0) - Number(squad.stats?.sells || 0)); return (<div key={squad.squadId} className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5"><div className="flex items-start justify-between gap-4"><div><div className="text-2xl font-semibold">{squad.squadId}</div><div className="mt-1 text-sm text-xyn-muted dark:text-zinc-400">Open positions: {openPositions}</div></div><div className={`font-semibold ${roi > 0 ? "text-emerald-400" : roi < 0 ? "text-rose-400" : "text-white"}`}>{roi >= 0 ? "+" : ""}{roi.toFixed(2)}%</div></div><div className={`mt-4 text-4xl font-semibold ${treasury > 1000 ? "text-emerald-400" : treasury < 1000 ? "text-rose-400" : "text-white"}`}>${treasury.toFixed(2)}</div><div className="mt-4 h-16 rounded-2xl border border-white/10 bg-black/20" /></div>); })}</div>
-      </section>
-
       <section className="mt-8 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
           <div className="mb-6"><p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Decision feed</p><h2 className="mt-2 text-3xl font-semibold tracking-tight">Latest squad calls</h2></div>
