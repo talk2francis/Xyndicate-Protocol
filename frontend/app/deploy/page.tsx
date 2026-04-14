@@ -226,29 +226,33 @@ export default function DeployPage() {
         setMySquadLoading(true);
         const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_XLAYER_RPC || "https://rpc.xlayer.tech");
         const contract = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, provider);
-        const onchainSquad = await contract.squads(address);
-        const hasOnchainSquad = Boolean(onchainSquad?.owner && onchainSquad.owner !== ethers.ZeroAddress);
+        const [onchainSquadRes, registryRes] = await Promise.all([
+          contract.squads(address),
+          fetch(`/api/my-squad?wallet=${encodeURIComponent(address)}`, { cache: "no-store" }).then(async (res) => {
+            const json = await res.json();
+            if (!res.ok) throw new Error(json?.error || "Failed to load squad");
+            return json?.squad || null;
+          }),
+        ]);
+        const hasOnchainSquad = Boolean(onchainSquadRes?.owner && onchainSquadRes.owner !== ethers.ZeroAddress);
         if (hasOnchainSquad) {
           setMySquad({
-            squadName: "On-chain squad",
+            squadName: registryRes?.squadName || registryRes?.squadId || "On-chain squad",
             walletAddress: address,
-            riskMode: null,
-            baseAsset: null,
-            strategyMode: null,
-            enrollTx: null,
-            registeredAt: 0,
-            deactivated: !onchainSquad.active,
-            cancelled: !onchainSquad.active,
+            riskMode: registryRes?.riskMode || null,
+            baseAsset: registryRes?.baseAsset || null,
+            strategyMode: registryRes?.strategyMode || null,
+            enrollTx: registryRes?.enrollTx || null,
+            registeredAt: Number(registryRes?.registeredAt || 0),
+            deactivated: !onchainSquadRes.active,
+            cancelled: !onchainSquadRes.active,
             onchain: true,
           });
           setMySquadError(null);
           return;
         }
 
-        const res = await fetch(`/api/my-squad?wallet=${encodeURIComponent(address)}`, { cache: "no-store" });
-        const json = await res.json();
-        if (!res.ok) throw new Error(json?.error || "Failed to load squad");
-        setMySquad(json?.squad || null);
+        setMySquad(registryRes);
         setMySquadError(null);
       } catch (error: any) {
         setMySquad(null);
