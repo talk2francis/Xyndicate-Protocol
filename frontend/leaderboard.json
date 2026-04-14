@@ -3,21 +3,20 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 174,
+      "decisions": 175,
       "confidence": 0.8,
-      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and potential arbitrage opportunity with Uniswap price. Analyst confidence score is high at 0.8.",
-      "latestTimestamp": 1776142884,
+      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change of 7.59% indicates bullish momentum with high confidence. Uniswap spread may lead to slippage but preferred route for better price.",
+      "latestTimestamp": 1776146622,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 89,
+        "buys": 90,
         "sells": 8,
         "holds": 72,
         "lastTradeAction": "BUY",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x2a457047f538b9cdaefda41dc2f4759fd0678794fc83044a13c4e4d5e4b20ae1",
         "0x6e96f0b50850ae0d79b69e098ff39eb65c7721cfe4895e9ec7cc4432e5366701",
         "0x511fc46b927628279df6cdb80fe44cdad4fd96f2163ee87c9360c2eaa579a55d",
         "0x82bf3ec85b18908147803d9d01784434498cb0647569d637b06b9b4d5d435ed2",
@@ -26,27 +25,27 @@
         "0x1f0b7ef410988ca31282728fdb6dac726e66ba89aa66e57384a083ab64388c7f",
         "0xb6b2f88df8622552541fdf044eac48905781a8ba724e7b9855575d68b48b0c9c",
         "0x7a5c9416c03204bd3832219e1f672742b3712f744f894ab122b43ed3ecb253e8",
-        "0xfd05d704d2979b08db17e6ed57d1b626a3dadac10b3efd001672c272ac4ebf28"
+        "0xfd05d704d2979b08db17e6ed57d1b626a3dadac10b3efd001672c272ac4ebf28",
+        "0x62ee0e5b1c2fab11c5d9dc0ae319716dde22b40dbe2b85f742d43e3b26a66574"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 147,
+      "decisions": 148,
       "confidence": 0.8,
-      "lastAction": "BUY OKB (100% treasury) · Positive 24h price change and balanced risk mode support buying OKB with high confidence.",
-      "latestTimestamp": 1776142884,
+      "lastAction": "BUY OKB (100% treasury) · Positive 24h price change and balanced risk mode. Analyst recommendation to act with high confidence score of 0.8.",
+      "latestTimestamp": 1776146622,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 25,
+        "buys": 26,
         "sells": 1,
         "holds": 121,
         "lastTradeAction": "BUY",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0xc9cc069b1f7b6552908b4f53027c76ec1c2c14ef49bb490c821c1c1ba962fb4b",
         "0x08c906c3c5a6233f40e2a82d92ae8cb5a0d3dc3eea50ebdd796be1fa09d82b93",
         "0xde62d8664019d7f82d1e8d2dadd5ebdd92ce3a3087c1f08eecdd44c812a893cb",
         "0xf13dae1490920e68350aea3084789c09e82eac3bc55ba64d64f9b11ac8328c5c",
@@ -55,23 +54,24 @@
         "0xb9b474b472e2cc71ec32d6090d795747e0d18e0090d537a634351dce3a12f77a",
         "0x21eedb7561890f4638bae29e79fbde94d48bb4270febf5174834ba6dc840ba15",
         "0x071aebc4c9fac20477099bcb3d8ed367bdfb457e0abd41e7be52fa1c04e67c51",
-        "0xcecf6b35e77c95240479e0478fb8c1bac2920ecacd2e8dca126cdd548aa1b07c"
+        "0xcecf6b35e77c95240479e0478fb8c1bac2920ecacd2e8dca126cdd548aa1b07c",
+        "0xbc0bab814a3e1d062d814196948c22ced9a0ad1caff7fcebc660c303795cc9e7"
       ]
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-14T05:01:38.051Z",
-  "totalDecisions": 321,
+  "updatedAt": "2026-04-14T06:03:44.045Z",
+  "totalDecisions": 323,
   "uniswapQueriesSuccessful": 0,
   "supportingProofs": {
-    "narratorPayments": 15,
+    "narratorPayments": 17,
     "latestNarratorPayment": {
       "type": "strategist-analyst",
       "from": "Strategist Wallet",
       "to": "Analyst Wallet",
       "amount": "0.00005 OKB",
-      "txHash": "0x42dfb9ba1c95154f59d41a0fa6f6a9317a319ccf07e3524345fdd6cf6c2bf238",
-      "timestamp": 1776101572,
+      "txHash": "0xaa2cbdacb2832f6cf6caf9cd30d7f6fa23acfd53153e90cc7b4c32708cf07a9d",
+      "timestamp": 1776146621,
       "status": "confirmed",
       "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
     }
