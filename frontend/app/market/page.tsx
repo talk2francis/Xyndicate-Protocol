@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
@@ -21,6 +22,9 @@ type Strategy = {
   performancePct?: number;
   decisionCount?: number;
   confidenceScores?: number[];
+  listedOnMarket?: boolean;
+  cancelled?: boolean;
+  avatarSvg?: string;
 };
 
 type TierKey = "strategy-config" | "signal-access" | "subscription-24h";
@@ -55,8 +59,24 @@ function squadKey(squadId: string) {
   return ethers.encodeBytes32String(squadId.slice(0, 31));
 }
 
-function avatarVariant(name: string) {
-  return name.length % 6;
+function hashSeed(value: string) {
+  return Array.from(value || "").reduce((seed, char) => ((seed * 31) + char.charCodeAt(0)) >>> 0, 0);
+}
+
+function generateSquadAvatar(squadName: string): string {
+  const seed = hashSeed(squadName);
+  const hue = seed % 360;
+  const hue2 = (hue + 42) % 360;
+  const rotation = seed % 180;
+  const shape = seed % 3;
+  const strokeDash = 14 + (seed % 10);
+  const mark = shape === 0
+    ? `<path d="M20 68 L50 20 L80 68 Z" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.45)" stroke-width="3"/>`
+    : shape === 1
+      ? `<circle cx="50" cy="50" r="22" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.42)" stroke-width="4"/>`
+      : `<rect x="24" y="24" width="52" height="52" rx="12" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.42)" stroke-width="3" transform="rotate(${rotation} 50 50)"/>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="hsl(${hue} 82% 62%)"/><stop offset="100%" stop-color="hsl(${hue2} 72% 40%)"/></linearGradient></defs><rect width="100" height="100" rx="26" fill="url(#g)"/><path d="M16 50 H84" stroke="rgba(255,255,255,0.28)" stroke-width="2" stroke-dasharray="${strokeDash} 8"/><path d="M50 16 V84" stroke="rgba(255,255,255,0.22)" stroke-width="2"/>${mark}</svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
 function avatarClass(variant: number) {
@@ -663,88 +683,86 @@ export default function MarketPage() {
         </div>
       </section>
 
-      <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {loadingStrategies ? (
-          Array.from({ length: 6 }).map((_, index) => <StrategySkeleton key={index} />)
-        ) : strategiesError ? (
-          <div className="md:col-span-2 xl:col-span-3">
-            <RetryState message="Failed to load marketplace strategies." onRetry={() => refetchStrategies()} />
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Strategy grid</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight">Live licenseable strategies.</h2>
+            <p className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">Includes seeded Xyndicate strategies plus any squad listed on-market by its owner.</p>
           </div>
-        ) : filtered.length ? filtered.map((strategy, index) => {
-          const variant = avatarVariant(strategy.name);
-          const positivePnl = strategy.performancePct ?? 0;
-          const confidenceSeed = strategy.name.length + strategy.allocationPercent;
-          const creator = strategy.creatorWallet || (deployments as any)?.DecisionLog?.address || "0xC9E69be5ecD65a9106800E07E05eE44a63559F8b";
-          const licensed = !!licensedMap[strategy.squadId];
-
-          return (
-            <motion.div
-              key={strategy.squadId}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.08 }}
-              className="rounded-[32px] border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className={`h-16 w-16 border border-black/10 dark:border-white/10 ${avatarClass(variant)}`} />
-                {licensed ? <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-300">Licensed ✓</span> : null}
-              </div>
-
-              <div className="mt-5 text-2xl font-semibold">{strategy.name}</div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${strategyTypeClass(strategy.mode)}`}>{strategyTypeLabel(strategy.mode)}</span>
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${riskClass(strategy.riskTolerance)}`}>{strategy.riskTolerance}</span>
-              </div>
-
-              <div className="mt-6 flex items-end justify-between gap-4">
-                <div>
-                  <div className={`text-4xl font-semibold ${positivePnl >= 0 ? "text-emerald-600 dark:text-emerald-300" : "text-rose-600 dark:text-rose-300"}`}>
-                    +{positivePnl.toFixed(1)}%
+        </div>
+        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {loadingStrategies ? (
+            Array.from({ length: 6 }).map((_, index) => <StrategySkeleton key={index} />)
+          ) : strategiesError ? (
+            <RetryState message="Failed to load strategy grid." onRetry={() => refetchStrategies()} />
+          ) : filtered.length ? (
+            filtered.map((strategy) => {
+              const variant = hashSeed(strategy.name) % 6;
+              const avatarData = strategy.avatarSvg || generateSquadAvatar(strategy.name);
+              return (
+                <motion.button key={strategy.squadId} type="button" onClick={() => setSelected(strategy)} className="relative overflow-hidden rounded-[32px] border border-black/10 bg-black/5 p-5 text-left dark:border-white/10 dark:bg-white/5">
+                  <div className="absolute right-4 top-4 text-[14px] text-white/30">↻</div>
+                  <div className="flex items-start gap-4">
+                    <img src={avatarData} alt={`${strategy.name} avatar`} className={`h-16 w-16 shrink-0 ${avatarClass(variant)} border border-white/10 object-cover`} />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="truncate text-2xl font-semibold">{strategy.name}</div>
+                          <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-400">{strategy.assetPair} · {strategy.mode}</div>
+                        </div>
+                        <div className="text-right text-sm font-semibold {strategy.performancePct && strategy.performancePct >= 0 ? 'text-emerald-400' : 'text-rose-400'}">{strategy.performancePct && strategy.performancePct >= 0 ? '+' : ''}{(strategy.performancePct || 0).toFixed(1)}%</div>
+                      </div>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${strategyTypeClass(strategy.mode)}`}>{strategyTypeLabel(strategy.mode)}</span>
+                        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${riskClass(strategy.riskTolerance)}`}>{strategy.riskTolerance}</span>
+                        <span className="rounded-full bg-black/5 px-3 py-1 text-xs font-semibold dark:bg-white/10">{strategy.decisionCount || 0} decisions</span>
+                      </div>
+                      <p className="mt-3 line-clamp-2 text-sm text-xyn-muted dark:text-zinc-300">{strategy.summary}</p>
+                      <div className="mt-4 text-xs uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-400">{strategy.listedOnMarket ? 'Listed on market' : 'Seed strategy'}</div>
+                    </div>
                   </div>
-                  <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">PnL</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-xl font-semibold">{strategy.decisionCount ?? strategy.allocationPercent * 4}</div>
-                  <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">Decisions</div>
-                </div>
-              </div>
+                </motion.button>
+              );
+            })
+          ) : (
+            <div className="rounded-2xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">No strategies matched your filters.</div>
+          )}
+        </div>
+      </section>
 
-              <div className="mt-5 text-sm text-xyn-muted dark:text-zinc-300">Creator: {truncateAddress(creator)}</div>
-
-              <div className="mt-5 rounded-2xl bg-black/5 p-4 dark:bg-white/5">
-                <svg viewBox="0 0 112 48" className="h-12 w-full">
-                  <polyline
-                    fill="none"
-                    stroke="#7BC8F6"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    points={strategy.confidenceScores?.length ? sparklineFromScores(strategy.confidenceScores) : sparklinePoints(confidenceSeed)}
-                  />
-                </svg>
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">LIST YOUR STRATEGY</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight">Earning from your strategy? List it here.</h2>
+          </div>
+        </div>
+        {!address ? (
+          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">Connect wallet to list your strategy.</div>
+        ) : listingHint ? (
+          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">{listingHint} <Link href="/deploy" className="ml-2 font-semibold text-xyn-blue">Deploy one first.</Link></div>
+        ) : mySquad?.cancelled ? (
+          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">You need an active squad to list. <Link href="/deploy" className="font-semibold text-xyn-blue">Deploy one first.</Link></div>
+        ) : mySquad?.listedOnMarket ? (
+          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">Your squad <span className="font-semibold text-white">{mySquad.name}</span> is listed. Toggle off to delist.</div>
+        ) : (
+          <div className="mt-6 grid gap-4 rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5 md:grid-cols-[1.2fr_auto] md:items-end">
+            <div className="space-y-3">
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Squad name</div>
+                <input readOnly value={mySquad?.name || ""} className="mt-2 w-full rounded-2xl border border-black/10 bg-white/70 px-4 py-3 text-sm outline-none dark:border-white/10 dark:bg-zinc-900" />
               </div>
-
-              <div className="mt-6 grid gap-2">
-                <button
-                  type="button"
-                  onClick={() => setSelected(strategy)}
-                  className="w-full rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark transition hover:opacity-90"
-                >
-                  Open 3-tier access panel
-                </button>
-                <div className="grid gap-2 sm:grid-cols-3">
-                  <div className="rounded-2xl border border-black/10 px-3 py-2 text-center text-xs font-semibold dark:border-white/10">Config<br />{tiers["strategy-config"]?.displayPrice || priceLabel}</div>
-                  <div className="rounded-2xl border border-black/10 px-3 py-2 text-center text-xs font-semibold dark:border-white/10">Signal<br />{tiers["signal-access"]?.displayPrice || "0.10 USDC"}</div>
-                  <div className="rounded-2xl border border-black/10 px-3 py-2 text-center text-xs font-semibold dark:border-white/10">24h<br />{tiers["subscription-24h"]?.displayPrice || "1.00 USDC"}</div>
-                </div>
-              </div>
-            </motion.div>
-          );
-        }) : (
-          <div className="md:col-span-2 xl:col-span-3 rounded-[32px] border border-dashed border-black/10 p-6 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">
-            No strategies matched your current filters.
+              <label className="flex items-center gap-3 text-sm text-xyn-muted dark:text-zinc-300">
+                <input type="checkbox" checked={listingAvailable} onChange={(e) => setListingAvailable(e.target.checked)} className="h-4 w-4 rounded border-black/20" />
+                Available for licensing
+              </label>
+            </div>
+            <button type="button" onClick={handleListStrategy} disabled={listingBusy} className="rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark disabled:opacity-50">{listingBusy ? "Listing..." : "List Strategy"}</button>
           </div>
         )}
+        {listingError ? <div className="mt-4 rounded-2xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">{listingError}</div> : null}
+        {listingSuccess ? <div className="mt-4 rounded-2xl bg-emerald-500/10 p-4 text-sm text-emerald-700 dark:text-emerald-300">{listingSuccess}</div> : null}
       </section>
 
       <AnimatePresence>

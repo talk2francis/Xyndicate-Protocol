@@ -14,7 +14,6 @@ function getToken() {
 }
 
 async function loadRegistry() {
-  console.log("Reading registry...");
   const response = await fetch(`${GITHUB_API}?ref=main`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
@@ -28,8 +27,7 @@ async function loadRegistry() {
   return { ...(content ? JSON.parse(content) : { squads: [], lastUpdated: 0 }), sha: json?.sha || null };
 }
 
-async function saveRegistry(next: any, sha: string | null, squadId: string, wallet: string) {
-  console.log("Writing updated registry...");
+async function saveRegistry(next: any, sha: string | null, action: string, squadId: string, wallet: string) {
   const response = await fetch(GITHUB_API, {
     method: "PUT",
     headers: {
@@ -39,14 +37,12 @@ async function saveRegistry(next: any, sha: string | null, squadId: string, wall
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      message: `Cancel squad ${squadId} for wallet ${wallet}`,
+      message: `${action} squad ${squadId} for wallet ${wallet}`,
       branch: "main",
       content: Buffer.from(JSON.stringify(next, null, 2)).toString("base64"),
       sha,
     }),
   });
-
-  console.log(`Write response status: ${response.status}`);
 
   if (!response.ok) {
     const text = await response.text();
@@ -67,14 +63,12 @@ export async function POST(request: Request) {
 
     const registry = await loadRegistry();
     const squads = Array.isArray(registry.squads) ? registry.squads : [];
-    const index = squads.findIndex((squad: Squad) => String(squad?.squadName || "") === squadId && String(squad?.walletAddress || "").toLowerCase() === wallet);
+    const index = squads.findIndex((squad: Squad) => String(squad?.squadName || "").toUpperCase() === squadId.toUpperCase() && String(squad?.walletAddress || "").toLowerCase() === wallet);
 
     if (index < 0) {
       return NextResponse.json({ success: false, error: "Squad not found" }, { status: 404 });
     }
 
-    const found = squads[index];
-    console.log(`Found squad: ${String(found?.squadName || squadId)}`);
     const nextSquads = [...squads];
     const target = { ...nextSquads[index] };
 
@@ -88,13 +82,20 @@ export async function POST(request: Request) {
       target.cancelled = true;
       target.cancelledAt = Date.now();
       target.deactivated = true;
+      target.listedOnMarket = false;
+    } else if (action === "list") {
+      target.listedOnMarket = true;
+      target.listedAt = Date.now();
+    } else if (action === "delist") {
+      target.listedOnMarket = false;
+      target.delistedAt = Date.now();
     } else {
       return NextResponse.json({ success: false, error: "Unsupported action" }, { status: 400 });
     }
 
     nextSquads[index] = target;
     const next = { squads: nextSquads, lastUpdated: Date.now() };
-    await saveRegistry(next, registry.sha, squadId, wallet);
+    await saveRegistry(next, registry.sha, action, squadId, wallet);
 
     return NextResponse.json({ success: true, action, squadId });
   } catch (error: any) {
