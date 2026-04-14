@@ -93,7 +93,7 @@ function edgePath(fromId: string, toId: string) {
 function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: EconomyEdge[] }) {
   return (
     <div className="rounded-[32px] border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">
-      <div className="economy-loop-container overflow-x-auto">
+      <div className="economy-loop-wrapper economy-loop-container overflow-x-auto">
         <svg viewBox="0 0 640 520" className="min-w-[640px]">
           <defs>
             <marker id="economy-arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">

@@ -56,3 +56,15 @@ select option {
   color: #f5f4f0;
   background: #18181b;
 }
+
+@media (min-width: 768px) {
+  .economy-loop-wrapper {
+    zoom: 0.55;
+  }
+}
+
+@media (max-width: 767px) {
+  .economy-loop-wrapper {
+    zoom: 1;
+  }
+}
