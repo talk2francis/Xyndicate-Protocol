@@ -10,6 +10,8 @@ import { useWallet } from "@/lib/wallet-context";
 const SEASON_MANAGER_ABI = [
   "function entryFee() view returns (uint256)",
   "function enroll(address agentWallet) external payable",
+  "function deactivate() external",
+  "function closeSquad() external",
   "function squads(address) view returns (address owner, address agentWallet, bool active)",
 ];
 const STRATEGY_VAULT_ABI = ["function deposit(bytes32 squadId) external payable"];
