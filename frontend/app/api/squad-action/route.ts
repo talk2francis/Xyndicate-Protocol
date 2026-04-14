@@ -14,6 +14,7 @@ function getToken() {
 }
 
 async function loadRegistry() {
+  console.log("Reading registry...");
   const response = await fetch(`${GITHUB_API}?ref=main`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
@@ -27,7 +28,8 @@ async function loadRegistry() {
   return { ...(content ? JSON.parse(content) : { squads: [], lastUpdated: 0 }), sha: json?.sha || null };
 }
 
-async function saveRegistry(next: any, sha: string | null) {
+async function saveRegistry(next: any, sha: string | null, squadId: string, wallet: string) {
+  console.log("Writing updated registry...");
   const response = await fetch(GITHUB_API, {
     method: "PUT",
     headers: {
@@ -37,16 +39,18 @@ async function saveRegistry(next: any, sha: string | null) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      message: `Update squad registry`,
+      message: `Cancel squad ${squadId} for wallet ${wallet}`,
       branch: "main",
-      content: Buffer.from(`${JSON.stringify(next, null, 2)}\n`, "utf8").toString("base64"),
-      ...(sha ? { sha } : {}),
+      content: Buffer.from(JSON.stringify(next, null, 2)).toString("base64"),
+      sha,
     }),
   });
 
+  console.log(`Write response status: ${response.status}`);
+
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(`Failed to save registry: ${response.status} ${text}`);
+    throw new Error(`GitHub write failed: ${text}`);
   }
 }
 
@@ -69,6 +73,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: "Squad not found" }, { status: 404 });
     }
 
+    const found = squads[index];
+    console.log(`Found squad: ${String(found?.squadName || squadId)}`);
     const nextSquads = [...squads];
     const target = { ...nextSquads[index] };
 
@@ -87,7 +93,7 @@ export async function POST(request: Request) {
 
     nextSquads[index] = target;
     const next = { squads: nextSquads, lastUpdated: Date.now() };
-    await saveRegistry(next, registry.sha);
+    await saveRegistry(next, registry.sha, squadId, wallet);
 
     return NextResponse.json({ success: true, action, squadId });
   } catch (error: any) {

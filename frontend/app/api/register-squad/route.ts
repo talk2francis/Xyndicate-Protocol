@@ -108,9 +108,9 @@ export async function POST(request: Request) {
 
     const current = await getRemoteRegistry();
     const walletAddress = String(body?.walletAddress || "").toLowerCase();
-    const hasActive = Array.isArray(current.squads) && current.squads.some((item: any) => String(item?.walletAddress || "").toLowerCase() === walletAddress && !item?.cancelled);
-    if (hasActive) {
-      return NextResponse.json({ success: false, error: "One active squad per wallet. Cancel your existing squad first." }, { status: 400 });
+    const hasActiveSquad = Array.isArray(current.squads) && current.squads.some((item: any) => String(item?.walletAddress || "").toLowerCase() === walletAddress && item?.cancelled !== true);
+    if (hasActiveSquad) {
+      return NextResponse.json({ success: false, error: "This wallet already has a registered squad. Scroll up to 'My Squad' to deactivate or cancel it before creating a new one." }, { status: 400 });
     }
 
     const registry = await publishRegistry({
