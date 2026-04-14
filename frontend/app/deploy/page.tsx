@@ -158,8 +158,8 @@ export default function DeployPage() {
       const requiredFee = ethers.parseEther(entryFee || SYMBOLIC_DEPOSIT);
 
       const existingSquad = await seasonManager.squads(signerAddress);
-      if (existingSquad?.owner && existingSquad.owner !== ethers.ZeroAddress && existingSquad.active) {
-        throw new Error("This wallet already has a registered squad. Scroll up to 'My Squad' to deactivate or cancel it before creating a new one.");
+      if (existingSquad?.owner && existingSquad.owner !== ethers.ZeroAddress) {
+        console.log("Onchain squad exists, allowing enroll attempt to surface the contract result if needed.");
       }
 
       const enrollTx = await seasonManager.enroll(signerAddress, { value: requiredFee });
