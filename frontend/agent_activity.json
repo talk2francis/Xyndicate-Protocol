@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "232-router-1776153683256",
-      "agent": "router",
-      "cycle": 232,
-      "timestamp": 1776153683256,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "232-executor-1776153684044",
       "agent": "executor",
       "cycle": 232,
@@ -538,6 +529,15 @@
       "timestamp": 1776171745140,
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | Positive 24h price change of 8.16% indicates bullish momentum with high confidence. Uniswap price significantly differs from OKX, potential arbitrage opportunities.",
+      "durationMs": 1
+    },
+    {
+      "id": "242-router-1776171745901",
+      "agent": "router",
+      "cycle": 242,
+      "timestamp": 1776171745901,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
