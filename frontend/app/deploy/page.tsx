@@ -196,13 +196,23 @@ export default function DeployPage() {
 
       setCycleCountdown(FIRST_CYCLE_SECONDS);
       setStep(3);
-      window.setTimeout(() => {
-        void fetch(`/api/my-squad?wallet=${encodeURIComponent(walletAddress)}`, { cache: "no-store" })
-          .then((res) => res.json())
-          .then((json) => setMySquad(json?.squad || null))
-          .catch(() => null)
-          .finally(() => mySquadRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
-      }, 250);
+      const refreshMySquad = async () => {
+        for (let i = 0; i < 10; i += 1) {
+          try {
+            const res = await fetch(`/api/my-squad?wallet=${encodeURIComponent(walletAddress)}`, { cache: "no-store" });
+            const json = await res.json();
+            if (res.ok && json?.squad) {
+              setMySquad(json.squad);
+              return;
+            }
+          } catch {
+            // retry
+          }
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+        setMySquad(null);
+      };
+      void refreshMySquad().finally(() => mySquadRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
     } catch (err: any) {
       const message = String(err?.shortMessage || err?.message || "Enrollment failed");
       if (message.includes("already enrolled")) {
