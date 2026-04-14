@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 195,
+      "decisions": 196,
       "confidence": 0.8,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "BUY ETH (100% treasury) · Uniswap price significantly higher than OKX price, indicating potential arbitrage opportunity with high confidence score of 0.8",
-      "latestTimestamp": 1776177088,
+      "lastAction": "BUY ETH (100% treasury) · High spread between Uniswap and OKX prices suggests arbitrage opportunity with potential profits.",
+      "latestTimestamp": 1776200494,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 110,
+        "buys": 111,
         "sells": 8,
         "holds": 72,
         "lastTradeAction": "BUY",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xf1d6b2ea896b531f5906a09c54a00bbd7b1f9014d50740f56803fbc6dbc6a229",
         "0xeaa76c4bb28d20130920f7ef0fb850ef6b061588876fa05275fba6c5823e456e",
         "0xd312d37d1dc3ef66d00a7c12cf8325312fd77fbdba1cacda903afedcdb5c5a24",
         "0xa5bd60cece4173d7f97df52f9ff0488ff6da3923f0d1a18de328e5a2766946e6",
@@ -28,29 +27,29 @@
         "0x242ef4b90a01f4e2341ed3a5b5c26d2e4180415ab10df3f4e169e21084937233",
         "0x5519f9cd5c048b4d827f7b737eaf0234063652672fd98dbb4769fb44b58197e4",
         "0x0a2b73a41d39dbc8dc78dd0340160976f87b7429bc231e856010dcadb7d0c909",
-        "0xeb14428abd9f3d5a9f819e544c75d6b2e744cf155d3005558b77567c743c69db"
+        "0xeb14428abd9f3d5a9f819e544c75d6b2e744cf155d3005558b77567c743c69db",
+        "0xd917d8a1512171f25786f84228d089272408dea7ce11ee916166c7ac765ef076"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 168,
+      "decisions": 169,
       "confidence": 0.8,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "BUY OKB (100% treasury) · Positive 24h price change and balanced risk mode indicate a buying opportunity with high confidence.",
-      "latestTimestamp": 1776177088,
+      "lastAction": "BUY OKB (100% treasury) · Positive 24h price change with high confidence score.",
+      "latestTimestamp": 1776200494,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 46,
+        "buys": 47,
         "sells": 1,
         "holds": 121,
         "lastTradeAction": "BUY",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x29a10ae1438152cba22c2b5ada8e72fd564344306aa2648ea752be3c7b8cf5ba",
         "0x478a319e7c6ca0536e0d667518d5429abb69fd6b59764d7b0dbbe6b28a2a7388",
         "0x0c1ce5fe21f11ad1fe36e444d9196851c5c90f4aff121b63f3d4d039afad4d77",
         "0x45ac3b31ca8200d550d7dc0f1c99ccde11e61b654562aa564c3b75c29e7ba3be",
@@ -59,23 +58,45 @@
         "0x18caa8ca9949acb252a83f7acc8b5a39bf0e4b7de998ad2d83437bd2284e471e",
         "0xa1528faee9bdc84a8013faa6902096420b0ba560614436082342e15ec4bf603e",
         "0x4c4836859e23113cc765a777d1f6ad766ca7b60a5086589c814747819cd159a4",
-        "0x6fca888c701d8c7a92518f87cc6a706fb0c648864bf3f0dc6099a8c7972c9b45"
+        "0x6fca888c701d8c7a92518f87cc6a706fb0c648864bf3f0dc6099a8c7972c9b45",
+        "0x127c8311b9cd0115d7e77a693621bb7e9f772d9a1dc8984d99b108f0cd451ad1"
       ]
+    },
+    {
+      "rank": 3,
+      "squadId": "VIPER",
+      "decisions": 0,
+      "confidence": 0,
+      "treasury": 1000,
+      "roi": 0,
+      "lastAction": "Awaiting first cycle",
+      "latestTimestamp": 1776179637843,
+      "status": "PAUSED",
+      "badge": "External",
+      "routeUsed": null,
+      "stats": {
+        "buys": 0,
+        "sells": 0,
+        "holds": 0,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "ETH/USDC"
+      },
+      "txHashes": []
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-14T14:31:55.638Z",
-  "totalDecisions": 363,
+  "updatedAt": "2026-04-14T21:01:37.525Z",
+  "totalDecisions": 365,
   "uniswapQueriesSuccessful": 0,
   "supportingProofs": {
-    "narratorPayments": 17,
+    "narratorPayments": 19,
     "latestNarratorPayment": {
       "type": "strategist-analyst",
       "from": "Strategist Wallet",
       "to": "Analyst Wallet",
       "amount": "0.00005 OKB",
-      "txHash": "0xaa2cbdacb2832f6cf6caf9cd30d7f6fa23acfd53153e90cc7b4c32708cf07a9d",
-      "timestamp": 1776146621,
+      "txHash": "0x238d34f970b218618e69160aa6688eb4d3dfb1a2db6590ef6dc3d0d08f56d0d0",
+      "timestamp": 1776200494,
       "status": "confirmed",
       "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
     }
