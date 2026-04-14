@@ -235,16 +235,16 @@ export default function DeployPage() {
           }),
         ]);
         const hasOnchainSquad = Boolean(onchainSquadRes?.owner && onchainSquadRes.owner !== ethers.ZeroAddress);
-        const hasRegistrySquad = Boolean(registryRes && !registryRes.cancelled);
-        if (hasOnchainSquad && hasRegistrySquad) {
+        const activeRegistrySquad = registryRes && !registryRes.cancelled ? registryRes : null;
+        if (hasOnchainSquad && activeRegistrySquad) {
           setMySquad({
-            squadName: registryRes?.squadName || registryRes?.squadId || "On-chain squad",
-            walletAddress: registryRes?.walletAddress || address,
-            riskMode: registryRes?.riskMode || null,
-            baseAsset: registryRes?.baseAsset || null,
-            strategyMode: registryRes?.strategyMode || null,
-            enrollTx: registryRes?.enrollTx || null,
-            registeredAt: Number(registryRes?.registeredAt || 0),
+            squadName: activeRegistrySquad.squadName || activeRegistrySquad.squadId || "On-chain squad",
+            walletAddress: activeRegistrySquad.walletAddress || address,
+            riskMode: activeRegistrySquad.riskMode || null,
+            baseAsset: activeRegistrySquad.baseAsset || null,
+            strategyMode: activeRegistrySquad.strategyMode || null,
+            enrollTx: activeRegistrySquad.enrollTx || null,
+            registeredAt: Number(activeRegistrySquad.registeredAt || 0),
             deactivated: !onchainSquadRes.active,
             cancelled: !onchainSquadRes.active,
             onchain: true,
@@ -253,7 +253,7 @@ export default function DeployPage() {
           return;
         }
 
-        setMySquad(hasRegistrySquad ? registryRes : null);
+        setMySquad(activeRegistrySquad);
         setMySquadError(null);
       } catch (error: any) {
         setMySquad(null);
