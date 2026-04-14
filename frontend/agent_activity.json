@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "213-router-1776124928159",
-      "agent": "router",
-      "cycle": 213,
-      "timestamp": 1776124928159,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "213-executor-1776124928793",
       "agent": "executor",
       "cycle": 213,
@@ -538,6 +529,15 @@
       "timestamp": 1776146612523,
       "status": "complete",
       "summary": "ACT ETH | confidence 80%",
+      "durationMs": 1
+    },
+    {
+      "id": "225-strategist-1776146613200",
+      "agent": "strategist",
+      "cycle": 225,
+      "timestamp": 1776146613200,
+      "status": "complete",
+      "summary": "BUY ETH (100% treasury) | Positive 24h price change of 7.59% indicates bullish momentum with high confidence. Uniswap spread may lead to slippage but preferred route for better price.",
       "durationMs": 1
     }
   ]
