@@ -92,8 +92,8 @@ function edgePath(fromId: string, toId: string) {
 
 function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: EconomyEdge[] }) {
   return (
-    <div className="rounded-[32px] border border-black/10 bg-white/70 p-6 pb-10 dark:border-white/10 dark:bg-white/5">
-      <div className="economy-loop-wrapper economy-loop-container overflow-x-auto md:overflow-visible md:mx-auto md:w-full md:max-w-[1320px] md:px-10 md:py-8">
+    <div className="rounded-[32px] border border-black/10 bg-white/70 p-6 pb-10 overflow-hidden dark:border-white/10 dark:bg-white/5">
+      <div className="economy-loop-wrapper economy-loop-container overflow-hidden md:overflow-hidden md:mx-auto md:w-full md:max-w-[1320px] md:px-10 md:py-8">
         <svg viewBox="0 0 640 520" className="min-w-[640px] w-full overflow-visible md:mx-auto md:scale-125 md:origin-top" preserveAspectRatio="xMidYMid meet">
           <defs>
             <marker id="economy-arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
@@ -138,7 +138,9 @@ function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: Eco
                 <rect width="164" height="84" rx="24" fill="rgba(14,14,14,0.96)" stroke="rgba(123,200,246,0.45)" />
                 <text x="82" y="22" textAnchor="middle" fill="#7BC8F6" fontSize="11" fontWeight="700">{node.label}</text>
                 <text x="82" y="42" textAnchor="middle" fill="#FFFFFF" fontSize="10">{node.value}</text>
-                <text x="82" y="58" textAnchor="middle" fill="#9CA3AF" fontSize="8">{node.secondary}</text>
+                <text x="82" y="58" textAnchor="middle" fill="#9CA3AF" fontSize="8">
+                  {node.secondary.length > 18 ? `${node.secondary.slice(0, 8)}…${node.secondary.slice(-6)}` : node.secondary}
+                </text>
               </g>
             );
           })}
