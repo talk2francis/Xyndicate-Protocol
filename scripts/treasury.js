@@ -63,7 +63,11 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, allocat
 
   const normalized = normalizeDecision(decision);
   const price = resolveCurrentPrice(decision, currentPrice);
-  const allocationUsdc = state.currentTreasury * (Number(allocationPercent || 0) / 100);
+  const safeTreasury = Math.max(0, Number(state.currentTreasury || 0));
+  const allocationUsdc = Math.min(
+    safeTreasury * (Number(allocationPercent || 0) / 100),
+    Math.max(0, safeTreasury),
+  );
   const now = Date.now();
 
   if (normalized.action === 'BUY') {
@@ -102,8 +106,8 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, allocat
     return sum + ((price - pos.entryPrice) / pos.entryPrice) * pos.allocationUsdc;
   }, 0).toFixed(4));
 
-  state.currentTreasury = Number((INITIAL_TREASURY + Number(state.realizedPnl || 0) + Number(state.unrealizedPnl || 0)).toFixed(4));
-  state.roi = Number((((state.currentTreasury - INITIAL_TREASURY) / 10)).toFixed(4));
+  state.currentTreasury = Math.max(0, Number((INITIAL_TREASURY + Number(state.realizedPnl || 0) + Number(state.unrealizedPnl || 0)).toFixed(4)));
+  state.roi = Number(Math.max(-100, (((state.currentTreasury - INITIAL_TREASURY) / 10))).toFixed(4));
   state.treasuryHistory.push(state.currentTreasury);
   return state;
 }
@@ -196,10 +200,31 @@ async function writeTreasuryStateFromDecision({ squadId, decision, currentPrice,
   return next;
 }
 
+function applyTreasuryFloorCorrection(state) {
+  const next = { ...(state || {}), squads: { ...(state?.squads || {}) } };
+  for (const [squadId, squad] of Object.entries(next.squads)) {
+    if (Number(squad?.currentTreasury || 0) < 0) {
+      next.squads[squadId] = {
+        ...squad,
+        currentTreasury: 0,
+        roi: -100,
+        unrealizedPnl: 0,
+        realizedPnl: -1000,
+        openPositions: [],
+        resetAt: Date.now(),
+        resetReason: 'treasury-floor-correction',
+      };
+    }
+  }
+  next.lastUpdated = Date.now();
+  return next;
+}
+
 module.exports = {
   INITIAL_TREASURY,
   calculateTreasuryAfterDecision,
   initializeTreasuryState,
   readTreasuryState,
   writeTreasuryStateFromDecision,
+  applyTreasuryFloorCorrection,
 };
