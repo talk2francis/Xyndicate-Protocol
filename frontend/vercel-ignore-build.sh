@@ -2,6 +2,5 @@
 
 set -e
 
-# Allow Vercel to build the current source branch normally.
-echo "Vercel build allowed for this deployment."
-exit 0
+# Do not ignore this build. Let Vercel continue with the deployment.
+exit 1
