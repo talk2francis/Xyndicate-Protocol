@@ -18,7 +18,7 @@ const AGENT_META: Record<string, { label: string; color: string; icon: typeof Ac
   narrator: { label: "Narrator", color: "text-zinc-300 border-zinc-500/20 bg-zinc-500/10", icon: GitBranch },
 };
 
-type LeaderboardSquad = { rank: number; squadId: string; decisions: number; confidence?: number; treasury?: number; roi?: number; lastAction?: string; latestTimestamp?: number; stats?: { buys?: number; sells?: number; holds?: number; lastTradeAction?: string; lastAsset?: string; }; txHashes?: string[]; };
+type LeaderboardSquad = { rank: number; squadId: string; decisions: number; confidence?: number; treasury?: number; roi?: number; lastAction?: string; latestTimestamp?: number; routeUsed?: "Uniswap" | "OKX" | null; stats?: { buys?: number; sells?: number; holds?: number; lastTradeAction?: string; lastAsset?: string; }; txHashes?: string[]; };
 type LeaderboardResponse = { squads?: LeaderboardSquad[]; totalDecisions?: number; updatedAt?: string };
 type SignalPair = { pair: string; okxPrice: number; uniswapPrice: number; spreadBps: number; betterRoute?: string; uniswapPoolId?: string | null; recommendation?: string };
 type SignalResponse = { pairs?: SignalPair[] };
