@@ -8,6 +8,26 @@ const ABI = [
   "function getDecision(uint256 index) external view returns (string, string, string, uint256)",
 ];
 
+const REGISTRY_URL = "https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/squad_registry.json";
+
+async function readRegistryRoutes() {
+  try {
+    const res = await fetch(REGISTRY_URL, { cache: "no-store", headers: { Accept: "application/json" } });
+    if (!res.ok) return new Map<string, string>();
+    const registry = await res.json();
+    const map = new Map<string, string>();
+    for (const squad of Array.isArray(registry?.squads) ? registry.squads : []) {
+      const key = String(squad?.squadName || squad?.squadId || "").trim().toUpperCase();
+      if (!key) continue;
+      const route = String(squad?.lastRoute || "").trim();
+      if (route) map.set(key, route);
+    }
+    return map;
+  } catch {
+    return new Map<string, string>();
+  }
+}
+
 const TX_LOG: Record<number, string> = {
   97: "0xbb51f001c581b2383e744383e984fbf0b8fdc2835285d77499f813c68d77e099",
   96: "0xc99ac2802364734b7f410010287591a0b4b1a6a4c1dc1c191176364aa9803943",
@@ -32,6 +52,7 @@ export async function GET() {
 
     const provider = new ethers.JsonRpcProvider(rpcUrl);
     const contract = new ethers.Contract(decisionLogAddress, ABI, provider);
+    const registryRoutes = await readRegistryRoutes();
     const count = await contract.getDecisionCount();
     const total = Number(count);
     const decisions = [];
@@ -39,13 +60,16 @@ export async function GET() {
 
     for (let i = total - 1; i >= start; i--) {
       const d = await contract.getDecision(i);
+      const squadId = String(d[0] || "");
+      const route = registryRoutes.get(squadId.trim().toUpperCase()) || null;
       decisions.push({
         index: i,
-        squadId: d[0],
+        squadId,
         agentChain: d[1],
         rationale: d[2],
         timestamp: Number(d[3]),
         txHash: TX_LOG[i] || null,
+        route,
       });
     }
 

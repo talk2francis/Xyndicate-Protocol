@@ -23,13 +23,14 @@ export async function GET() {
     const internalSquads = Array.isArray(leaderboard?.squads)
       ? leaderboard.squads.map((squad: any) => {
           const treasuryEntry = treasury?.squads?.[squad.squadId] || {};
+          const routeUsed = squad?.routeUsed || null;
           return {
             ...squad,
             rank: null,
             decisions: Number(squad?.decisions || 0),
             confidence: Number(squad?.confidence || 0),
             lastAction: squad?.lastAction || "Awaiting first cycle",
-            routeUsed: squad?.routeUsed || null,
+            routeUsed,
             status: squad?.status || "ACTIVE",
             isExternal: false,
             treasury: Number(treasuryEntry.currentTreasury ?? squad.treasury ?? 1000),
