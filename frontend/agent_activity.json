@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "274-executor-1776250996172",
-      "agent": "executor",
-      "cycle": 274,
-      "timestamp": 1776250996172,
-      "status": "complete",
-      "summary": "BUY executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
       "id": "274-narrator-1776250996912",
       "agent": "narrator",
       "cycle": 274,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "WAIT ETH | confidence 70%",
       "durationMs": 1
+    },
+    {
+      "id": "285-strategist-1776264010542",
+      "agent": "strategist",
+      "cycle": 285,
+      "timestamp": 1776264010542,
+      "status": "complete",
+      "summary": "BUY ETH (100% treasury) | High spread between Uniswap and OKX prices signals potential arbitrage opportunity with confidence score of 0.8.",
+      "durationMs": 2
     }
   ]
 }
