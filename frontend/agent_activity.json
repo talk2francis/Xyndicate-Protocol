@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "276-narrator-1776254567504",
-      "agent": "narrator",
-      "cycle": 276,
-      "timestamp": 1776254567504,
-      "status": "complete",
-      "summary": "Xyndicate Alpha held ETH (100% treasury) via okx. Price change in the last 24 hours is negative, but holding may be safer given the aggressive risk mode. High spread between Uniswap and OKX prices indicates potential arbitrage opportunities but also high volatility. | Squad Nova held OKB (100% treasury) via okx. Price stability and balanced risk mode. Negative 24h price change. Analyst recommendation to wait with 70% confidence.",
-      "durationMs": 1
-    },
-    {
       "id": "277-oracle-1776256313378",
       "agent": "oracle",
       "cycle": 277,
@@ -538,6 +529,15 @@
       "timestamp": 1776265263156,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | Uniswap price significantly higher than OKX, potential arbitrage opportunity. High spread indicates low liquidity. Negative 24h price change for ETH. Wait for better conditions.",
+      "durationMs": 1
+    },
+    {
+      "id": "287-router-1776265263965",
+      "agent": "router",
+      "cycle": 287,
+      "timestamp": 1776265263965,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
