@@ -143,6 +143,7 @@ async function scheduledRun() {
     }
 
     console.log('[EXTERNAL] Entered external squad section at', new Date().toISOString());
+    const externalRuntimeResults = [];
     const external = await loadExternalSquads();
     const neverRun = external.squads.filter((s) => !Number(s.lastRunTime || 0));
     console.log('[EXTERNAL] Starting external squad check at', new Date().toISOString());
@@ -165,6 +166,11 @@ async function scheduledRun() {
       if (shouldRun) {
         console.log('[EXTERNAL] Interval passed for', squad.squadName, '— running pipeline');
         const extResult = runExternalSquad(squad, result?.sharedMarket);
+        externalRuntimeResults.push({
+          ...extResult,
+          sizePercent: extResult.allocationPercent || 10,
+          rationale: extResult.rationale || 'Market conditions evaluated.',
+        });
         await writeTreasuryStateFromDecision({
           squadId: squad.squadId,
           decision: extResult,
@@ -175,6 +181,26 @@ async function scheduledRun() {
         const minutesLeft = Math.round((3600000 - (Date.now() - lastRun)) / 60000);
         console.log('[EXTERNAL]', squad.squadName, 'next run in', minutesLeft, 'minutes');
       }
+    }
+
+    if (externalRuntimeResults.length) {
+      const deploymentsPath = path.join(FRONTEND_DIR, 'deployments.json');
+      const deployments = JSON.parse(fs.readFileSync(deploymentsPath, 'utf8'));
+      const existing = Array.isArray(deployments.decisionLogEntries) ? [...deployments.decisionLogEntries] : [];
+      const seen = new Set(existing.map((entry) => String(entry?.txHash || '')));
+      for (const item of externalRuntimeResults) {
+        if (!item?.txHash || seen.has(item.txHash)) continue;
+        existing.push({
+          txHash: item.txHash,
+          squadId: item.squadId,
+          agentChain: 'External→Oracle→Analyst→Strategist→Router→Executor',
+          rationale: `${item.action} ${item.asset} (${item.sizePercent}% treasury) · ${item.rationale}`,
+          timestamp: Math.floor(Date.now() / 1000),
+        });
+        seen.add(item.txHash);
+      }
+      deployments.decisionLogEntries = existing;
+      fs.writeFileSync(deploymentsPath, JSON.stringify(deployments, null, 2) + '\n');
     }
 
     await writeLeaderboardArtifact();
