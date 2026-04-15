@@ -44,9 +44,16 @@ export async function GET() {
     const paymentEntries = Array.isArray(payments)
       ? [...payments].sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0))
       : [];
-    const purchases = Array.isArray(x402?.purchases)
+    const purchasesRaw = Array.isArray(x402?.purchases)
       ? [...x402.purchases].sort((a, b) => Number(b.purchasedAt || 0) - Number(a.purchasedAt || 0))
       : [];
+    const purchasesById = new Map<string, any>();
+    for (const purchase of purchasesRaw) {
+      const key = String(purchase?.id || `${purchase?.walletAddress || ""}-${purchase?.squadId || ""}-${purchase?.tier || ""}`).trim();
+      if (!key) continue;
+      if (!purchasesById.has(key)) purchasesById.set(key, purchase);
+    }
+    const purchases = Array.from(purchasesById.values());
     const squads = Array.isArray(leaderboard?.squads) ? leaderboard.squads : [];
     const decisionEntries = Array.isArray(deployments?.decisionLogEntries) ? deployments.decisionLogEntries : [];
 
