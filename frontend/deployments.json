@@ -434,7 +434,9 @@
     "0xb57840b10973973b0ca7fe72922bd34450f309f0b21d36db32821d2e0c2661e9",
     "0x58294ef7576796015c535abb09a1abf2185489f3bf5b270e383a0efaa52abd94",
     "0xe920fb0bb75fea90c09b3ca6900446693adbe8fc456e7930d1d580b687a0cc36",
-    "0x25a18e00e84514944787686b1d0bc4b8b75b4cd1a2df037ffd74d2f0b1d01746"
+    "0x25a18e00e84514944787686b1d0bc4b8b75b4cd1a2df037ffd74d2f0b1d01746",
+    "0xd61061cd595fcfbcf08597679deac13601f5ff946535935ac406d41eb8779b0a",
+    "0x342b1665c50d3c702bcd46137f85dfe05be3931070b66d7f3841bd99fc294aa9"
   ],
   "decisionLogEntries": [
     {
@@ -3159,6 +3161,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · Price stable with minimal spread, no significant change in the last 24 hours.",
       "timestamp": 1776223931
+    },
+    {
+      "txHash": "0xd61061cd595fcfbcf08597679deac13601f5ff946535935ac406d41eb8779b0a",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Price stability and potential for recovery in the near future. High spread between Uniswap and centralized exchange prices poses risk. Negative 24h price change. Analyst recommendation to wait.",
+      "timestamp": 1776225751
+    },
+    {
+      "txHash": "0x342b1665c50d3c702bcd46137f85dfe05be3931070b66d7f3841bd99fc294aa9",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Price stable with minimal spread, no short-term gains expected. Analyst confidence high at 70%.",
+      "timestamp": 1776225751
     }
   ]
 }
