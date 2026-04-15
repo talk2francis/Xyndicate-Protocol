@@ -14,6 +14,7 @@ const config: Config = {
         "xyn-blue-mid": "#5BA8E8",
         "xyn-blue-dim": "#2A5A8C",
         "xyn-dark": "#0A0A0A",
+        "xyn-cream": "#FAF4E8",
         "xyn-surface": "#F5F4F0",
         "xyn-muted": "#6B6A65",
       },

@@ -96,7 +96,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMobileNavOpen((prev) => !prev)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-xyn-dark transition hover:bg-black/5 md:hidden dark:border-white/10 dark:text-white dark:hover:bg-white/10"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-xyn-dark transition hover:bg-black/5 md:hidden dark:border-white/10 dark:text-white dark:hover:bg-xyn-cream/10"
             aria-label="Toggle navigation"
           >
             {mobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -112,7 +112,7 @@ export function Navbar() {
             </button>
 
             {address && walletMenuOpen ? (
-              <div className="absolute right-0 mt-2 w-52 rounded-2xl border border-black/10 bg-white/95 p-2 shadow-xl dark:border-white/10 dark:bg-zinc-900/95">
+              <div className="absolute right-0 mt-2 w-52 rounded-2xl border border-black/10 bg-xyn-cream/95 p-2 shadow-xl dark:border-white/10 dark:bg-zinc-900/95">
                 <div className="px-3 py-2 text-xs text-xyn-muted dark:text-zinc-400">Connected wallet</div>
                 <button
                   type="button"
@@ -137,7 +137,7 @@ export function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-2xl px-4 py-3 text-sm transition ${pathname === item.href ? "bg-xyn-blue-dark font-semibold text-xyn-blue dark:text-xyn-blue" : "text-xyn-muted hover:bg-black/5 hover:text-xyn-dark dark:text-zinc-300 dark:hover:bg-white/10 dark:hover:text-white"}`}
+                className={`rounded-2xl px-4 py-3 text-sm transition ${pathname === item.href ? "bg-xyn-blue-dark font-semibold text-xyn-blue dark:text-xyn-blue" : "text-xyn-muted hover:bg-black/5 hover:text-xyn-dark dark:text-zinc-300 dark:hover:bg-xyn-cream/10 dark:hover:text-white"}`}
               >
                 {item.label}
               </Link>

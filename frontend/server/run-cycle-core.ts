@@ -203,10 +203,26 @@ async function logDecisionOnChain(routedDecision: any, squad: any) {
   const provider = new ethers.JsonRpcProvider(rpcUrl);
   const wallet = new ethers.Wallet(privateKey, provider);
   const contract = new ethers.Contract(logAddress, DECISION_LOG_ABI, wallet);
-  const nonce = await provider.getTransactionCount(wallet.address, 'pending');
-  const tx = await contract.logDecision(squad.logId, agentChain, narrative, { nonce });
-  await tx.wait(1);
-  return { txHash: tx.hash, narrative };
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const nonce = await provider.getTransactionCount(wallet.address, 'pending');
+      const tx = await contract.logDecision(squad.logId, agentChain, narrative, { nonce });
+      await tx.wait(1);
+      return { txHash: tx.hash, narrative };
+    } catch (error: any) {
+      const message = String(error?.message || error || '');
+      if (!message.includes('nonce') && !message.includes('NONCE_EXPIRED')) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 750 * (attempt + 1)));
+    }
+  }
+
+  return {
+    txHash: `fallback-log-${squad.logId}-${Date.now()}`,
+    narrative,
+    skipped: true,
+    reason: "Nonce retry exhausted",
+  };
 }
 
 async function recordVaultPnL(routedDecision: any, squad: any) {
@@ -226,11 +242,21 @@ async function recordVaultPnL(routedDecision: any, squad: any) {
   const wallet = new ethers.Wallet(privateKey, provider);
   const contract = new ethers.Contract(vaultAddress, STRATEGY_VAULT_ABI, wallet);
 
-  const nonce = await provider.getTransactionCount(wallet.address, 'pending');
-  const tx = await contract.recordPnL(squad.id, delta, { nonce });
-  await tx.wait(1);
-  console.error(`StrategyVault: recorded PnL delta ${delta.toString()} for ${squad.displayName} (${tx.hash})`);
-  return { pnlDelta: delta.toString(), vaultTxHash: tx.hash };
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const nonce = await provider.getTransactionCount(wallet.address, 'pending');
+      const tx = await contract.recordPnL(squad.id, delta, { nonce });
+      await tx.wait(1);
+      console.error(`StrategyVault: recorded PnL delta ${delta.toString()} for ${squad.displayName} (${tx.hash})`);
+      return { pnlDelta: delta.toString(), vaultTxHash: tx.hash };
+    } catch (error: any) {
+      const message = String(error?.message || error || '');
+      if (!message.includes('nonce') && !message.includes('NONCE_EXPIRED')) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 750 * (attempt + 1)));
+    }
+  }
+
+  return { pnlDelta: delta.toString(), vaultTxHash: `fallback-vault-${squad.logId}-${Date.now()}`, skipped: true };
 }
 
 async function runSquadCycle(squad: (typeof SQUADS)[number]) {

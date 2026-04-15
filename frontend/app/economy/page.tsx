@@ -92,7 +92,7 @@ function edgePath(fromId: string, toId: string) {
 
 function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: EconomyEdge[] }) {
   return (
-    <div className="rounded-[32px] border border-black/10 bg-white/70 p-6 pb-10 overflow-hidden dark:border-white/10 dark:bg-white/5">
+    <div className="rounded-[32px] border border-black/10 bg-xyn-cream p-6 pb-10 overflow-hidden dark:border-white/10 dark:bg-xyn-cream/5">
       <div className="economy-loop-wrapper economy-loop-container overflow-hidden md:overflow-hidden md:mx-auto md:w-full md:max-w-[1320px] md:px-10 md:py-8">
         <svg viewBox="0 0 640 520" className="min-w-[640px] w-full overflow-visible md:mx-auto md:translate-y-6 md:scale-[1.08] md:origin-top" preserveAspectRatio="xMidYMid meet">
           <defs>
@@ -152,7 +152,7 @@ function EconomyLoopDiagram({ nodes, edges }: { nodes: EconomyNode[]; edges: Eco
 
 function StatCard({ label, value, note }: { label: string; value: string; note?: string }) {
   return (
-    <div className="rounded-[28px] border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">
+    <div className="rounded-[28px] border border-black/10 bg-xyn-cream p-6 dark:border-white/10 dark:bg-xyn-cream/5">
       <div className="text-xs font-semibold uppercase tracking-[0.24em] text-xyn-blue">{label}</div>
       <div className="mt-4 text-4xl font-semibold tracking-tight">{value}</div>
       {note ? <div className="mt-2 text-sm text-xyn-muted dark:text-zinc-400">{note}</div> : null}
@@ -216,14 +216,14 @@ export default function EconomyPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-      <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Economy</p>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-6xl">{data?.header.title || "The Agent Economy Loop"}</h1>
             <p className="mt-4 max-w-3xl text-lg text-xyn-muted dark:text-zinc-300">{data?.header.subtitle || "Real value circulating between autonomous agents on X Layer."}</p>
           </div>
-          <div className="rounded-3xl border border-black/10 bg-black/5 px-5 py-4 text-sm dark:border-white/10 dark:bg-white/5">
+          <div className="rounded-3xl border border-black/10 bg-black/5 px-5 py-4 text-sm dark:border-white/10 dark:bg-xyn-cream/5">
             <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Last updated</div>
             <div className="mt-2 font-medium">{data?.lastUpdated ? new Date(data.lastUpdated).toLocaleString() : "Awaiting first load"}</div>
           </div>
@@ -232,7 +232,7 @@ export default function EconomyPage() {
 
       <section className="mt-8">
         {isLoading ? (
-          <div className="rounded-[32px] border border-black/10 bg-white/70 p-8 text-sm dark:border-white/10 dark:bg-white/5">Loading economy loop...</div>
+          <div className="rounded-[32px] border border-black/10 bg-xyn-cream p-8 text-sm dark:border-white/10 dark:bg-xyn-cream/5">Loading economy loop...</div>
         ) : isError ? (
           <div className="rounded-[32px] bg-rose-500/10 p-6 text-sm text-rose-700 dark:text-rose-300">
             Failed to load economy data.
@@ -250,7 +250,7 @@ export default function EconomyPage() {
         <StatCard label="Economy Cycles Completed" value={String(data?.stats.economyCyclesCompleted || 0)} note="Computed from completed payment-loop pairs" />
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="mb-6">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Squad Treasury</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Squad treasury performance</h2>
@@ -274,7 +274,7 @@ export default function EconomyPage() {
             const unrealized = Number(squad?.unrealizedPnl || 0);
             const color = treasury > 1000 ? 'text-emerald-400' : treasury < 1000 ? 'text-rose-400' : 'text-white';
             return (
-              <div key={squadId} className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
+              <div key={squadId} className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-xyn-cream/5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <div className="text-2xl font-semibold">{squadId.replace(/_/g, ' ')}</div>
@@ -292,7 +292,7 @@ export default function EconomyPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Payment History</p>
@@ -317,7 +317,7 @@ export default function EconomyPage() {
         </div>
 
         <div className="overflow-x-auto rounded-3xl border border-black/10 dark:border-white/10">
-          <div className="hidden grid-cols-[1.1fr_1fr_0.8fr_1fr_0.8fr_0.7fr] gap-4 bg-black/5 px-5 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:bg-white/5 dark:text-zinc-400 lg:grid">
+          <div className="hidden grid-cols-[1.1fr_1fr_0.8fr_1fr_0.8fr_0.7fr] gap-4 bg-black/5 px-5 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:bg-xyn-cream/5 dark:text-zinc-400 lg:grid">
             <div>Type</div>
             <div>Flow</div>
             <div>Amount</div>
@@ -356,7 +356,7 @@ export default function EconomyPage() {
 
       <style jsx global>{`\n        @media (min-width: 768px) {\n          .economy-loop-container {\n            overflow: visible;\n          }\n        }\n      `}</style>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Participate</p>

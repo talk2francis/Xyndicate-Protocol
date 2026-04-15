@@ -127,7 +127,7 @@ export default function ProofsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
-      <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Proofs</p>
@@ -145,7 +145,7 @@ export default function ProofsPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap gap-3">
             {(["All", "Decisions", "Swaps", "Payments", "Vault Events"] as const).map((tab) => (
@@ -173,7 +173,7 @@ export default function ProofsPage() {
         </div>
 
         <div className="overflow-x-auto rounded-3xl border border-black/10 dark:border-white/10">
-          <div className="hidden grid-cols-[0.9fr_1.2fr_1.5fr_1fr_1fr_0.8fr] gap-4 bg-black/5 px-5 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:bg-white/5 dark:text-zinc-400 lg:grid">
+          <div className="hidden grid-cols-[0.9fr_1.2fr_1.5fr_1fr_1fr_0.8fr] gap-4 bg-black/5 px-5 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-xyn-muted dark:bg-xyn-cream/5 dark:text-zinc-400 lg:grid">
             <div>Type</div>
             <div>Timestamp</div>
             <div>TX Hash</div>
@@ -185,7 +185,7 @@ export default function ProofsPage() {
           {isLoading ? (
             <div className="space-y-3 p-5">
               {Array.from({ length: 6 }).map((_, index) => (
-                <div key={index} className="h-16 animate-pulse rounded-2xl bg-black/5 dark:bg-white/5" />
+                <div key={index} className="h-16 animate-pulse rounded-2xl bg-black/5 dark:bg-xyn-cream/5" />
               ))}
             </div>
           ) : isError ? (
@@ -261,7 +261,7 @@ export default function ProofsPage() {
 
         <div className="grid gap-6 md:grid-cols-2">
           {(data?.contracts || []).map((contract) => (
-            <div key={contract.name} className="rounded-[32px] border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">
+            <div key={contract.name} className="rounded-[32px] border border-black/10 bg-xyn-cream p-6 dark:border-white/10 dark:bg-xyn-cream/5">
               <div className="text-2xl font-semibold">{contract.name}</div>
               <p className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">{contract.description}</p>
 

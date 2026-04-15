@@ -351,7 +351,7 @@ export default function DocsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
-      <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="inline-flex rounded-full bg-xyn-blue/15 px-4 py-2 text-sm font-semibold text-xyn-blue">v2.0 · Skills Arena · X Layer</p>
@@ -361,7 +361,7 @@ export default function DocsPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="flex flex-wrap gap-3">
           {INSTALL_TABS.map((tab) => (
             <button key={tab} type="button" onClick={() => setInstallTab(tab)} className={`rounded-full px-4 py-2 text-sm font-semibold ${installTab === tab ? "bg-xyn-blue text-xyn-dark" : "border border-black/10 dark:border-white/10"}`}>
@@ -380,7 +380,7 @@ export default function DocsPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="mb-6">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Tools reference</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Skill tool surface</h2>
@@ -399,7 +399,7 @@ export default function DocsPage() {
                 <div className="border-t border-black/10 px-6 py-5 dark:border-white/10">
                   <div className="overflow-x-auto rounded-2xl border border-black/10 dark:border-white/10">
                     <table className="w-full text-left text-sm">
-                      <thead className="bg-black/5 dark:bg-white/5">
+                      <thead className="bg-black/5 dark:bg-xyn-cream/5">
                         <tr>
                           <th className="px-4 py-3">Param</th>
                           <th className="px-4 py-3">Type</th>
@@ -440,7 +440,7 @@ export default function DocsPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="mb-6">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">OPEN STANDARD · ACP v1</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Agent Collaboration Protocol (ACP)</h2>
@@ -456,23 +456,23 @@ export default function DocsPage() {
               View on GitHub <ExternalLink className="h-4 w-4" />
             </a>
           </div>
-          <div className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
+          <div className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-xyn-cream/5">
             <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-blue">ACP message preview</div>
             <pre className="mt-4 overflow-x-auto rounded-2xl bg-black/90 p-4 text-sm text-green-400"><code>{JSON.stringify(acpPreview, null, 2)}</code></pre>
           </div>
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="mb-6">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Try it live</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Live tester</h2>
         </div>
         <div className="grid gap-4 lg:grid-cols-[0.9fr_0.9fr_auto]">
-          <select value={pair} onChange={(e) => setPair(e.target.value as (typeof TEST_PAIRS)[number])} disabled={tool === "get_leaderboard" || tool === "get_economy_snapshot"} className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark disabled:opacity-50 dark:border-white/10 dark:bg-zinc-900 dark:text-white">
+          <select value={pair} onChange={(e) => setPair(e.target.value as (typeof TEST_PAIRS)[number])} disabled={tool === "get_leaderboard" || tool === "get_economy_snapshot"} className="rounded-2xl border border-black/10 bg-xyn-cream px-4 py-3 text-xyn-dark disabled:opacity-50 dark:border-white/10 dark:bg-zinc-900 dark:text-white">
             {TEST_PAIRS.map((item) => <option key={item}>{item}</option>)}
           </select>
-          <select value={tool} onChange={(e) => setTool(e.target.value as (typeof TEST_TOOLS)[number])} className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark dark:border-white/10 dark:bg-zinc-900 dark:text-white">
+          <select value={tool} onChange={(e) => setTool(e.target.value as (typeof TEST_TOOLS)[number])} className="rounded-2xl border border-black/10 bg-xyn-cream px-4 py-3 text-xyn-dark dark:border-white/10 dark:bg-zinc-900 dark:text-white">
             {TEST_TOOLS.map((item) => <option key={item}>{item}</option>)}
           </select>
           <button type="button" onClick={runQuery} disabled={loading} className="inline-flex items-center justify-center gap-2 rounded-full bg-xyn-blue px-5 py-3 text-sm font-semibold text-xyn-dark disabled:opacity-60">
@@ -486,7 +486,7 @@ export default function DocsPage() {
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <div className="text-sm font-semibold text-xyn-blue">{responseMs != null ? `Response in ${responseMs}ms` : "Awaiting query"}</div>
-            <button type="button" onClick={() => setShowOnchainDemo(true)} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10">
+            <button type="button" onClick={() => setShowOnchainDemo(true)} className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-xyn-cream/10">
               Run On-Chain Demo →
             </button>
           </div>
@@ -496,22 +496,22 @@ export default function DocsPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">MCP Live Usage</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Scheduler and tester activity</h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
-            <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+            <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-xyn-cream/5">
               <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Calls today</div>
               <div className="mt-2 text-2xl font-semibold">{usageLoading ? "..." : usageData.totalCallsToday}</div>
             </div>
-            <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+            <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-xyn-cream/5">
               <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Avg response</div>
               <div className="mt-2 text-2xl font-semibold">{usageLoading ? "..." : `${usageData.averageResponseTimeMs}ms`}</div>
             </div>
-            <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-white/5">
+            <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-xyn-cream/5">
               <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Tools hit</div>
               <div className="mt-2 text-2xl font-semibold">{usageLoading ? "..." : Object.keys(usageData.byTool || {}).length}</div>
             </div>
@@ -522,12 +522,12 @@ export default function DocsPage() {
             <div className="text-sm font-semibold">Breakdown by tool</div>
             <div className="mt-4 space-y-3 text-sm">
               {Object.entries(usageData.byTool || {}).length ? Object.entries(usageData.byTool).map(([toolName, count]) => (
-                <div key={toolName} className="flex items-center justify-between rounded-2xl bg-black/5 px-4 py-3 dark:bg-white/5">
+                <div key={toolName} className="flex items-center justify-between rounded-2xl bg-black/5 px-4 py-3 dark:bg-xyn-cream/5">
                   <span className="font-mono text-xs sm:text-sm">{toolName}</span>
                   <span className="font-semibold">{count}</span>
                 </div>
               )) : (
-                <div className="rounded-2xl bg-black/5 px-4 py-3 text-xyn-muted dark:bg-white/5 dark:text-zinc-400">No MCP calls logged yet.</div>
+                <div className="rounded-2xl bg-black/5 px-4 py-3 text-xyn-muted dark:bg-xyn-cream/5 dark:text-zinc-400">No MCP calls logged yet.</div>
               )}
             </div>
           </div>
@@ -535,7 +535,7 @@ export default function DocsPage() {
             <div className="text-sm font-semibold">Recent usage log</div>
             <div className="mt-4 space-y-3">
               {usageData.entries.length ? pagedUsageEntries.map((entry, index) => (
-                <div key={`${entry.tool}-${entry.calledAt}-${index}`} className="rounded-2xl bg-black/5 px-4 py-3 text-sm dark:bg-white/5">
+                <div key={`${entry.tool}-${entry.calledAt}-${index}`} className="rounded-2xl bg-black/5 px-4 py-3 text-sm dark:bg-xyn-cream/5">
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <div className="font-mono font-semibold">{entry.tool}</div>
@@ -546,7 +546,7 @@ export default function DocsPage() {
                   <div className="mt-2 text-xs text-xyn-muted dark:text-zinc-400">response time: {entry.responseTime}ms</div>
                 </div>
               )) : (
-                <div className="rounded-2xl bg-black/5 px-4 py-3 text-sm text-xyn-muted dark:bg-white/5 dark:text-zinc-400">No usage records published yet.</div>
+                <div className="rounded-2xl bg-black/5 px-4 py-3 text-sm text-xyn-muted dark:bg-xyn-cream/5 dark:text-zinc-400">No usage records published yet.</div>
               )}
             </div>
             {usageData.entries.length ? (
@@ -562,7 +562,7 @@ export default function DocsPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="mb-6">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Integration guide</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-tight">Connect it into your stack</h2>
@@ -585,7 +585,7 @@ export default function DocsPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="mb-6 flex items-center justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Architecture</p>

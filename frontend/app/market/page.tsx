@@ -64,19 +64,27 @@ function hashSeed(value: string) {
 }
 
 function generateSquadAvatar(squadName: string): string {
-  const seed = hashSeed(squadName);
-  const hue = seed % 360;
-  const hue2 = (hue + 42) % 360;
-  const rotation = seed % 180;
-  const shape = seed % 3;
-  const strokeDash = 14 + (seed % 10);
-  const mark = shape === 0
-    ? `<path d="M20 68 L50 20 L80 68 Z" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.45)" stroke-width="3"/>`
-    : shape === 1
-      ? `<circle cx="50" cy="50" r="22" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.42)" stroke-width="4"/>`
-      : `<rect x="24" y="24" width="52" height="52" rx="12" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.42)" stroke-width="3" transform="rotate(${rotation} 50 50)"/>`;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="hsl(${hue} 82% 62%)"/><stop offset="100%" stop-color="hsl(${hue2} 72% 40%)"/></linearGradient></defs><rect width="100" height="100" rx="26" fill="url(#g)"/><path d="M16 50 H84" stroke="rgba(255,255,255,0.28)" stroke-width="2" stroke-dasharray="${strokeDash} 8"/><path d="M50 16 V84" stroke="rgba(255,255,255,0.22)" stroke-width="2"/>${mark}</svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  let hash = 0;
+  for (let i = 0; i < squadName.length; i++) {
+    hash = squadName.charCodeAt(i) + ((hash << 5) - hash);
+    hash = hash & hash;
+  }
+
+  const hue1 = Math.abs(hash) % 360;
+  const hue2 = (hue1 + 60) % 360;
+  const color1 = `hsl(${hue1}, 70%, 60%)`;
+  const color2 = `hsl(${hue2}, 70%, 40%)`;
+  const pattern = Math.abs(hash) % 4;
+
+  const svgContent = pattern === 0
+    ? `<polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="${color1}" stroke="${color2}" stroke-width="2"/><polygon points="50,20 80,35 80,65 50,80 20,65 20,35" fill="${color2}" opacity="0.6"/>`
+    : pattern === 1
+      ? `<rect x="10" y="10" width="35" height="35" rx="6" fill="${color1}"/><rect x="55" y="10" width="35" height="35" rx="6" fill="${color2}"/><rect x="10" y="55" width="35" height="35" rx="6" fill="${color2}"/><rect x="55" y="55" width="35" height="35" rx="6" fill="${color1}" opacity="0.7"/><line x1="45" y1="27.5" x2="55" y2="27.5" stroke="white" stroke-width="2"/><line x1="27.5" y1="45" x2="27.5" y2="55" stroke="white" stroke-width="2"/>`
+      : pattern === 2
+        ? `<polygon points="50,5 95,50 50,95 5,50" fill="${color1}"/><polygon points="50,20 80,50 50,80 20,50" fill="${color2}"/><circle cx="50" cy="50" r="12" fill="white" opacity="0.3"/>`
+        : `<circle cx="50" cy="50" r="45" fill="${color1}"/><circle cx="50" cy="50" r="30" fill="${color2}"/><circle cx="50" cy="50" r="15" fill="${color1}" opacity="0.8"/><circle cx="50" cy="50" r="5" fill="white" opacity="0.9"/>`;
+
+  return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${svgContent}</svg>`;
 }
 
 function avatarClass(variant: number) {
@@ -135,7 +143,7 @@ function RetryState({ message, onRetry }: { message: string; onRetry: () => void
 }
 
 function StrategySkeleton() {
-  return <div className="h-[360px] animate-pulse rounded-[32px] bg-black/5 dark:bg-white/5" />;
+  return <div className="h-[360px] animate-pulse rounded-[32px] bg-black/5 dark:bg-xyn-cream/5" />;
 }
 
 export default function MarketPage() {
@@ -608,7 +616,7 @@ export default function MarketPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12">
-      <section className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Marketplace</p>
@@ -650,7 +658,7 @@ export default function MarketPage() {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-xyn-dark outline-none focus:border-xyn-blue dark:border-white/10 dark:bg-zinc-900 dark:text-white"
+            className="rounded-2xl border border-black/10 bg-xyn-cream px-4 py-3 text-xyn-dark outline-none focus:border-xyn-blue dark:border-white/10 dark:bg-zinc-900 dark:text-white"
           >
             <option>Best Performance</option>
             <option>Most Decisions</option>
@@ -659,7 +667,7 @@ export default function MarketPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">x402 Tiers</p>
@@ -674,7 +682,7 @@ export default function MarketPage() {
             { key: "signal-access", title: "Signal Access", price: tiers["signal-access"]?.displayPrice || "0.10 USDC", detail: "Unlock the current Oracle signal with ETH price, Uniswap spread, and recommendation." },
             { key: "subscription-24h", title: "24h Subscription", price: tiers["subscription-24h"]?.displayPrice || "1.00 USDC", detail: "Unlock all Oracle signals for 24 hours with countdown-based access." },
           ].map((tier) => (
-            <div key={tier.key} className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5">
+            <div key={tier.key} className="rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-xyn-cream/5">
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-xyn-blue">{tier.title}</div>
               <div className="mt-3 text-3xl font-semibold">{tier.price}</div>
               <div className="mt-3 text-sm text-xyn-muted dark:text-zinc-300">{tier.detail}</div>
@@ -683,7 +691,7 @@ export default function MarketPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">Strategy grid</p>
@@ -701,7 +709,7 @@ export default function MarketPage() {
               const variant = hashSeed(strategy.name) % 6;
               const avatarData = strategy.avatarSvg || generateSquadAvatar(strategy.name);
               return (
-                <motion.button key={strategy.squadId} type="button" onClick={() => setSelected(strategy)} className="relative overflow-hidden rounded-[32px] border border-black/10 bg-black/5 p-5 text-left dark:border-white/10 dark:bg-white/5">
+                <motion.button key={strategy.squadId} type="button" onClick={() => setSelected(strategy)} className="relative overflow-hidden rounded-[32px] border border-black/10 bg-black/5 p-5 text-left dark:border-white/10 dark:bg-xyn-cream/5">
                   <div className="absolute right-4 top-4 text-[14px] text-white/30">↻</div>
                   <div className="flex items-start gap-4">
                     <img src={avatarData} alt={strategy.name} className="w-16 h-16 rounded-xl" />
@@ -716,7 +724,7 @@ export default function MarketPage() {
                       <div className="mt-3 flex flex-wrap gap-2">
                         <span className={`rounded-full px-3 py-1 text-xs font-semibold ${strategyTypeClass(strategy.mode)}`}>{strategyTypeLabel(strategy.mode)}</span>
                         <span className={`rounded-full px-3 py-1 text-xs font-semibold ${riskClass(strategy.riskTolerance)}`}>{strategy.riskTolerance}</span>
-                        <span className="rounded-full bg-black/5 px-3 py-1 text-xs font-semibold dark:bg-white/10">{strategy.decisionCount || 0} decisions</span>
+                        <span className="rounded-full bg-black/5 px-3 py-1 text-xs font-semibold dark:bg-xyn-cream/10">{strategy.decisionCount || 0} decisions</span>
                       </div>
                       <p className="mt-3 line-clamp-2 text-sm text-xyn-muted dark:text-zinc-300">{strategy.summary}</p>
                       <div className="mt-4 text-xs uppercase tracking-[0.18em] text-xyn-muted dark:text-zinc-400">{strategy.listedOnMarket ? 'Listed on market' : 'Seed strategy'}</div>
@@ -726,12 +734,12 @@ export default function MarketPage() {
               );
             })
           ) : (
-            <div className="rounded-2xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">No strategies matched your filters.</div>
+            <div className="rounded-2xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-xyn-cream/5 dark:text-zinc-300">No strategies matched your filters.</div>
           )}
         </div>
       </section>
 
-      <section className="mt-8 rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+      <section className="mt-8 rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">LIST YOUR STRATEGY</p>
@@ -739,19 +747,19 @@ export default function MarketPage() {
           </div>
         </div>
         {!address ? (
-          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">Connect wallet to list your strategy.</div>
+          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-xyn-cream/5 dark:text-zinc-300">Connect wallet to list your strategy.</div>
         ) : listingHint ? (
-          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">{listingHint} <Link href="/deploy" className="ml-2 font-semibold text-xyn-blue">Deploy one first.</Link></div>
+          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-xyn-cream/5 dark:text-zinc-300">{listingHint} <Link href="/deploy" className="ml-2 font-semibold text-xyn-blue">Deploy one first.</Link></div>
         ) : mySquad?.cancelled ? (
-          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">You need an active squad to list. <Link href="/deploy" className="font-semibold text-xyn-blue">Deploy one first.</Link></div>
+          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-xyn-cream/5 dark:text-zinc-300">You need an active squad to list. <Link href="/deploy" className="font-semibold text-xyn-blue">Deploy one first.</Link></div>
         ) : mySquad?.listedOnMarket ? (
-          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-white/5 dark:text-zinc-300">Your squad <span className="font-semibold text-white">{mySquad.name}</span> is listed. Toggle off to delist.</div>
+          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-xyn-cream/5 dark:text-zinc-300">Your squad <span className="font-semibold text-white">{mySquad.name}</span> is listed. Toggle off to delist.</div>
         ) : (
-          <div className="mt-6 grid gap-4 rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-white/5 md:grid-cols-[1.2fr_auto] md:items-end">
+          <div className="mt-6 grid gap-4 rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-xyn-cream/5 md:grid-cols-[1.2fr_auto] md:items-end">
             <div className="space-y-3">
               <div>
                 <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Squad name</div>
-                <input readOnly value={mySquad?.name || ""} className="mt-2 w-full rounded-2xl border border-black/10 bg-white/70 px-4 py-3 text-sm outline-none dark:border-white/10 dark:bg-zinc-900" />
+                <input readOnly value={mySquad?.name || ""} className="mt-2 w-full rounded-2xl border border-black/10 bg-xyn-cream px-4 py-3 text-sm outline-none dark:border-white/10 dark:bg-zinc-900" />
               </div>
               <label className="flex items-center gap-3 text-sm text-xyn-muted dark:text-zinc-300">
                 <input type="checkbox" checked={listingAvailable} onChange={(e) => setListingAvailable(e.target.checked)} className="h-4 w-4 rounded border-black/20" />
@@ -789,7 +797,7 @@ export default function MarketPage() {
                 <button type="button" onClick={() => { setSelected(null); setUnlockJson(null); setSheetError(null); }} className="text-sm font-semibold">Close</button>
               </div>
 
-              <div className="mt-6 rounded-2xl border border-black/10 bg-white/70 p-5 text-sm dark:border-white/10 dark:bg-white/5">
+              <div className="mt-6 rounded-2xl border border-black/10 bg-xyn-cream p-5 text-sm dark:border-white/10 dark:bg-xyn-cream/5">
                 <div className="font-semibold">Selected rail</div>
                 <div className="mt-2 text-xyn-muted dark:text-zinc-300">
                   {activeTier === "strategy-config"
@@ -917,7 +925,7 @@ export default function MarketPage() {
               </div>
               <div className="mt-6 space-y-4">
                 {myLicenses.length ? myLicenses.map((strategy) => (
-                  <div key={strategy.squadId} className="rounded-2xl border border-black/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/5">
+                  <div key={strategy.squadId} className="rounded-2xl border border-black/10 bg-xyn-cream p-4 dark:border-white/10 dark:bg-xyn-cream/5">
                     <div className="font-semibold">{strategy.name}</div>
                     <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-300">{strategy.assetPair} · {strategy.mode}</div>
                   </div>

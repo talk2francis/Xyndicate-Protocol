@@ -143,10 +143,10 @@ export function WalletModal() {
           {walletRows.map((wallet) => (
             <div
               key={wallet.id}
-              className="flex items-center justify-between rounded-2xl border border-black/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/5"
+              className="flex items-center justify-between rounded-2xl border border-black/10 bg-xyn-cream p-4 dark:border-white/10 dark:bg-xyn-cream/5"
             >
               <div className="flex items-center gap-3">
-                <img src={wallet.icon} alt={`${wallet.name} logo`} className="h-9 w-9 rounded-full bg-white object-cover" />
+                <img src={wallet.icon} alt={`${wallet.name} logo`} className="h-9 w-9 rounded-full bg-xyn-cream object-cover" />
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="font-medium">{wallet.name}</p>
@@ -162,7 +162,7 @@ export function WalletModal() {
                 type="button"
                 onClick={() => connectWallet(wallet.id)}
                 disabled={loadingWallet === wallet.id}
-                className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:hover:bg-white/10"
+                className="rounded-full border border-black/10 px-4 py-2 text-sm font-semibold transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/10 dark:hover:bg-xyn-cream/10"
               >
                 {loadingWallet === wallet.id ? "Connecting..." : "Connect"}
               </button>

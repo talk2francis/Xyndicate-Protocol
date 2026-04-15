@@ -369,7 +369,7 @@ export default function DeployPage() {
             exit={{ opacity: 0, y: -16 }}
             className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]"
           >
-            <div className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+            <div className="rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
               <h1 className="text-4xl font-semibold tracking-tight">Configure your squad</h1>
               <div className="mt-8 space-y-8">
                 <div>
@@ -465,19 +465,19 @@ export default function DeployPage() {
               </div>
             </div>
 
-            <div ref={mySquadRef} className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5">
+            <div ref={mySquadRef} className="rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-xyn-blue">My Squad</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight">Your live squad status.</h2>
               {!address ? (
                 <div className="mt-6 rounded-3xl border border-dashed border-black/10 p-6 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">Connect a wallet to see your squad.</div>
               ) : mySquadLoading ? (
-                <div className="mt-6 h-52 animate-pulse rounded-3xl bg-black/5 dark:bg-white/5" />
+                <div className="mt-6 h-52 animate-pulse rounded-3xl bg-black/5 dark:bg-xyn-cream/5" />
               ) : mySquadError ? (
                 <div className="mt-6 rounded-3xl bg-rose-500/10 p-4 text-sm text-rose-700 dark:text-rose-300">{mySquadError}</div>
               ) : !mySquad || mySquad.cancelled ? (
                 <div className="mt-6 rounded-3xl border border-dashed border-black/10 p-6 text-sm text-xyn-muted dark:border-white/10 dark:text-zinc-300">No active squad deployed. Complete the wizard above to deploy one.</div>
               ) : (
-                <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-6 dark:border-white/10 dark:bg-white/5">
+                <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-6 dark:border-white/10 dark:bg-xyn-cream/5">
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
                       <div className="text-xs uppercase tracking-[0.24em] text-xyn-blue">Current squad</div>
@@ -508,7 +508,7 @@ export default function DeployPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5"
+            className="rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5"
           >
             <h1 className="text-4xl font-semibold tracking-tight">Fund & enroll</h1>
             {error ? (
@@ -574,7 +574,7 @@ export default function DeployPage() {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, y: -16 }}
-            className="rounded-[32px] border border-black/10 bg-white/70 p-8 dark:border-white/10 dark:bg-white/5"
+            className="rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5"
           >
             <motion.div initial={{ scale: 0.6 }} animate={{ scale: 1 }} className="mb-6 text-6xl">✅</motion.div>
             <h1 className="text-4xl font-semibold tracking-tight">Squad {squadName} is now live!</h1>
@@ -589,7 +589,7 @@ export default function DeployPage() {
                 View on Arena leaderboard →
               </Link>
               {tweetUrl ? (
-                <a href={tweetUrl} target="_blank" rel="noreferrer" className="w-full rounded-full border border-black/10 px-6 py-3 text-center text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10 sm:w-auto">
+                <a href={tweetUrl} target="_blank" rel="noreferrer" className="w-full rounded-full border border-black/10 px-6 py-3 text-center text-sm font-semibold transition hover:bg-black/5 dark:border-white/10 dark:hover:bg-xyn-cream/10 sm:w-auto">
                   Share on X →
                 </a>
               ) : null}

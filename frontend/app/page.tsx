@@ -258,7 +258,7 @@ export default function HomePage() {
   const uniswapPoolQueries = Number((leaderboard as any)?.uniswapQueriesSuccessful || 0);
 
   return (
-    <div className="overflow-x-hidden bg-xyn-surface text-xyn-dark dark:bg-xyn-dark dark:text-xyn-surface">
+    <div className="overflow-x-hidden bg-xyn-cream text-xyn-dark dark:bg-xyn-dark dark:text-xyn-surface">
       <section className="mx-auto flex min-h-[calc(100vh-73px)] max-w-7xl flex-col justify-center px-4 py-12 sm:px-6 sm:py-16">
         <div className="grid gap-10">
           <div className="max-w-4xl">
