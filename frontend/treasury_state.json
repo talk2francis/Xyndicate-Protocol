@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776286867820,
+  "lastUpdated": 1776286896250,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -44,6 +44,12 @@
           "entryPrice": 2362.92,
           "allocationUsdc": 0,
           "openedAt": 1776286855127
+        },
+        {
+          "asset": "ETH",
+          "entryPrice": 0,
+          "allocationUsdc": 0,
+          "openedAt": 1776286896250
         }
       ],
       "tradeHistory": [
@@ -102,10 +108,19 @@
           "allocationUsdc": 0,
           "pnl": null,
           "timestamp": 1776286855127
+        },
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "price": 0,
+          "allocationUsdc": 0,
+          "pnl": null,
+          "timestamp": 1776286896250
         }
       ],
       "treasuryHistory": [
         1000,
+        0,
         0,
         0,
         0,
