@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 225,
-      "confidence": 0.8,
+      "decisions": 226,
+      "confidence": 0.66,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "SELL ETH (100% treasury) · ETH price decreased by 1.7% in 24h, indicating short opportunity. High spread between Uniswap and OKX prices signals liquidity issues. Confidence in recommendation: 0.8",
-      "latestTimestamp": 1776256318,
+      "lastAction": "HOLD ETH (100% treasury) · Price stable with no significant opportunities, high spread between Uniswap and centralized exchange prices, negative 24h price change",
+      "latestTimestamp": 1776257104,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 123,
         "sells": 10,
-        "holds": 87,
-        "lastTradeAction": "SELL",
+        "holds": 88,
+        "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x0601f69d8d7917b7dfd29ce2396db4ea5fcc3f81162c664661127e056f160f87",
         "0x9494a3c7443cfe7cbed3d714dfd3bd6eaa29d6da1975307b2d4d87f7cdb138c8",
         "0x0bb4c4f50e7ab56f7b862d41a2f7f674dc119d5f36e991ac753b1e09961651ff",
         "0x180ba543b32f381f7c284e7e6b04dbfe36cd9d92da94d37b21492df84ea86a9d",
@@ -28,29 +27,29 @@
         "0xa6fd7fe063377503e6cf32e15a500e55962b1aadc3ec88502f008dfd700d7efb",
         "0x4d3ec33b8746f437d0af44b0e9dbb45841ae40e3b903cae2aa503962f24e0395",
         "0xe6f551e65dcafa037a59bb82995fe1e235ba79c1727709d2dcb15c02acbb1cd9",
-        "0x91bb5a3ae8b25601a62309fc740738ab784af0b22bbcd94ec4c456aa4be9e3db"
+        "0x91bb5a3ae8b25601a62309fc740738ab784af0b22bbcd94ec4c456aa4be9e3db",
+        "0x8b59a04c46fdfecf8397957eb13dc83f4eadd9a7a29e4b7f904cb4dcd104b0ba"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 198,
+      "decisions": 199,
       "confidence": 0.66,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD OKB (100% treasury) · Price stability and balanced risk mode favor holding position.",
-      "latestTimestamp": 1776256318,
+      "lastAction": "HOLD OKB (100% treasury) · Market price stable with minimal spread and balanced risk mode for Squad Nova. Negative 24h price change indicates potential downward trend, but confidence in holding is 80%",
+      "latestTimestamp": 1776257104,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 48,
         "sells": 2,
-        "holds": 148,
+        "holds": 149,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0xe371f7df3d6aacaa05c1c37a31830b6083b5891b7a909f434575354a56029a98",
         "0xd2d5d225b5070df5a26e0fc1c88bd14e157a6b4f7255024bcd6dc9f1486cc903",
         "0xa29915f4d3336a2b6a736e1a15bb6cb4e327b3075fc3d9abf0e47ef0ae19e23d",
         "0xdbe50cb5bf7306c1a3a497efbe74846b75ea57fa23b0e417fd1cd80358b78273",
@@ -59,7 +58,8 @@
         "0x2ecbc999fd18a963a6a6453734ab19e0fe3ab0179baa9a722b8be68120c36586",
         "0x92427a478da82db711f73c1c71f8ebbcd851cfdf08d60cb4fd6e0d5d4b367d25",
         "0x1df8e54415cf056c5b9141d6a6fb0a59a977ac07d05a5e7296e8df4646192fa2",
-        "0x79f5ca4282d931e7e6f5786acbfad38b2ccf65811919a128cabb4f167c47f2d3"
+        "0x79f5ca4282d931e7e6f5786acbfad38b2ccf65811919a128cabb4f167c47f2d3",
+        "0xd7395d2ed37dd8650516b0a8bbe7adf8e8b449600fb5abdc923f60984a0f5cc9"
       ]
     },
     {
@@ -85,8 +85,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-15T12:32:01.232Z",
-  "totalDecisions": 423,
+  "updatedAt": "2026-04-15T12:45:07.254Z",
+  "totalDecisions": 425,
   "uniswapQueriesSuccessful": 0,
   "supportingProofs": {
     "narratorPayments": 21,
