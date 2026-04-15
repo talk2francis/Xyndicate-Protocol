@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "275-strategist-1776252714414",
-      "agent": "strategist",
-      "cycle": 275,
-      "timestamp": 1776252714414,
-      "status": "complete",
-      "summary": "HOLD ETH (100% treasury) | Price change in the last 24 hours is negative, recommend holding position. High spread between Uniswap and OKX prices indicates potential arbitrage opportunities but also higher volatility and risk.",
-      "durationMs": 1
-    },
-    {
       "id": "275-router-1776252715115",
       "agent": "router",
       "cycle": 275,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. High spread between Uniswap and OKX prices signals potential arbitrage opportunity with confidence score of 0.8. | Squad Nova trimmed OKB (100% treasury) via okx. Price decreased by 1.70% in the last 24 hours, indicating a short opportunity. Analyst recommendation is to wait, but confidence is moderate.",
       "durationMs": 1
+    },
+    {
+      "id": "286-oracle-1776264697917",
+      "agent": "oracle",
+      "cycle": 286,
+      "timestamp": 1776264697917,
+      "status": "complete",
+      "summary": "ETH OKX: $2338.39 (-1.1%) | Uniswap: $427830155.13 | Spread: 1829582818.68bps",
+      "durationMs": 32940
     }
   ]
 }
