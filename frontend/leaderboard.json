@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 213,
-      "confidence": 0.66,
+      "decisions": 214,
+      "confidence": 0.8,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD ETH (100% treasury) · ETH price has slightly decreased, indicating potential stabilization. High spread between Uniswap and OKX prices suggests liquidity issues or market inefficiencies.",
-      "latestTimestamp": 1776232928,
+      "lastAction": "SELL ETH (100% treasury) · ETH price decreased by 2.06% in 24h, indicating short opportunity. High spread between Uniswap and OKX prices suggests liquidity issues. Confidence in recommendation: 0.8",
+      "latestTimestamp": 1776234775,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 117,
-        "sells": 8,
+        "sells": 9,
         "holds": 83,
-        "lastTradeAction": "HOLD",
+        "lastTradeAction": "SELL",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x4fcf900b1128da52791b3149a5b7a54c9ead609a3ce737dc4f8b64e836816b47",
         "0xce0a66f8246f419e64d7d5af3099efb495d81aadf83e64aa69f61714a66cb943",
         "0xa09a795b04fe8162728d1e0e4a7b909fe0dd69c11b38b300f5db4f6e355cba66",
         "0xb57840b10973973b0ca7fe72922bd34450f309f0b21d36db32821d2e0c2661e9",
@@ -28,29 +27,29 @@
         "0x0edb047cb7809a607450b578f91fb78eadb5bc966d68ede9454a207d50b53f6e",
         "0x82214af4ae57f0a2cf108bcf813c6efee09c1278d0b04346f20e0afe2dc4f4b6",
         "0x18ee51da47f33fbdcca661140b4b6051811538d8f332fad94910d510516eed6c",
-        "0xfb98045c12f5af2ad00e810c5c164e5de4531e9b911a07d03aee9dde976dae64"
+        "0xfb98045c12f5af2ad00e810c5c164e5de4531e9b911a07d03aee9dde976dae64",
+        "0x4c501dc8b1ef14e75aa4944291fedc9d4cecd82f6b93a711ef2a67f5962bb5a8"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 186,
-      "confidence": 0.66,
+      "decisions": 187,
+      "confidence": 0.7,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD OKB (100% treasury) · Price change in the last 24 hours is minimal, suggesting a stable market. Analyst confidence is high at 80%.",
-      "latestTimestamp": 1776232928,
+      "lastAction": "HOLD OKB (100% treasury) · Market conditions stable, no opportunities or risks identified. Analyst recommends waiting. High confidence score of 0.8.",
+      "latestTimestamp": 1776234775,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 48,
         "sells": 1,
-        "holds": 137,
+        "holds": 138,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x424d86771b091d5d8d0f1c0ad39088bde24e3acb644785ffbbda9dbe68c2be9c",
         "0x4173acc27057420551ea0d5c52ac89b0a63f12528d1627fca7ee429f0ec8b171",
         "0xa6a81b2e1d486773b638c6db89d14dabe30f978130d29717895cf8cf6c8f8bb6",
         "0x58294ef7576796015c535abb09a1abf2185489f3bf5b270e383a0efaa52abd94",
@@ -59,34 +58,14 @@
         "0x0d91822fb60ee80189f63904aea054c71e1015d5368a9dc5ead3080264f24468",
         "0xb2c59850dfd6e1b393525cfc57e2ff5c982dd58ee0642a2a7a1d5a00a1e65d50",
         "0x7ed9ba594f6e7702e4e2dd6a9390a408ec468180b0981399b7fac5e85f5d07b2",
-        "0xfeff61f56d23ef77f2576a4a9e0570d8248bcd85ec964e6f7da55a89d2af1e9f"
+        "0xfeff61f56d23ef77f2576a4a9e0570d8248bcd85ec964e6f7da55a89d2af1e9f",
+        "0x39ee64cc8db5de2e2930bcdffba2bd56298199c216652f92211412a24ee8e420"
       ]
-    },
-    {
-      "rank": 3,
-      "squadId": "VIPER",
-      "decisions": 0,
-      "confidence": 0,
-      "treasury": 1000,
-      "roi": 0,
-      "lastAction": "Awaiting first cycle",
-      "latestTimestamp": 1776179637843,
-      "status": "PAUSED",
-      "badge": "External",
-      "routeUsed": null,
-      "stats": {
-        "buys": 0,
-        "sells": 0,
-        "holds": 0,
-        "lastTradeAction": "HOLD",
-        "lastAsset": "ETH/USDC"
-      },
-      "txHashes": []
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-15T06:02:10.412Z",
-  "totalDecisions": 399,
+  "updatedAt": "2026-04-15T06:32:57.260Z",
+  "totalDecisions": 401,
   "uniswapQueriesSuccessful": 0,
   "supportingProofs": {
     "narratorPayments": 19,
