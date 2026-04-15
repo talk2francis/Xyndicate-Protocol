@@ -113,7 +113,7 @@ const PLUGIN_STORE_MANIFEST = `{
   "networks": ["xlayer-mainnet"],
   "x_layer_contracts": {
     "DecisionLog": "0xC9E69be5ecD65a9106800E07E05eE44a63559F8b",
-    "SeasonManager": "0x3B1554B5cc9292884DCDcBaa69E4FA38DDe875B1",
+    "SeasonManager": "0x257A2842DBEcBDc6B6134B434BB0A224F1b8d4d1",
     "StrategyVault": "0x6002767f909B3049d5A65beAD84A843a385a61aC",
     "StrategyLicense": "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186"
   }
