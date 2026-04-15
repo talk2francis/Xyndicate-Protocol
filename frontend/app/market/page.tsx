@@ -8,6 +8,8 @@ import { ethers } from "ethers";
 import deployments from "@/deployments.json";
 import { useWallet } from "@/lib/wallet-context";
 
+type MySquadResponse = { squad: null | { squadName?: string | null; walletAddress?: string | null; registeredAt?: number; cancelled?: boolean; deactivated?: boolean; } };
+
 type Strategy = {
   squadId: string;
   name: string;
@@ -176,7 +178,7 @@ export default function MarketPage() {
   const [delistingSuccess, setDelistingSuccess] = useState<string | null>(null);
   const [enrolledOptions, setEnrolledOptions] = useState<Strategy[]>([]);
   const [listingHint, setListingHint] = useState<string | null>(null);
-  const [mySquad, setMySquad] = useState<Strategy | null>(null);
+  const [mySquad, setMySquad] = useState<MySquadResponse["squad"] | null>(null);
 
   const strategyLicenseAddress = (deployments as any)?.StrategyLicense?.address || "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186";
   const directPaymentReceiver = "0x795009bb38a32348344a36a4cfcb36e4e84cb8d8";
@@ -287,23 +289,22 @@ export default function MarketPage() {
       }
 
       try {
-        const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_XLAYER_RPC || "https://rpc.xlayer.tech");
-        const seasonManager = new ethers.Contract(seasonManagerAddress, SEASON_MANAGER_ABI, provider);
-        const squad = await seasonManager.squads(address);
-        const owner = String(squad?.owner || ethers.ZeroAddress);
-        const active = Boolean(squad?.active);
+        const mySquadResponse = await fetch(`/api/my-squad?wallet=${encodeURIComponent(address)}`, { cache: "no-store" });
+        const mySquadJson: MySquadResponse = await mySquadResponse.json();
+        const squad = mySquadJson?.squad || null;
 
-        if (owner.toLowerCase() !== address.toLowerCase() || !active) {
+        setMySquad(squad);
+
+        if (!squad) {
           setEnrolledOptions([]);
           setSelectedSquadId("");
-          setMySquad(null);
-          setListingHint("No active enrolled squad is available for this connected wallet.");
+          setListingHint("No active squad. Deploy one first →");
           return;
         }
 
         const matched = strategies.filter((strategy) => strategy.creatorWallet?.toLowerCase() === address.toLowerCase());
         let options = matched;
-        const externalDisplayName = matched.find((strategy) => strategy.squadId === "HI")?.squadId || matched[0]?.squadId || "HI";
+        const externalDisplayName = squad.squadName || matched[0]?.squadId || "";
 
         if (!options.length) {
           const vault = new ethers.Contract(strategyVaultAddress, STRATEGY_VAULT_ABI, provider);
@@ -753,13 +754,13 @@ export default function MarketPage() {
         ) : mySquad?.cancelled ? (
           <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-xyn-cream/5 dark:text-zinc-300">You need an active squad to list. <Link href="/deploy" className="font-semibold text-xyn-blue">Deploy one first.</Link></div>
         ) : mySquad?.listedOnMarket ? (
-          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-xyn-cream/5 dark:text-zinc-300">Your squad <span className="font-semibold text-white">{mySquad.name}</span> is listed. Toggle off to delist.</div>
+          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-xyn-cream/5 dark:text-zinc-300">Your squad <span className="font-semibold text-white">{mySquad.squadName || "Unknown"}</span> is listed. Toggle off to delist.</div>
         ) : (
           <div className="mt-6 grid gap-4 rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-xyn-cream/5 md:grid-cols-[1.2fr_auto] md:items-end">
             <div className="space-y-3">
               <div>
                 <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Squad name</div>
-                <input readOnly value={mySquad?.name || ""} className="mt-2 w-full rounded-2xl border border-black/10 bg-xyn-cream px-4 py-3 text-sm outline-none dark:border-white/10 dark:bg-zinc-900" />
+                <input type="text" value={mySquad?.squadName || ""} readOnly className="mt-2 w-full cursor-not-allowed rounded-2xl border border-black/10 bg-xyn-cream px-4 py-3 text-sm opacity-70 outline-none dark:border-white/10 dark:bg-zinc-900" />
               </div>
               <label className="flex items-center gap-3 text-sm text-xyn-muted dark:text-zinc-300">
                 <input type="checkbox" checked={listingAvailable} onChange={(e) => setListingAvailable(e.target.checked)} className="h-4 w-4 rounded border-black/20" />

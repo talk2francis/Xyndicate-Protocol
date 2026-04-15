@@ -18,36 +18,36 @@ type RegistrySquad = {
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const wallet = String(url.searchParams.get("wallet") || "").trim();
+  const wallet = String(url.searchParams.get("wallet") || "").trim().toLowerCase();
 
-  if (!wallet) return NextResponse.json({ squad: null }, { status: 200 });
+  if (!wallet) {
+    return NextResponse.json({ squad: null });
+  }
 
   try {
-    const response = await fetch(REGISTRY_RAW_URL, { cache: "no-store" });
-    if (!response.ok) throw new Error(`Failed to load squad registry: ${response.status}`);
-    const json = await response.json();
-    const squads = Array.isArray(json?.squads) ? json.squads : [];
-    const matched = squads
-      .filter((squad: RegistrySquad) => String(squad?.walletAddress || "").toLowerCase() === wallet.toLowerCase())
-      .sort((a: RegistrySquad, b: RegistrySquad) => Number(b.registeredAt || 0) - Number(a.registeredAt || 0))
-      .find((squad: RegistrySquad) => !squad?.cancelled) || null;
+    const resp = await fetch(REGISTRY_RAW_URL, { cache: "no-store" });
+    if (!resp.ok) return NextResponse.json({ squad: null });
+    const registry = await resp.json();
 
-    if (!matched) return NextResponse.json({ squad: null }, { status: 200 });
+    const walletSquads = (registry.squads || []).filter(
+      (s: any) => s.walletAddress?.toLowerCase() === wallet,
+    );
 
-    return NextResponse.json({
-      squad: {
-        squadName: matched.squadName || null,
-        walletAddress: matched.walletAddress || null,
-        riskMode: matched.riskMode || null,
-        baseAsset: matched.baseAsset || null,
-        strategyMode: matched.strategyMode || null,
-        enrollTx: matched.enrollTx || null,
-        registeredAt: Number(matched.registeredAt || 0),
-        deactivated: Boolean(matched.deactivated),
-        cancelled: Boolean(matched.cancelled),
-      },
-    });
-  } catch (error: any) {
-    return NextResponse.json({ error: error?.message || "Failed to load squad" }, { status: 500 });
+    if (walletSquads.length === 0) {
+      return NextResponse.json({ squad: null });
+    }
+
+    const activeSquad = walletSquads
+      .sort((a: any, b: any) => (Number(b.registeredAt || 0) - Number(a.registeredAt || 0)))
+      .find((s: any) => s.cancelled !== true);
+
+    if (!activeSquad) {
+      return NextResponse.json({ squad: null });
+    }
+
+    return NextResponse.json({ squad: activeSquad });
+  } catch (err) {
+    console.error("my-squad fetch error:", err);
+    return NextResponse.json({ squad: null });
   }
 }
