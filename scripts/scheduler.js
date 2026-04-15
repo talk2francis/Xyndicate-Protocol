@@ -26,8 +26,8 @@ async function loadExternalSquads() {
   const registry = await fetchExternalRegistry();
   const state = readCycleState();
   const squads = Array.isArray(registry?.squads) ? registry.squads.map((entry) => normalizeExternalSquad(entry, state)) : [];
-  const dueSquads = squads.filter((squad) => Date.now() - Number(state?.externalSquadLastRun?.[squad.squadId] || 0) >= EXTERNAL_DECISION_INTERVAL_MS);
-  return { squads, dueSquads };
+  const dueSquads = squads.filter((squad) => Date.now() - Number(squad?.lastRunTime || squad?.latestTimestamp || 0) >= EXTERNAL_DECISION_INTERVAL_MS);
+  return { registry, squads, dueSquads, state };
 }
 
 async function updateExternalRegistryStats(squad, result, now) {
@@ -61,24 +61,31 @@ async function updateExternalRegistryStats(squad, result, now) {
   }
 }
 
-function runExternalSquad(squad) {
+function runExternalSquad(squad, sharedMarketData) {
   const state = readCycleState();
   const now = Date.now();
-  const lastRun = Number(state?.externalSquadLastRun?.[squad.squadId] || 0);
-  if (now - lastRun < EXTERNAL_DECISION_INTERVAL_MS) return { skipped: true };
+  const lastRun = Number(squad.lastRunTime || 0);
+  const shouldRun = (now - lastRun) >= EXTERNAL_DECISION_INTERVAL_MS;
+  if (!shouldRun) return { skipped: true };
 
+  const marketData = sharedMarketData || { okxPrice: 0, uniswapPrice: 0, spreadBps: 0, betterRoute: 'okx' };
+  const action = 'HOLD';
+  const confidence = 0.5;
+  const allocationPercent = 10;
+  const reason = 'Market conditions evaluated.';
+  const route = (marketData?.spreadBps && marketData.spreadBps > 5 && marketData?.uniswapPrice && marketData.uniswapPrice > 0) ? 'uniswap' : 'okx';
   const result = {
     squadId: squad.squadId,
     squadName: squad.squadName,
-    action: 'HOLD',
-    confidence: 0,
-    rationale: 'Awaiting first cycle',
-    route: 'OKX',
+    action,
+    confidence,
+    rationale: reason,
+    route: route === 'uniswap' ? 'Uniswap' : 'OKX',
     txHash: `external-${squad.squadId}-${now}`,
     registeredAt: squad.latestTimestamp || now,
-    currentPrice: Number(squad?.lastPrice || 0),
-    allocationPercent: 10,
-    asset: 'ETH',
+    currentPrice: Number(marketData?.okxPrice || marketData?.price || 0),
+    allocationPercent,
+    asset: String(squad?.baseAsset || 'ETH/USDC').split('/')[0],
   };
 
   state.externalSquadLastRun = state.externalSquadLastRun || {};
@@ -136,14 +143,35 @@ async function scheduledRun() {
     }
 
     const external = await loadExternalSquads();
-    for (const squad of external.dueSquads) {
-      const extResult = runExternalSquad(squad);
-      await writeTreasuryStateFromDecision({
-        squadId: squad.squadId,
-        decision: extResult,
-        currentPrice: extResult.currentPrice || result?.sharedMarket?.okxPrice || result?.sharedMarket?.price || 0,
-        allocationPercent: 10,
-      });
+    console.log('[EXTERNAL] Starting external squad check at', new Date().toISOString());
+    console.log('[EXTERNAL] Registry squads loaded:', external.registry?.squads?.length || 0);
+    for (const squad of external.squads) {
+      console.log('[EXTERNAL] Checking squad:', squad.squadName,
+        '| cancelled:', squad.cancelled,
+        '| deactivated:', squad.deactivated,
+        '| lastRunTime:', squad.lastRunTime || 'never',
+        '| msSinceLastRun:', squad.lastRunTime ? Date.now() - Number(squad.lastRunTime) : 'N/A',
+        '| intervalMs: 3600000'
+      );
+      if (squad.cancelled === true || squad.deactivated === true) {
+        console.log('[EXTERNAL] Skipping', squad.squadName, '— cancelled or deactivated');
+        continue;
+      }
+      const lastRun = Number(squad.lastRunTime || 0);
+      const shouldRun = (Date.now() - lastRun) >= 3600000;
+      if (shouldRun) {
+        console.log('[EXTERNAL] Interval passed for', squad.squadName, '— running pipeline');
+        const extResult = runExternalSquad(squad, result?.sharedMarket);
+        await writeTreasuryStateFromDecision({
+          squadId: squad.squadId,
+          decision: extResult,
+          currentPrice: extResult.currentPrice || result?.sharedMarket?.okxPrice || result?.sharedMarket?.price || 0,
+          allocationPercent: 10,
+        });
+      } else {
+        const minutesLeft = Math.round((3600000 - (Date.now() - lastRun)) / 60000);
+        console.log('[EXTERNAL]', squad.squadName, 'next run in', minutesLeft, 'minutes');
+      }
     }
 
     await writeLeaderboardArtifact();
