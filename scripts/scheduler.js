@@ -142,6 +142,7 @@ async function scheduledRun() {
       await writeTreasuryStateFromDecision(item);
     }
 
+    console.log('[EXTERNAL] Entered external squad section at', new Date().toISOString());
     const external = await loadExternalSquads();
     const neverRun = external.squads.filter((s) => !Number(s.lastRunTime || 0));
     console.log('[EXTERNAL] Starting external squad check at', new Date().toISOString());
@@ -189,7 +190,8 @@ async function scheduledRun() {
       console.error(`MCP self-call failed: ${mcpError.message || mcpError}`);
     }
   } catch (err) {
-    console.error('Cycle failed:', err.message);
+    console.error('Cycle failed:', err?.stack || err?.message || err);
+    console.error('[EXTERNAL] Scheduler failed before completing external processing');
   }
 
   scheduleNext();
