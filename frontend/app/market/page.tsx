@@ -754,8 +754,6 @@ export default function MarketPage() {
           <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-xyn-cream/5 dark:text-zinc-300">{listingHint} <Link href="/deploy" className="ml-2 font-semibold text-xyn-blue">Deploy one first.</Link></div>
         ) : mySquad?.cancelled ? (
           <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-xyn-cream/5 dark:text-zinc-300">You need an active squad to list. <Link href="/deploy" className="font-semibold text-xyn-blue">Deploy one first.</Link></div>
-        ) : mySquad?.listedOnMarket ? (
-          <div className="mt-6 rounded-3xl border border-black/10 bg-black/5 p-5 text-sm text-xyn-muted dark:border-white/10 dark:bg-xyn-cream/5 dark:text-zinc-300">Your squad <span className="font-semibold text-white">{mySquad.squadName || "Unknown"}</span> is listed. Toggle off to delist.</div>
         ) : (
           <div className="mt-6 grid gap-4 rounded-3xl border border-black/10 bg-black/5 p-5 dark:border-white/10 dark:bg-xyn-cream/5 md:grid-cols-[1.2fr_auto] md:items-end">
             <div className="space-y-3">
