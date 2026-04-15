@@ -15,6 +15,19 @@ async function runExternalSquad(squad, sharedMarketData) {
   const lastRun = Number(squad.lastRunTime || 0);
   const shouldRun = (now - lastRun) >= EXTERNAL_DECISION_INTERVAL_MS;
   console.log('[EXTERNAL] Gate check for', squad.squadName, 'lastRun=', lastRun, 'now=', now, 'delta=', now - lastRun, 'shouldRun=', shouldRun);
+  if (String(squad.squadName || squad.squadId || '').toUpperCase() === 'BRAVO') {
+    console.log('[EXTERNAL][BRAVO] Runtime squad key:', squad.squadId, 'name:', squad.squadName);
+    console.log('[EXTERNAL][BRAVO] Runtime squad snapshot:', JSON.stringify({
+      squadId: squad.squadId,
+      squadName: squad.squadName,
+      decisionCount: squad.decisionCount,
+      lastDecisionAt: squad.lastDecisionAt,
+      lastRunTime: squad.lastRunTime,
+      cancelled: squad.cancelled,
+      deactivated: squad.deactivated,
+      registeredAt: squad.registeredAt,
+    }));
+  }
   if (!shouldRun) return { skipped: true };
 
   const marketData = sharedMarketData || { okxPrice: 0, uniswapPrice: 0, spreadBps: 0, betterRoute: 'okx' };
@@ -69,6 +82,10 @@ async function runExternalSquad(squad, sharedMarketData) {
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
   const squads = Array.isArray(registry.squads) ? [...registry.squads] : [];
   const index = squads.findIndex((item) => String(item?.squadName || item?.squadId || '').toUpperCase() === String(squad.squadName || squad.squadId || '').toUpperCase());
+  if (String(squad.squadName || squad.squadId || '').toUpperCase() === 'BRAVO') {
+    console.log('[EXTERNAL][BRAVO] Registry match index:', index);
+    console.log('[EXTERNAL][BRAVO] Registry row before update:', JSON.stringify(index >= 0 ? squads[index] : null));
+  }
   if (index >= 0) {
     const current = { ...(squads[index] || {}) };
     const nextDecisionCount = Number(current.decisionCount || current.decisions || 0) + 1;
@@ -88,12 +105,24 @@ async function runExternalSquad(squad, sharedMarketData) {
     };
     registry.squads = squads;
     registry.lastUpdated = now;
-    await writeAndPublishJson({
+    if (String(squad.squadName || squad.squadId || '').toUpperCase() === 'BRAVO') {
+      console.log('[EXTERNAL][BRAVO] Registry row after update:', JSON.stringify(squads[index]));
+      console.log('[EXTERNAL][BRAVO] Publishing registry to repoPath:', 'frontend/squad_registry.json', 'branch: main');
+    }
+    const publishResult = await writeAndPublishJson({
       localPath: registryPath,
       repoPath: 'frontend/squad_registry.json',
       content: registry,
       message: `Update external squad registry for ${squad.squadName} at ${new Date(now).toISOString()}`,
     });
+    if (String(squad.squadName || squad.squadId || '').toUpperCase() === 'BRAVO') {
+      console.log('[EXTERNAL][BRAVO] Registry publish result:', JSON.stringify({
+        hasRemote: Boolean(publishResult?.remote),
+        localPath: publishResult?.localPath,
+        repoPath: publishResult?.repoPath,
+      }));
+      console.log('[EXTERNAL][BRAVO] Published registry snapshot decisionCount:', registry.squads[index]?.decisionCount);
+    }
   }
 
   await writeTreasuryStateFromDecision({
