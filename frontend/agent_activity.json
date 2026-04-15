@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "276-executor-1776254566648",
-      "agent": "executor",
-      "cycle": 276,
-      "timestamp": 1776254566648,
-      "status": "complete",
-      "summary": "HOLD executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
       "id": "276-narrator-1776254567504",
       "agent": "narrator",
       "cycle": 276,
@@ -538,6 +529,15 @@
       "timestamp": 1776265262317,
       "status": "complete",
       "summary": "WAIT ETH | confidence 70%",
+      "durationMs": 1
+    },
+    {
+      "id": "287-strategist-1776265263156",
+      "agent": "strategist",
+      "cycle": 287,
+      "timestamp": 1776265263156,
+      "status": "complete",
+      "summary": "HOLD ETH (100% treasury) | Uniswap price significantly higher than OKX, potential arbitrage opportunity. High spread indicates low liquidity. Negative 24h price change for ETH. Wait for better conditions.",
       "durationMs": 1
     }
   ]
