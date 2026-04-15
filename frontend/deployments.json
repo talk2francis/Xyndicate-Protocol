@@ -454,7 +454,9 @@
     "0x9494a3c7443cfe7cbed3d714dfd3bd6eaa29d6da1975307b2d4d87f7cdb138c8",
     "0xd2d5d225b5070df5a26e0fc1c88bd14e157a6b4f7255024bcd6dc9f1486cc903",
     "0x0bb4c4f50e7ab56f7b862d41a2f7f674dc119d5f36e991ac753b1e09961651ff",
-    "0xa29915f4d3336a2b6a736e1a15bb6cb4e327b3075fc3d9abf0e47ef0ae19e23d"
+    "0xa29915f4d3336a2b6a736e1a15bb6cb4e327b3075fc3d9abf0e47ef0ae19e23d",
+    "0xa3f72a551de632284963be97b800e08a43c5b6afb139dd37dfb68f9d81dcfd06",
+    "0xe158ac98995950dfa13acd3b01d0f906195507a5769119644d67744cb9feaee2"
   ],
   "decisionLogEntries": [
     {
@@ -3319,6 +3321,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · The market is stable with a balanced risk mode. Holding OKB is recommended due to the current conditions and confidence level of 0.8.",
       "timestamp": 1776241851
+    },
+    {
+      "txHash": "0xa3f72a551de632284963be97b800e08a43c5b6afb139dd37dfb68f9d81dcfd06",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Price stability despite high spread on Uniswap. Analyst recommendation to wait due to high spread indicating liquidity issues.",
+      "timestamp": 1776243727
+    },
+    {
+      "txHash": "0xe158ac98995950dfa13acd3b01d0f906195507a5769119644d67744cb9feaee2",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Market price stable with minimal spread and balanced risk mode.",
+      "timestamp": 1776243727
     }
   ]
 }
