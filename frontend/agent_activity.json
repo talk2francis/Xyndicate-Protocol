@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "278-strategist-1776257101500",
-      "agent": "strategist",
-      "cycle": 278,
-      "timestamp": 1776257101500,
-      "status": "complete",
-      "summary": "HOLD ETH (100% treasury) | Price stable with no significant opportunities, high spread between Uniswap and centralized exchange prices, negative 24h price change",
-      "durationMs": 1
-    },
-    {
       "id": "278-router-1776257102393",
       "agent": "router",
       "cycle": 278,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "Xyndicate Alpha held ETH (10% treasury) via okx. ETH price stable in last 24h, holding is suitable. High spread between Uniswap and OKX indicates arbitrage opportunities but also higher risk and volatility. | Squad Nova held OKB (100% treasury) via okx. Price stability and balanced risk mode suggest holding position.",
       "durationMs": 1
+    },
+    {
+      "id": "289-oracle-1776265938183",
+      "agent": "oracle",
+      "cycle": 289,
+      "timestamp": 1776265938183,
+      "status": "complete",
+      "summary": "ETH OKX: $2335.31 (-0.4%) | Uniswap: $428179078.86 | Spread: 1833489958.71bps",
+      "durationMs": 34105
     }
   ]
 }
