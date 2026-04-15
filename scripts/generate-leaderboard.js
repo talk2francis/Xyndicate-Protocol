@@ -75,6 +75,14 @@ async function buildLeaderboard() {
 
   const squadMap = new Map();
 
+  const externalRegistry = await fetchExternalRegistry();
+  const externalRegistryMap = new Map();
+  for (const item of Array.isArray(externalRegistry?.squads) ? externalRegistry.squads : []) {
+    const key = String(item?.squadName || item?.squadId || '').trim().toUpperCase();
+    if (!key) continue;
+    externalRegistryMap.set(key, item);
+  }
+
   for (const entry of entries) {
     const squadId = normalizeSquadId(entry?.squadId || 'XYNDICATE_ALPHA');
     const timestamp = Number(entry?.timestamp || 0);
@@ -114,33 +122,32 @@ async function buildLeaderboard() {
     squadMap.set(squadId, current);
   }
 
-  const registry = await fetchExternalRegistry();
-  for (const external of Array.isArray(registry?.squads) ? registry.squads : []) {
+  for (const [key, external] of externalRegistryMap.entries()) {
     const normalized = normalizeExternalSquad(external, cycleState);
     const isCancelled = String(external?.cancelled).toLowerCase() === 'true';
     const isDeactivated = String(external?.deactivated).toLowerCase() === 'true';
     if (isCancelled || isDeactivated) continue;
 
-    const decisions = Number(normalized.decisions || 0);
+    const decisions = Number(external?.decisionCount ?? external?.decisions ?? normalized.decisions ?? 0);
     const treasury = Number(treasuryState?.squads?.[normalized.squadId]?.currentTreasury || 1000);
     const roi = Number(treasuryState?.squads?.[normalized.squadId]?.roi || 0);
 
     squadMap.set(normalized.squadId, {
       squadId: normalized.squadId,
       decisions,
-      buys: normalized.stats.buys,
-      sells: normalized.stats.sells,
-      holds: normalized.stats.holds,
-      latestTimestamp: normalized.latestTimestamp || Number(external?.registeredAt || 0),
+      buys: Number(external?.buys || normalized.stats.buys || 0),
+      sells: Number(external?.sells || normalized.stats.sells || 0),
+      holds: Number(external?.holds || normalized.stats.holds || 0),
+      latestTimestamp: Number(external?.lastDecisionAt || normalized.latestTimestamp || external?.registeredAt || 0),
       registeredAt: Number(external?.registeredAt || normalized.latestTimestamp || 0),
-      latestRationale: decisions === 0 ? 'Awaiting first cycle' : normalized.lastAction,
-      lastAction: decisions === 0 ? 'Awaiting first cycle' : normalized.stats.lastTradeAction,
+      latestRationale: decisions === 0 ? 'Awaiting first cycle' : String(external?.lastDecision || normalized.lastAction || 'Awaiting first cycle'),
+      lastAction: decisions === 0 ? 'Awaiting first cycle' : String(external?.lastRoute || normalized.stats.lastTradeAction || 'OKX'),
       lastAsset: normalized.stats.lastAsset,
-      confidence: decisions === 0 ? 0 : normalized.confidence,
-      txHashes: normalized.txHashes,
+      confidence: decisions === 0 ? 0 : Number(external?.lastConfidence ?? normalized.confidence ?? 0),
+      txHashes: Array.isArray(external?.txHashes) ? external.txHashes : normalized.txHashes,
       external: true,
-      status: decisions === 0 ? 'ACTIVE' : 'ACTIVE',
-      routeUsed: decisions === 0 ? null : (normalized.stats.lastTradeAction || null),
+      status: 'ACTIVE',
+      routeUsed: decisions === 0 ? null : String(external?.lastRoute || normalized.stats.lastTradeAction || null),
       treasury,
       roi,
     });
