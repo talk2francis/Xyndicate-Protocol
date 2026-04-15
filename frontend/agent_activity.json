@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "250-router-1776207657743",
-      "agent": "router",
-      "cycle": 250,
-      "timestamp": 1776207657743,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 2
-    },
-    {
       "id": "250-executor-1776207658752",
       "agent": "executor",
       "cycle": 250,
@@ -538,6 +529,15 @@
       "timestamp": 1776225748891,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | Price stability and potential for recovery in the near future. High spread between Uniswap and centralized exchange prices poses risk. Negative 24h price change. Analyst recommendation to wait.",
+      "durationMs": 1
+    },
+    {
+      "id": "260-router-1776225749675",
+      "agent": "router",
+      "cycle": 260,
+      "timestamp": 1776225749675,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
