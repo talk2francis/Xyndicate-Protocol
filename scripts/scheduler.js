@@ -144,7 +144,9 @@ async function scheduledRun() {
 
     console.log('[EXTERNAL] Entered external squad section at', new Date().toISOString());
     const externalRuntimeResults = [];
+    console.log('[EXTERNAL] About to load external squads...');
     const external = await loadExternalSquads();
+    console.log('[EXTERNAL] External squads loaded count:', external.squads.length);
     const neverRun = external.squads.filter((s) => !Number(s.lastRunTime || 0));
     console.log('[EXTERNAL] Starting external squad check at', new Date().toISOString());
     console.log('[EXTERNAL] Registry squads loaded:', external.registry?.squads?.length || 0);
@@ -162,7 +164,9 @@ async function scheduledRun() {
         continue;
       }
       const lastRun = Number(squad.lastRunTime || 0);
+      console.log('[EXTERNAL] Gate check for', squad.squadName, 'lastRun=', lastRun, 'now=', Date.now(), 'delta=', Date.now() - lastRun);
       const shouldRun = (Date.now() - lastRun) >= 3600000;
+      console.log('[EXTERNAL] shouldRun for', squad.squadName, '=', shouldRun);
       if (shouldRun) {
         console.log('[EXTERNAL] Interval passed for', squad.squadName, '— running pipeline');
         const extResult = runExternalSquad(squad, result?.sharedMarket);
