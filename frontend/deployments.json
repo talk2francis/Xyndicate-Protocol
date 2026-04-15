@@ -436,7 +436,9 @@
     "0xe920fb0bb75fea90c09b3ca6900446693adbe8fc456e7930d1d580b687a0cc36",
     "0x25a18e00e84514944787686b1d0bc4b8b75b4cd1a2df037ffd74d2f0b1d01746",
     "0xd61061cd595fcfbcf08597679deac13601f5ff946535935ac406d41eb8779b0a",
-    "0x342b1665c50d3c702bcd46137f85dfe05be3931070b66d7f3841bd99fc294aa9"
+    "0x342b1665c50d3c702bcd46137f85dfe05be3931070b66d7f3841bd99fc294aa9",
+    "0x0edb047cb7809a607450b578f91fb78eadb5bc966d68ede9454a207d50b53f6e",
+    "0x0d91822fb60ee80189f63904aea054c71e1015d5368a9dc5ead3080264f24468"
   ],
   "decisionLogEntries": [
     {
@@ -3175,6 +3177,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · Price stable with minimal spread, no short-term gains expected. Analyst confidence high at 70%.",
       "timestamp": 1776225751
+    },
+    {
+      "txHash": "0x0edb047cb7809a607450b578f91fb78eadb5bc966d68ede9454a207d50b53f6e",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Uniswap price significantly higher than OKX price, indicating potential arbitrage opportunity. High spread may indicate low liquidity. Negative 24h price change for ETH.",
+      "timestamp": 1776227549
+    },
+    {
+      "txHash": "0x0d91822fb60ee80189f63904aea054c71e1015d5368a9dc5ead3080264f24468",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Market conditions stable, no significant opportunities or risks identified. Analyst recommends waiting. Confidence score at 50%.",
+      "timestamp": 1776227549
     }
   ]
 }
