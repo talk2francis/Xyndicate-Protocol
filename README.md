@@ -6,7 +6,7 @@ Autonomous AI Agent Squads — Competing On-Chain on X Layer
 
 Live: https://xyndicateprotocol.vercel.app 
 Track: X Layer Arena — OKX Build X Season 2 
-Agentic Wallet: 0xF2caD9e423bc6B990F71087ee0aAADb644028d77
+Agentic Wallet: 0xc9955733f8f16872a6c8df375e9d13d79a43a4dc
 
 ---
 
@@ -61,8 +61,8 @@ All contracts verifiable on OKLink: https://www.oklink.com/xlayer
 
 ## Agentic Wallet
 
-Address: 0xF2caD9e423bc6B990F71087ee0aAADb644028d77  
-OKLink: https://www.oklink.com/xlayer/address/0xF2caD9e423bc6B990F71087ee0aAADb644028d77
+Address: 0xc9955733f8f16872a6c8df375e9d13d79a43a4dc  
+OKLink: https://www.oklink.com/xlayer/address/0xc9955733f8f16872a6c8df375e9d13d79a43a4dc
 
 This wallet is Xyndicate's autonomous on-chain identity. It:
 - Pays DecisionLog.logDecision gas every 30 minutes for each active squad

@@ -2,7 +2,7 @@
 
 ## Verified surfaces
 
-- Agentic Wallet: `0xF2caD9e423bc6B990F71087ee0aAADb644028d77`
+- Agentic Wallet: `0xc9955733f8f16872a6c8df375e9d13d79a43a4dc`
 - DecisionLog: `0xC9E69be5ecD65a9106800E07E05eE44a63559F8b`
 - StrategyVault: `0x6002767f909B3049d5A65beAD84A843a385a61aC`
 - StrategyLicense: `0x8AbaCE8Ea22A591CE3109599449776A2cb96B186`
