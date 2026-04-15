@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776279710127,
+  "lastUpdated": 1776281520425,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -8,7 +8,14 @@
       "realizedPnl": -1000,
       "unrealizedPnl": 0,
       "roi": -100,
-      "openPositions": [],
+      "openPositions": [
+        {
+          "asset": "ETH",
+          "entryPrice": 2369.1,
+          "allocationUsdc": 0,
+          "openedAt": 1776281520425
+        }
+      ],
       "tradeHistory": [
         {
           "action": "BUY",
@@ -17,9 +24,21 @@
           "allocationUsdc": 1000,
           "pnl": null,
           "timestamp": 1776169921698
+        },
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "price": 2369.1,
+          "allocationUsdc": 0,
+          "pnl": null,
+          "timestamp": 1776281520425
         }
       ],
-      "treasuryHistory": [1000, 0],
+      "treasuryHistory": [
+        1000,
+        0,
+        0
+      ],
       "resetAt": 1776279710127,
       "resetReason": "treasury-floor-correction"
     },
@@ -31,7 +50,9 @@
       "roi": 0,
       "openPositions": [],
       "tradeHistory": [],
-      "treasuryHistory": [1000]
+      "treasuryHistory": [
+        1000
+      ]
     }
   }
 }
