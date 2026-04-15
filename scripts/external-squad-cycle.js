@@ -3,6 +3,7 @@ const path = require('path');
 const { fetchExternalRegistry, normalizeExternalSquad, touchExternalSquadRun, EXTERNAL_DECISION_INTERVAL_MS } = require('./external-squads');
 const { readCycleState, writeCycleState } = require('./cycle-state');
 const { writeTreasuryStateFromDecision } = require('./treasury');
+const { writeAndPublishJson } = require('./github-artifacts');
 
 const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
@@ -57,7 +58,12 @@ async function runExternalSquad(squad, sharedMarketData) {
     timestamp: Math.floor(now / 1000),
   });
   deployments.decisionLogEntries = existing;
-  fs.writeFileSync(DEPLOYMENTS_PATH, JSON.stringify(deployments, null, 2) + '\n');
+  await writeAndPublishJson({
+    localPath: DEPLOYMENTS_PATH,
+    repoPath: 'frontend/deployments.json',
+    content: deployments,
+    message: `Persist external decision log for ${result.squadId} at ${new Date(now).toISOString()}`,
+  });
 
   const registryPath = path.join(FRONTEND_DIR, 'squad_registry.json');
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
@@ -82,7 +88,12 @@ async function runExternalSquad(squad, sharedMarketData) {
     };
     registry.squads = squads;
     registry.lastUpdated = now;
-    fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2) + '\n');
+    await writeAndPublishJson({
+      localPath: registryPath,
+      repoPath: 'frontend/squad_registry.json',
+      content: registry,
+      message: `Update external squad registry for ${squad.squadName} at ${new Date(now).toISOString()}`,
+    });
   }
 
   await writeTreasuryStateFromDecision({
