@@ -1,6 +1,15 @@
 {
   "entries": [
     {
+      "id": "281-analyst-1776260986300",
+      "agent": "analyst",
+      "cycle": 281,
+      "timestamp": 1776260986300,
+      "status": "complete",
+      "summary": "WAIT ETH | confidence 80%",
+      "durationMs": 1
+    },
+    {
       "id": "281-strategist-1776260987034",
       "agent": "strategist",
       "cycle": 281,
@@ -523,22 +532,13 @@
       "durationMs": 1
     },
     {
-      "id": "291-executor-1776267120807",
-      "agent": "executor",
-      "cycle": 291,
-      "timestamp": 1776267120807,
+      "id": "292-oracle-1776268931828",
+      "agent": "oracle",
+      "cycle": 292,
+      "timestamp": 1776268931828,
       "status": "complete",
-      "summary": "HOLD executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
-      "id": "291-narrator-1776267121775",
-      "agent": "narrator",
-      "cycle": 291,
-      "timestamp": 1776267121775,
-      "status": "complete",
-      "summary": "Xyndicate Alpha held ETH (10% treasury) via okx. Negative 24-hour change but base asset is ETH, holding may be strategic. High spread between Uniswap and OKX prices indicates liquidity issues or manipulation. | Squad Nova held OKB (100% treasury) via okx. The price change in the last 24 hours is negative, indicating a potential bearish trend. Analyst recommends waiting due to uncertainties in the market.",
-      "durationMs": 1
+      "summary": "ETH OKX: $2333.34 (-1.4%) | Uniswap: $428560733.30 | Spread: 1836673609.31bps",
+      "durationMs": 22966
     }
   ]
 }
