@@ -3,7 +3,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { writeAndPublishJson } = require('./github-artifacts');
-const { STATE_PATH } = require('./cycle-state');
+const { STATE_PATH, REGISTRY_PATH: _REGISTRY_PATH } = require('./cycle-state');
 const { fetchExternalRegistry, normalizeExternalSquad } = require('./external-squads');
 const { readTreasuryState } = require('./treasury');
 
@@ -14,6 +14,7 @@ const TXHASHES_PATH = path.join(FRONTEND_DIR, 'txhashes.json');
 const AGENT_PAYMENTS_PATH = path.join(FRONTEND_DIR, 'agentpayments.json');
 const OUTPUT_PATH = path.join(FRONTEND_DIR, 'leaderboard.json');
 const OUTPUT_REPO_PATH = 'frontend/leaderboard.json';
+const LOCAL_REGISTRY_PATH = path.join(FRONTEND_DIR, 'squad_registry.json');
 
 function readJson(filePath, fallback) {
   try {
@@ -74,7 +75,8 @@ async function buildLeaderboard() {
   const entries = Array.isArray(deployments.decisionLogEntries) ? deployments.decisionLogEntries : [];
 
   const squadMap = new Map();
-  const externalRegistry = await fetchExternalRegistry();
+  const localRegistry = readJson(LOCAL_REGISTRY_PATH, { squads: [], lastUpdated: 0 });
+  const externalRegistry = Array.isArray(localRegistry?.squads) && localRegistry.squads.length ? localRegistry : await fetchExternalRegistry();
   const externalRegistryMap = new Map();
   for (const item of Array.isArray(externalRegistry?.squads) ? externalRegistry.squads : []) {
     const key = String(item?.squadName || item?.squadId || '').trim().toUpperCase();
