@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 218,
+      "decisions": 219,
       "confidence": 0.7,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD ETH (100% treasury) · Uniswap offers better price for trading ETH compared to OKX. High spread between exchanges may lead to slippage risks. Wait for better entry point.",
-      "latestTimestamp": 1776241851,
+      "lastAction": "HOLD ETH (100% treasury) · Price stability despite high spread on Uniswap. Analyst recommendation to wait due to high spread indicating liquidity issues.",
+      "latestTimestamp": 1776243727,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 119,
         "sells": 9,
-        "holds": 85,
+        "holds": 86,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xd61061cd595fcfbcf08597679deac13601f5ff946535935ac406d41eb8779b0a",
         "0x0edb047cb7809a607450b578f91fb78eadb5bc966d68ede9454a207d50b53f6e",
         "0x82214af4ae57f0a2cf108bcf813c6efee09c1278d0b04346f20e0afe2dc4f4b6",
         "0x18ee51da47f33fbdcca661140b4b6051811538d8f332fad94910d510516eed6c",
@@ -28,29 +27,29 @@
         "0xa3affc4e3224ba84e88ddc15560e19407427bc6e4f08cf2318196a698440ee69",
         "0x0601f69d8d7917b7dfd29ce2396db4ea5fcc3f81162c664661127e056f160f87",
         "0x9494a3c7443cfe7cbed3d714dfd3bd6eaa29d6da1975307b2d4d87f7cdb138c8",
-        "0x0bb4c4f50e7ab56f7b862d41a2f7f674dc119d5f36e991ac753b1e09961651ff"
+        "0x0bb4c4f50e7ab56f7b862d41a2f7f674dc119d5f36e991ac753b1e09961651ff",
+        "0xa3f72a551de632284963be97b800e08a43c5b6afb139dd37dfb68f9d81dcfd06"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 191,
+      "decisions": 192,
       "confidence": 0.66,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD OKB (100% treasury) · The market is stable with a balanced risk mode. Holding OKB is recommended due to the current conditions and confidence level of 0.8.",
-      "latestTimestamp": 1776241851,
+      "lastAction": "HOLD OKB (100% treasury) · Market price stable with minimal spread and balanced risk mode.",
+      "latestTimestamp": 1776243727,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 48,
         "sells": 1,
-        "holds": 142,
+        "holds": 143,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x342b1665c50d3c702bcd46137f85dfe05be3931070b66d7f3841bd99fc294aa9",
         "0x0d91822fb60ee80189f63904aea054c71e1015d5368a9dc5ead3080264f24468",
         "0xb2c59850dfd6e1b393525cfc57e2ff5c982dd58ee0642a2a7a1d5a00a1e65d50",
         "0x7ed9ba594f6e7702e4e2dd6a9390a408ec468180b0981399b7fac5e85f5d07b2",
@@ -59,7 +58,8 @@
         "0x093bbb798778afb3dfba8cf4690efc8528bd75780c25030c9f5a2efc07196318",
         "0xe371f7df3d6aacaa05c1c37a31830b6083b5891b7a909f434575354a56029a98",
         "0xd2d5d225b5070df5a26e0fc1c88bd14e157a6b4f7255024bcd6dc9f1486cc903",
-        "0xa29915f4d3336a2b6a736e1a15bb6cb4e327b3075fc3d9abf0e47ef0ae19e23d"
+        "0xa29915f4d3336a2b6a736e1a15bb6cb4e327b3075fc3d9abf0e47ef0ae19e23d",
+        "0xe158ac98995950dfa13acd3b01d0f906195507a5769119644d67744cb9feaee2"
       ]
     },
     {
@@ -85,18 +85,18 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-15T08:30:53.065Z",
-  "totalDecisions": 409,
+  "updatedAt": "2026-04-15T09:02:10.300Z",
+  "totalDecisions": 411,
   "uniswapQueriesSuccessful": 0,
   "supportingProofs": {
-    "narratorPayments": 19,
+    "narratorPayments": 21,
     "latestNarratorPayment": {
       "type": "strategist-analyst",
       "from": "Strategist Wallet",
       "to": "Analyst Wallet",
       "amount": "0.00005 OKB",
-      "txHash": "0x238d34f970b218618e69160aa6688eb4d3dfb1a2db6590ef6dc3d0d08f56d0d0",
-      "timestamp": 1776200494,
+      "txHash": "0xac49a6e8d209d2aa4e2ecdcec7e9fe3c6baec86807ea75c7f520672ff70e5965",
+      "timestamp": 1776243727,
       "status": "confirmed",
       "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
     }
