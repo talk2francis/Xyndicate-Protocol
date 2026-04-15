@@ -179,6 +179,7 @@ export default function MarketPage() {
   const [enrolledOptions, setEnrolledOptions] = useState<Strategy[]>([]);
   const [listingHint, setListingHint] = useState<string | null>(null);
   const [mySquad, setMySquad] = useState<MySquadResponse["squad"] | null>(null);
+  const [mySquadLoading, setMySquadLoading] = useState(false);
 
   const strategyLicenseAddress = (deployments as any)?.StrategyLicense?.address || "0x8AbaCE8Ea22A591CE3109599449776A2cb96B186";
   const directPaymentReceiver = "0x795009bb38a32348344a36a4cfcb36e4e84cb8d8";
@@ -284,11 +285,13 @@ export default function MarketPage() {
         setEnrolledOptions([]);
         setSelectedSquadId("");
         setMySquad(null);
+        setMySquadLoading(false);
         setListingHint("Connect the enrolled squad wallet to list a strategy.");
         return;
       }
 
       try {
+        setMySquadLoading(true);
         const mySquadResponse = await fetch(`/api/my-squad?wallet=${encodeURIComponent(address)}`, { cache: "no-store" });
         const mySquadJson: MySquadResponse = await mySquadResponse.json();
         const squad = mySquadJson?.squad || null;
@@ -352,6 +355,8 @@ export default function MarketPage() {
         setSelectedSquadId("");
         setMySquad(null);
         setListingHint("Could not load enrolled squad status from SeasonManager.");
+      } finally {
+        setMySquadLoading(false);
       }
     };
 
@@ -759,7 +764,7 @@ export default function MarketPage() {
             <div className="space-y-3">
               <div>
                 <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Squad name</div>
-                <input type="text" value={mySquad?.squadName || ""} readOnly className="mt-2 w-full cursor-not-allowed rounded-2xl border border-black/10 bg-xyn-cream px-4 py-3 text-sm opacity-70 outline-none dark:border-white/10 dark:bg-zinc-900" />
+                <input type="text" value={mySquadLoading ? "Loading squad..." : (mySquad?.squadName || "No active squad") } readOnly className="mt-2 w-full cursor-not-allowed rounded-2xl border border-black/10 bg-xyn-cream px-4 py-3 text-sm opacity-70 outline-none dark:border-white/10 dark:bg-zinc-900" />
               </div>
               <label className="flex items-center gap-3 text-sm text-xyn-muted dark:text-zinc-300">
                 <input type="checkbox" checked={listingAvailable} onChange={(e) => setListingAvailable(e.target.checked)} className="h-4 w-4 rounded border-black/20" />
