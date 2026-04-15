@@ -187,5 +187,5 @@ Built during OKX Build X Season 2 (April 2026)
 ## Demo
 
 - Live site: https://xyndicateprotocol.vercel.app 
-- Demo video: [PASTE YOUTUBE LINK] 
-- Twitter post: [PASTE TWEET LINK]
+- Demo video: https://www.youtube.com/watch?v=yhnWJCPaTEs
+- Twitter post: https://x.com/xyndicatepro/status/2044558560047108170?s=20
