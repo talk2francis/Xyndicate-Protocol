@@ -65,16 +65,20 @@ async function runExternalSquad(squad, sharedMarketData) {
   const index = squads.findIndex((item) => String(item?.squadName || item?.squadId || '').toUpperCase() === String(squad.squadName || squad.squadId || '').toUpperCase());
   if (index >= 0) {
     const current = { ...(squads[index] || {}) };
+    const nextDecisionCount = Number(current.decisionCount || current.decisions || 0) + 1;
     squads[index] = {
       ...current,
-      decisionCount: Number(current.decisionCount || current.decisions || 0) + 1,
-      lastConfidence: Number(result.confidence || current.lastConfidence || 0),
+      decisionCount: nextDecisionCount,
+      decisions: nextDecisionCount,
+      lastConfidence: Number(result.confidence || current.lastConfidence || 0.5),
       lastDecision: `${result.action} ${result.asset} (${result.allocationPercent}% treasury) · ${result.rationale}`,
       lastRoute: result.route,
       lastDecisionAt: now,
+      lastRunTime: now,
       deactivated: Boolean(current.deactivated),
       cancelled: Boolean(current.cancelled),
       active: current.cancelled === true || current.deactivated === true ? false : true,
+      status: current.cancelled === true || current.deactivated === true ? 'PAUSED' : 'ACTIVE',
     };
     registry.squads = squads;
     registry.lastUpdated = now;
@@ -95,18 +99,18 @@ async function runExternalSquadCycle(sharedMarketData) {
   console.log('[EXTERNAL] Starting external squad cycle at', new Date().toISOString());
   const external = await fetchExternalRegistry();
   const state = readCycleState();
-  const squads = Array.isArray(external?.squads) ? external.squads.map((entry) => normalizeExternalSquad(entry, state)) : [];
-  console.log('[EXTERNAL] Registry squads loaded:', squads.length);
-  const neverRun = squads.filter((s) => !Number(s.lastRunTime || 0));
+  const liveSquads = Array.isArray(external?.squads)
+    ? external.squads
+        .filter((entry) => String(entry?.cancelled).toLowerCase() !== 'true' && String(entry?.deactivated).toLowerCase() !== 'true')
+        .map((entry) => normalizeExternalSquad(entry, state))
+    : [];
+  console.log('[EXTERNAL] Registry squads loaded:', liveSquads.length);
+  const neverRun = liveSquads.filter((s) => !Number(s.lastRunTime || 0));
   console.log('[EXTERNAL] Squads that have NEVER run:', neverRun.map((s) => s.squadName));
 
   const results = [];
-  for (const squad of squads) {
+  for (const squad of liveSquads) {
     console.log('[EXTERNAL] Checking squad:', squad.squadName, '| cancelled:', squad.cancelled, '| deactivated:', squad.deactivated, '| lastRunTime:', squad.lastRunTime || 'never');
-    if (squad.cancelled === true || squad.deactivated === true) {
-      console.log('[EXTERNAL] Skipping', squad.squadName, '— cancelled or deactivated');
-      continue;
-    }
     const result = await runExternalSquad(squad, sharedMarketData);
     if (!result?.skipped) results.push(result);
   }
