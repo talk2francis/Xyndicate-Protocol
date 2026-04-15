@@ -59,6 +59,28 @@ async function runExternalSquad(squad, sharedMarketData) {
   deployments.decisionLogEntries = existing;
   fs.writeFileSync(DEPLOYMENTS_PATH, JSON.stringify(deployments, null, 2) + '\n');
 
+  const registryPath = path.join(FRONTEND_DIR, 'squad_registry.json');
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  const squads = Array.isArray(registry.squads) ? [...registry.squads] : [];
+  const index = squads.findIndex((item) => String(item?.squadName || item?.squadId || '').toUpperCase() === String(squad.squadName || squad.squadId || '').toUpperCase());
+  if (index >= 0) {
+    const current = { ...(squads[index] || {}) };
+    squads[index] = {
+      ...current,
+      decisionCount: Number(current.decisionCount || current.decisions || 0) + 1,
+      lastConfidence: Number(result.confidence || current.lastConfidence || 0),
+      lastDecision: `${result.action} ${result.asset} (${result.allocationPercent}% treasury) · ${result.rationale}`,
+      lastRoute: result.route,
+      lastDecisionAt: now,
+      deactivated: Boolean(current.deactivated),
+      cancelled: Boolean(current.cancelled),
+      active: current.cancelled === true || current.deactivated === true ? false : true,
+    };
+    registry.squads = squads;
+    registry.lastUpdated = now;
+    fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2) + '\n');
+  }
+
   await writeTreasuryStateFromDecision({
     squadId: squad.squadId,
     decision: result,
