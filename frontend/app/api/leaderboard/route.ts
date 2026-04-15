@@ -61,14 +61,34 @@ export async function GET() {
           })
       : [];
 
-    const squads = [...internalSquads, ...externalSquads].sort((a: any, b: any) => {
-      const aRoi = Number(a.roi || 0);
-      const bRoi = Number(b.roi || 0);
-      if (aRoi !== bRoi) return bRoi - aRoi;
-      const aDecisions = Number(a.decisions || 0);
-      const bDecisions = Number(b.decisions || 0);
-      return bDecisions - aDecisions;
-    }).map((squad: any, index: number) => ({ ...squad, rank: index + 1 }));
+    const deduped = new Map<string, any>();
+    for (const squad of [...internalSquads, ...externalSquads]) {
+      const key = String(squad?.squadId || squad?.name || "").trim().toUpperCase();
+      if (!key) continue;
+      const existing = deduped.get(key);
+      if (!existing) {
+        deduped.set(key, squad);
+        continue;
+      }
+      const existingDecisions = Number(existing.decisions || 0);
+      const nextDecisions = Number(squad.decisions || 0);
+      const existingRoi = Number(existing.roi || 0);
+      const nextRoi = Number(squad.roi || 0);
+      if (nextDecisions > existingDecisions || (nextDecisions === existingDecisions && nextRoi > existingRoi)) {
+        deduped.set(key, squad);
+      }
+    }
+
+    const squads = Array.from(deduped.values())
+      .sort((a: any, b: any) => {
+        const aRoi = Number(a.roi || 0);
+        const bRoi = Number(b.roi || 0);
+        if (aRoi !== bRoi) return bRoi - aRoi;
+        const aDecisions = Number(a.decisions || 0);
+        const bDecisions = Number(b.decisions || 0);
+        return bDecisions - aDecisions;
+      })
+      .map((squad: any, index: number) => ({ ...squad, rank: index + 1 }));
 
     return NextResponse.json(
       { ...leaderboard, squads },
