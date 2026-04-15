@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "267-strategist-1776238276543",
-      "agent": "strategist",
-      "cycle": 267,
-      "timestamp": 1776238276543,
-      "status": "complete",
-      "summary": "BUY ETH (100% treasury) | Uniswap offers better price for ETH trading than OKX. High price spread on Uniswap indicates potential arbitrage opportunities. Market change is favorable.",
-      "durationMs": 20
-    },
-    {
       "id": "267-router-1776238277386",
       "agent": "router",
       "cycle": 267,
@@ -538,6 +529,15 @@
       "timestamp": 1776256314669,
       "status": "complete",
       "summary": "WAIT ETH | confidence 80%",
+      "durationMs": 1
+    },
+    {
+      "id": "277-strategist-1776256315478",
+      "agent": "strategist",
+      "cycle": 277,
+      "timestamp": 1776256315478,
+      "status": "complete",
+      "summary": "SELL ETH (100% treasury) | ETH price decreased by 1.7% in 24h, indicating short opportunity. High spread between Uniswap and OKX prices signals liquidity issues. Confidence in recommendation: 0.8",
       "durationMs": 1
     }
   ]
