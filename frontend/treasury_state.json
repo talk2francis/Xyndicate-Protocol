@@ -1,13 +1,13 @@
 {
-  "lastUpdated": 1776214898422,
+  "lastUpdated": 1776216692228,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
-      "currentTreasury": -1904.2635,
+      "currentTreasury": 974.3755,
       "realizedPnl": 0,
-      "unrealizedPnl": -2904.2635,
-      "roi": -290.4264,
+      "unrealizedPnl": -25.6245,
+      "roi": -2.5625,
       "openPositions": [
         {
           "asset": "ETH",
@@ -80,6 +80,12 @@
           "entryPrice": 2315.32,
           "allocationUsdc": 951.2184,
           "openedAt": 1776207635880
+        },
+        {
+          "asset": "ETH",
+          "entryPrice": 2335.34,
+          "allocationUsdc": 969.975,
+          "openedAt": 1776216692228
         }
       ],
       "tradeHistory": [
@@ -178,6 +184,14 @@
           "allocationUsdc": 951.2184,
           "pnl": null,
           "timestamp": 1776207635880
+        },
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "price": 2335.34,
+          "allocationUsdc": 969.975,
+          "pnl": null,
+          "timestamp": 1776216692228
         }
       ],
       "treasuryHistory": [
@@ -218,15 +232,15 @@
         963.0969,
         974.4372,
         969.975,
-        -1904.2635
+        974.3755
       ]
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
-      "currentTreasury": 0,
+      "currentTreasury": 999.809,
       "realizedPnl": 0,
-      "unrealizedPnl": -1000,
-      "roi": -100,
+      "unrealizedPnl": -0.191,
+      "roi": -0.0191,
       "openPositions": [
         {
           "asset": "OKB",
@@ -408,8 +422,7 @@
         997.3398,
         1000.3969,
         1001.1024,
-        999.809,
-        0
+        999.809
       ]
     },
     "SPARTAN": {
