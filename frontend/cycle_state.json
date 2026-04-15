@@ -1,15 +1,118 @@
 {
-  "currentAgent": "oracle",
+  "currentAgent": "idle",
   "cycleNumber": 305,
   "cycleStartTime": 1776286844764,
-  "nextCycleTime": 1776288644764,
-  "lastCycleComplete": 1776277904714,
+  "nextCycleTime": 1776288695537,
+  "lastCycleComplete": 1776286895537,
   "activeSquads": [
     "Xyndicate Alpha",
     "Squad Nova"
   ],
-  "squadResults": {},
-  "slowSquadLastRunAt": {},
+  "squadResults": {
+    "XYNDICATE_ALPHA": {
+      "squadId": "XYNDICATE_ALPHA",
+      "squadName": "Xyndicate Alpha",
+      "riskMode": "aggressive",
+      "baseAsset": "ETH",
+      "txHash": "0x2dd7797d69875c36abddd91e0dcbb52afd17ff6284eaa8c9b39eea487a4b5736",
+      "vaultTxHash": "0xf7823ea978f70d6982e59aa826117fe475ee326a9ba528552081390a250b7f4d",
+      "pnlDelta": "50",
+      "action": "BUY",
+      "asset": "ETH",
+      "sizePercent": 100,
+      "rationale": "Positive 24h price change and arbitrage opportunity with Uniswap price. Analyst confidence score of 0.8 supports the decision.",
+      "route": "okx",
+      "routingReason": "OKX remains within threshold, so default execution path is retained.",
+      "spreadBps": 1790033423.4589,
+      "narratorSummary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. Positive 24h price change and arbitrage opportunity with Uniswap price. Analyst confidence score of 0.8 supports the decision.",
+      "analyst": {
+        "opportunities": [
+          {
+            "asset": "ETH",
+            "type": "long",
+            "rationale": "Positive 24h price change and potential arbitrage opportunity with Uniswap price",
+            "confidence": 0.8
+          }
+        ],
+        "risks": [
+          {
+            "description": "High spread between Uniswap and OKX prices",
+            "severity": 0.9
+          }
+        ],
+        "recommendation": "wait",
+        "topAsset": "ETH",
+        "confidenceScore": 0.8
+      },
+      "market": {
+        "pair": "ETH-USDT",
+        "price": 2362.92,
+        "okxPrice": 2362.92,
+        "uniswapPrice": 422972940.61596036,
+        "spreadBps": 1790033423.46,
+        "betterRoute": "uniswap",
+        "uniswapPoolId": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
+        "priceSpreads": {
+          "absolute": 422970577.69596034,
+          "bps": 1790033423.46,
+          "source": "uniswap-v3-onchain",
+          "rawUniswapPrice": 422972940.61596036,
+          "rawOkxPrice": 2362.92,
+          "uniswapError": null
+        },
+        "change24h": 2.023263646019539
+      },
+      "narrative": "BUY ETH (100% treasury) via okx · Positive 24h price change and arbitrage opportunity with Uniswap price. Analyst confidence score of 0.8 supports the decision."
+    },
+    "SQUAD_NOVA": {
+      "squadId": "SQUAD_NOVA",
+      "squadName": "Squad Nova",
+      "riskMode": "balanced",
+      "baseAsset": "OKB",
+      "txHash": "0x334fa6307b75eaa9c475becd16da0e8acdf378ece3d2444a822f00c2ac0c2c0a",
+      "vaultTxHash": "0x409c5d66f46904f6a6720a6238a1c50eb036e992ef38ea2302981a122cfdffd5",
+      "pnlDelta": "0",
+      "action": "HOLD",
+      "asset": "OKB",
+      "sizePercent": 100,
+      "rationale": "Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait with low confidence score of 0.5.",
+      "route": "okx",
+      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "spreadBps": 0,
+      "narratorSummary": "Squad Nova held OKB (100% treasury) via okx. Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait with low confidence score of 0.5.",
+      "analyst": {
+        "opportunities": [],
+        "risks": [],
+        "recommendation": "wait",
+        "topAsset": "OKB",
+        "confidenceScore": 0.5
+      },
+      "market": {
+        "pair": "OKB-USDT",
+        "price": 85.65,
+        "okxPrice": 85.65,
+        "uniswapPrice": 85.65,
+        "spreadBps": 0,
+        "betterRoute": "okx",
+        "uniswapPoolId": null,
+        "priceSpreads": {
+          "absolute": 0,
+          "bps": 0,
+          "source": "okx-fallback",
+          "rawUniswapPrice": null,
+          "rawOkxPrice": 85.65,
+          "uniswapError": null
+        },
+        "change24h": 0.4927842309046131
+      },
+      "narrative": "HOLD OKB (100% treasury) via okx · Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait with low confidence score of 0.5."
+    }
+  },
+  "slowSquadLastRunAt": {
+    "phantom_last_run": 1776286873686,
+    "cipher_last_run": 1776286873687,
+    "nexus_last_run": 1776286873688
+  },
   "uniswapQueriesSuccessful": 0,
   "agentLog": [
     {
@@ -17,6 +120,66 @@
       "status": "started",
       "completedAt": 1776286844764,
       "summary": "Cycle 305 started. Oracle snapshot in progress."
+    },
+    {
+      "agent": "oracle",
+      "status": "complete",
+      "completedAt": 1776286868835,
+      "summary": "ETH $0.00 (0.00%) | Uniswap spread 0.00bps"
+    },
+    {
+      "agent": "analyst",
+      "status": "complete",
+      "completedAt": 1776286869935,
+      "summary": "wait on ETH | confidence 0"
+    },
+    {
+      "agent": "strategist",
+      "status": "complete",
+      "completedAt": 1776286870644,
+      "summary": "HOLD ETH (0% treasury)"
+    },
+    {
+      "agent": "router",
+      "status": "complete",
+      "completedAt": 1776286871397,
+      "summary": "okx selected | spread 0.00bps"
+    },
+    {
+      "agent": "executor",
+      "status": "complete",
+      "completedAt": 1776286872123,
+      "summary": "HOLD executed | tx 0x2dd7797d69875c36abddd91e0dcbb52afd17ff6284eaa8c9b39eea487a4b5736"
+    },
+    {
+      "agent": "narrator",
+      "status": "complete",
+      "completedAt": 1776286872836,
+      "summary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. Positive 24h price change and arbitrage opportunity with Uniswap price. Analyst confidence score of 0.8 supports the decision. | Squad Nova held OKB (100% treasury) via okx. Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait with low confidence score of 0.5."
+    },
+    {
+      "agent": "slow-phantom",
+      "status": "complete",
+      "completedAt": 1776286873686,
+      "summary": "Phantom Protocol decision logged"
+    },
+    {
+      "agent": "slow-cipher",
+      "status": "complete",
+      "completedAt": 1776286873687,
+      "summary": "Cipher Strategy decision logged"
+    },
+    {
+      "agent": "slow-nexus",
+      "status": "complete",
+      "completedAt": 1776286873688,
+      "summary": "Nexus Quant decision logged"
+    },
+    {
+      "agent": "system",
+      "status": "complete",
+      "completedAt": 1776286895537,
+      "summary": "Cycle 305 complete. Awaiting next scheduled run."
     }
   ]
 }
