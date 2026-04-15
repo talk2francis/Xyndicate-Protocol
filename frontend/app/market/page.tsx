@@ -346,7 +346,6 @@ export default function MarketPage() {
 
         setEnrolledOptions(options);
         setSelectedSquadId((current) => current || options[0]?.squadId || "");
-        setMySquad(options[0] || null);
         setListingHint(null);
         setDelistingError(null);
         setDelistingSuccess(null);
