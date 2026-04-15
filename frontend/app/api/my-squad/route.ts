@@ -37,9 +37,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ squad: null });
     }
 
-    const activeSquad = walletSquads
-      .sort((a: any, b: any) => (Number(b.registeredAt || 0) - Number(a.registeredAt || 0)))
-      .find((s: any) => s.cancelled !== true);
+    const sortedSquads = walletSquads.sort((a: any, b: any) => (Number(b.registeredAt || 0) - Number(a.registeredAt || 0)));
+    const activeSquad = sortedSquads.find((s: any) => s.cancelled !== true && s.deactivated !== true) || sortedSquads[0] || null;
 
     if (!activeSquad) {
       return NextResponse.json({ squad: null });
