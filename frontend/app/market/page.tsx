@@ -307,6 +307,7 @@ export default function MarketPage() {
         const externalDisplayName = squad.squadName || matched[0]?.squadId || "";
 
         if (!options.length) {
+          const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_XLAYER_RPC || "https://rpc.xlayer.tech");
           const vault = new ethers.Contract(strategyVaultAddress, STRATEGY_VAULT_ABI, provider);
           const candidateNames = ["HI", "XYNDICATE_ALPHA", "XYNDICATE_BETA", "ALPHA", "BETA"];
           let detectedName = externalDisplayName || "HI";
