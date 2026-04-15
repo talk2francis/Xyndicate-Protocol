@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "298-oracle-1776277877565",
-      "agent": "oracle",
-      "cycle": 298,
-      "timestamp": 1776277877565,
-      "status": "complete",
-      "summary": "ETH OKX: $2348.82 (+0.5%) | Uniswap: $425423892.68 | Spread: 1811213902.54bps",
-      "durationMs": 32713
-    },
-    {
       "id": "298-analyst-1776277878671",
       "agent": "analyst",
       "cycle": 298,
@@ -538,6 +529,15 @@
       "timestamp": 1776294080751,
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | Positive 24h price change and potential arbitrage opportunity through Uniswap with high confidence. High spread between Uniswap and OKX prices indicates a buying opportunity.",
+      "durationMs": 1
+    },
+    {
+      "id": "308-router-1776294081440",
+      "agent": "router",
+      "cycle": 308,
+      "timestamp": 1776294081440,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
