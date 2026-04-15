@@ -117,9 +117,11 @@ async function buildLeaderboard() {
   const registry = await fetchExternalRegistry();
   for (const external of Array.isArray(registry?.squads) ? registry.squads : []) {
     const normalized = normalizeExternalSquad(external, cycleState);
-    if (String(external?.cancelled).toLowerCase() === 'true') continue;
+    const isCancelled = String(external?.cancelled).toLowerCase() === 'true';
+    const isDeactivated = String(external?.deactivated).toLowerCase() === 'true';
+    if (isCancelled || isDeactivated) continue;
+
     const decisions = Number(normalized.decisions || 0);
-    const paused = String(external?.deactivated).toLowerCase() === 'true' || decisions === 0;
     const treasury = Number(treasuryState?.squads?.[normalized.squadId]?.currentTreasury || 1000);
     const roi = Number(treasuryState?.squads?.[normalized.squadId]?.roi || 0);
 
@@ -129,15 +131,15 @@ async function buildLeaderboard() {
       buys: normalized.stats.buys,
       sells: normalized.stats.sells,
       holds: normalized.stats.holds,
-      latestTimestamp: normalized.latestTimestamp,
+      latestTimestamp: normalized.latestTimestamp || Number(external?.registeredAt || 0),
       registeredAt: Number(external?.registeredAt || normalized.latestTimestamp || 0),
       latestRationale: decisions === 0 ? 'Awaiting first cycle' : normalized.lastAction,
-      lastAction: normalized.stats.lastTradeAction,
+      lastAction: decisions === 0 ? 'Awaiting first cycle' : normalized.stats.lastTradeAction,
       lastAsset: normalized.stats.lastAsset,
       confidence: decisions === 0 ? 0 : normalized.confidence,
       txHashes: normalized.txHashes,
       external: true,
-      status: paused ? 'PAUSED' : 'ACTIVE',
+      status: decisions === 0 ? 'ACTIVE' : 'ACTIVE',
       routeUsed: decisions === 0 ? null : (normalized.stats.lastTradeAction || null),
       treasury,
       roi,

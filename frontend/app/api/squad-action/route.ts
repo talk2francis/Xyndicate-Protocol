@@ -83,6 +83,7 @@ export async function POST(request: Request) {
       target.cancelledAt = Date.now();
       target.deactivated = true;
       target.listedOnMarket = false;
+      target.active = false;
     } else if (action === "list") {
       target.listedOnMarket = true;
       target.listedAt = Date.now();

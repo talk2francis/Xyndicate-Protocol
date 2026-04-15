@@ -124,6 +124,7 @@ export async function POST(request: Request) {
       registeredAt: Number(body?.registeredAt || Date.now()),
       cancelled: false,
       deactivated: false,
+      active: true,
       decisionCount: 0,
       lastConfidence: 0,
       lastDecision: null,
