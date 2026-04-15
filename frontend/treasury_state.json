@@ -1,13 +1,13 @@
 {
-  "lastUpdated": 1776272499139,
+  "lastUpdated": 1776274242664,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
-      "currentTreasury": 1006.5519,
+      "currentTreasury": 1015.1884,
       "realizedPnl": null,
-      "unrealizedPnl": 6.5519,
-      "roi": 0.6552,
+      "unrealizedPnl": 15.1884,
+      "roi": 1.5188,
       "openPositions": [
         {
           "asset": "ETH",
@@ -80,6 +80,12 @@
           "entryPrice": 2343.15,
           "allocationUsdc": 1007.0373,
           "openedAt": 1776272480651
+        },
+        {
+          "asset": "ETH",
+          "entryPrice": 2353.2,
+          "allocationUsdc": 1006.5519,
+          "openedAt": 1776274242663
         }
       ],
       "tradeHistory": [
@@ -530,6 +536,14 @@
           "allocationUsdc": 1007.0373,
           "pnl": null,
           "timestamp": 1776272480651
+        },
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "price": 2353.2,
+          "allocationUsdc": 1006.5519,
+          "pnl": null,
+          "timestamp": 1776274242663
         }
       ],
       "treasuryHistory": [
@@ -618,7 +632,8 @@
         1005.2331,
         0,
         1007.0373,
-        1006.5519
+        1006.5519,
+        1015.1884
       ]
     },
     "SQUAD_NOVA": {
