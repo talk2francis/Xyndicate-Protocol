@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "287-strategist-1776265263156",
-      "agent": "strategist",
-      "cycle": 287,
-      "timestamp": 1776265263156,
-      "status": "complete",
-      "summary": "HOLD ETH (100% treasury) | Uniswap price significantly higher than OKX, potential arbitrage opportunity. High spread indicates low liquidity. Negative 24h price change for ETH. Wait for better conditions.",
-      "durationMs": 1
-    },
-    {
       "id": "287-router-1776265263965",
       "agent": "router",
       "cycle": 287,
@@ -538,6 +529,15 @@
       "timestamp": 1776276091897,
       "status": "complete",
       "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 1
+    },
+    {
+      "id": "297-executor-1776276092643",
+      "agent": "executor",
+      "cycle": 297,
+      "timestamp": 1776276092643,
+      "status": "complete",
+      "summary": "BUY executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
