@@ -74,7 +74,6 @@ async function buildLeaderboard() {
   const entries = Array.isArray(deployments.decisionLogEntries) ? deployments.decisionLogEntries : [];
 
   const squadMap = new Map();
-
   const externalRegistry = await fetchExternalRegistry();
   const externalRegistryMap = new Map();
   for (const item of Array.isArray(externalRegistry?.squads) ? externalRegistry.squads : []) {
@@ -85,6 +84,13 @@ async function buildLeaderboard() {
 
   for (const entry of entries) {
     const squadId = normalizeSquadId(entry?.squadId || 'XYNDICATE_ALPHA');
+    const externalHistory = externalRegistryMap.get(String(squadId).trim().toUpperCase());
+    if (externalHistory) {
+      const isCancelled = String(externalHistory?.cancelled).toLowerCase() === 'true';
+      const isDeactivated = String(externalHistory?.deactivated).toLowerCase() === 'true';
+      if (isCancelled || isDeactivated) continue;
+      continue;
+    }
     const timestamp = Number(entry?.timestamp || 0);
     const rationale = String(entry?.rationale || 'Active strategy cycle');
     const action = normalizeAction(rationale);
