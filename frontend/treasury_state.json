@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776249073574,
+  "lastUpdated": 1776249093164,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -399,72 +399,11 @@
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
-      "currentTreasury": 996.6343,
-      "realizedPnl": 0,
-      "unrealizedPnl": -3.3657,
-      "roi": -0.3366,
-      "openPositions": [
-        {
-          "asset": "OKB",
-          "entryPrice": 85.23,
-          "allocationUsdc": 1000,
-          "openedAt": 1776169938542
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 86.35,
-          "allocationUsdc": 1000,
-          "openedAt": 1776171742181
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 86.26,
-          "allocationUsdc": 1013.1409,
-          "openedAt": 1776173454415
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 0,
-          "allocationUsdc": 101.10427,
-          "openedAt": 1776173485330
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 87.44,
-          "allocationUsdc": -2013.1409,
-          "openedAt": 1776175292028
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 87.2,
-          "allocationUsdc": 1052.4122,
-          "openedAt": 1776177082886
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 0,
-          "allocationUsdc": 104.95236,
-          "openedAt": 1776177110950
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 85.24,
-          "allocationUsdc": -1052.4122,
-          "openedAt": 1776200482933
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 0,
-          "allocationUsdc": 100.22783,
-          "openedAt": 1776200521533
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 85.24,
-          "allocationUsdc": 0,
-          "openedAt": 1776204105075
-        }
-      ],
+      "currentTreasury": null,
+      "realizedPnl": null,
+      "unrealizedPnl": 0,
+      "roi": null,
+      "openPositions": [],
       "tradeHistory": [
         {
           "action": "BUY",
@@ -545,6 +484,86 @@
           "allocationUsdc": 0,
           "pnl": null,
           "timestamp": 1776204105075
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "price": 84.74,
+          "allocationUsdc": 1000,
+          "pnl": -5.7491,
+          "timestamp": 1776249093164
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "price": 84.74,
+          "allocationUsdc": 1000,
+          "pnl": -18.645,
+          "timestamp": 1776249093164
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "price": 84.74,
+          "allocationUsdc": 1013.1409,
+          "pnl": -17.8527,
+          "timestamp": 1776249093164
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "price": 84.74,
+          "allocationUsdc": 101.10427,
+          "pnl": null,
+          "timestamp": 1776249093164
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "price": 84.74,
+          "allocationUsdc": -2013.1409,
+          "pnl": 62.1624,
+          "timestamp": 1776249093164
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "price": 84.74,
+          "allocationUsdc": 1052.4122,
+          "pnl": -29.6896,
+          "timestamp": 1776249093164
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "price": 84.74,
+          "allocationUsdc": 104.95236,
+          "pnl": null,
+          "timestamp": 1776249093164
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "price": 84.74,
+          "allocationUsdc": -1052.4122,
+          "pnl": 6.1732,
+          "timestamp": 1776249093164
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "price": 84.74,
+          "allocationUsdc": 100.22783,
+          "pnl": null,
+          "timestamp": 1776249093164
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "price": 84.74,
+          "allocationUsdc": 0,
+          "pnl": 0,
+          "timestamp": 1776249093164
         }
       ],
       "treasuryHistory": [
@@ -603,7 +622,8 @@
         994.753,
         995.4585,
         995.6936,
-        996.6343
+        996.6343,
+        null
       ]
     },
     "SPARTAN": {
