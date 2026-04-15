@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 239,
-      "confidence": 0.8,
+      "decisions": 240,
+      "confidence": 0.66,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "BUY ETH (100% treasury) · High spread between Uniswap and OKX prices, indicating potential arbitrage opportunity with analyst confidence of 0.8.",
-      "latestTimestamp": 1776269860,
+      "lastAction": "HOLD ETH (100% treasury) · Price stability and low volatility, no immediate trading opportunity. High spread between Uniswap and centralized exchange prices with significant 24h price decrease.",
+      "latestTimestamp": 1776270727,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 130,
         "sells": 10,
-        "holds": 94,
-        "lastTradeAction": "BUY",
+        "holds": 95,
+        "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x00de2e53139d69971848759d8134922c0e5c327856cd683dcfc0b96086cc12f2",
         "0x3a018c181d6b84cbd5c1a0a049cb681dd19d0c14b642c3153d71548af0eb7165",
         "0xfdb4f947b3909f0cda6e7aa23fc53c72b5d06b03280f358fb9fc913278c8154c",
         "0x5735daf48d728728cd13a9ef29c607d5a2977ab95b75cea31fdc04e8dd521e56",
@@ -28,29 +27,29 @@
         "0x05e5309b48e1158dd7f88aa3f9974a934aeb9b5b2d1c0ee3d2753504cc49e287",
         "0x802e131372c5461ca7b3becb3091d605109288ec8bdfc5f4b4ffbc8a92e92446",
         "0xc2cdad3246e4d38d039f566fb02e95c4b0e2ec447dc8f6dd4014be02a5c0714a",
-        "0xe5b15c03a2d1c34e1e75d81b86f341f2a02a844aa7e4001d57408e4833a0e68a"
+        "0xe5b15c03a2d1c34e1e75d81b86f341f2a02a844aa7e4001d57408e4833a0e68a",
+        "0xffeba554172bf17d0dfea070de00cd37935c754efce25579fb2e0b694533c6e7"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 212,
+      "decisions": 213,
       "confidence": 0.7,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD OKB (100% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait with 80% confidence score.",
-      "latestTimestamp": 1776269860,
+      "lastAction": "HOLD OKB (100% treasury) · Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait with low confidence score.",
+      "latestTimestamp": 1776270727,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 48,
         "sells": 4,
-        "holds": 160,
+        "holds": 161,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0xf5ebfe8c8e28bcb3a008f2c997a263c83971d0403ff0260d98e62465172c8a56",
         "0x7d9d753218bc994b4ab7ac527d4cbfe909189e5c4d98a99f22c5e225a11dd091",
         "0x88da2f6f0958da5c634ac38f1a0d8fcb8cec070e4b50d6b8dbc924564ed9167b",
         "0xcc663a8aa2061e5c271b12fa5686d28745d8c2c40c0155cd7d4344238c7589b3",
@@ -59,18 +58,19 @@
         "0x18239cf2c0fe9fff75b9a1a77443bc3e6121eafaf40015f52982d949f0c9689f",
         "0xaffe6e0485fb998c20e82e89ee6e202e176c995d43d2f455acac59424b43db13",
         "0xee00e59f1cc875bf6beb6e843da4ed53375ffc336e03d22b1ee71cd1356e9154",
-        "0x226413152658b4340328a29069520b8c7c6c0bd6d2c1910df5289b930e2c9e9d"
+        "0x226413152658b4340328a29069520b8c7c6c0bd6d2c1910df5289b930e2c9e9d",
+        "0x1bb0a06602120d880bbce706011299b6439e86d6c1d69e7c29961bebca4c12d7"
       ]
     },
     {
       "rank": 3,
       "squadId": "BRAVO",
-      "decisions": 1,
+      "decisions": 2,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "latestTimestamp": 1776268962052,
+      "latestTimestamp": 1776269884665,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -85,8 +85,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-15T16:18:07.347Z",
-  "totalDecisions": 453,
+  "updatedAt": "2026-04-15T16:32:09.907Z",
+  "totalDecisions": 455,
   "uniswapQueriesSuccessful": 0,
   "supportingProofs": {
     "narratorPayments": 21,
