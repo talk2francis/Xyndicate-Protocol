@@ -3,24 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 242,
+      "decisions": 244,
       "confidence": 0.8,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and potential arbitrage opportunity with Uniswap price. High spread between Uniswap and OKX prices indicates potential for profit.",
-      "latestTimestamp": 1776274267,
+      "lastAction": "BUY ETH (100% treasury) · High spread between Uniswap and OKX prices suggests arbitrage opportunity with confidence 80%. Extreme price spread on Uniswap is a risk, but overall recommendation is to buy.",
+      "latestTimestamp": 1776277883,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 132,
+        "buys": 134,
         "sells": 10,
         "holds": 95,
         "lastTradeAction": "BUY",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x5735daf48d728728cd13a9ef29c607d5a2977ab95b75cea31fdc04e8dd521e56",
-        "0x9242a7e6fc8255349d0cba5d019715203bdbbd67781cda19d53810b8a557be18",
         "0xeb877256f1044e3b197f2639b31791e126afea58b47867223d8fdfd8811ab7ac",
         "0x05e5309b48e1158dd7f88aa3f9974a934aeb9b5b2d1c0ee3d2753504cc49e287",
         "0x802e131372c5461ca7b3becb3091d605109288ec8bdfc5f4b4ffbc8a92e92446",
@@ -28,30 +26,30 @@
         "0xe5b15c03a2d1c34e1e75d81b86f341f2a02a844aa7e4001d57408e4833a0e68a",
         "0xffeba554172bf17d0dfea070de00cd37935c754efce25579fb2e0b694533c6e7",
         "0x31108c4d59084b3f700309af911950ae01e5f9d2f4f0a82d7020c3f950c074c1",
-        "0xf625671c4dba8e097d8963f8a96dccb50eb70a40ca194552a2b1da4e21e771c5"
+        "0xf625671c4dba8e097d8963f8a96dccb50eb70a40ca194552a2b1da4e21e771c5",
+        "0xc580e6f38c14d9f3ada42c6eabcfc237bd4a171c2e9d9fc2ad17e6205c3eb3e5",
+        "0xfe8c6ee3e123293c4b3775813bc7e0be5f0564481b7d7b56699cdc4d47517872"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 215,
-      "confidence": 0.66,
+      "decisions": 217,
+      "confidence": 0.7,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD OKB (100% treasury) · Market stability with minimal spread and consistent prices across exchanges. Analyst confidence high at 0.8.",
-      "latestTimestamp": 1776274267,
+      "lastAction": "HOLD OKB (100% treasury) · Negative 24h price change, wait for better opportunities. Confidence score: 0.7",
+      "latestTimestamp": 1776277883,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 48,
         "sells": 4,
-        "holds": 163,
+        "holds": 165,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0xcc663a8aa2061e5c271b12fa5686d28745d8c2c40c0155cd7d4344238c7589b3",
-        "0xf835938fa3f8dd28f492bb3e6e450869d604581f870d1ba58542482909436fb5",
         "0x7e94683c66b5519553821cb3571fcb5bc10b78966dea94cdc7780372ed33cae6",
         "0x18239cf2c0fe9fff75b9a1a77443bc3e6121eafaf40015f52982d949f0c9689f",
         "0xaffe6e0485fb998c20e82e89ee6e202e176c995d43d2f455acac59424b43db13",
@@ -59,18 +57,20 @@
         "0x226413152658b4340328a29069520b8c7c6c0bd6d2c1910df5289b930e2c9e9d",
         "0x1bb0a06602120d880bbce706011299b6439e86d6c1d69e7c29961bebca4c12d7",
         "0x5a6c52243b6ed4b2ec45137edcc4bc691b34ad7cd84e262b61d8d6769136f236",
-        "0x976800d89bec4f3bf83fef0bf9a62f22c400d535772fa17814578b63741a24fd"
+        "0x976800d89bec4f3bf83fef0bf9a62f22c400d535772fa17814578b63741a24fd",
+        "0xd20c7121666093ce3132f6dc2e576f492218db5b2c73a4d93369915f726e4f71",
+        "0xfe39c2c9c899550e61854142bdfd78ebff45534a7d2c09d5f18886e03ace7607"
       ]
     },
     {
       "rank": 3,
       "squadId": "BRAVO",
-      "decisions": 2,
+      "decisions": 4,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "latestTimestamp": 1776269884665,
+      "latestTimestamp": 1776277907550,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -85,8 +85,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-15T17:31:33.754Z",
-  "totalDecisions": 460,
+  "updatedAt": "2026-04-15T18:31:50.246Z",
+  "totalDecisions": 465,
   "uniswapQueriesSuccessful": 0,
   "supportingProofs": {
     "narratorPayments": 21,
