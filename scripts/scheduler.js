@@ -143,8 +143,10 @@ async function scheduledRun() {
     }
 
     const external = await loadExternalSquads();
+    const neverRun = external.squads.filter((s) => !Number(s.lastRunTime || 0));
     console.log('[EXTERNAL] Starting external squad check at', new Date().toISOString());
     console.log('[EXTERNAL] Registry squads loaded:', external.registry?.squads?.length || 0);
+    console.log('[EXTERNAL] Squads that have NEVER run:', neverRun.map((s) => s.squadName));
     for (const squad of external.squads) {
       console.log('[EXTERNAL] Checking squad:', squad.squadName,
         '| cancelled:', squad.cancelled,
