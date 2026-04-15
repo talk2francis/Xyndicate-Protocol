@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "284-analyst-1776263493206",
-      "agent": "analyst",
-      "cycle": 284,
-      "timestamp": 1776263493206,
-      "status": "complete",
-      "summary": "WAIT ETH | confidence 70%",
-      "durationMs": 1
-    },
-    {
       "id": "284-strategist-1776263493987",
       "agent": "strategist",
       "cycle": 284,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | Price stability and low volatility, no immediate trading opportunity. High spread between Uniswap and centralized exchange prices with significant 24h price decrease.",
       "durationMs": 1
+    },
+    {
+      "id": "294-router-1776270724493",
+      "agent": "router",
+      "cycle": 294,
+      "timestamp": 1776270724493,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "durationMs": 12
     }
   ]
 }
