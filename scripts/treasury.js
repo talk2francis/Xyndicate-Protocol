@@ -108,6 +108,10 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, allocat
 
   state.currentTreasury = Math.max(0, Number((INITIAL_TREASURY + Number(state.realizedPnl || 0) + Number(state.unrealizedPnl || 0)).toFixed(4)));
   state.roi = Number(Math.max(-100, (((state.currentTreasury - INITIAL_TREASURY) / 10))).toFixed(4));
+  if (state.currentTreasury === 0 && !state.wipedAt) {
+    state.wipedAt = Date.now();
+    console.log('[TREASURY] Squad treasury wiped to $0. Refill scheduled in 48 hours.');
+  }
   state.treasuryHistory.push(state.currentTreasury);
   return state;
 }
