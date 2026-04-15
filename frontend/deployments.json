@@ -452,7 +452,9 @@
     "0x0601f69d8d7917b7dfd29ce2396db4ea5fcc3f81162c664661127e056f160f87",
     "0xe371f7df3d6aacaa05c1c37a31830b6083b5891b7a909f434575354a56029a98",
     "0x9494a3c7443cfe7cbed3d714dfd3bd6eaa29d6da1975307b2d4d87f7cdb138c8",
-    "0xd2d5d225b5070df5a26e0fc1c88bd14e157a6b4f7255024bcd6dc9f1486cc903"
+    "0xd2d5d225b5070df5a26e0fc1c88bd14e157a6b4f7255024bcd6dc9f1486cc903",
+    "0x0bb4c4f50e7ab56f7b862d41a2f7f674dc119d5f36e991ac753b1e09961651ff",
+    "0xa29915f4d3336a2b6a736e1a15bb6cb4e327b3075fc3d9abf0e47ef0ae19e23d"
   ],
   "decisionLogEntries": [
     {
@@ -3303,6 +3305,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (100% treasury) · Market is stable with minimal spread and balanced risk mode.",
       "timestamp": 1776240145
+    },
+    {
+      "txHash": "0x0bb4c4f50e7ab56f7b862d41a2f7f674dc119d5f36e991ac753b1e09961651ff",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Uniswap offers better price for trading ETH compared to OKX. High spread between exchanges may lead to slippage risks. Wait for better entry point.",
+      "timestamp": 1776241851
+    },
+    {
+      "txHash": "0xa29915f4d3336a2b6a736e1a15bb6cb4e327b3075fc3d9abf0e47ef0ae19e23d",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · The market is stable with a balanced risk mode. Holding OKB is recommended due to the current conditions and confidence level of 0.8.",
+      "timestamp": 1776241851
     }
   ]
 }
