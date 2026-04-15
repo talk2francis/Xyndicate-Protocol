@@ -26,7 +26,7 @@ Key differentiators:
 
 ## Architecture
 
-![Xyndicate architecture](./docs/architecture.svg)
+<img src="./docs/architecture.svg" alt="Xyndicate architecture" width="100%" />
 
 ```text
 OKX Market API ──┐
