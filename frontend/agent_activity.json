@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "262-strategist-1776229390240",
-      "agent": "strategist",
-      "cycle": 262,
-      "timestamp": 1776229390240,
-      "status": "complete",
-      "summary": "HOLD ETH (100% treasury) | Price stable with no significant opportunities, high spread on Uniswap and negative 24h price change. Wait for better conditions.",
-      "durationMs": 1
-    },
-    {
       "id": "262-router-1776229390923",
       "agent": "router",
       "cycle": 262,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "WAIT ETH | confidence 80%",
       "durationMs": 10
+    },
+    {
+      "id": "272-strategist-1776247348663",
+      "agent": "strategist",
+      "cycle": 272,
+      "timestamp": 1776247348663,
+      "status": "complete",
+      "summary": "BUY ETH (100% treasury) | Uniswap price significantly higher than OKX price, indicating potential arbitrage opportunities with high confidence score of 0.8",
+      "durationMs": 1
     }
   ]
 }
