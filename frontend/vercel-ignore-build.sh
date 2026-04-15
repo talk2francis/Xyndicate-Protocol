@@ -2,5 +2,5 @@
 
 set -e
 
-# Do not ignore this build. Let Vercel continue with the deployment.
-exit 1
+# No-op placeholder. Keep builds flowing.
+exit 0
