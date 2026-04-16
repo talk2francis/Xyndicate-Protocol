@@ -1,197 +1,22 @@
 {
-  "currentAgent": "idle",
-  "cycleNumber": 354,
-  "cycleStartTime": 1776371577781,
-  "nextCycleTime": 1776373429525,
-  "lastCycleComplete": 1776371629525,
+  "currentAgent": "oracle",
+  "cycleNumber": 355,
+  "cycleStartTime": 1776373302615,
+  "nextCycleTime": 1776375102615,
+  "lastCycleComplete": 1776366166462,
   "activeSquads": [
     "Xyndicate Alpha",
     "Squad Nova"
   ],
-  "squadResults": {
-    "XYNDICATE_ALPHA": {
-      "squadId": "XYNDICATE_ALPHA",
-      "squadName": "Xyndicate Alpha",
-      "riskMode": "aggressive",
-      "baseAsset": "ETH",
-      "txHash": "0xe054769e23f49888937f07add67e778dfe62a3b68c82878b4d6ed31bf85283c4",
-      "vaultTxHash": "0x64541b45f46461d4291d32ce4b1ff7d4d2f13f15e26e10fc388ffb8dfd00ae04",
-      "pnlDelta": "0",
-      "action": "HOLD",
-      "asset": "ETH",
-      "sizePercent": 10,
-      "rationale": "Fallback decision",
-      "route": "okx",
-      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "spreadBps": 12.8321,
-      "narratorSummary": "Xyndicate Alpha held ETH (10% treasury) via okx. Fallback decision",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "ETH",
-            "type": "hold",
-            "rationale": "Fallback analyst response: OpenAI quota/API unavailable",
-            "confidence": 35
-          }
-        ],
-        "risks": [
-          {
-            "description": "OpenAI quota/API unavailable",
-            "severity": 4
-          }
-        ],
-        "recommendation": "wait",
-        "topAsset": "ETH",
-        "confidenceScore": 35
-      },
-      "market": {
-        "pair": "ETH-USDT",
-        "price": 2346.43,
-        "okxPrice": 2346.43,
-        "uniswapPrice": 2349.440966319192,
-        "spreadBps": 12.83,
-        "betterRoute": "uniswap",
-        "uniswapPoolId": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
-        "priceSpreads": {
-          "absolute": 3.0109663192,
-          "bps": 12.83,
-          "source": "uniswap-v3-onchain",
-          "rawUniswapPrice": 2349.440966319192,
-          "rawOkxPrice": 2346.43,
-          "uniswapError": null
-        },
-        "change24h": -0.7587644911752414
-      },
-      "narrative": "HOLD ETH (10% treasury) via okx · Fallback decision"
-    },
-    "SQUAD_NOVA": {
-      "squadId": "SQUAD_NOVA",
-      "squadName": "Squad Nova",
-      "riskMode": "balanced",
-      "baseAsset": "OKB",
-      "txHash": "0xa81761a15031a3bd0de0b764216e395cba527c17a0961ab7f8a28a0f6adb24d0",
-      "vaultTxHash": "0x30d5598f503a4bacfc5e85d338ad9be2a6059671282b6375298f0641b179de84",
-      "pnlDelta": "0",
-      "action": "HOLD",
-      "asset": "OKB",
-      "sizePercent": 10,
-      "rationale": "Fallback decision",
-      "route": "okx",
-      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "spreadBps": 0,
-      "narratorSummary": "Squad Nova held OKB (10% treasury) via okx. Fallback decision",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "OKB",
-            "type": "hold",
-            "rationale": "Fallback analyst response: OpenAI quota/API unavailable",
-            "confidence": 35
-          }
-        ],
-        "risks": [
-          {
-            "description": "OpenAI quota/API unavailable",
-            "severity": 4
-          }
-        ],
-        "recommendation": "wait",
-        "topAsset": "OKB",
-        "confidenceScore": 35
-      },
-      "market": {
-        "pair": "OKB-USDT",
-        "price": 86.47,
-        "okxPrice": 86.47,
-        "uniswapPrice": 86.47,
-        "spreadBps": 0,
-        "betterRoute": "okx",
-        "uniswapPoolId": null,
-        "priceSpreads": {
-          "absolute": 0,
-          "bps": 0,
-          "source": "okx-fallback",
-          "rawUniswapPrice": null,
-          "rawOkxPrice": 86.47,
-          "uniswapError": null
-        },
-        "change24h": 0.9809646152049555
-      },
-      "narrative": "HOLD OKB (10% treasury) via okx · Fallback decision"
-    }
-  },
-  "slowSquadLastRunAt": {
-    "phantom_last_run": 1776371599822,
-    "cipher_last_run": 1776371599822,
-    "nexus_last_run": 1776371599823
-  },
+  "squadResults": {},
+  "slowSquadLastRunAt": {},
   "uniswapQueriesSuccessful": 0,
   "agentLog": [
     {
       "agent": "system",
       "status": "started",
-      "completedAt": 1776371577781,
-      "summary": "Cycle 354 started. Oracle snapshot in progress."
-    },
-    {
-      "agent": "oracle",
-      "status": "complete",
-      "completedAt": 1776371594759,
-      "summary": "ETH $0.00 (0.00%) | Uniswap spread 0.00bps"
-    },
-    {
-      "agent": "analyst",
-      "status": "complete",
-      "completedAt": 1776371595954,
-      "summary": "wait on ETH | confidence 0"
-    },
-    {
-      "agent": "strategist",
-      "status": "complete",
-      "completedAt": 1776371596698,
-      "summary": "HOLD ETH (0% treasury)"
-    },
-    {
-      "agent": "router",
-      "status": "complete",
-      "completedAt": 1776371597417,
-      "summary": "okx selected | spread 0.00bps"
-    },
-    {
-      "agent": "executor",
-      "status": "complete",
-      "completedAt": 1776371598202,
-      "summary": "HOLD executed | tx 0xe054769e23f49888937f07add67e778dfe62a3b68c82878b4d6ed31bf85283c4"
-    },
-    {
-      "agent": "narrator",
-      "status": "complete",
-      "completedAt": 1776371599017,
-      "summary": "Xyndicate Alpha held ETH (10% treasury) via okx. Fallback decision | Squad Nova held OKB (10% treasury) via okx. Fallback decision"
-    },
-    {
-      "agent": "slow-phantom",
-      "status": "complete",
-      "completedAt": 1776371599822,
-      "summary": "Phantom Protocol decision logged"
-    },
-    {
-      "agent": "slow-cipher",
-      "status": "complete",
-      "completedAt": 1776371599822,
-      "summary": "Cipher Strategy decision logged"
-    },
-    {
-      "agent": "slow-nexus",
-      "status": "complete",
-      "completedAt": 1776371599823,
-      "summary": "Nexus Quant decision logged"
-    },
-    {
-      "agent": "system",
-      "status": "complete",
-      "completedAt": 1776371629525,
-      "summary": "Cycle 354 complete. Awaiting next scheduled run."
+      "completedAt": 1776373302615,
+      "summary": "Cycle 355 started. Oracle snapshot in progress."
     }
   ]
 }
