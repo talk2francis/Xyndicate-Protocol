@@ -286,7 +286,7 @@ export default function HomePage() {
             </div>
 
             <div className="mt-8 text-sm text-xyn-muted dark:text-zinc-300">
-              {totalDecisions || 108}+ decisions logged · X Layer Mainnet · Uniswap + OKX powered
+              {Math.max(0, Number(totalDecisions || 0))}+ decisions logged · X Layer Mainnet · Uniswap + OKX powered
             </div>
           </div>
 

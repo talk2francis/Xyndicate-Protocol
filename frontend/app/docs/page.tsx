@@ -354,7 +354,7 @@ export default function DocsPage() {
       <section className="rounded-[32px] border border-black/10 bg-xyn-cream p-8 dark:border-white/10 dark:bg-xyn-cream/5">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="inline-flex rounded-full bg-xyn-blue/15 px-4 py-2 text-sm font-semibold text-xyn-blue">v2.0 · Skills Arena · X Layer</p>
+            <p className="inline-flex rounded-full bg-xyn-blue/15 px-4 py-2 text-sm font-semibold text-xyn-blue">v2.0 · X Layer Arena · Build X S2</p>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-6xl">Xyndicate Strategy Skill</h1>
             <p className="mt-4 max-w-3xl text-lg text-xyn-muted dark:text-zinc-300">A reusable agent skill delivering dual-source market signals and cross-protocol routing via MCP.</p>
           </div>
@@ -504,7 +504,7 @@ export default function DocsPage() {
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-xyn-cream/5">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Calls today</div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-xyn-blue">Calls, last 24h</div>
               <div className="mt-2 text-2xl font-semibold">{usageLoading ? "..." : usageData.totalCallsToday}</div>
             </div>
             <div className="rounded-2xl border border-black/10 bg-black/5 px-4 py-3 dark:border-white/10 dark:bg-xyn-cream/5">

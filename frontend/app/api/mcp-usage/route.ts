@@ -21,22 +21,20 @@ export async function GET() {
       ? [...data.entries].sort((a, b) => Number(b.calledAt || 0) - Number(a.calledAt || 0))
       : [];
 
-    const startOfDay = new Date();
-    startOfDay.setUTCHours(0, 0, 0, 0);
-    const todayThreshold = startOfDay.getTime();
-    const todayEntries = entries.filter((entry) => Number(entry?.calledAt || 0) >= todayThreshold);
-    const byTool = todayEntries.reduce<Record<string, number>>((acc, entry) => {
+    const last24h = Date.now() - 24 * 60 * 60 * 1000;
+    const recentEntries = entries.filter((entry) => Number(entry?.calledAt || 0) >= last24h);
+    const byTool = recentEntries.reduce<Record<string, number>>((acc, entry) => {
       const key = String(entry?.tool || "unknown_tool");
       acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {});
-    const averageResponseTimeMs = todayEntries.length
-      ? Math.round(todayEntries.reduce((sum, entry) => sum + Number(entry?.responseTime || 0), 0) / todayEntries.length)
+    const averageResponseTimeMs = recentEntries.length
+      ? Math.round(recentEntries.reduce((sum, entry) => sum + Number(entry?.responseTime || 0), 0) / recentEntries.length)
       : 0;
 
     return NextResponse.json({
       entries,
-      totalCallsToday: todayEntries.length,
+      totalCallsToday: recentEntries.length,
       byTool,
       averageResponseTimeMs,
     }, {
