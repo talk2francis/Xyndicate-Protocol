@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "305-oracle-1776286868835",
-      "agent": "oracle",
-      "cycle": 305,
-      "timestamp": 1776286868835,
-      "status": "complete",
-      "summary": "ETH OKX: $2362.92 (+2.0%) | Uniswap: $422972940.62 | Spread: 1790033423.46bps",
-      "durationMs": 23019
-    },
-    {
       "id": "305-analyst-1776286869936",
       "agent": "analyst",
       "cycle": 305,
@@ -538,6 +529,15 @@
       "timestamp": 1776375153912,
       "status": "complete",
       "summary": "HOLD ETH (10% treasury) | Fallback decision",
+      "durationMs": 1
+    },
+    {
+      "id": "356-router-1776375154681",
+      "agent": "router",
+      "cycle": 356,
+      "timestamp": 1776375154681,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
