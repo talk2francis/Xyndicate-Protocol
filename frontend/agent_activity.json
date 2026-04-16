@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "305-router-1776286871397",
-      "agent": "router",
-      "cycle": 305,
-      "timestamp": 1776286871397,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "305-executor-1776286872123",
       "agent": "executor",
       "cycle": 305,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "Xyndicate Alpha held ETH (10% treasury) via okx. Fallback decision | Squad Nova held OKB (10% treasury) via okx. Fallback decision",
       "durationMs": 1
+    },
+    {
+      "id": "357-oracle-1776376887601",
+      "agent": "oracle",
+      "cycle": 357,
+      "timestamp": 1776376887601,
+      "status": "complete",
+      "summary": "ETH OKX: $2346.25 (-0.7%) | Uniswap: $2344.89 | Spread: 5.81bps",
+      "durationMs": 19955
     }
   ]
 }
