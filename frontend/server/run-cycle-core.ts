@@ -75,7 +75,11 @@ async function fetchMarketSnapshot(pair: string) {
     console.warn(`Uniswap reference fetch failed for ${pair}:`, errorMessage);
   }
 
-  const validUniswapPrice = Number.isFinite(Number(uniswap.uniswapPrice)) && Number(uniswap.uniswapPrice) > 0 ? Number(uniswap.uniswapPrice) : null;
+  const rawUniswap = Number(uniswap.uniswapPrice);
+  const saneUniswapPrice = Number.isFinite(rawUniswap) && rawUniswap > 0 && okxPrice > 0 && Math.abs((rawUniswap - okxPrice) / okxPrice) < 0.5
+    ? rawUniswap
+    : null;
+  const validUniswapPrice = saneUniswapPrice;
   const uniswapPrice = validUniswapPrice ?? okxPrice;
   const spreadRatio = validUniswapPrice ? Math.abs((validUniswapPrice - okxPrice) / okxPrice) : 0;
   const spreadBps = Math.round(spreadRatio * 1000000) / 100;
@@ -103,53 +107,65 @@ async function fetchMarketSnapshot(pair: string) {
   };
 }
 
-async function callOpenAI(systemPrompt: string, payload: unknown) {
-  const apiKey = (process.env.OPENAI_API_KEY || "").trim();
-  if (!apiKey) {
-    const body = JSON.stringify(payload || {});
-    if (systemPrompt.includes("Analyst")) {
-      return {
-        opportunities: [{ asset: "ETH", type: "hold", rationale: "Fallback analyst response while OPENAI_API_KEY is unavailable.", confidence: 35 }],
-        risks: [{ description: "OPENAI_API_KEY missing, using deterministic fallback.", severity: 4 }],
-        recommendation: "wait",
-        topAsset: "ETH",
-        confidenceScore: 35,
-      };
-    }
+function fallbackAgentResponse(systemPrompt: string, payload: any, reason: string) {
+  if (systemPrompt.includes("Analyst")) {
     return {
-      action: "HOLD",
-      asset: JSON.parse(body)?.squad?.baseAsset || "ETH",
-      sizePercent: 10,
-      rationale: "Fallback strategist response while OPENAI_API_KEY is unavailable.",
-      confidence: 35,
+      opportunities: [{ asset: payload?.squad?.baseAsset || "ETH", type: "hold", rationale: `Fallback analyst response: ${reason}`, confidence: 35 }],
+      risks: [{ description: reason, severity: 4 }],
+      recommendation: "wait",
+      topAsset: payload?.squad?.baseAsset || "ETH",
+      confidenceScore: 35,
     };
   }
 
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: "gpt-3.5-turbo",
-      temperature: 0.3,
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: JSON.stringify(payload) },
-      ],
-    }),
-  });
+  return {
+    action: "HOLD",
+    asset: payload?.squad?.baseAsset || "ETH",
+    sizePercent: 10,
+    rationale: `Fallback strategist response: ${reason}`,
+    confidence: 35,
+  };
+}
 
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`OpenAI error: ${errorText}`);
+async function callOpenAI(systemPrompt: string, payload: unknown) {
+  const apiKey = (process.env.OPENAI_API_KEY || "").trim();
+  const typedPayload = payload as any;
+
+  if (!apiKey) {
+    return fallbackAgentResponse(systemPrompt, typedPayload, "OPENAI_API_KEY unavailable");
   }
 
-  const json = await res.json();
-  const content = json?.choices?.[0]?.message?.content;
-  return JSON.parse(content || "{}");
+  try {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        temperature: 0.3,
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: JSON.stringify(payload) },
+        ],
+      }),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error(`OpenAI unavailable, using deterministic fallback: ${errorText}`);
+      return fallbackAgentResponse(systemPrompt, typedPayload, "OpenAI quota/API unavailable");
+    }
+
+    const json = await res.json();
+    const content = json?.choices?.[0]?.message?.content;
+    return JSON.parse(content || "{}");
+  } catch (error: any) {
+    console.error(`OpenAI request failed, using deterministic fallback: ${error?.message || error}`);
+    return fallbackAgentResponse(systemPrompt, typedPayload, "OpenAI request failed");
+  }
 }
 
 function routeDecision(strategistDecision: any, marketData: any, squad: any) {
