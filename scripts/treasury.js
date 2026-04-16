@@ -70,7 +70,7 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, allocat
   );
   const now = Date.now();
 
-  if (normalized.action === 'BUY') {
+  if (normalized.action === 'BUY' && allocationUsdc > 0 && price > 0) {
     state.openPositions.push({
       asset: normalized.asset,
       entryPrice: price,
@@ -81,24 +81,26 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, allocat
   }
 
   if (normalized.action === 'SELL') {
-    const openForAsset = state.openPositions.filter((pos) => pos.asset === normalized.asset);
+    const openForAsset = state.openPositions.filter((pos) => pos.asset === normalized.asset && Number(pos.entryPrice) > 0 && Number(pos.allocationUsdc) > 0);
     let totalPnl = 0;
 
-    openForAsset.forEach((pos) => {
-      const pnl = ((price - pos.entryPrice) / pos.entryPrice) * pos.allocationUsdc;
-      totalPnl += pnl;
-      state.tradeHistory.push({
-        action: 'SELL',
-        asset: normalized.asset,
-        price,
-        allocationUsdc: pos.allocationUsdc,
-        pnl: Number(pnl.toFixed(4)),
-        timestamp: now,
+    if (openForAsset.length > 0 && price > 0) {
+      openForAsset.forEach((pos) => {
+        const pnl = ((price - pos.entryPrice) / pos.entryPrice) * pos.allocationUsdc;
+        totalPnl += pnl;
+        state.tradeHistory.push({
+          action: 'SELL',
+          asset: normalized.asset,
+          price,
+          allocationUsdc: pos.allocationUsdc,
+          pnl: Number(pnl.toFixed(4)),
+          timestamp: now,
+        });
       });
-    });
 
-    state.openPositions = state.openPositions.filter((pos) => pos.asset !== normalized.asset);
-    state.realizedPnl = Number((Number(state.realizedPnl || 0) + totalPnl).toFixed(4));
+      state.openPositions = state.openPositions.filter((pos) => !(pos.asset === normalized.asset && Number(pos.entryPrice) > 0 && Number(pos.allocationUsdc) > 0));
+      state.realizedPnl = Number((Number(state.realizedPnl || 0) + totalPnl).toFixed(4));
+    }
   }
 
   state.unrealizedPnl = Number(state.openPositions.reduce((sum, pos) => {
@@ -108,6 +110,10 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, allocat
 
   state.currentTreasury = Math.max(0, Number((INITIAL_TREASURY + Number(state.realizedPnl || 0) + Number(state.unrealizedPnl || 0)).toFixed(4)));
   state.roi = Number(Math.max(-100, (((state.currentTreasury - INITIAL_TREASURY) / 10))).toFixed(4));
+
+  if (state.currentTreasury > 0 && state.wipedAt) {
+    state.wipedAt = null;
+  }
   if (state.currentTreasury === 0 && !state.wipedAt) {
     state.wipedAt = Date.now();
     console.error('[TREASURY] Squad treasury wiped to $0. Refill scheduled in 48 hours.');

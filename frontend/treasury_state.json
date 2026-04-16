@@ -1,254 +1,40 @@
 {
-  "lastUpdated": 1776364234582,
+  "lastUpdated": 1776364853141,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
-      "currentTreasury": 0,
-      "realizedPnl": -1000,
+      "currentTreasury": 1000,
+      "realizedPnl": 0,
       "unrealizedPnl": 0,
-      "roi": -100,
-      "openPositions": [
-        {
-          "asset": "ETH",
-          "entryPrice": 2369.1,
-          "allocationUsdc": 0,
-          "openedAt": 1776281520425
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2375.65,
-          "allocationUsdc": 0,
-          "openedAt": 1776282096233
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2374.39,
-          "allocationUsdc": 0,
-          "openedAt": 1776282680393
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2371.58,
-          "allocationUsdc": 0,
-          "openedAt": 1776283284711
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2361.93,
-          "allocationUsdc": 0,
-          "openedAt": 1776285037449
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2362.92,
-          "allocationUsdc": 0,
-          "openedAt": 1776286855127
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 0,
-          "allocationUsdc": 0,
-          "openedAt": 1776286896250
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2353.02,
-          "allocationUsdc": 0,
-          "openedAt": 1776288788845
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2365.79,
-          "allocationUsdc": 0,
-          "openedAt": 1776290601158
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2359.34,
-          "allocationUsdc": 0,
-          "openedAt": 1776294062028
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 0,
-          "allocationUsdc": 0,
-          "openedAt": 1776294107988
-        }
-      ],
-      "tradeHistory": [
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 2373.34,
-          "allocationUsdc": 1000,
-          "pnl": null,
-          "timestamp": 1776169921698
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 2369.1,
-          "allocationUsdc": 0,
-          "pnl": null,
-          "timestamp": 1776281520425
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 2375.65,
-          "allocationUsdc": 0,
-          "pnl": null,
-          "timestamp": 1776282096233
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 2374.39,
-          "allocationUsdc": 0,
-          "pnl": null,
-          "timestamp": 1776282680393
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 2371.58,
-          "allocationUsdc": 0,
-          "pnl": null,
-          "timestamp": 1776283284711
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 2361.93,
-          "allocationUsdc": 0,
-          "pnl": null,
-          "timestamp": 1776285037449
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 2362.92,
-          "allocationUsdc": 0,
-          "pnl": null,
-          "timestamp": 1776286855127
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 0,
-          "allocationUsdc": 0,
-          "pnl": null,
-          "timestamp": 1776286896250
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 2353.02,
-          "allocationUsdc": 0,
-          "pnl": null,
-          "timestamp": 1776288788845
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 2365.79,
-          "allocationUsdc": 0,
-          "pnl": null,
-          "timestamp": 1776290601158
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 2359.34,
-          "allocationUsdc": 0,
-          "pnl": null,
-          "timestamp": 1776294062028
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "price": 0,
-          "allocationUsdc": 0,
-          "pnl": null,
-          "timestamp": 1776294107988
-        }
-      ],
+      "roi": 0,
+      "openPositions": [],
+      "tradeHistory": [],
       "treasuryHistory": [
-        1000,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
+        1000
       ],
-      "resetAt": 1776279710127,
-      "resetReason": "treasury-floor-correction",
-      "wipedAt": 1776363280202
+      "refillCount": 0,
+      "lastRefillAt": null,
+      "wipedAt": null,
+      "resetAt": 1776364853141,
+      "resetReason": "treasury-reset-v1"
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
-      "currentTreasury": 998.7163,
+      "currentTreasury": 1000,
       "realizedPnl": 0,
-      "unrealizedPnl": -1.2837,
-      "roi": -0.1284,
-      "openPositions": [
-        {
-          "asset": "OKB",
-          "entryPrice": 85.69,
-          "allocationUsdc": 1000,
-          "openedAt": 1776294078123
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 0,
-          "allocationUsdc": 100,
-          "openedAt": 1776294108595
-        }
-      ],
-      "tradeHistory": [
-        {
-          "action": "BUY",
-          "asset": "OKB",
-          "price": 85.69,
-          "allocationUsdc": 1000,
-          "pnl": null,
-          "timestamp": 1776294078123
-        },
-        {
-          "action": "BUY",
-          "asset": "OKB",
-          "price": 0,
-          "allocationUsdc": 100,
-          "pnl": null,
-          "timestamp": 1776294108595
-        }
-      ],
+      "unrealizedPnl": 0,
+      "roi": 0,
+      "openPositions": [],
+      "tradeHistory": [],
       "treasuryHistory": [
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        0,
-        996.1489,
-        998.7163
-      ]
+        1000
+      ],
+      "refillCount": 0,
+      "lastRefillAt": null,
+      "wipedAt": null,
+      "resetAt": 1776364853141,
+      "resetReason": "treasury-reset-v1"
     },
     "VIVAX": {
       "startingUsdc": 1000,
