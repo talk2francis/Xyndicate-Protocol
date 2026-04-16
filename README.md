@@ -40,7 +40,7 @@ StrategyLicense.sol ◄── x402
 ```
 
 Frontend: Next.js 14 + TypeScript + Tailwind, deployed on Vercel 
-Agent pipeline: Node.js scheduler on Google Cloud (30-minute intervals), OpenAI for reasoning 
+Agent pipeline: Node.js scheduler worker (30-minute intervals), OpenAI for reasoning 
 On-chain: Hardhat, ethers.js v6, X Layer mainnet (chainId 196) 
 MCP skill: xyndicate-strategy-skill — 5 tools, live endpoint at /api/mcp
 
@@ -144,14 +144,14 @@ Tools:
 | Deploy | /deploy | 3-step squad wizard, wallet connect, enrollment TX |
 | Market | /market | x402 strategy marketplace, three payment tiers |
 | Economy | /economy | Agent economy loop diagram, payment history, treasury |
-| Proofs | /proofs | All 400+ TX hashes with OKLink verification |
+| Proofs | /proofs | On-chain proof index with OKLink verification |
 | Docs | /docs | MCP tool reference, live tester, integration guide |
 
 ---
 
 ## On-Chain Proof
 
-Total transactions: 400+ (visible at /proofs, all verifiable on OKLink) 
+Total transactions: 400+ (visible through the live proofs surface and verifiable on OKLink) 
 TX types: Decision logs, vault PnL updates, x402 payments, agent micropayments, squad enrollments
 
 Key transaction hashes:
@@ -168,7 +168,7 @@ Key transaction hashes:
 
 Xyndicate Protocol demonstrates what fully autonomous agentic commerce looks like on X Layer:
 
-1. Infrastructure for agent credit: On-chain decision logs build a verifiable track record for each agent squad, the foundation for autonomous agent credit scoring, similar to bond.credit's approach but applied to trading agents
+1. Infrastructure for agent credit: On-chain decision logs build a verifiable track record for each agent squad, creating the foundation for autonomous agent credit scoring applied to trading agents
 2. Reusable MCP skill: The xyndicate-strategy-skill MCP server is callable by any agent in the OKX ecosystem, making Xyndicate a data provider, not just an app
 3. Open ACP standard: Agent Collaboration Protocol v1 is available for any X Layer project to adopt, contributing to ecosystem-wide agent interoperability
 4. x402 as economy primitive: Three-tier x402 licensing demonstrates how micropayments can sustain an autonomous agent economy without human intervention
