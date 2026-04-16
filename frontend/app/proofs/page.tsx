@@ -138,9 +138,6 @@ export default function ProofsPage() {
             <div className="inline-flex items-center rounded-full bg-xyn-blue/15 px-5 py-3 text-sm font-semibold text-xyn-blue">
               {data?.totalTxCount || 0} total txs
             </div>
-            <div className="text-xs text-xyn-muted dark:text-zinc-400">
-              Decision recovery: {data?.recoveredDecisionCount || 0}/{data?.onchainDecisionCount || 0}
-            </div>
           </div>
         </div>
       </section>
