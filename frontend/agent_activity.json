@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "299-analyst-1776279704210",
-      "agent": "analyst",
-      "cycle": 299,
-      "timestamp": 1776279704210,
-      "status": "complete",
-      "summary": "WAIT ETH | confidence 80%",
-      "durationMs": 1
-    },
-    {
       "id": "299-strategist-1776279705402",
       "agent": "strategist",
       "cycle": 299,
@@ -538,6 +529,15 @@
       "timestamp": 1776364238064,
       "status": "complete",
       "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "durationMs": 1
+    },
+    {
+      "id": "350-executor-1776364238881",
+      "agent": "executor",
+      "cycle": 350,
+      "timestamp": 1776364238881,
+      "status": "complete",
+      "summary": "HOLD executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
