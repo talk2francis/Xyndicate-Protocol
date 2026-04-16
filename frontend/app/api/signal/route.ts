@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { betterRouteForPrices, computeSpreadBps, fetchUniswapPrice } from "@/server/uniswap.mjs";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const OKX_API_KEY = process.env.OKX_API_KEY || "";
 const PAIRS = [
   { pair: "ETH-USDT", label: "ETH/USDT" },
@@ -23,7 +26,7 @@ export async function GET() {
       PAIRS.map(async ({ pair, label }) => {
         const res = await fetch(`https://www.okx.com/api/v5/market/ticker?instId=${encodeURIComponent(pair)}`, {
           headers,
-          next: { revalidate: 30 },
+          cache: "no-store",
         });
 
         if (!res.ok) {
@@ -67,7 +70,10 @@ export async function GET() {
       }),
     );
 
-    return NextResponse.json({ pairs }, { headers: { "Cache-Control": "s-maxage=30, stale-while-revalidate=30" } });
+    return NextResponse.json(
+      { pairs },
+      { headers: { "Cache-Control": "no-store, max-age=0, must-revalidate" } },
+    );
   } catch (error: any) {
     return NextResponse.json({ error: error.message || "Failed to load signal" }, { status: 500 });
   }
