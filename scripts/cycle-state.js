@@ -72,8 +72,8 @@ function startCycleState() {
 
 function summarizeAgentStep(agent, result = {}) {
   if (agent === 'oracle') {
-    const market = result.market || {};
-    return `ETH $${Number(market.okxPrice || market.price || 0).toFixed(2)} (${Number(market.change24h || 0).toFixed(2)}%) | Uniswap spread ${Number(market?.priceSpreads?.bps || result.spreadBps || 0).toFixed(2)}bps`;
+    const market = result.market || result.sharedMarket || result?.squadResults?.XYNDICATE_ALPHA?.market || {};
+    return `ETH $${Number(market.okxPrice || market.price || 0).toFixed(2)} (${Number(market.change24h || 0).toFixed(2)}%) | Uniswap spread ${Number(market?.priceSpreads?.bps || market?.spreadBps || result.spreadBps || 0).toFixed(2)}bps`;
   }
   if (agent === 'analyst') {
     return `${result.analyst?.recommendation || 'wait'} on ${result.analyst?.topAsset || 'ETH'} | confidence ${result.analyst?.confidenceScore || 0}`;
@@ -106,6 +106,7 @@ function advanceCycleState(agent, result = {}) {
     currentAgent: nextAgent,
     activeSquads: result?.activeSquads || current?.activeSquads || ['XYNDICATE_ALPHA', 'Squad Nova'],
     squadResults,
+    uniswapQueriesSuccessful: Number(result?.uniswapQueriesSuccessful ?? current?.uniswapQueriesSuccessful ?? 0),
     agentLog: [
       ...(Array.isArray(current.agentLog) ? current.agentLog : []),
       {
