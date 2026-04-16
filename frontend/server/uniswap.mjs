@@ -14,7 +14,7 @@ const UNISWAP_POOL_ABI = [
   "function token1() view returns (address)",
 ];
 
-function sqrtPriceX96ToPrice(sqrtPriceX96, decimalsToken0 = 18, decimalsToken1 = 6) {
+function sqrtPriceX96ToPrice(sqrtPriceX96, decimalsToken0 = 6, decimalsToken1 = 18) {
   const sqrt = Number(sqrtPriceX96) / Number(2n ** 96n);
   const ratio = sqrt * sqrt;
   const decimalAdjustment = 10 ** (decimalsToken0 - decimalsToken1);
@@ -44,7 +44,7 @@ export async function fetchUniswapPrice(pair) {
       contract.token1(),
     ]);
 
-    const rawPrice = sqrtPriceX96ToPrice(slot0.sqrtPriceX96, 18, 6);
+    const rawPrice = sqrtPriceX96ToPrice(slot0.sqrtPriceX96, 6, 18);
     const token0Lower = String(token0 || '').toLowerCase();
     const token1Lower = String(token1 || '').toLowerCase();
     const usdc = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
@@ -52,9 +52,9 @@ export async function fetchUniswapPrice(pair) {
     let uniswapPrice = rawPrice;
 
     if (token0Lower === usdc && token1Lower === weth) {
-      uniswapPrice = rawPrice;
-    } else if (token0Lower === weth && token1Lower === usdc) {
       uniswapPrice = rawPrice === 0 ? 0 : 1 / rawPrice;
+    } else if (token0Lower === weth && token1Lower === usdc) {
+      uniswapPrice = rawPrice;
     }
 
     return {
