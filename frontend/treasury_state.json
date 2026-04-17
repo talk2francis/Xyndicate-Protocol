@@ -1,29 +1,29 @@
 {
-  "lastUpdated": 1776445823522,
+  "lastUpdated": 1776447172804,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
-      "currentTreasury": 0,
+      "currentTreasury": 1000,
       "realizedPnl": 0,
-      "unrealizedPnl": -1000,
-      "roi": -100,
+      "unrealizedPnl": 0,
+      "roi": 0,
       "openPositions": [
         {
           "asset": "ETH",
-          "entryPrice": 2442,
+          "entryPrice": 2435.96,
           "allocationUsdc": 1000,
-          "openedAt": 1776434514945
+          "openedAt": 1776447172804
         }
       ],
       "tradeHistory": [
         {
           "action": "BUY",
           "asset": "ETH",
-          "price": 2442,
+          "price": 2435.96,
           "allocationUsdc": 1000,
           "pnl": null,
-          "timestamp": 1776434514945
+          "timestamp": 1776447172804
         }
       ],
       "treasuryHistory": [
@@ -64,51 +64,22 @@
         1000,
         1000,
         1000,
-        1000,
-        0,
-        999.0008,
-        0,
-        996.4906,
-        0,
-        1002.2031,
-        0,
-        1002.4079,
-        0,
-        1008.2719,
-        0,
-        998.4971,
-        0
+        1000
       ],
       "refillCount": 0,
       "lastRefillAt": null,
-      "wipedAt": 1776445817028,
+      "wipedAt": null,
       "resetAt": 1776364853141,
       "resetReason": "treasury-reset-v1"
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
-      "currentTreasury": 0,
+      "currentTreasury": 1000,
       "realizedPnl": 0,
-      "unrealizedPnl": -1000,
-      "roi": -100,
-      "openPositions": [
-        {
-          "asset": "OKB",
-          "entryPrice": 87.42,
-          "allocationUsdc": 1000,
-          "openedAt": 1776434530134
-        }
-      ],
-      "tradeHistory": [
-        {
-          "action": "BUY",
-          "asset": "OKB",
-          "price": 87.42,
-          "allocationUsdc": 1000,
-          "pnl": null,
-          "timestamp": 1776434530134
-        }
-      ],
+      "unrealizedPnl": 0,
+      "roi": 0,
+      "openPositions": [],
+      "tradeHistory": [],
       "treasuryHistory": [
         1000,
         1000,
@@ -146,25 +117,11 @@
         1000,
         1000,
         1000,
-        1000,
-        1000,
-        0,
-        998.6273,
-        0,
-        997.0259,
-        0,
-        994.1661,
-        0,
-        995.0812,
-        0,
-        998.0554,
-        0,
-        997.7122,
-        0
+        1000
       ],
       "refillCount": 0,
       "lastRefillAt": null,
-      "wipedAt": 1776445817716,
+      "wipedAt": null,
       "resetAt": 1776364853141,
       "resetReason": "treasury-reset-v1"
     },
@@ -196,12 +153,6 @@
         1000,
         1000,
         1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
         1000
       ]
     },
@@ -214,12 +165,6 @@
       "openPositions": [],
       "tradeHistory": [],
       "treasuryHistory": [
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
         1000,
         1000,
         1000,
