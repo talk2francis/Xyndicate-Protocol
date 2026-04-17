@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776452221567,
+  "lastUpdated": 1776452233679,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -79,9 +79,27 @@
       "realizedPnl": 0,
       "unrealizedPnl": 0,
       "roi": 0,
-      "openPositions": [],
-      "tradeHistory": [],
+      "openPositions": [
+        {
+          "asset": "OKB",
+          "entryPrice": 86.62,
+          "markPrice": 86.62,
+          "allocationUsdc": 1000,
+          "openedAt": 1776452233679
+        }
+      ],
+      "tradeHistory": [
+        {
+          "action": "BUY",
+          "asset": "OKB",
+          "price": 86.62,
+          "allocationUsdc": 1000,
+          "pnl": null,
+          "timestamp": 1776452233679
+        }
+      ],
       "treasuryHistory": [
+        1000,
         1000,
         1000,
         1000,
