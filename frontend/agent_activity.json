@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "373-strategist-1776405792423",
-      "agent": "strategist",
-      "cycle": 373,
-      "timestamp": 1776405792423,
-      "status": "complete",
-      "summary": "HOLD ETH (10% treasury) | Fallback decision",
-      "durationMs": 1
-    },
-    {
       "id": "373-router-1776405793089",
       "agent": "router",
       "cycle": 373,
@@ -538,6 +529,15 @@
       "timestamp": 1776454115001,
       "status": "complete",
       "summary": "WAIT ETH | confidence 80%",
+      "durationMs": 1
+    },
+    {
+      "id": "383-strategist-1776454115822",
+      "agent": "strategist",
+      "cycle": 383,
+      "timestamp": 1776454115822,
+      "status": "complete",
+      "summary": "BUY ETH (100% treasury) | Positive 24h price change and lower price on Uniswap compared to OKX with high confidence score of 0.8",
       "durationMs": 1
     }
   ]
