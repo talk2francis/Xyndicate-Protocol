@@ -211,27 +211,31 @@ async function buildLeaderboard() {
     return String(a.squadId || '').localeCompare(String(b.squadId || ''));
   });
 
-  const squads = squadsOrdered.map((squad, index) => ({
-    rank: index + 1,
-    squadId: squad.squadId,
-    decisions: squad.decisions,
-    confidence: squad.confidence,
-    treasury: Number(squad.treasury || 1000),
-    roi: Number(squad.roi || 0),
-    lastAction: squad.latestRationale,
-    latestTimestamp: squad.latestTimestamp,
-    status: squad.status || (squad.external ? 'PAUSED' : 'ACTIVE'),
-    badge: squad.external ? 'External' : undefined,
-    routeUsed: squad.routeUsed ?? null,
-    stats: {
-      buys: squad.buys,
-      sells: squad.sells,
-      holds: squad.holds,
-      lastTradeAction: squad.lastAction,
-      lastAsset: squad.lastAsset,
-    },
-    txHashes: squad.txHashes.slice(-10),
-  }));
+  const squads = squadsOrdered.map((squad, index) => {
+    const treasury = Number.isFinite(Number(squad.treasury)) ? Number(squad.treasury) : 1000;
+    const roi = Number.isFinite(Number(squad.roi)) ? Number(squad.roi) : 0;
+    return {
+      rank: index + 1,
+      squadId: squad.squadId,
+      decisions: squad.decisions,
+      confidence: squad.confidence,
+      treasury,
+      roi,
+      lastAction: squad.latestRationale,
+      latestTimestamp: squad.latestTimestamp,
+      status: squad.status || (squad.external ? 'PAUSED' : 'ACTIVE'),
+      badge: squad.external ? 'External' : undefined,
+      routeUsed: squad.routeUsed ?? null,
+      stats: {
+        buys: squad.buys,
+        sells: squad.sells,
+        holds: squad.holds,
+        lastTradeAction: squad.lastAction,
+        lastAsset: squad.lastAsset,
+      },
+      txHashes: squad.txHashes.slice(-10),
+    };
+  });
 
   return {
     squads,
