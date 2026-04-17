@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 291,
+      "decisions": 292,
       "confidence": 0.8,
-      "treasury": 16037.9087,
-      "roi": 1503.7909,
-      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and potential arbitrage opportunity through Uniswap with high confidence score of 0.8.",
-      "latestTimestamp": 1776461631,
+      "treasury": 32099.999,
+      "roi": 3109.9999,
+      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and potential arbitrage opportunity with OKX exchange. Recommended action based on analyst's confidence score of 0.8.",
+      "latestTimestamp": 1776463509,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 148,
+        "buys": 149,
         "sells": 10,
         "holds": 128,
         "lastTradeAction": "BUY",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xda9d30fcef8eb3973d228d0b39d5f77be2edf962d974d13cc265642b2628ef40",
         "0x38eb5047a0aa6fb6d868e8ce23f67d0ca0729dd830ecf4c82a8d0c970decc957",
         "0xd3705cfef3f205ac69e635f504f4d33b06c5c6a095b0bd27052004a044539d22",
         "0x705f3b50bb700b621aa45b7271d0e01975e0b92a74a24518c25761aac2ce972d",
@@ -28,18 +27,50 @@
         "0x5fb8c8b07c23c22b521fcdfbfc76b1e2a5c074f7a5470dcf0d3bfe2fc402af7d",
         "0xe98bc2487c5b8ac85f25df386984cbf841b86c45b027c73b95035771f3a2a63c",
         "0x590f5c0f48bb47e46cf63099d2e3f71e97a7d6314426ecc1d7e9fc1cdceaac15",
-        "0x30296299d6a5db98f85d3ed002d8e2d3798cf81ce20e181ab582d5350578cd9c"
+        "0x30296299d6a5db98f85d3ed002d8e2d3798cf81ce20e181ab582d5350578cd9c",
+        "0xeb3109867f98e36c1259cb9cc7ae8efa35bf766cc233abf3656382c972fcdcec"
       ]
     },
     {
       "rank": 2,
+      "squadId": "SQUAD_NOVA",
+      "decisions": 265,
+      "confidence": 0.66,
+      "treasury": 1000.6927,
+      "roi": 0.0693,
+      "lastAction": "HOLD OKB (100% treasury) · OKB-USDT pair stable with minimal spread and no significant price change in 24h, suggesting continued stability.",
+      "latestTimestamp": 1776463509,
+      "status": "ACTIVE",
+      "routeUsed": null,
+      "stats": {
+        "buys": 50,
+        "sells": 4,
+        "holds": 211,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "OKB"
+      },
+      "txHashes": [
+        "0x845bd7dee3ef199ef7ca5450b903a5b66fa664bf09bd57dcbb484183f0779552",
+        "0xee582e6cb63bc800463359c6755227262816837273e181e0849fdcacb399babd",
+        "0x363101b0e3221c06590d180a586560992b82f6bd2d5cdce71ddeaefac2c1ffd3",
+        "0x97d0052342b7c2601b54c4e257ea88d85e67006ba2407c9456f8dd901eaa3e54",
+        "0xcf6b5addbb01ec3bc767d7016c9069cdd9127302b0b4ad165fc404353e4def19",
+        "0x073d992caeeab31d622350610751a062da4687bd9eb2c6c0d09b74435ec14b3b",
+        "0x1b566bf68ed8b6de5b25f15fcdb512d243ae6b2eef59cd07b2f57512da353322",
+        "0xcdaab835d005ebe6dfe8b9a3f025ec820bfbdc694e58e8dec287a0749e02a6a1",
+        "0xd052dd1d8b782ad07005db09dbe05ba036d4d1cfacf7b590162680f0a1dd40c1",
+        "0xac60469e62cb6c6d448d196e949384609a4f1b418d43209f812272b384e4fa77"
+      ]
+    },
+    {
+      "rank": 3,
       "squadId": "FRANCC_ALPHA",
-      "decisions": 15,
+      "decisions": 16,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "latestTimestamp": 1776461663116,
+      "latestTimestamp": 1776463539388,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -53,14 +84,14 @@
       "txHashes": []
     },
     {
-      "rank": 3,
+      "rank": 4,
       "squadId": "SPARTAN_ONE",
-      "decisions": 12,
+      "decisions": 13,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "latestTimestamp": 1776461665560,
+      "latestTimestamp": 1776463542161,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -72,42 +103,11 @@
         "lastAsset": "ETH/USDC"
       },
       "txHashes": []
-    },
-    {
-      "rank": 4,
-      "squadId": "SQUAD_NOVA",
-      "decisions": 264,
-      "confidence": 0.66,
-      "treasury": 999.8846,
-      "roi": -0.0115,
-      "lastAction": "HOLD OKB (100% treasury) · Price change in the last 24 hours is relatively stable. Analyst confidence is high.",
-      "latestTimestamp": 1776461631,
-      "status": "ACTIVE",
-      "routeUsed": null,
-      "stats": {
-        "buys": 50,
-        "sells": 4,
-        "holds": 210,
-        "lastTradeAction": "HOLD",
-        "lastAsset": "OKB"
-      },
-      "txHashes": [
-        "0x24b60f8dca9fdfe4ddd1c129449829fa092b6a09db480c1224efe398d1825577",
-        "0x845bd7dee3ef199ef7ca5450b903a5b66fa664bf09bd57dcbb484183f0779552",
-        "0xee582e6cb63bc800463359c6755227262816837273e181e0849fdcacb399babd",
-        "0x363101b0e3221c06590d180a586560992b82f6bd2d5cdce71ddeaefac2c1ffd3",
-        "0x97d0052342b7c2601b54c4e257ea88d85e67006ba2407c9456f8dd901eaa3e54",
-        "0xcf6b5addbb01ec3bc767d7016c9069cdd9127302b0b4ad165fc404353e4def19",
-        "0x073d992caeeab31d622350610751a062da4687bd9eb2c6c0d09b74435ec14b3b",
-        "0x1b566bf68ed8b6de5b25f15fcdb512d243ae6b2eef59cd07b2f57512da353322",
-        "0xcdaab835d005ebe6dfe8b9a3f025ec820bfbdc694e58e8dec287a0749e02a6a1",
-        "0xd052dd1d8b782ad07005db09dbe05ba036d4d1cfacf7b590162680f0a1dd40c1"
-      ]
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-17T21:34:28.140Z",
-  "totalDecisions": 583,
+  "updatedAt": "2026-04-17T22:05:44.937Z",
+  "totalDecisions": 587,
   "uniswapQueriesSuccessful": 2,
   "supportingProofs": {
     "narratorPayments": 29,
