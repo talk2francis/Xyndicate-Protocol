@@ -138,12 +138,12 @@ function buildDeterministicFallback(payload: any, reason: string) {
     confidenceScore = riskMode === 'aggressive' ? 74 : 68;
     sizePercent = riskMode === 'aggressive' ? 18 : 10;
     rationale = `Fallback market-rule decision: ${baseAsset} has stretched enough on the day to justify trimming risk under degraded AI mode.`;
-  } else if (Math.abs(change24h) < 0.2 && spreadBps < 3) {
+  } else if (Math.abs(change24h) < 0.05 && spreadBps < 1) {
     action = 'HOLD';
     recommendation = 'wait';
     confidenceScore = 58;
     sizePercent = 10;
-    rationale = `Fallback market-rule decision: market conditions are too flat and route edge is too small, so holding is preferred.`;
+    rationale = `Fallback market-rule decision: market conditions are effectively flat and route edge is negligible, so holding is preferred.`;
   } else if (change24h < 0) {
     action = 'BUY';
     recommendation = 'act';
