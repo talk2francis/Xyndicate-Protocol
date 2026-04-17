@@ -115,31 +115,47 @@ function buildDeterministicFallback(payload: any, reason: string) {
   const change24h = Number(market?.change24h || 0);
   const spreadBps = Number(market?.spreadBps || market?.priceSpreads?.bps || 0);
   const betterRoute = String(market?.betterRoute || 'okx').toLowerCase();
+  const assetBias = baseAsset === 'OKB' ? 0.55 : 0.35;
+  const aggressiveBias = riskMode === 'aggressive' ? 0.2 : 0;
+  const buyTrigger = -(assetBias + aggressiveBias);
+  const sellTrigger = assetBias + aggressiveBias;
 
   let action = 'HOLD';
-  let sizePercent = riskMode === 'aggressive' ? 18 : 10;
-  let confidenceScore = 52;
+  let sizePercent = riskMode === 'aggressive' ? 16 : 10;
+  let confidenceScore = 54;
   let recommendation = 'wait';
   let rationale = `Fallback market-rule decision: ${reason}.`;
 
-  if (change24h <= -1.2 || (spreadBps >= 8 && betterRoute === 'uniswap')) {
+  if (change24h <= buyTrigger || (spreadBps >= 6 && betterRoute === 'uniswap')) {
     action = 'BUY';
     recommendation = 'act';
-    confidenceScore = riskMode === 'aggressive' ? 74 : 68;
-    sizePercent = riskMode === 'aggressive' ? 22 : 12;
-    rationale = `Fallback market-rule decision: ${baseAsset} is trading weak on the day and route spread is supportive, so buy exposure is justified.`;
-  } else if (change24h >= 1.2) {
+    confidenceScore = riskMode === 'aggressive' ? 76 : 70;
+    sizePercent = riskMode === 'aggressive' ? 20 : 12;
+    rationale = `Fallback market-rule decision: ${baseAsset} is soft enough on the day to justify buying risk under degraded AI mode.`;
+  } else if (change24h >= sellTrigger) {
     action = 'SELL';
     recommendation = 'exit';
-    confidenceScore = riskMode === 'aggressive' ? 72 : 66;
-    sizePercent = riskMode === 'aggressive' ? 20 : 10;
-    rationale = `Fallback market-rule decision: ${baseAsset} is extended on the day, so reducing exposure is justified.`;
-  } else if (Math.abs(change24h) < 0.35 && spreadBps < 5) {
+    confidenceScore = riskMode === 'aggressive' ? 74 : 68;
+    sizePercent = riskMode === 'aggressive' ? 18 : 10;
+    rationale = `Fallback market-rule decision: ${baseAsset} has stretched enough on the day to justify trimming risk under degraded AI mode.`;
+  } else if (Math.abs(change24h) < 0.2 && spreadBps < 3) {
     action = 'HOLD';
     recommendation = 'wait';
-    confidenceScore = 55;
+    confidenceScore = 58;
     sizePercent = 10;
-    rationale = `Fallback market-rule decision: market conditions are balanced and the route spread is narrow, so holding is preferred.`;
+    rationale = `Fallback market-rule decision: market conditions are too flat and route edge is too small, so holding is preferred.`;
+  } else if (change24h < 0) {
+    action = 'BUY';
+    recommendation = 'act';
+    confidenceScore = riskMode === 'aggressive' ? 64 : 60;
+    sizePercent = riskMode === 'aggressive' ? 14 : 8;
+    rationale = `Fallback market-rule decision: ${baseAsset} is mildly red on the day, so the fallback leans long instead of idling.`;
+  } else {
+    action = 'SELL';
+    recommendation = 'exit';
+    confidenceScore = riskMode === 'aggressive' ? 63 : 59;
+    sizePercent = riskMode === 'aggressive' ? 14 : 8;
+    rationale = `Fallback market-rule decision: ${baseAsset} is mildly green on the day, so the fallback leans defensive instead of idling.`;
   }
 
   return {
