@@ -76,11 +76,16 @@ async function fetchMarketSnapshot(pair: string) {
   }
 
   const rawUniswap = Number(uniswap.uniswapPrice);
-  if (!okxPrice || okxPrice < 100 || okxPrice > 100000) {
+  const assetSymbol = pair.split('-')[0];
+  const okxBounds = assetSymbol === 'OKB'
+    ? { min: 1, max: 10000 }
+    : { min: 100, max: 100000 };
+
+  if (!okxPrice || okxPrice < okxBounds.min || okxPrice > okxBounds.max) {
     throw new Error(`[ORACLE] OKX price rejected for ${pair}: ${okxPrice}`);
   }
 
-  const saneUniswapPrice = Number.isFinite(rawUniswap) && rawUniswap >= 100 && rawUniswap <= 100000 && okxPrice > 0 && Math.abs((rawUniswap - okxPrice) / okxPrice) < 0.5
+  const saneUniswapPrice = Number.isFinite(rawUniswap) && rawUniswap >= okxBounds.min && rawUniswap <= okxBounds.max && okxPrice > 0 && Math.abs((rawUniswap - okxPrice) / okxPrice) < 0.5
     ? rawUniswap
     : null;
   const validUniswapPrice = saneUniswapPrice;
