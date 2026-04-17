@@ -62,8 +62,8 @@ async function scheduledRun() {
 
   try {
     const treasuryState = initializeTreasuryState();
-    const { next: refilledTreasuryState } = applyTreasuryRefillIfReady(treasuryState);
-    if (refilledTreasuryState) {
+    const { next: refilledTreasuryState, changed: refillChanged } = applyTreasuryRefillIfReady(treasuryState);
+    if (refillChanged) {
       const treasuryPath = path.join(FRONTEND_DIR, 'treasury_state.json');
       fs.writeFileSync(treasuryPath, JSON.stringify(refilledTreasuryState, null, 2) + '\n');
     }
@@ -102,7 +102,6 @@ async function scheduledRun() {
 
     console.log(`Decision TX: ${result.txHash}`);
     console.log(`Narrator TX: ${result.narratorPaymentHash || 'n/a'}`);
-    console.log(`Leaderboard updated at: ${result.leaderboardUpdatedAt || 'n/a'}`);
     console.log(`OKLink: https://www.oklink.com/xlayer/tx/${result.txHash}`);
 
     try {

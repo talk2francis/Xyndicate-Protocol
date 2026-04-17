@@ -153,7 +153,6 @@ async function runFullPipeline() {
   }
 
   const persisted = await persistRuntimeHistory(result);
-  const leaderboard = await writeLeaderboardArtifact();
   const proofs = await writeProofsArtifact();
   state = completeCycleState();
   await publishCycleState(state, `Publish Arena cycle ${state.cycleNumber} completion state`);
@@ -170,7 +169,7 @@ async function runFullPipeline() {
     narratorPaymentHash: result?.narratorPaymentHash,
     cyclePayments,
     slowSquadResults,
-    leaderboardUpdatedAt: leaderboard?.updatedAt || null,
+    leaderboardUpdatedAt: null,
     proofsUpdatedAt: proofs?.updatedAt,
     persistedHistoryCount: persisted?.decisionLogEntries,
     cycleNumber: finalState?.cycleNumber,
