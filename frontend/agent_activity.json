@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "363-router-1776387799564",
-      "agent": "router",
-      "cycle": 363,
-      "timestamp": 1776387799564,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "363-executor-1776387800594",
       "agent": "executor",
       "cycle": 363,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "HOLD ETH (10% treasury) | Fallback decision",
       "durationMs": 1
+    },
+    {
+      "id": "373-router-1776405793089",
+      "agent": "router",
+      "cycle": 373,
+      "timestamp": 1776405793089,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "durationMs": 3
     }
   ]
 }
