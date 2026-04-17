@@ -8,7 +8,15 @@ const FRONTEND_DIR = path.join(ROOT, 'frontend');
 const TREASURY_PATH = path.join(FRONTEND_DIR, 'treasury_state.json');
 const TREASURY_REPO_PATH = 'frontend/treasury_state.json';
 const INITIAL_TREASURY = 1000;
+const TRADE_SIZE_USDC = 50;
+const MAX_OPEN_POSITIONS = 3;
+const MAX_POSITIONS_PER_ASSET = 2;
+const MAX_HOLD_CYCLES = 8;
 const DEFAULT_SQUADS = ['XYNDICATE_ALPHA', 'SQUAD_NOVA'];
+const ASSET_PRICE_BOUNDS = {
+  ETH: { min: 100, max: 100000 },
+  OKB: { min: 1, max: 10000 },
+};
 
 function readJson(filePath, fallback) {
   try {
@@ -55,79 +63,130 @@ function resolveCurrentPrice(decision = {}, fallback = 0) {
   return 0;
 }
 
-function calculateTreasuryAfterDecision(squadId, decision, currentPrice, allocationPercent, currentTreasuryState) {
-  const state = currentTreasuryState.squads[squadId] ? { ...currentTreasuryState.squads[squadId] } : emptySquadState();
-  state.openPositions = Array.isArray(state.openPositions) ? [...state.openPositions] : [];
-  state.tradeHistory = Array.isArray(state.tradeHistory) ? [...state.tradeHistory] : [];
-  state.treasuryHistory = Array.isArray(state.treasuryHistory) && state.treasuryHistory.length ? [...state.treasuryHistory] : [INITIAL_TREASURY];
+function calculateTreasuryAfterDecision(squadId, decision, currentPrice, currentTreasuryState) {
+  const existing = currentTreasuryState.squads[squadId] ? { ...currentTreasuryState.squads[squadId] } : emptySquadState();
+  const state = {
+    ...existing,
+    openPositions: Array.isArray(existing.openPositions) ? existing.openPositions.map((pos) => ({ ...pos })) : [],
+    tradeHistory: Array.isArray(existing.tradeHistory) ? [...existing.tradeHistory] : [],
+    treasuryHistory: Array.isArray(existing.treasuryHistory) && existing.treasuryHistory.length ? [...existing.treasuryHistory] : [INITIAL_TREASURY],
+    cycleCount: Number(existing.cycleCount || 0),
+    refillCount: Number(existing.refillCount || 0),
+  };
 
+  state.cycleCount += 1;
+  const currentCycle = state.cycleCount;
   const normalized = normalizeDecision(decision);
+  const assetName = String(normalized.asset || 'ETH').replace('/USDC', '').replace('-USDT', '');
   const markPrice = resolveCurrentPrice(decision, currentPrice);
-  const safeTreasury = Math.max(0, Number(state.currentTreasury || INITIAL_TREASURY));
-  const targetAllocationUsdc = Math.min(
-    safeTreasury * (Number(allocationPercent || 0) / 100),
-    Math.max(0, safeTreasury),
-  );
-  const now = Date.now();
+  const bounds = ASSET_PRICE_BOUNDS[assetName] || { min: 0.0001, max: 1000000 };
+  const isValidPrice = Number.isFinite(markPrice) && markPrice >= bounds.min && markPrice <= bounds.max;
 
-  if (normalized.action === 'BUY' && targetAllocationUsdc > 0 && markPrice > 0) {
-    state.openPositions.push({
-      asset: normalized.asset,
-      entryPrice: markPrice,
-      markPrice,
-      allocationUsdc: targetAllocationUsdc,
-      openedAt: now,
-    });
-    state.tradeHistory.push({ action: 'BUY', asset: normalized.asset, price: markPrice, allocationUsdc: targetAllocationUsdc, pnl: null, timestamp: now });
+  if (!isValidPrice) {
+    console.error('[TREASURY]', squadId, '— invalid price rejected:', currentPrice, '— skipping treasury update');
+    return state;
   }
 
-  if (normalized.action === 'SELL') {
-    const openForAsset = state.openPositions.filter((pos) => pos.asset === normalized.asset && Number(pos.entryPrice) > 0 && Number(pos.allocationUsdc) > 0);
-    let totalPnl = 0;
+  const now = Date.now();
+  let effectiveAction = normalized.action;
 
-    if (openForAsset.length > 0 && markPrice > 0) {
+  const stalePositions = state.openPositions.filter((pos) => (currentCycle - Number(pos.cycleNumber || 0)) >= MAX_HOLD_CYCLES);
+  if (stalePositions.length > 0) {
+    stalePositions.forEach((pos) => {
+      const positionMarkPrice = pos.asset === assetName ? markPrice : Number(pos.markPrice || pos.entryPrice || 0);
+      if (!positionMarkPrice || !pos.entryPrice) return;
+      const pnl = ((positionMarkPrice - pos.entryPrice) / pos.entryPrice) * pos.sizeUsdc;
+      state.realizedPnl = Number((Number(state.realizedPnl || 0) + pnl).toFixed(4));
+      state.tradeHistory.push({
+        action: 'SELL',
+        asset: pos.asset,
+        entryPrice: pos.entryPrice,
+        exitPrice: positionMarkPrice,
+        sizeUsdc: pos.sizeUsdc,
+        pnl: Number(pnl.toFixed(4)),
+        timestamp: now,
+        reason: 'force-close-stale',
+      });
+    });
+    state.openPositions = state.openPositions.filter((pos) => (currentCycle - Number(pos.cycleNumber || 0)) < MAX_HOLD_CYCLES);
+  }
+
+  const openForAsset = state.openPositions.filter((pos) => pos.asset === assetName);
+  const totalOpenPositions = state.openPositions.length;
+
+  if (effectiveAction === 'BUY') {
+    if (Number(state.currentTreasury || INITIAL_TREASURY) < TRADE_SIZE_USDC) {
+      effectiveAction = 'HOLD';
+    } else if (totalOpenPositions >= MAX_OPEN_POSITIONS) {
+      effectiveAction = 'HOLD';
+    } else if (openForAsset.length >= MAX_POSITIONS_PER_ASSET) {
+      effectiveAction = 'HOLD';
+    } else {
+      state.openPositions.push({
+        asset: assetName,
+        entryPrice: markPrice,
+        markPrice,
+        sizeUsdc: TRADE_SIZE_USDC,
+        openedAt: now,
+        cycleNumber: currentCycle,
+      });
+      state.tradeHistory.push({
+        action: 'BUY',
+        asset: assetName,
+        entryPrice: markPrice,
+        exitPrice: null,
+        sizeUsdc: TRADE_SIZE_USDC,
+        pnl: null,
+        timestamp: now,
+      });
+    }
+  }
+
+  if (effectiveAction === 'SELL') {
+    if (openForAsset.length === 0) {
+      effectiveAction = 'HOLD';
+    } else {
       openForAsset.forEach((pos) => {
-        const pnl = ((markPrice - pos.entryPrice) / pos.entryPrice) * pos.allocationUsdc;
-        totalPnl += pnl;
+        const pnl = ((markPrice - pos.entryPrice) / pos.entryPrice) * pos.sizeUsdc;
+        state.realizedPnl = Number((Number(state.realizedPnl || 0) + pnl).toFixed(4));
         state.tradeHistory.push({
           action: 'SELL',
-          asset: normalized.asset,
-          price: markPrice,
-          allocationUsdc: pos.allocationUsdc,
+          asset: assetName,
+          entryPrice: pos.entryPrice,
+          exitPrice: markPrice,
+          sizeUsdc: pos.sizeUsdc,
           pnl: Number(pnl.toFixed(4)),
           timestamp: now,
         });
       });
-
-      state.openPositions = state.openPositions.filter((pos) => !(pos.asset === normalized.asset && Number(pos.entryPrice) > 0 && Number(pos.allocationUsdc) > 0));
-      state.realizedPnl = Number((Number(state.realizedPnl || 0) + totalPnl).toFixed(4));
+      state.openPositions = state.openPositions.filter((pos) => pos.asset !== assetName);
     }
   }
 
-  state.openPositions = state.openPositions.map((pos) => ({
-    ...pos,
-    markPrice: pos.asset === normalized.asset && markPrice > 0 ? markPrice : Number(pos.markPrice || pos.entryPrice || 0),
-  }));
+  state.openPositions = state.openPositions.map((pos) => pos.asset === assetName ? { ...pos, markPrice } : pos);
 
-  const deployedCapital = Number(state.openPositions.reduce((sum, pos) => sum + Math.max(0, Number(pos.allocationUsdc || 0)), 0).toFixed(4));
   state.unrealizedPnl = Number(state.openPositions.reduce((sum, pos) => {
-    const referencePrice = Number(pos.markPrice || pos.entryPrice || 0);
-    if (!pos.entryPrice || !referencePrice) return sum;
-    return sum + ((referencePrice - pos.entryPrice) / pos.entryPrice) * pos.allocationUsdc;
+    if (pos.asset !== assetName) return sum;
+    return sum + (((markPrice - pos.entryPrice) / pos.entryPrice) * pos.sizeUsdc);
   }, 0).toFixed(4));
 
-  const cashReserve = Math.max(0, Number((INITIAL_TREASURY - deployedCapital + Number(state.realizedPnl || 0)).toFixed(4)));
-  state.currentTreasury = Math.max(0, Number((cashReserve + deployedCapital + Number(state.unrealizedPnl || 0)).toFixed(4)));
-  state.roi = Number((((state.currentTreasury - INITIAL_TREASURY) / INITIAL_TREASURY) * 100).toFixed(4));
+  state.currentTreasury = Math.max(0, Number((INITIAL_TREASURY + Number(state.realizedPnl || 0) + Number(state.unrealizedPnl || 0)).toFixed(4)));
+  state.roi = Number(Math.max(-100, (((state.currentTreasury - INITIAL_TREASURY) / INITIAL_TREASURY) * 100)).toFixed(4));
 
+  if (state.currentTreasury === 0 && !state.wipedAt) {
+    state.wipedAt = now;
+  }
   if (state.currentTreasury > 0 && state.wipedAt) {
     state.wipedAt = null;
   }
-  if (state.currentTreasury === 0 && !state.wipedAt) {
-    state.wipedAt = Date.now();
-    console.error('[TREASURY] Squad treasury wiped to $0. Refill scheduled in 48 hours.');
+
+  if (state.tradeHistory.length > 50) {
+    state.tradeHistory = state.tradeHistory.slice(-50);
   }
   state.treasuryHistory.push(state.currentTreasury);
+  if (state.treasuryHistory.length > 50) {
+    state.treasuryHistory = state.treasuryHistory.slice(-50);
+  }
   return state;
 }
 
@@ -193,7 +252,7 @@ function initializeTreasuryState() {
   for (const squadId of DEFAULT_SQUADS) {
     let squadState = emptySquadState();
     for (const decision of recent[squadId] || []) {
-      squadState = calculateTreasuryAfterDecision(squadId, decision, resolveCurrentPrice(decision, 0), Number(decision.allocationPercent || 10), { squads: { [squadId]: squadState } });
+      squadState = calculateTreasuryAfterDecision(squadId, decision, resolveCurrentPrice(decision, 0), { squads: { [squadId]: squadState } });
     }
     treasuryState.squads[squadId] = squadState;
   }
@@ -202,10 +261,10 @@ function initializeTreasuryState() {
   return treasuryState;
 }
 
-async function writeTreasuryStateFromDecision({ squadId, decision, currentPrice, allocationPercent }) {
+async function writeTreasuryStateFromDecision({ squadId, decision, currentPrice }) {
   const state = readTreasuryState();
   const next = { ...state, squads: { ...(state.squads || {}) } };
-  const updated = calculateTreasuryAfterDecision(squadId, decision, currentPrice, allocationPercent, next);
+  const updated = calculateTreasuryAfterDecision(squadId, decision, currentPrice, next);
   next.squads[squadId] = updated;
   next.lastUpdated = Date.now();
   next.initialized = true;
@@ -246,4 +305,5 @@ module.exports = {
   readTreasuryState,
   writeTreasuryStateFromDecision,
   applyTreasuryFloorCorrection,
+  TRADE_SIZE_USDC,
 };

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776425047766,
+  "lastUpdated": 1776464798059,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -9,51 +9,25 @@
       "unrealizedPnl": 0,
       "roi": 0,
       "openPositions": [],
-      "tradeHistory": [],
+      "tradeHistory": [
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "price": 2435.96,
+          "allocationUsdc": 1000,
+          "pnl": null,
+          "timestamp": 1776447172804
+        }
+      ],
       "treasuryHistory": [
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
         1000
       ],
       "refillCount": 0,
       "lastRefillAt": null,
       "wipedAt": null,
-      "resetAt": 1776364853141,
-      "resetReason": "treasury-reset-v1"
+      "resetAt": 1776464798059,
+      "resetReason": "treasury-mechanics-rewrite-v2",
+      "cycleCount": 0
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
@@ -62,51 +36,25 @@
       "unrealizedPnl": 0,
       "roi": 0,
       "openPositions": [],
-      "tradeHistory": [],
+      "tradeHistory": [
+        {
+          "action": "BUY",
+          "asset": "OKB",
+          "price": 86.8,
+          "allocationUsdc": 1000,
+          "pnl": null,
+          "timestamp": 1776447180784
+        }
+      ],
       "treasuryHistory": [
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
         1000
       ],
       "refillCount": 0,
       "lastRefillAt": null,
       "wipedAt": null,
-      "resetAt": 1776364853141,
-      "resetReason": "treasury-reset-v1"
+      "resetAt": 1776464798059,
+      "resetReason": "treasury-mechanics-rewrite-v2",
+      "cycleCount": 0
     },
     "VIVAX": {
       "startingUsdc": 1000,
@@ -117,9 +65,12 @@
       "openPositions": [],
       "tradeHistory": [],
       "treasuryHistory": [
-        1000,
         1000
-      ]
+      ],
+      "cycleCount": 0,
+      "wipedAt": null,
+      "resetAt": 1776464798059,
+      "resetReason": "treasury-mechanics-rewrite-v2"
     },
     "FRANCC_ALPHA": {
       "startingUsdc": 1000,
@@ -130,14 +81,12 @@
       "openPositions": [],
       "tradeHistory": [],
       "treasuryHistory": [
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
         1000
-      ]
+      ],
+      "cycleCount": 0,
+      "wipedAt": null,
+      "resetAt": 1776464798059,
+      "resetReason": "treasury-mechanics-rewrite-v2"
     },
     "SPARTAN_ONE": {
       "startingUsdc": 1000,
@@ -148,13 +97,12 @@
       "openPositions": [],
       "tradeHistory": [],
       "treasuryHistory": [
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
         1000
-      ]
+      ],
+      "cycleCount": 0,
+      "wipedAt": null,
+      "resetAt": 1776464798059,
+      "resetReason": "treasury-mechanics-rewrite-v2"
     }
   }
 }

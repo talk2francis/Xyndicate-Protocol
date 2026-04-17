@@ -86,7 +86,6 @@ async function scheduledRun() {
         squadId,
         decision,
         currentPrice: decision.currentPrice,
-        allocationPercent: Number(squadResult.allocationPercent || 10),
       };
     });
 

@@ -6,7 +6,7 @@ import { betterRouteForPrices, computeSpreadBps, fetchUniswapPrice } from "./uni
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { writeTreasuryStateFromDecision, initializeTreasuryState } = require("../../scripts/treasury");
+const { writeTreasuryStateFromDecision, initializeTreasuryState, TRADE_SIZE_USDC } = require("../../scripts/treasury");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -76,7 +76,11 @@ async function fetchMarketSnapshot(pair: string) {
   }
 
   const rawUniswap = Number(uniswap.uniswapPrice);
-  const saneUniswapPrice = Number.isFinite(rawUniswap) && rawUniswap > 0 && okxPrice > 0 && Math.abs((rawUniswap - okxPrice) / okxPrice) < 0.5
+  if (!okxPrice || okxPrice < 100 || okxPrice > 100000) {
+    throw new Error(`[ORACLE] OKX price rejected for ${pair}: ${okxPrice}`);
+  }
+
+  const saneUniswapPrice = Number.isFinite(rawUniswap) && rawUniswap >= 100 && rawUniswap <= 100000 && okxPrice > 0 && Math.abs((rawUniswap - okxPrice) / okxPrice) < 0.5
     ? rawUniswap
     : null;
   const validUniswapPrice = saneUniswapPrice;
@@ -362,7 +366,7 @@ async function runSquadCycle(squad: (typeof SQUADS)[number]) {
   );
   const { txHash, narrative } = await logDecisionOnChain(routedDecision, squad);
   const { pnlDelta, vaultTxHash } = await recordVaultPnL(routedDecision, squad);
-  const narratorSummary = `${squad.displayName} ${routedDecision.action === "SELL" ? "trimmed" : routedDecision.action === "HOLD" ? "held" : "deployed"} ${routedDecision.asset} (${routedDecision.sizePercent}% treasury) via ${routedDecision.route}. ${routedDecision.rationale}`;
+  const narratorSummary = `${squad.displayName} ${routedDecision.action === "SELL" ? "trimmed" : routedDecision.action === "HOLD" ? "held" : "opened"} a $${TRADE_SIZE_USDC} ${routedDecision.asset} position via ${routedDecision.route}. ${routedDecision.rationale}`;
 
   return {
     squadId: squad.logId,
@@ -396,7 +400,6 @@ export async function runCycleCore() {
       squadId: result.squadId,
       decision: { action: result.action, asset: result.asset, currentPrice: result.market?.okxPrice || result.market?.price || 0 },
       currentPrice: result.market?.okxPrice || result.market?.price || 0,
-      allocationPercent: Number(result.sizePercent || 10),
     });
   }
 

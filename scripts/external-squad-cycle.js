@@ -129,7 +129,6 @@ async function runExternalSquad(squad, sharedMarketData) {
     squadId: squad.squadId,
     decision: result,
     currentPrice: result.currentPrice || marketData?.okxPrice || marketData?.price || 0,
-    allocationPercent: 10,
   });
 
   return result;
