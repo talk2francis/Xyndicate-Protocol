@@ -1,18 +1,6 @@
 {
   "entries": [
     {
-      "tool": "get_leaderboard",
-      "calledAt": 1776094327843,
-      "caller": "scheduler-self-call",
-      "responseTime": 832
-    },
-    {
-      "tool": "get_market_signal",
-      "calledAt": 1776094329469,
-      "caller": "scheduler-self-call",
-      "responseTime": 761
-    },
-    {
       "tool": "get_economy_snapshot",
       "calledAt": 1776094330681,
       "caller": "scheduler-self-call",
@@ -599,6 +587,18 @@
       "calledAt": 1776438329900,
       "caller": "scheduler-self-call",
       "responseTime": 733
+    },
+    {
+      "tool": "get_economy_snapshot",
+      "calledAt": 1776438330951,
+      "caller": "scheduler-self-call",
+      "responseTime": 265
+    },
+    {
+      "tool": "get_leaderboard",
+      "calledAt": 1776440205245,
+      "caller": "scheduler-self-call",
+      "responseTime": 743
     }
   ]
 }
