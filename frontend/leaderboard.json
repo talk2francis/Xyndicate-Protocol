@@ -3,24 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 277,
+      "decisions": 279,
       "confidence": 0.66,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH (10% treasury) · Fallback decision",
-      "latestTimestamp": 1776405795,
+      "latestTimestamp": 1776409284,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 143,
         "sells": 10,
-        "holds": 119,
+        "holds": 121,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x7fc7340c9f24b0b53442e6437f4d19852788edd13c5d1069e6bdbda7a6fece71",
-        "0x1453bb60ae96af57e976079a0c3ea8e05d4ef213078fed460d47a22591067f82",
         "0x3595768c85ac9ecf8b43b89f769cbbbcef4a62c611ab26594970304500cd9413",
         "0xb54ecfbf6bbaf60fb58be99a19bf053dcd217cd9508f8dae0a97abd2e7f68a69",
         "0xdba5716e426cf544fc4d6a3ee8ec619c1918f56d030b7bec1c148f427b498cc9",
@@ -28,30 +26,30 @@
         "0x5305eb671289afc6b18965ffae66c6143d12202cda3fc6c45eca2b1a25f8c5ed",
         "0x5286cfce1a73b9f76f24dc43b4e304f5292a5cc325daf642170b2f9d3a528bfe",
         "0x8df57e51f93877ac36ae4ca6fc3d6862f97440fdf82920e744ba29851e94f6d3",
-        "0x35930cb90ec1f4ac2fc35f66587627964ff0de3aed2f65671a2928c538467312"
+        "0x35930cb90ec1f4ac2fc35f66587627964ff0de3aed2f65671a2928c538467312",
+        "0x2f603ca0d7b4e8ed106162e5cad19a08a373cc1acd0807d804e91919a35dcdd2",
+        "0xf313351a6dbdb09c99432dfb6d04ceafba227bb3ad36e339ed0463bbc8c1fe68"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 250,
+      "decisions": 252,
       "confidence": 0.66,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD OKB (10% treasury) · Fallback decision",
-      "latestTimestamp": 1776405795,
+      "latestTimestamp": 1776409284,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 49,
         "sells": 4,
-        "holds": 197,
+        "holds": 199,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0xd7f103a4cb839bb65094417f9f61b590cda06da94a3aba7aafc29eda730c0da3",
-        "0xae2dac1ab39b3f6e2d61db5ce19929458a24be4077bbd88878da91ac297ead73",
         "0x5f3384939a93013a16979938bc596541750d66db5b30ea03f48638d8c48d12e8",
         "0x69af5a37821191b465be8c2ca5667a4c0fa9d58c2a8d45c1c380efc0879d39fb",
         "0xc9cf37ed067fd41c5f1b7128d9907115914a4a1cec7f5416e87ae6f91cd41cbb",
@@ -59,7 +57,9 @@
         "0x05f0d8c875bc2a004a6add7e9aef70b9bcc4895a8871d42db770391bc0e0b414",
         "0xbf8ca6d80ef110397ffa839a1603a23cbc5ed4c5731b735b626e3ef817f9344b",
         "0x69a29989acefae13a01edfd1d50b4f88835b3864955204f237598c8976e1fd95",
-        "0xade33b5857d9d365a6ecd8964bfe750eb782bc13a8c3fa84a0f1d51a1709b7f6"
+        "0xade33b5857d9d365a6ecd8964bfe750eb782bc13a8c3fa84a0f1d51a1709b7f6",
+        "0x7fdae30ec8bda4da72b6690a47e3117327a864a934b68d26eb6af501f46b1270",
+        "0x86407896e10fc2f65d1bc5d073e09b16413d0cfa83df5bc11f29e197549e197b"
       ]
     },
     {
@@ -106,18 +106,18 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-17T06:03:47.202Z",
-  "totalDecisions": 541,
+  "updatedAt": "2026-04-17T07:01:26.649Z",
+  "totalDecisions": 545,
   "uniswapQueriesSuccessful": 2,
   "supportingProofs": {
-    "narratorPayments": 25,
+    "narratorPayments": 27,
     "latestNarratorPayment": {
       "type": "strategist-analyst",
       "from": "Strategist Wallet",
       "to": "Analyst Wallet",
       "amount": "0.00005 OKB",
-      "txHash": "0xc8fff9d39fb7097d4c897dc209ecbfba29435569415e5dab0c972e1949244e55",
-      "timestamp": 1776364247,
+      "txHash": "0xcc534de6db545aea84d050c92d1e4dcdd4f5fc40782c7c0ed320d8c32196172c",
+      "timestamp": 1776407538,
       "status": "confirmed",
       "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
     }
