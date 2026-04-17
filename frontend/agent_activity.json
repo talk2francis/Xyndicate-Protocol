@@ -1,6 +1,51 @@
 {
   "entries": [
     {
+      "id": "372-analyst-1776403894768",
+      "agent": "analyst",
+      "cycle": 372,
+      "timestamp": 1776403894768,
+      "status": "complete",
+      "summary": "WAIT ETH | confidence 100%",
+      "durationMs": 1
+    },
+    {
+      "id": "372-strategist-1776403895465",
+      "agent": "strategist",
+      "cycle": 372,
+      "timestamp": 1776403895465,
+      "status": "complete",
+      "summary": "HOLD ETH (10% treasury) | Fallback decision",
+      "durationMs": 1
+    },
+    {
+      "id": "372-router-1776403896215",
+      "agent": "router",
+      "cycle": 372,
+      "timestamp": 1776403896215,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "durationMs": 1
+    },
+    {
+      "id": "372-executor-1776403896969",
+      "agent": "executor",
+      "cycle": 372,
+      "timestamp": 1776403896969,
+      "status": "complete",
+      "summary": "HOLD executed on OKX | 2 decision txs",
+      "durationMs": 1
+    },
+    {
+      "id": "372-narrator-1776403897758",
+      "agent": "narrator",
+      "cycle": 372,
+      "timestamp": 1776403897758,
+      "status": "complete",
+      "summary": "Xyndicate Alpha held ETH (10% treasury) via okx. Fallback decision | Squad Nova held OKB (10% treasury) via okx. Fallback decision",
+      "durationMs": 1
+    },
+    {
       "id": "373-oracle-1776405790726",
       "agent": "oracle",
       "cycle": 373,
@@ -487,58 +532,13 @@
       "durationMs": 1
     },
     {
-      "id": "382-oracle-1776450709857",
+      "id": "382-oracle-1776452234664",
       "agent": "oracle",
       "cycle": 382,
-      "timestamp": 1776450709857,
+      "timestamp": 1776452234664,
       "status": "complete",
-      "summary": "ETH OKX: $2421.09 (+4.1%) | Uniswap: $2422.31 | Spread: 5.05bps",
-      "durationMs": 35140
-    },
-    {
-      "id": "382-analyst-1776450710943",
-      "agent": "analyst",
-      "cycle": 382,
-      "timestamp": 1776450710943,
-      "status": "complete",
-      "summary": "WAIT ETH | confidence 80%",
-      "durationMs": 1
-    },
-    {
-      "id": "382-strategist-1776450711777",
-      "agent": "strategist",
-      "cycle": 382,
-      "timestamp": 1776450711777,
-      "status": "complete",
-      "summary": "BUY ETH (100% treasury) | Positive 24h price change and lower price on Uniswap compared to OKX. High spread between exchanges is a risk but outweighed by opportunities.",
-      "durationMs": 1
-    },
-    {
-      "id": "382-router-1776450712514",
-      "agent": "router",
-      "cycle": 382,
-      "timestamp": 1776450712514,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
-      "id": "382-executor-1776450713201",
-      "agent": "executor",
-      "cycle": 382,
-      "timestamp": 1776450713201,
-      "status": "complete",
-      "summary": "BUY executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
-      "id": "382-narrator-1776450713994",
-      "agent": "narrator",
-      "cycle": 382,
-      "timestamp": 1776450713994,
-      "status": "complete",
-      "summary": "Xyndicate Alpha deployed ETH (100% treasury) via okx. Positive 24h price change and lower price on Uniswap compared to OKX. High spread between exchanges is a risk but outweighed by opportunities. | Squad Nova held OKB (10% treasury) via okx. OKB price increased by 1.19% in 24h, showing stability. Hold for now as recommended by the analyst with 80% confidence.",
-      "durationMs": 1
+      "summary": "ETH OKX: $2419.54 (+3.4%) | Uniswap: $2420.52 | Spread: 4.04bps",
+      "durationMs": 28980
     }
   ]
 }
