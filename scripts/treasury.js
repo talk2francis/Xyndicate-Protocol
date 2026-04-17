@@ -62,36 +62,37 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, allocat
   state.treasuryHistory = Array.isArray(state.treasuryHistory) && state.treasuryHistory.length ? [...state.treasuryHistory] : [INITIAL_TREASURY];
 
   const normalized = normalizeDecision(decision);
-  const price = resolveCurrentPrice(decision, currentPrice);
-  const safeTreasury = Math.max(0, Number(state.currentTreasury || 0));
-  const allocationUsdc = Math.min(
+  const markPrice = resolveCurrentPrice(decision, currentPrice);
+  const safeTreasury = Math.max(0, Number(state.currentTreasury || INITIAL_TREASURY));
+  const targetAllocationUsdc = Math.min(
     safeTreasury * (Number(allocationPercent || 0) / 100),
     Math.max(0, safeTreasury),
   );
   const now = Date.now();
 
-  if (normalized.action === 'BUY' && allocationUsdc > 0 && price > 0) {
+  if (normalized.action === 'BUY' && targetAllocationUsdc > 0 && markPrice > 0) {
     state.openPositions.push({
       asset: normalized.asset,
-      entryPrice: price,
-      allocationUsdc,
+      entryPrice: markPrice,
+      markPrice,
+      allocationUsdc: targetAllocationUsdc,
       openedAt: now,
     });
-    state.tradeHistory.push({ action: 'BUY', asset: normalized.asset, price, allocationUsdc, pnl: null, timestamp: now });
+    state.tradeHistory.push({ action: 'BUY', asset: normalized.asset, price: markPrice, allocationUsdc: targetAllocationUsdc, pnl: null, timestamp: now });
   }
 
   if (normalized.action === 'SELL') {
     const openForAsset = state.openPositions.filter((pos) => pos.asset === normalized.asset && Number(pos.entryPrice) > 0 && Number(pos.allocationUsdc) > 0);
     let totalPnl = 0;
 
-    if (openForAsset.length > 0 && price > 0) {
+    if (openForAsset.length > 0 && markPrice > 0) {
       openForAsset.forEach((pos) => {
-        const pnl = ((price - pos.entryPrice) / pos.entryPrice) * pos.allocationUsdc;
+        const pnl = ((markPrice - pos.entryPrice) / pos.entryPrice) * pos.allocationUsdc;
         totalPnl += pnl;
         state.tradeHistory.push({
           action: 'SELL',
           asset: normalized.asset,
-          price,
+          price: markPrice,
           allocationUsdc: pos.allocationUsdc,
           pnl: Number(pnl.toFixed(4)),
           timestamp: now,
@@ -103,13 +104,21 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, allocat
     }
   }
 
+  state.openPositions = state.openPositions.map((pos) => ({
+    ...pos,
+    markPrice: pos.asset === normalized.asset && markPrice > 0 ? markPrice : Number(pos.markPrice || pos.entryPrice || 0),
+  }));
+
+  const deployedCapital = Number(state.openPositions.reduce((sum, pos) => sum + Math.max(0, Number(pos.allocationUsdc || 0)), 0).toFixed(4));
   state.unrealizedPnl = Number(state.openPositions.reduce((sum, pos) => {
-    if (!pos.entryPrice) return sum;
-    return sum + ((price - pos.entryPrice) / pos.entryPrice) * pos.allocationUsdc;
+    const referencePrice = Number(pos.markPrice || pos.entryPrice || 0);
+    if (!pos.entryPrice || !referencePrice) return sum;
+    return sum + ((referencePrice - pos.entryPrice) / pos.entryPrice) * pos.allocationUsdc;
   }, 0).toFixed(4));
 
-  state.currentTreasury = Math.max(0, Number((INITIAL_TREASURY + Number(state.realizedPnl || 0) + Number(state.unrealizedPnl || 0)).toFixed(4)));
-  state.roi = Number(Math.max(-100, (((state.currentTreasury - INITIAL_TREASURY) / 10))).toFixed(4));
+  const cashReserve = Math.max(0, Number((INITIAL_TREASURY - deployedCapital + Number(state.realizedPnl || 0)).toFixed(4)));
+  state.currentTreasury = Math.max(0, Number((cashReserve + deployedCapital + Number(state.unrealizedPnl || 0)).toFixed(4)));
+  state.roi = Number((((state.currentTreasury - INITIAL_TREASURY) / INITIAL_TREASURY) * 100).toFixed(4));
 
   if (state.currentTreasury > 0 && state.wipedAt) {
     state.wipedAt = null;
