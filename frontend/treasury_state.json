@@ -1,13 +1,13 @@
 {
-  "lastUpdated": 1776440160851,
+  "lastUpdated": 1776440197780,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
-      "currentTreasury": 1002.2031,
+      "currentTreasury": 0,
       "realizedPnl": 0,
-      "unrealizedPnl": 2.2031,
-      "roi": 0.2203,
+      "unrealizedPnl": -1000,
+      "roi": -100,
       "openPositions": [
         {
           "asset": "ETH",
@@ -70,11 +70,12 @@
         0,
         996.4906,
         0,
-        1002.2031
+        1002.2031,
+        0
       ],
       "refillCount": 0,
       "lastRefillAt": null,
-      "wipedAt": null,
+      "wipedAt": 1776440197780,
       "resetAt": 1776364853141,
       "resetReason": "treasury-reset-v1"
     },
