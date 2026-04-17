@@ -590,7 +590,9 @@
     "0x705f3b50bb700b621aa45b7271d0e01975e0b92a74a24518c25761aac2ce972d",
     "0x363101b0e3221c06590d180a586560992b82f6bd2d5cdce71ddeaefac2c1ffd3",
     "0x45088eecd197b09aaa05477e5c58d79d42fec1956867b8d066c8676aaf1b142d",
-    "0x97d0052342b7c2601b54c4e257ea88d85e67006ba2407c9456f8dd901eaa3e54"
+    "0x97d0052342b7c2601b54c4e257ea88d85e67006ba2407c9456f8dd901eaa3e54",
+    "0x37df09d65384a829f14151351534dafe9add9363a795cb4f529e13a1a14b200f",
+    "0xcf6b5addbb01ec3bc767d7016c9069cdd9127302b0b4ad165fc404353e4def19"
   ],
   "decisionLogEntries": [
     {
@@ -4533,6 +4535,20 @@
       "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD ETH (10% treasury) · Market conditions evaluated.",
       "timestamp": 1776452279
+    },
+    {
+      "txHash": "0x37df09d65384a829f14151351534dafe9add9363a795cb4f529e13a1a14b200f",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · Positive 24h price change and lower price on Uniswap compared to OKX with high confidence score of 0.8",
+      "timestamp": 1776454119
+    },
+    {
+      "txHash": "0xcf6b5addbb01ec3bc767d7016c9069cdd9127302b0b4ad165fc404353e4def19",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Price change in the last 24 hours is minimal, suggesting stability.",
+      "timestamp": 1776454119
     }
   ]
 }
