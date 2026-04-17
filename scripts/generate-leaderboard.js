@@ -73,6 +73,7 @@ async function buildLeaderboard() {
   const cycleState = readJson(STATE_PATH, {});
   const treasuryState = readTreasuryState();
   const entries = Array.isArray(deployments.decisionLogEntries) ? deployments.decisionLogEntries : [];
+  const liveSquadResults = cycleState?.squadResults && typeof cycleState.squadResults === 'object' ? cycleState.squadResults : {};
 
   const squadMap = new Map();
   const localRegistry = readJson(LOCAL_REGISTRY_PATH, { squads: [], lastUpdated: 0 });
@@ -153,6 +154,37 @@ async function buildLeaderboard() {
       treasury,
       roi,
     });
+  }
+
+  for (const [rawSquadId, liveResult] of Object.entries(liveSquadResults)) {
+    const squadId = normalizeSquadId(rawSquadId);
+    const current = squadMap.get(squadId);
+    if (!current) continue;
+
+    const liveAction = normalizeAction(liveResult?.action || liveResult?.rationale || liveResult?.narrative || '');
+    const liveAsset = String(liveResult?.asset || current.lastAsset || 'ETH');
+    const liveTimestampMs = Number(liveResult?.timestamp || liveResult?.completedAt || liveResult?.lastDecisionAt || 0);
+    const liveTimestamp = liveTimestampMs > 1000000000000 ? Math.floor(liveTimestampMs / 1000) : liveTimestampMs;
+    const liveRouteRaw = String(liveResult?.route || '').toUpperCase();
+    const liveRoute = liveRouteRaw === 'UNISWAP' ? 'Uniswap' : liveRouteRaw === 'OKX' ? 'OKX' : current.routeUsed ?? null;
+    const liveConfidence = Number(liveResult?.confidence || current.confidence || 0.66);
+    const sizePercent = Number(liveResult?.sizePercent || liveResult?.allocationPercent || 10);
+    const liveRationale = String(
+      liveResult?.narrative ||
+      liveResult?.lastDecision ||
+      `${liveAction} ${liveAsset} (${sizePercent}% treasury) · ${liveResult?.rationale || 'Active strategy cycle'}`
+    );
+
+    if (liveTimestamp >= Number(current.latestTimestamp || 0)) {
+      current.latestTimestamp = liveTimestamp;
+      current.latestRationale = liveRationale;
+      current.lastAction = liveAction;
+      current.lastAsset = liveAsset;
+      current.confidence = liveConfidence;
+      current.routeUsed = liveRoute;
+    }
+
+    squadMap.set(squadId, current);
   }
 
   const squadsOrdered = Array.from(squadMap.values()).sort((a, b) => {
