@@ -2,11 +2,53 @@
   "squads": [
     {
       "rank": 1,
+      "squadId": "FRANCC_ALPHA",
+      "decisions": 9,
+      "confidence": 0.5,
+      "treasury": 1000,
+      "roi": 0,
+      "lastAction": "HOLD ETH (10% treasury) · Market conditions evaluated.",
+      "latestTimestamp": 1776411111400,
+      "status": "ACTIVE",
+      "badge": "External",
+      "routeUsed": "OKX",
+      "stats": {
+        "buys": 0,
+        "sells": 0,
+        "holds": 0,
+        "lastTradeAction": "OKX",
+        "lastAsset": "OKB/USDC"
+      },
+      "txHashes": []
+    },
+    {
+      "rank": 2,
+      "squadId": "SPARTAN_ONE",
+      "decisions": 7,
+      "confidence": 0.5,
+      "treasury": 1000,
+      "roi": 0,
+      "lastAction": "HOLD ETH (10% treasury) · Market conditions evaluated.",
+      "latestTimestamp": 1776411113649,
+      "status": "ACTIVE",
+      "badge": "External",
+      "routeUsed": "OKX",
+      "stats": {
+        "buys": 0,
+        "sells": 0,
+        "holds": 0,
+        "lastTradeAction": "OKX",
+        "lastAsset": "ETH/USDC"
+      },
+      "txHashes": []
+    },
+    {
+      "rank": 3,
       "squadId": "XYNDICATE_ALPHA",
       "decisions": 285,
       "confidence": 0.66,
-      "treasury": 1000,
-      "roi": 0,
+      "treasury": 0,
+      "roi": -100,
       "lastAction": "HOLD ETH (10% treasury) · Fallback decision",
       "latestTimestamp": 1776425053,
       "status": "ACTIVE",
@@ -32,12 +74,12 @@
       ]
     },
     {
-      "rank": 2,
+      "rank": 4,
       "squadId": "SQUAD_NOVA",
       "decisions": 258,
       "confidence": 0.66,
-      "treasury": 1000,
-      "roi": 0,
+      "treasury": 0,
+      "roi": -100,
       "lastAction": "HOLD OKB (10% treasury) · Fallback decision",
       "latestTimestamp": 1776425053,
       "status": "ACTIVE",
@@ -61,52 +103,10 @@
         "0xee582e6cb63bc800463359c6755227262816837273e181e0849fdcacb399babd",
         "0x363101b0e3221c06590d180a586560992b82f6bd2d5cdce71ddeaefac2c1ffd3"
       ]
-    },
-    {
-      "rank": 3,
-      "squadId": "FRANCC_ALPHA",
-      "decisions": 9,
-      "confidence": 0.5,
-      "treasury": 1000,
-      "roi": 0,
-      "lastAction": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "latestTimestamp": 1776411111400,
-      "status": "ACTIVE",
-      "badge": "External",
-      "routeUsed": "OKX",
-      "stats": {
-        "buys": 0,
-        "sells": 0,
-        "holds": 0,
-        "lastTradeAction": "OKX",
-        "lastAsset": "OKB/USDC"
-      },
-      "txHashes": []
-    },
-    {
-      "rank": 4,
-      "squadId": "SPARTAN_ONE",
-      "decisions": 7,
-      "confidence": 0.5,
-      "treasury": 1000,
-      "roi": 0,
-      "lastAction": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "latestTimestamp": 1776411113649,
-      "status": "ACTIVE",
-      "badge": "External",
-      "routeUsed": "OKX",
-      "stats": {
-        "buys": 0,
-        "sells": 0,
-        "holds": 0,
-        "lastTradeAction": "OKX",
-        "lastAsset": "ETH/USDC"
-      },
-      "txHashes": []
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-17T17:38:59.089Z",
+  "updatedAt": "2026-04-17T17:41:16.453Z",
   "totalDecisions": 559,
   "uniswapQueriesSuccessful": 2,
   "supportingProofs": {

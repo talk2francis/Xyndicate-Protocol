@@ -132,8 +132,10 @@ async function buildLeaderboard() {
     if (isCancelled || isDeactivated) continue;
 
     const decisions = Number(external?.decisionCount ?? external?.decisions ?? normalized.decisions ?? 0);
-    const treasury = Number(treasuryState?.squads?.[normalized.squadId]?.currentTreasury || 1000);
-    const roi = Number(treasuryState?.squads?.[normalized.squadId]?.roi || 0);
+    const treasuryRaw = treasuryState?.squads?.[normalized.squadId]?.currentTreasury;
+    const roiRaw = treasuryState?.squads?.[normalized.squadId]?.roi;
+    const treasury = Number.isFinite(Number(treasuryRaw)) ? Number(treasuryRaw) : 1000;
+    const roi = Number.isFinite(Number(roiRaw)) ? Number(roiRaw) : 0;
 
     squadMap.set(normalized.squadId, {
       squadId: normalized.squadId,
@@ -154,6 +156,27 @@ async function buildLeaderboard() {
       treasury,
       roi,
     });
+  }
+
+  for (const [squadId, squad] of Object.entries(treasuryState?.squads || {})) {
+    if (externalRegistryMap.has(String(squadId).trim().toUpperCase())) continue;
+    const current = squadMap.get(squadId) || {
+      squadId,
+      decisions: 0,
+      buys: 0,
+      sells: 0,
+      holds: 0,
+      latestTimestamp: 0,
+      latestRationale: 'Awaiting treasury sync',
+      lastAction: 'UNKNOWN',
+      lastAsset: 'ETH',
+      confidence: 0.66,
+      txHashes: [],
+    };
+
+    current.treasury = Number.isFinite(Number(squad?.currentTreasury)) ? Number(squad.currentTreasury) : 1000;
+    current.roi = Number.isFinite(Number(squad?.roi)) ? Number(squad.roi) : 0;
+    squadMap.set(squadId, current);
   }
 
   for (const [rawSquadId, liveResult] of Object.entries(liveSquadResults)) {
