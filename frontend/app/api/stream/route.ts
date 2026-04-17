@@ -9,7 +9,8 @@ export async function GET(req: NextRequest) {
     async start(controller) {
       const send = async () => {
         try {
-          const r = await fetch('https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/cycle_state.json', {
+          const artifactBranch = process.env.NEXT_PUBLIC_GITHUB_ARTIFACTS_BRANCH || process.env.GITHUB_ARTIFACTS_BRANCH || 'artifacts';
+          const r = await fetch(`https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/${artifactBranch}/frontend/cycle_state.json`, {
             cache: 'no-store',
           });
           if (r.ok) {

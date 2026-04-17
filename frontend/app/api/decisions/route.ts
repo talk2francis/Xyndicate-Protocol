@@ -8,7 +8,8 @@ const ABI = [
   "function getDecision(uint256 index) external view returns (string, string, string, uint256)",
 ];
 
-const REGISTRY_URL = "https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/squad_registry.json";
+const ARTIFACT_BRANCH = process.env.NEXT_PUBLIC_GITHUB_ARTIFACTS_BRANCH || process.env.GITHUB_ARTIFACTS_BRANCH || "artifacts";
+const REGISTRY_URL = `https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/${ARTIFACT_BRANCH}/frontend/squad_registry.json`;
 
 async function readRegistryRoutes() {
   try {

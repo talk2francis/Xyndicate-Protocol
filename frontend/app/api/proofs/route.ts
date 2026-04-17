@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-const PROOFS_URL = "https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/proofs.json";
+const ARTIFACT_BRANCH = process.env.NEXT_PUBLIC_GITHUB_ARTIFACTS_BRANCH || process.env.GITHUB_ARTIFACTS_BRANCH || "artifacts";
+const PROOFS_URL = `https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/${ARTIFACT_BRANCH}/frontend/proofs.json`;
 
 export async function GET() {
   try {

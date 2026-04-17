@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const RAW_ACTIVITY_URL = "https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/agent_activity.json";
+const ARTIFACT_BRANCH = process.env.NEXT_PUBLIC_GITHUB_ARTIFACTS_BRANCH || process.env.GITHUB_ARTIFACTS_BRANCH || "artifacts";
+const RAW_ACTIVITY_URL = `https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/${ARTIFACT_BRANCH}/frontend/agent_activity.json`;
 
 type ActivityEntry = {
   id: string;

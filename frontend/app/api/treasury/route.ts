@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 export const revalidate = 30;
 
-const RAW_TREASURY_URL = "https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/treasury_state.json";
+const ARTIFACT_BRANCH = process.env.NEXT_PUBLIC_GITHUB_ARTIFACTS_BRANCH || process.env.GITHUB_ARTIFACTS_BRANCH || "artifacts";
+const RAW_TREASURY_URL = `https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/${ARTIFACT_BRANCH}/frontend/treasury_state.json`;
 
 export async function GET() {
   try {
