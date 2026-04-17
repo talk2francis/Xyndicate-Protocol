@@ -590,7 +590,9 @@
     "0x0e3dffc61e69f9e88c5cbe490e57b80fa93f64aa26b6c4f6f1a8a57adb424d08",
     "0x77a1e1b3378707a7461b0c012100e1f218ed441d1768b04d1b0d196330f2ccb9",
     "0x88b5566ab7553405dda9b302627a4de91238c31ec0012bea1bc98180dae89039",
-    "0xfa92a259d9b2d240c63e618659449a948d1723e13373f07881abb88d1d0a560f"
+    "0xfa92a259d9b2d240c63e618659449a948d1723e13373f07881abb88d1d0a560f",
+    "0xf029413265c1380f4e894af3dd7bfac2de5019b9a8bf8fa0c14af355a2fe2a4f",
+    "0x6ee47320061985f7073bbde8f2b52fa1660070e3ffb700a87a9791abc0076203"
   ],
   "decisionLogEntries": [
     {
@@ -4519,6 +4521,20 @@
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD OKB (10% treasury) · Fallback decision",
       "timestamp": 1776420077
+    },
+    {
+      "txHash": "0xf029413265c1380f4e894af3dd7bfac2de5019b9a8bf8fa0c14af355a2fe2a4f",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (10% treasury) · Fallback decision",
+      "timestamp": 1776421955
+    },
+    {
+      "txHash": "0x6ee47320061985f7073bbde8f2b52fa1660070e3ffb700a87a9791abc0076203",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (10% treasury) · Fallback decision",
+      "timestamp": 1776421955
     }
   ]
 }
