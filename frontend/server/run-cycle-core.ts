@@ -107,24 +107,65 @@ async function fetchMarketSnapshot(pair: string) {
   };
 }
 
-function fallbackAgentResponse(systemPrompt: string, payload: any, reason: string) {
-  if (systemPrompt.includes("Analyst")) {
-    return {
-      opportunities: [{ asset: payload?.squad?.baseAsset || "ETH", type: "hold", rationale: `Fallback analyst response: ${reason}`, confidence: 35 }],
-      risks: [{ description: reason, severity: 4 }],
-      recommendation: "wait",
-      topAsset: payload?.squad?.baseAsset || "ETH",
-      confidenceScore: 35,
-    };
+function buildDeterministicFallback(payload: any, reason: string) {
+  const market = payload?.market || {};
+  const squad = payload?.squad || {};
+  const baseAsset = String(squad?.baseAsset || 'ETH');
+  const riskMode = String(squad?.riskMode || 'balanced').toLowerCase();
+  const change24h = Number(market?.change24h || 0);
+  const spreadBps = Number(market?.spreadBps || market?.priceSpreads?.bps || 0);
+  const betterRoute = String(market?.betterRoute || 'okx').toLowerCase();
+
+  let action = 'HOLD';
+  let sizePercent = riskMode === 'aggressive' ? 18 : 10;
+  let confidenceScore = 52;
+  let recommendation = 'wait';
+  let rationale = `Fallback market-rule decision: ${reason}.`;
+
+  if (change24h <= -1.2 || (spreadBps >= 8 && betterRoute === 'uniswap')) {
+    action = 'BUY';
+    recommendation = 'act';
+    confidenceScore = riskMode === 'aggressive' ? 74 : 68;
+    sizePercent = riskMode === 'aggressive' ? 22 : 12;
+    rationale = `Fallback market-rule decision: ${baseAsset} is trading weak on the day and route spread is supportive, so buy exposure is justified.`;
+  } else if (change24h >= 1.2) {
+    action = 'SELL';
+    recommendation = 'exit';
+    confidenceScore = riskMode === 'aggressive' ? 72 : 66;
+    sizePercent = riskMode === 'aggressive' ? 20 : 10;
+    rationale = `Fallback market-rule decision: ${baseAsset} is extended on the day, so reducing exposure is justified.`;
+  } else if (Math.abs(change24h) < 0.35 && spreadBps < 5) {
+    action = 'HOLD';
+    recommendation = 'wait';
+    confidenceScore = 55;
+    sizePercent = 10;
+    rationale = `Fallback market-rule decision: market conditions are balanced and the route spread is narrow, so holding is preferred.`;
   }
 
   return {
-    action: "HOLD",
-    asset: payload?.squad?.baseAsset || "ETH",
-    sizePercent: 10,
-    rationale: `Fallback strategist response: ${reason}`,
-    confidence: 35,
+    analyst: {
+      opportunities: [{ asset: baseAsset, type: action === 'BUY' ? 'long' : action === 'SELL' ? 'short' : 'hold', rationale, confidence: confidenceScore }],
+      risks: [{ description: reason, severity: 3 }],
+      recommendation,
+      topAsset: baseAsset,
+      confidenceScore,
+    },
+    strategist: {
+      action,
+      asset: baseAsset,
+      sizePercent,
+      rationale,
+      confidence: confidenceScore,
+    },
   };
+}
+
+function fallbackAgentResponse(systemPrompt: string, payload: any, reason: string) {
+  const fallback = buildDeterministicFallback(payload, reason);
+  if (systemPrompt.includes("Analyst")) {
+    return fallback.analyst;
+  }
+  return fallback.strategist;
 }
 
 async function callOpenAI(systemPrompt: string, payload: unknown) {
