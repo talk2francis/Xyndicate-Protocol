@@ -32,6 +32,10 @@ async function runExternalSquad(squad, sharedMarketData) {
 
   const marketData = sharedMarketData || { okxPrice: 0, uniswapPrice: 0, spreadBps: 0, betterRoute: 'okx' };
   const route = (marketData?.spreadBps && marketData.spreadBps > 5 && marketData?.uniswapPrice && marketData.uniswapPrice > 0) ? 'uniswap' : 'okx';
+  const baseAsset = String(squad?.baseAsset || 'ETH/USDC').split('/')[0];
+  const externalPrice = baseAsset === 'OKB'
+    ? Number(marketData?.okbOkxPrice || marketData?.okxPrice || marketData?.price || 0)
+    : Number(marketData?.ethOkxPrice || marketData?.okxPrice || marketData?.price || 0);
   const result = {
     squadId: squad.squadId,
     squadName: squad.squadName,
@@ -41,9 +45,9 @@ async function runExternalSquad(squad, sharedMarketData) {
     route: route === 'uniswap' ? 'Uniswap' : 'OKX',
     txHash: `external-${squad.squadId}-${now}`,
     registeredAt: squad.latestTimestamp || now,
-    currentPrice: Number(marketData?.okxPrice || marketData?.price || 0),
+    currentPrice: externalPrice,
     allocationPercent: 10,
-    asset: String(squad?.baseAsset || 'ETH/USDC').split('/')[0],
+    asset: baseAsset,
   };
 
   state.externalSquadLastRun = state.externalSquadLastRun || {};

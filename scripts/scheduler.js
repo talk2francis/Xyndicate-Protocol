@@ -73,10 +73,18 @@ async function scheduledRun() {
     const mainResults = mainSquads.map((squadId) => {
       const squadResult = result?.squadResults?.[squadId] || {};
       const squadTreasury = Number(treasuryState?.squads?.[squadId]?.currentTreasury ?? 1000);
+      const resolvedPrice = Number(
+        squadResult?.currentPrice ||
+        squadResult?.market?.okxPrice ||
+        squadResult?.market?.price ||
+        result?.sharedMarket?.okxPrice ||
+        result?.sharedMarket?.price ||
+        0
+      );
       const decision = {
         action: squadTreasury <= 0 && String(squadResult.action || 'HOLD').toUpperCase() === 'BUY' ? 'HOLD' : (squadResult.action || 'HOLD'),
         asset: squadResult.asset || 'ETH',
-        currentPrice: squadResult.currentPrice || result?.sharedMarket?.okxPrice || result?.sharedMarket?.price || 0,
+        currentPrice: resolvedPrice,
         reason: squadTreasury <= 0 && String(squadResult.action || 'HOLD').toUpperCase() === 'BUY' ? 'Treasury depleted — preserving position until refill.' : squadResult.reason,
       };
       if (squadTreasury <= 0 && String(squadResult.action || 'HOLD').toUpperCase() === 'BUY') {
@@ -85,7 +93,7 @@ async function scheduledRun() {
       return {
         squadId,
         decision,
-        currentPrice: decision.currentPrice,
+        currentPrice: resolvedPrice,
       };
     });
 

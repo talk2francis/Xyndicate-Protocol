@@ -409,7 +409,11 @@ export async function runCycleCore() {
   }
 
   return {
-    sharedMarket: results[0]?.market || null,
+    sharedMarket: {
+      ...(results[0]?.market || {}),
+      ethOkxPrice: results.find((result) => result.baseAsset === 'ETH')?.market?.okxPrice || results[0]?.market?.okxPrice || 0,
+      okbOkxPrice: results.find((result) => result.baseAsset === 'OKB')?.market?.okxPrice || 0,
+    },
     activeSquads: SQUADS.map((squad) => squad.displayName),
     squadResults: Object.fromEntries(results.map((result) => [result.squadId, result])),
     results,
