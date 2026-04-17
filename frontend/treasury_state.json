@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776445817028,
+  "lastUpdated": 1776445817716,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -87,10 +87,10 @@
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
-      "currentTreasury": 997.7122,
+      "currentTreasury": 0,
       "realizedPnl": 0,
-      "unrealizedPnl": -2.2878,
-      "roi": -0.2288,
+      "unrealizedPnl": -1000,
+      "roi": -100,
       "openPositions": [
         {
           "asset": "OKB",
@@ -159,11 +159,12 @@
         0,
         998.0554,
         0,
-        997.7122
+        997.7122,
+        0
       ],
       "refillCount": 0,
       "lastRefillAt": null,
-      "wipedAt": null,
+      "wipedAt": 1776445817716,
       "resetAt": 1776364853141,
       "resetReason": "treasury-reset-v1"
     },
