@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "372-oracle-1776403893919",
-      "agent": "oracle",
-      "cycle": 372,
-      "timestamp": 1776403893919,
-      "status": "complete",
-      "summary": "ETH OKX: $2322.04 (-1.5%) | Uniswap: $2322.96 | Spread: 3.98bps",
-      "durationMs": 28015
-    },
-    {
       "id": "372-analyst-1776403894768",
       "agent": "analyst",
       "cycle": 372,
@@ -487,58 +478,67 @@
       "durationMs": 1
     },
     {
-      "id": "381-oracle-1776423702390",
+      "id": "381-oracle-1776425048601",
       "agent": "oracle",
       "cycle": 381,
-      "timestamp": 1776423702390,
+      "timestamp": 1776425048601,
       "status": "complete",
-      "summary": "ETH OKX: $2344.19 (+0.5%) | Uniswap: $2345.22 | Spread: 4.41bps",
-      "durationMs": 27802
+      "summary": "ETH OKX: $2352.87 (+0.9%) | Uniswap: $2353.81 | Spread: 3.98bps",
+      "durationMs": 24594
     },
     {
-      "id": "381-analyst-1776423703311",
+      "id": "381-analyst-1776425049655",
       "agent": "analyst",
       "cycle": 381,
-      "timestamp": 1776423703311,
+      "timestamp": 1776425049655,
       "status": "complete",
       "summary": "EXIT ETH | confidence 100%",
       "durationMs": 1
     },
     {
-      "id": "381-strategist-1776423704002",
+      "id": "381-strategist-1776425050486",
       "agent": "strategist",
       "cycle": 381,
-      "timestamp": 1776423704002,
+      "timestamp": 1776425050486,
       "status": "complete",
       "summary": "HOLD ETH (10% treasury) | Fallback decision",
       "durationMs": 1
     },
     {
-      "id": "381-router-1776423704797",
+      "id": "381-router-1776425051321",
       "agent": "router",
       "cycle": 381,
-      "timestamp": 1776423704797,
+      "timestamp": 1776425051321,
       "status": "complete",
       "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     },
     {
-      "id": "381-executor-1776423705577",
+      "id": "381-executor-1776425052100",
       "agent": "executor",
       "cycle": 381,
-      "timestamp": 1776423705577,
+      "timestamp": 1776425052100,
       "status": "complete",
       "summary": "HOLD executed on OKX | 2 decision txs",
       "durationMs": 1
     },
     {
-      "id": "381-narrator-1776423706243",
+      "id": "381-narrator-1776425053102",
       "agent": "narrator",
       "cycle": 381,
-      "timestamp": 1776423706243,
+      "timestamp": 1776425053102,
       "status": "complete",
       "summary": "Xyndicate Alpha held ETH (10% treasury) via okx. Fallback decision | Squad Nova held OKB (10% treasury) via okx. Fallback decision",
       "durationMs": 1
+    },
+    {
+      "id": "382-oracle-1776425613410",
+      "agent": "oracle",
+      "cycle": 382,
+      "timestamp": 1776425613410,
+      "status": "complete",
+      "summary": "ETH OKX: $2353.41 (+0.9%) | Uniswap: $2354.19 | Spread: 3.29bps",
+      "durationMs": 33697
     }
   ]
 }
