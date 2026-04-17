@@ -1,48 +1,55 @@
 {
-  "lastUpdated": 1776461667495,
+  "lastUpdated": 1776463492792,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
-      "currentTreasury": 16037.9087,
+      "currentTreasury": 32099.999,
       "realizedPnl": 0,
-      "unrealizedPnl": 5.8306,
-      "roi": 1503.7909,
+      "unrealizedPnl": 30.0122,
+      "roi": 3109.9999,
       "openPositions": [
         {
           "asset": "ETH",
           "entryPrice": 2419.54,
-          "markPrice": 2427.41,
+          "markPrice": 2431.07,
           "allocationUsdc": 1000,
           "openedAt": 1776452221567
         },
         {
           "asset": "ETH",
           "entryPrice": 2425.81,
-          "markPrice": 2427.41,
+          "markPrice": 2431.07,
           "allocationUsdc": 1000,
           "openedAt": 1776454098320
         },
         {
           "asset": "ETH",
           "entryPrice": 2428.63,
-          "markPrice": 2427.41,
+          "markPrice": 2431.07,
           "allocationUsdc": 2002.5914,
           "openedAt": 1776455974638
         },
         {
           "asset": "ETH",
           "entryPrice": 2425.64,
-          "markPrice": 2427.41,
+          "markPrice": 2431.07,
           "allocationUsdc": 4007.5108,
           "openedAt": 1776457858469
         },
         {
           "asset": "ETH",
           "entryPrice": 2427.41,
-          "markPrice": 2427.41,
+          "markPrice": 2431.07,
           "allocationUsdc": 8021.9759,
           "openedAt": 1776461608016
+        },
+        {
+          "asset": "ETH",
+          "entryPrice": 2431.07,
+          "markPrice": 2431.07,
+          "allocationUsdc": 16037.9087,
+          "openedAt": 1776463492791
         }
       ],
       "tradeHistory": [
@@ -85,6 +92,14 @@
           "allocationUsdc": 8021.9759,
           "pnl": null,
           "timestamp": 1776461608016
+        },
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "price": 2431.07,
+          "allocationUsdc": 16037.9087,
+          "pnl": null,
+          "timestamp": 1776463492791
         }
       ],
       "treasuryHistory": [
@@ -136,7 +151,8 @@
         8021.9759,
         8021.9759,
         16037.9087,
-        16037.9087
+        16037.9087,
+        32099.999
       ],
       "refillCount": 0,
       "lastRefillAt": null,
