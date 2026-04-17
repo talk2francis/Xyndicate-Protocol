@@ -11,6 +11,10 @@ function getGithubToken() {
   return (process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '').trim();
 }
 
+function remoteArtifactPublishEnabled() {
+  return String(process.env.ENABLE_REMOTE_ARTIFACT_PUBLISH || '').trim().toLowerCase() === 'true';
+}
+
 async function githubRequest(url, options = {}) {
   const token = getGithubToken();
   if (!token) return null;
@@ -86,7 +90,9 @@ function writeLocalJson(filePath, content) {
 
 async function writeAndPublishJson({ localPath, repoPath, content, message }) {
   writeLocalJson(localPath, content);
-  const remote = await publishJsonArtifact({ repoPath, content, message });
+  const remote = remoteArtifactPublishEnabled()
+    ? await publishJsonArtifact({ repoPath, content, message })
+    : null;
   return {
     content,
     remote,
@@ -98,6 +104,7 @@ async function writeAndPublishJson({ localPath, repoPath, content, message }) {
 module.exports = {
   APP_BRANCH,
   ARTIFACT_BRANCH,
+  remoteArtifactPublishEnabled,
   writeLocalJson,
   publishJsonArtifact,
   writeAndPublishJson,
