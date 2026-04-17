@@ -3,7 +3,8 @@ const path = require('path');
 
 const OWNER = 'talk2francis';
 const REPO = 'Xyndicate-Protocol';
-const BRANCH = process.env.GITHUB_BRANCH || 'main';
+const APP_BRANCH = process.env.GITHUB_BRANCH || 'main';
+const ARTIFACT_BRANCH = process.env.GITHUB_ARTIFACTS_BRANCH || process.env.GITHUB_PUBLISH_BRANCH || APP_BRANCH;
 const API_BASE = `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
 
 function getGithubToken() {
@@ -32,7 +33,7 @@ async function githubRequest(url, options = {}) {
 }
 
 async function getRemoteFileSha(repoPath) {
-  const url = `${API_BASE}/${repoPath}?ref=${encodeURIComponent(BRANCH)}`;
+  const url = `${API_BASE}/${repoPath}?ref=${encodeURIComponent(ARTIFACT_BRANCH)}`;
   const response = await githubRequest(url, { method: 'GET' });
   if (!response) return null;
 
@@ -47,7 +48,7 @@ async function getRemoteFileSha(repoPath) {
 async function putJsonArtifact(repoPath, content, message, sha) {
   const body = {
     message,
-    branch: BRANCH,
+    branch: ARTIFACT_BRANCH,
     content: Buffer.from(`${JSON.stringify(content, null, 2)}\n`, 'utf8').toString('base64'),
     ...(sha ? { sha } : {}),
   };
@@ -95,7 +96,8 @@ async function writeAndPublishJson({ localPath, repoPath, content, message }) {
 }
 
 module.exports = {
-  BRANCH,
+  APP_BRANCH,
+  ARTIFACT_BRANCH,
   writeLocalJson,
   publishJsonArtifact,
   writeAndPublishJson,
