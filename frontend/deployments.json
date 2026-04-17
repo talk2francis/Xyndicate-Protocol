@@ -554,7 +554,9 @@
     "0x554dffe5c55bcd906462bdee5e70da892999faa89c045f8ab93e51d5a75c7412",
     "0xe9221c102fa29ef8fc9815279fa9b9813f167502fc886bf2c4a6c620bd43a31b",
     "0x7fc7340c9f24b0b53442e6437f4d19852788edd13c5d1069e6bdbda7a6fece71",
-    "0xd7f103a4cb839bb65094417f9f61b590cda06da94a3aba7aafc29eda730c0da3"
+    "0xd7f103a4cb839bb65094417f9f61b590cda06da94a3aba7aafc29eda730c0da3",
+    "0x1453bb60ae96af57e976079a0c3ea8e05d4ef213078fed460d47a22591067f82",
+    "0xae2dac1ab39b3f6e2d61db5ce19929458a24be4077bbd88878da91ac297ead73"
   ],
   "decisionLogEntries": [
     {
@@ -4205,18 +4207,18 @@
       "timestamp": 1776389508
     },
     {
-      "txHash": "external-FRANCC_ALPHA-1776389538819",
-      "squadId": "FRANCC_ALPHA",
-      "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
-      "rationale": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "timestamp": 1776389538
+      "txHash": "0x1453bb60ae96af57e976079a0c3ea8e05d4ef213078fed460d47a22591067f82",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (10% treasury) · Fallback decision",
+      "timestamp": 1776391287
     },
     {
-      "txHash": "external-SPARTAN_ONE-1776389540962",
-      "squadId": "SPARTAN_ONE",
-      "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
-      "rationale": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "timestamp": 1776389540
+      "txHash": "0xae2dac1ab39b3f6e2d61db5ce19929458a24be4077bbd88878da91ac297ead73",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (10% treasury) · Fallback decision",
+      "timestamp": 1776391287
     }
   ]
 }
