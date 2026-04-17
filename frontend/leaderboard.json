@@ -7,8 +7,8 @@
       "confidence": 0.8,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and lower price on Uniswap compared to OKX. High spread between exchanges is a risk but outweighed by opportunities.",
-      "latestTimestamp": 1776450714,
+      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and lower price on Uniswap compared to OKX. Aggressive risk mode favors taking advantage of the opportunity.",
+      "latestTimestamp": 1776452245,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
@@ -28,25 +28,25 @@
         "0x38eb5047a0aa6fb6d868e8ce23f67d0ca0729dd830ecf4c82a8d0c970decc957",
         "0xd3705cfef3f205ac69e635f504f4d33b06c5c6a095b0bd27052004a044539d22",
         "0x705f3b50bb700b621aa45b7271d0e01975e0b92a74a24518c25761aac2ce972d",
-        "0xdaa121adb17e2a4042a957f2e5c7781556458aa3f9b08e2677c1995adb04b748"
+        "0x45088eecd197b09aaa05477e5c58d79d42fec1956867b8d066c8676aaf1b142d"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
       "decisions": 259,
-      "confidence": 0.66,
+      "confidence": 0.8,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD OKB (10% treasury) · OKB price increased by 1.19% in 24h, showing stability. Hold for now as recommended by the analyst with 80% confidence.",
-      "latestTimestamp": 1776450714,
+      "lastAction": "BUY OKB (100% treasury) · Stable price with minimal 24h change and low spread of 0 bps across exchanges, indicating price consistency. Analyst recommends holding or longing OKB.",
+      "latestTimestamp": 1776452245,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 49,
+        "buys": 50,
         "sells": 4,
-        "holds": 206,
-        "lastTradeAction": "HOLD",
+        "holds": 205,
+        "lastTradeAction": "BUY",
         "lastAsset": "OKB"
       },
       "txHashes": [
@@ -59,7 +59,7 @@
         "0x845bd7dee3ef199ef7ca5450b903a5b66fa664bf09bd57dcbb484183f0779552",
         "0xee582e6cb63bc800463359c6755227262816837273e181e0849fdcacb399babd",
         "0x363101b0e3221c06590d180a586560992b82f6bd2d5cdce71ddeaefac2c1ffd3",
-        "0x2a5113c203e3afc11c89f57f2af6a1f1458200f1f10e84e3ed387d3f144a3dae"
+        "0x97d0052342b7c2601b54c4e257ea88d85e67006ba2407c9456f8dd901eaa3e54"
       ]
     },
     {
@@ -70,7 +70,7 @@
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "latestTimestamp": 1776450746147,
+      "latestTimestamp": 1776452277285,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -91,7 +91,7 @@
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "latestTimestamp": 1776450749734,
+      "latestTimestamp": 1776452279815,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -106,18 +106,18 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-17T18:32:33.702Z",
+  "updatedAt": "2026-04-17T18:58:02.521Z",
   "totalDecisions": 563,
   "uniswapQueriesSuccessful": 2,
   "supportingProofs": {
-    "narratorPayments": 27,
+    "narratorPayments": 29,
     "latestNarratorPayment": {
       "type": "strategist-analyst",
       "from": "Strategist Wallet",
       "to": "Analyst Wallet",
       "amount": "0.00005 OKB",
-      "txHash": "0xcc534de6db545aea84d050c92d1e4dcdd4f5fc40782c7c0ed320d8c32196172c",
-      "timestamp": 1776407538,
+      "txHash": "0xde80419285bd2ef492b5f6423e343e3ec2cba36af02111ec77a38522672b6f19",
+      "timestamp": 1776452244,
       "status": "confirmed",
       "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
     }
