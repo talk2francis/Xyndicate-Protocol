@@ -589,8 +589,8 @@
     "0xee582e6cb63bc800463359c6755227262816837273e181e0849fdcacb399babd",
     "0x705f3b50bb700b621aa45b7271d0e01975e0b92a74a24518c25761aac2ce972d",
     "0x363101b0e3221c06590d180a586560992b82f6bd2d5cdce71ddeaefac2c1ffd3",
-    "0x84128cfea94533c7a8269df6017b58fbd491888fe787c111be03b6b036fe4149",
-    "0x129e1593013a93fc767175e16cb1e136e6ab615b77399e45da70e7877c50fe45"
+    "0x6fd87b3f2ba66fae99fe6946eee4ebe08537cd2fe898d5c88114ab8f7b049d15",
+    "0x1c8446d16ad43f8f0c9c7a30df5debdec92fb35c8fad728d175deb331ead45c6"
   ],
   "decisionLogEntries": [
     {
@@ -4507,32 +4507,18 @@
       "timestamp": 1776425053
     },
     {
-      "txHash": "0x84128cfea94533c7a8269df6017b58fbd491888fe787c111be03b6b036fe4149",
+      "txHash": "0x6fd87b3f2ba66fae99fe6946eee4ebe08537cd2fe898d5c88114ab8f7b049d15",
       "squadId": "XYNDICATE_ALPHA",
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
-      "rationale": "BUY ETH (100% treasury) · Positive 24h price change and lower price on Uniswap compared to OKX exchange. High spread indicates potential arbitrage opportunity.",
-      "timestamp": 1776466870
+      "rationale": "BUY ETH (100% treasury) · Positive 24h price change and minimal spread indicate potential for price increase. Market volatility risk mitigated by aggressive risk mode.",
+      "timestamp": 1776468658
     },
     {
-      "txHash": "0x129e1593013a93fc767175e16cb1e136e6ab615b77399e45da70e7877c50fe45",
+      "txHash": "0x1c8446d16ad43f8f0c9c7a30df5debdec92fb35c8fad728d175deb331ead45c6",
       "squadId": "SQUAD_NOVA",
       "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
-      "rationale": "HOLD OKB (10% treasury) · Price change in the last 24 hours is minimal, suggesting stability.",
-      "timestamp": 1776466870
-    },
-    {
-      "txHash": "external-FRANCC_ALPHA-1776466902949",
-      "squadId": "FRANCC_ALPHA",
-      "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
-      "rationale": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "timestamp": 1776466902
-    },
-    {
-      "txHash": "external-SPARTAN_ONE-1776466904949",
-      "squadId": "SPARTAN_ONE",
-      "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
-      "rationale": "HOLD ETH (10% treasury) · Market conditions evaluated.",
-      "timestamp": 1776466904
+      "rationale": "HOLD OKB (10% treasury) · Market is balanced with a slight price decrease in the last 24 hours. Holding OKB is advisable for now.",
+      "timestamp": 1776468658
     }
   ]
 }
