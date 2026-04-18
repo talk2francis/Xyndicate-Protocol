@@ -598,7 +598,9 @@
     "0xe16699d9508818f854c232a526d4e90cd25f6c35b37de95c208fa12f0029a20e",
     "0x3489b64c84d6c6e98270acdd3cce177789c4a09beee4f81f31d4a50845a23025",
     "0x4772a1163fc62b7eab9062d0d3bcfc0559b09564f20f1b4ccde7fdeeba059f33",
-    "0xeafdb3f9b2fad9009e5466afa7a5207e48d65aed63e3f8c66e457ae20e7b2bec"
+    "0xeafdb3f9b2fad9009e5466afa7a5207e48d65aed63e3f8c66e457ae20e7b2bec",
+    "0x6a0c937498c16f363cf76f9c661c672900504874e872302be009d220d985c875",
+    "0xd77ace732fd88b4203da4429ace28d24dfbd21cab9591876f7b2961ce94f26d3"
   ],
   "decisionLogEntries": [
     {
@@ -4653,6 +4655,20 @@
       "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD ETH (10% treasury) · Market conditions evaluated.",
       "timestamp": 1776476172
+    },
+    {
+      "txHash": "0x6a0c937498c16f363cf76f9c661c672900504874e872302be009d220d985c875",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · Positive 24h price change of 3.49% indicates bullish momentum with high confidence score of 0.8.",
+      "timestamp": 1776478014
+    },
+    {
+      "txHash": "0xd77ace732fd88b4203da4429ace28d24dfbd21cab9591876f7b2961ce94f26d3",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Market conditions are stable with no significant opportunities or risks. Analyst recommendation is to wait. Confidence level is moderate.",
+      "timestamp": 1776478014
     }
   ]
 }
