@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "380-router-1776417340901",
-      "agent": "router",
-      "cycle": 380,
-      "timestamp": 1776417340901,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "380-executor-1776417341664",
       "agent": "executor",
       "cycle": 380,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | ETH price stable with minimal spread between exchanges. Holding recommended in current market conditions.",
       "durationMs": 2
+    },
+    {
+      "id": "390-router-1776525236797",
+      "agent": "router",
+      "cycle": 390,
+      "timestamp": 1776525236797,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
+      "durationMs": 1
     }
   ]
 }
