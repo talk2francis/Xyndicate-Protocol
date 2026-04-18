@@ -602,7 +602,9 @@
     "0x6a0c937498c16f363cf76f9c661c672900504874e872302be009d220d985c875",
     "0xd77ace732fd88b4203da4429ace28d24dfbd21cab9591876f7b2961ce94f26d3",
     "0x5e48f538d2e52343f2989756180e39c12eb40d7e5a2882dfe7c7cbc9d21b5648",
-    "0x39ea12f119648e46d6918ac62a439859b29f8e1352f358b6330e282b7b88fefb"
+    "0x39ea12f119648e46d6918ac62a439859b29f8e1352f358b6330e282b7b88fefb",
+    "0x1eda3648bbc7c4976ae0cdf866eba7c12e89ec5c1668c744d855a29ed292d27f",
+    "0xe9d76bb951686b9b8f02189baa73944f71841d5d57d5ab72e5f953837a8a4472"
   ],
   "decisionLogEntries": [
     {
@@ -4713,6 +4715,20 @@
       "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD ETH (10% treasury) · Market conditions evaluated.",
       "timestamp": 1776479905
+    },
+    {
+      "txHash": "0x1eda3648bbc7c4976ae0cdf866eba7c12e89ec5c1668c744d855a29ed292d27f",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Price change in the last 24 hours is positive, indicating potential stability. Spread between exchanges may lead to arbitrage opportunities, but overall recommendation is to wait.",
+      "timestamp": 1776481744
+    },
+    {
+      "txHash": "0xe9d76bb951686b9b8f02189baa73944f71841d5d57d5ab72e5f953837a8a4472",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY OKB (100% treasury) · Positive 24h price change, low spread between exchanges, price stability, and balanced risk mode.",
+      "timestamp": 1776481744
     }
   ]
 }
