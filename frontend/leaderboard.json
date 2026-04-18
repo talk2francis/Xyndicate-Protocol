@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 292,
+      "decisions": 293,
       "confidence": 0.66,
       "treasury": 1000.0151,
       "roi": 0.0015,
-      "lastAction": "HOLD ETH (100% treasury) · ETH price stable vs USDT, slight decrease in 24h. High spread between exchanges indicates arbitrage opportunities but also higher volatility.",
-      "latestTimestamp": 1776521486,
+      "lastAction": "HOLD ETH (100% treasury) · ETH price stable with minimal spread between exchanges. Holding is prudent in current market conditions despite negative 24h change indicating short-term volatility.",
+      "latestTimestamp": 1776523365,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 145,
         "sells": 10,
-        "holds": 133,
+        "holds": 134,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x38eb5047a0aa6fb6d868e8ce23f67d0ca0729dd830ecf4c82a8d0c970decc957",
         "0xd3705cfef3f205ac69e635f504f4d33b06c5c6a095b0bd27052004a044539d22",
         "0x705f3b50bb700b621aa45b7271d0e01975e0b92a74a24518c25761aac2ce972d",
         "0x8098646c526516920b9d949c4f2e3fdfd76ad024122e2dee670f76bfa9bcfad2",
@@ -28,29 +27,29 @@
         "0x05b16753b4b2641ff05ea6e1c5c904936582ccf9527e53636609b20f40428fc3",
         "0x244e810ba9c35056e632317d992d6b723e0257f660e626d54a01a9a141aec045",
         "0x26beef06794505aac395f7bfba8e1fa7d04b290e10ccf5a7579a8d5a2614345b",
-        "0x40aca48a2166e96d10c34f61dcb588814ab65dbe6f30f2c3986dbe0da662e5aa"
+        "0x40aca48a2166e96d10c34f61dcb588814ab65dbe6f30f2c3986dbe0da662e5aa",
+        "0xc3406fdd5f3a2167453bb6752f14924ec8196c4b379dbfdf1c7484209afe2281"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 265,
+      "decisions": 266,
       "confidence": 0.7,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD OKB (100% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait with high confidence score of 0.8.",
-      "latestTimestamp": 1776521486,
+      "latestTimestamp": 1776523365,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 49,
         "sells": 4,
-        "holds": 212,
+        "holds": 213,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x845bd7dee3ef199ef7ca5450b903a5b66fa664bf09bd57dcbb484183f0779552",
         "0xee582e6cb63bc800463359c6755227262816837273e181e0849fdcacb399babd",
         "0x363101b0e3221c06590d180a586560992b82f6bd2d5cdce71ddeaefac2c1ffd3",
         "0x0afa067b85ec0b10749439e8b91d7677af702196f73fed8fe52e1953aa10a8b6",
@@ -59,18 +58,19 @@
         "0x92719b3fc4da5526bc1c521c9c512d6a4e8f82cab9bed0b5ec0c9bbf6fe86c10",
         "0x67db9b6792f10e0771ce5ca5d97ce516cbd05c42bbb713532c9150a7b7ecf214",
         "0x3b6965405cc51a1d02e70f98b430815e5d11ef4878e11059cba7c640abf9d304",
-        "0x342dffd9c5714e93ccb60fa399942c98bd75651bbb4dd489d7fcf18672ade7c8"
+        "0x342dffd9c5714e93ccb60fa399942c98bd75651bbb4dd489d7fcf18672ade7c8",
+        "0x551e7795991e19088da637f625a70962823920f0947d4a34f554887320ba4175"
       ]
     },
     {
       "rank": 3,
       "squadId": "FRANCC_ALPHA",
-      "decisions": 16,
+      "decisions": 17,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776521517153,
+      "latestTimestamp": 1776523396745,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -86,12 +86,12 @@
     {
       "rank": 4,
       "squadId": "SPARTAN_ONE",
-      "decisions": 14,
+      "decisions": 15,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776521519973,
+      "latestTimestamp": 1776523399703,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -106,8 +106,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-18T14:12:02.802Z",
-  "totalDecisions": 587,
+  "updatedAt": "2026-04-18T14:43:22.623Z",
+  "totalDecisions": 591,
   "uniswapQueriesSuccessful": 2,
   "supportingProofs": {
     "narratorPayments": 29,
