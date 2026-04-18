@@ -68,11 +68,18 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, current
   const state = {
     ...existing,
     openPositions: Array.isArray(existing.openPositions) ? existing.openPositions.map((pos) => ({ ...pos })) : [],
-    tradeHistory: Array.isArray(existing.tradeHistory) ? [...existing.tradeHistory] : [],
+    tradeHistory: Array.isArray(existing.tradeHistory) ? existing.tradeHistory.map((trade) => ({ ...trade })) : [],
     treasuryHistory: Array.isArray(existing.treasuryHistory) && existing.treasuryHistory.length ? [...existing.treasuryHistory] : [INITIAL_TREASURY],
     cycleCount: Number(existing.cycleCount || 0),
     refillCount: Number(existing.refillCount || 0),
   };
+
+  state.tradeHistory = state.tradeHistory.filter((trade) => Number(trade?.sizeUsdc || trade?.allocationUsdc || 0) === TRADE_SIZE_USDC || trade?.reason === 'force-close-stale');
+  state.openPositions = state.openPositions.filter((pos) => Number(pos?.sizeUsdc || pos?.allocationUsdc || 0) === TRADE_SIZE_USDC).map((pos) => ({
+    ...pos,
+    sizeUsdc: TRADE_SIZE_USDC,
+    asset: String(pos.asset || 'ETH').replace('/USDC', '').replace('-USDT', ''),
+  }));
 
   state.cycleCount += 1;
   const currentCycle = state.cycleCount;
@@ -93,7 +100,7 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, current
   const stalePositions = state.openPositions.filter((pos) => (currentCycle - Number(pos.cycleNumber || 0)) >= MAX_HOLD_CYCLES);
   if (stalePositions.length > 0) {
     stalePositions.forEach((pos) => {
-      const positionMarkPrice = pos.asset === assetName ? markPrice : Number(pos.markPrice || pos.entryPrice || 0);
+      const positionMarkPrice = Number(pos.markPrice || pos.entryPrice || markPrice || 0);
       if (!positionMarkPrice || !pos.entryPrice) return;
       const pnl = ((positionMarkPrice - pos.entryPrice) / pos.entryPrice) * pos.sizeUsdc;
       state.realizedPnl = Number((Number(state.realizedPnl || 0) + pnl).toFixed(4));
@@ -110,6 +117,8 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, current
     });
     state.openPositions = state.openPositions.filter((pos) => (currentCycle - Number(pos.cycleNumber || 0)) < MAX_HOLD_CYCLES);
   }
+
+  state.openPositions = state.openPositions.map((pos) => pos.asset === assetName ? { ...pos, markPrice } : pos);
 
   const openForAsset = state.openPositions.filter((pos) => pos.asset === assetName);
   const totalOpenPositions = state.openPositions.length;
@@ -163,15 +172,14 @@ function calculateTreasuryAfterDecision(squadId, decision, currentPrice, current
     }
   }
 
-  state.openPositions = state.openPositions.map((pos) => pos.asset === assetName ? { ...pos, markPrice } : pos);
-
   state.unrealizedPnl = Number(state.openPositions.reduce((sum, pos) => {
-    if (pos.asset !== assetName) return sum;
-    return sum + (((markPrice - pos.entryPrice) / pos.entryPrice) * pos.sizeUsdc);
+    const positionMarkPrice = Number(pos.markPrice || pos.entryPrice || 0);
+    if (!positionMarkPrice || !pos.entryPrice) return sum;
+    return sum + (((positionMarkPrice - pos.entryPrice) / pos.entryPrice) * pos.sizeUsdc);
   }, 0).toFixed(4));
 
   state.currentTreasury = Math.max(0, Number((INITIAL_TREASURY + Number(state.realizedPnl || 0) + Number(state.unrealizedPnl || 0)).toFixed(4)));
-  state.roi = Number(Math.max(-100, (((state.currentTreasury - INITIAL_TREASURY) / INITIAL_TREASURY) * 100)).toFixed(4));
+  state.roi = Number((((state.currentTreasury - INITIAL_TREASURY) / INITIAL_TREASURY) * 100).toFixed(4));
 
   if (state.currentTreasury === 0 && !state.wipedAt) {
     state.wipedAt = now;

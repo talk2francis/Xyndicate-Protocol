@@ -46,7 +46,6 @@ async function runExternalSquad(squad, sharedMarketData) {
     txHash: `external-${squad.squadId}-${now}`,
     registeredAt: squad.latestTimestamp || now,
     currentPrice: externalPrice,
-    allocationPercent: 10,
     asset: baseAsset,
   };
 
@@ -71,7 +70,7 @@ async function runExternalSquad(squad, sharedMarketData) {
     txHash: result.txHash,
     squadId: result.squadId,
     agentChain: 'External→Oracle→Analyst→Strategist→Router→Executor',
-    rationale: `${result.action} ${result.asset} (${result.allocationPercent}% treasury) · ${result.rationale}`,
+    rationale: `${result.action} ${result.asset} ($50 position) · ${result.rationale} via ${result.route}`,
     timestamp: Math.floor(now / 1000),
   });
   deployments.decisionLogEntries = existing;
@@ -98,7 +97,7 @@ async function runExternalSquad(squad, sharedMarketData) {
       decisionCount: nextDecisionCount,
       decisions: nextDecisionCount,
       lastConfidence: Number(result.confidence || current.lastConfidence || 0.5),
-      lastDecision: `${result.action} ${result.asset} (${result.allocationPercent}% treasury) · ${result.rationale}`,
+      lastDecision: `${result.action} ${result.asset} ($50 position) · ${result.rationale} via ${result.route}`,
       lastRoute: result.route,
       lastDecisionAt: now,
       lastRunTime: now,

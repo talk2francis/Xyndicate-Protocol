@@ -36,6 +36,7 @@ function normalizeAction(text) {
   if (upper.includes('BUY')) return 'BUY';
   if (upper.includes('SELL')) return 'SELL';
   if (upper.includes('HOLD')) return 'HOLD';
+  if (upper.includes('OKX') || upper.includes('UNISWAP')) return 'HOLD';
   return 'UNKNOWN';
 }
 
@@ -146,7 +147,7 @@ async function buildLeaderboard() {
       latestTimestamp: Number(external?.lastDecisionAt || normalized.latestTimestamp || external?.registeredAt || 0),
       registeredAt: Number(external?.registeredAt || normalized.latestTimestamp || 0),
       latestRationale: decisions === 0 ? 'Awaiting first cycle' : String(external?.lastDecision || normalized.lastAction || 'Awaiting first cycle'),
-      lastAction: decisions === 0 ? 'Awaiting first cycle' : String(external?.lastRoute || normalized.stats.lastTradeAction || 'OKX'),
+      lastAction: decisions === 0 ? 'Awaiting first cycle' : String(external?.lastDecision || `HOLD ${String(normalized.stats.lastAsset || 'ETH/USDC').split('/')[0]} ($50 position) · Market conditions evaluated. via ${external?.lastRoute || 'OKX'}`),
       lastAsset: normalized.stats.lastAsset,
       confidence: decisions === 0 ? 0 : Number(external?.lastConfidence ?? normalized.confidence ?? 0),
       txHashes: Array.isArray(external?.txHashes) ? external.txHashes : normalized.txHashes,
@@ -191,11 +192,10 @@ async function buildLeaderboard() {
     const liveRouteRaw = String(liveResult?.route || '').toUpperCase();
     const liveRoute = liveRouteRaw === 'UNISWAP' ? 'Uniswap' : liveRouteRaw === 'OKX' ? 'OKX' : current.routeUsed ?? null;
     const liveConfidence = Number(liveResult?.confidence || current.confidence || 0.66);
-    const sizePercent = Number(liveResult?.sizePercent || liveResult?.allocationPercent || 10);
     const liveRationale = String(
       liveResult?.narrative ||
       liveResult?.lastDecision ||
-      `${liveAction} ${liveAsset} (${sizePercent}% treasury) · ${liveResult?.rationale || 'Active strategy cycle'}`
+      `${liveAction} ${liveAsset} ($50 position) · ${liveResult?.rationale || 'Active strategy cycle'}${liveRoute ? ` via ${liveRoute}` : ''}`
     );
 
     if (liveTimestamp >= Number(current.latestTimestamp || 0)) {
@@ -264,7 +264,7 @@ async function buildLeaderboard() {
     squads,
     source: 'scheduler-artifact',
     updatedAt: new Date().toISOString(),
-    totalDecisions: entries.length,
+    totalDecisions: squads.reduce((sum, squad) => sum + Number(squad.decisions || 0), 0),
     uniswapQueriesSuccessful: Number(cycleState?.uniswapQueriesSuccessful || 0),
     supportingProofs: {
       narratorPayments: agentPayments.length,
