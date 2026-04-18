@@ -1,29 +1,21 @@
 {
-  "lastUpdated": 1776500574647,
+  "lastUpdated": 1776502852719,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
-      "currentTreasury": 998.5901,
-      "realizedPnl": -0.7314,
-      "unrealizedPnl": -0.6785,
-      "roi": -0.141,
+      "currentTreasury": 1000,
+      "realizedPnl": 0,
+      "unrealizedPnl": 0,
+      "roi": 0,
       "openPositions": [
         {
           "asset": "ETH",
-          "entryPrice": 2403.84,
-          "markPrice": 2387.53,
+          "entryPrice": 2380.02,
+          "markPrice": 2380.02,
           "sizeUsdc": 50,
-          "openedAt": 1776498631753,
-          "cycleNumber": 33
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2403.84,
-          "markPrice": 2387.53,
-          "sizeUsdc": 50,
-          "openedAt": 1776498687014,
-          "cycleNumber": 34
+          "openedAt": 1776502852718,
+          "cycleNumber": 1
         }
       ],
       "tradeHistory": [
@@ -38,244 +30,31 @@
         {
           "action": "BUY",
           "asset": "ETH",
-          "entryPrice": 2421.51,
+          "entryPrice": 2380.02,
           "exitPrice": null,
           "sizeUsdc": 50,
           "pnl": null,
-          "timestamp": 1776468630935
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2421.51,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776468688028
-        },
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2421.51,
-          "exitPrice": 2420.56,
-          "sizeUsdc": 50,
-          "pnl": -0.0196,
-          "timestamp": 1776476123195,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2420.56,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776476123195
-        },
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2421.51,
-          "exitPrice": 2420.56,
-          "sizeUsdc": 50,
-          "pnl": -0.0196,
-          "timestamp": 1776476168292,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2420.56,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776476168292
-        },
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2420.56,
-          "exitPrice": 2415.67,
-          "sizeUsdc": 50,
-          "pnl": -0.101,
-          "timestamp": 1776483597867,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2415.67,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776483597867
-        },
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2420.56,
-          "exitPrice": 2415.67,
-          "sizeUsdc": 50,
-          "pnl": -0.101,
-          "timestamp": 1776483644866,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2415.67,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776483644866
-        },
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2415.67,
-          "exitPrice": 2407.05,
-          "sizeUsdc": 50,
-          "pnl": -0.1784,
-          "timestamp": 1776491124855,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2407.05,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776491124855
-        },
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2415.67,
-          "exitPrice": 2407.05,
-          "sizeUsdc": 50,
-          "pnl": -0.1784,
-          "timestamp": 1776491171502,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2407.05,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776491171502
-        },
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2407.05,
-          "exitPrice": 2403.84,
-          "sizeUsdc": 50,
-          "pnl": -0.0667,
-          "timestamp": 1776498631753,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2403.84,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776498631753
-        },
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2407.05,
-          "exitPrice": 2403.84,
-          "sizeUsdc": 50,
-          "pnl": -0.0667,
-          "timestamp": 1776498687014,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2403.84,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776498687014
+          "timestamp": 1776502852718
         }
       ],
       "treasuryHistory": [
         1000,
-        1000,
-        1000,
-        1000.0607,
-        1000.0607,
-        999.9839,
-        999.9839,
-        999.9248,
-        999.9248,
-        999.9608,
-        999.9608,
-        999.8848,
-        999.8848,
-        1000.0228,
-        1000.0228,
-        999.8641,
-        999.8641,
-        999.7588,
-        999.7588,
-        999.4558,
-        999.4558,
-        999.3945,
-        999.3945,
-        999.6371,
-        999.6371,
-        999.402,
-        999.402,
-        999.5034,
-        999.5034,
-        999.5914,
-        999.5914,
-        999.4519,
-        999.4519,
-        999.2686,
-        999.2686,
-        998.5901,
-        998.5901
+        1000
       ],
       "refillCount": 0,
       "lastRefillAt": null,
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 36
+      "cycleCount": 1
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
-      "currentTreasury": 999.1922,
-      "realizedPnl": -0.254,
-      "unrealizedPnl": -0.5538,
-      "roi": -0.0808,
-      "openPositions": [
-        {
-          "asset": "OKB",
-          "entryPrice": 86.68,
-          "markPrice": 86.2,
-          "sizeUsdc": 50,
-          "openedAt": 1776498648686,
-          "cycleNumber": 33
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 86.68,
-          "markPrice": 86.2,
-          "sizeUsdc": 50,
-          "openedAt": 1776498688273,
-          "cycleNumber": 34
-        }
-      ],
+      "currentTreasury": 1000,
+      "realizedPnl": 0,
+      "unrealizedPnl": 0,
+      "roi": 0,
+      "openPositions": [],
       "tradeHistory": [
         {
           "action": "BUY",
@@ -284,185 +63,17 @@
           "allocationUsdc": 1000,
           "pnl": null,
           "timestamp": 1776447180784
-        },
-        {
-          "action": "BUY",
-          "asset": "OKB",
-          "entryPrice": 86.57,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776470532903
-        },
-        {
-          "action": "BUY",
-          "asset": "OKB",
-          "entryPrice": 86.57,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776470569179
-        },
-        {
-          "action": "SELL",
-          "asset": "OKB",
-          "entryPrice": 86.57,
-          "exitPrice": 86.4,
-          "sizeUsdc": 50,
-          "pnl": -0.0982,
-          "timestamp": 1776478009068,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "SELL",
-          "asset": "OKB",
-          "entryPrice": 86.57,
-          "exitPrice": 86.4,
-          "sizeUsdc": 50,
-          "pnl": -0.0982,
-          "timestamp": 1776478033616,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "OKB",
-          "entryPrice": 86.78,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776481738893
-        },
-        {
-          "action": "BUY",
-          "asset": "OKB",
-          "entryPrice": 86.78,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776481773940
-        },
-        {
-          "action": "SELL",
-          "asset": "OKB",
-          "entryPrice": 86.78,
-          "exitPrice": 86.79,
-          "sizeUsdc": 50,
-          "pnl": 0.0058,
-          "timestamp": 1776489254895,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "OKB",
-          "entryPrice": 86.79,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776489254895
-        },
-        {
-          "action": "SELL",
-          "asset": "OKB",
-          "entryPrice": 86.78,
-          "exitPrice": 86.79,
-          "sizeUsdc": 50,
-          "pnl": 0.0058,
-          "timestamp": 1776489293836,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "OKB",
-          "entryPrice": 86.79,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776489293836
-        },
-        {
-          "action": "SELL",
-          "asset": "OKB",
-          "entryPrice": 86.79,
-          "exitPrice": 86.73,
-          "sizeUsdc": 50,
-          "pnl": -0.0346,
-          "timestamp": 1776496769341,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "SELL",
-          "asset": "OKB",
-          "entryPrice": 86.79,
-          "exitPrice": 86.73,
-          "sizeUsdc": 50,
-          "pnl": -0.0346,
-          "timestamp": 1776496805088,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "BUY",
-          "asset": "OKB",
-          "entryPrice": 86.68,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776498648686
-        },
-        {
-          "action": "BUY",
-          "asset": "OKB",
-          "entryPrice": 86.68,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776498688273
         }
       ],
       "treasuryHistory": [
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        999.9769,
-        999.9769,
-        999.9076,
-        999.9076,
-        999.7805,
-        999.7805,
-        999.8036,
-        999.8036,
-        999.8036,
-        999.8036,
-        999.8036,
-        999.8036,
-        999.9534,
-        999.9534,
-        999.6653,
-        999.6653,
-        999.3427,
-        999.3427,
-        999.8152,
-        999.8152,
-        999.9304,
-        999.9304,
-        999.9304,
-        999.9304,
-        999.988,
-        999.988,
-        999.746,
-        999.746,
-        999.746,
-        999.746,
-        999.1922,
-        999.1922
+        1000
       ],
       "refillCount": 0,
       "lastRefillAt": null,
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 36
+      "cycleCount": 0
     },
     "VIVAX": {
       "startingUsdc": 1000,
@@ -491,11 +102,10 @@
       "treasuryHistory": [
         1000
       ],
-      "cycleCount": 18,
+      "cycleCount": 0,
       "wipedAt": null,
       "resetAt": 1776464798059,
-      "resetReason": "treasury-mechanics-rewrite-v2",
-      "refillCount": 0
+      "resetReason": "treasury-mechanics-rewrite-v2"
     },
     "SPARTAN_ONE": {
       "startingUsdc": 1000,
@@ -508,11 +118,10 @@
       "treasuryHistory": [
         1000
       ],
-      "cycleCount": 18,
+      "cycleCount": 0,
       "wipedAt": null,
       "resetAt": 1776464798059,
-      "resetReason": "treasury-mechanics-rewrite-v2",
-      "refillCount": 0
+      "resetReason": "treasury-mechanics-rewrite-v2"
     }
   }
 }
