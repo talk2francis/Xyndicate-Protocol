@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "378-strategist-1776414767859",
-      "agent": "strategist",
-      "cycle": 378,
-      "timestamp": 1776414767859,
-      "status": "complete",
-      "summary": "HOLD ETH (10% treasury) | Fallback decision",
-      "durationMs": 2
-    },
-    {
       "id": "378-router-1776414768590",
       "agent": "router",
       "cycle": 378,
@@ -538,6 +529,15 @@
       "timestamp": 1776479869943,
       "status": "complete",
       "summary": "ACT ETH | confidence 80%",
+      "durationMs": 1
+    },
+    {
+      "id": "388-strategist-1776479870638",
+      "agent": "strategist",
+      "cycle": 388,
+      "timestamp": 1776479870638,
+      "status": "complete",
+      "summary": "BUY ETH (100% treasury) | Positive 24h price change and potential arbitrage opportunity with Uniswap price slightly lower than OKX price.",
       "durationMs": 1
     }
   ]
