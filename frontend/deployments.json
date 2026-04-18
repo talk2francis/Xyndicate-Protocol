@@ -592,7 +592,9 @@
     "0x6fd87b3f2ba66fae99fe6946eee4ebe08537cd2fe898d5c88114ab8f7b049d15",
     "0x1c8446d16ad43f8f0c9c7a30df5debdec92fb35c8fad728d175deb331ead45c6",
     "0xbc7651cc4a6998e01f50576943f55b8966816cdb6d4342fcdafe28a1adce27ac",
-    "0x75775b75c2fbdc025953ba6c295cd44461ff883f5572397443dfc5766651a17c"
+    "0x75775b75c2fbdc025953ba6c295cd44461ff883f5572397443dfc5766651a17c",
+    "0x802d9f60088c00f36dbbfb19adf919576b93686ca9d18dbf96f6417a1f173455",
+    "0x56301376e795353917f1c475b5fff735b061cf1aa4650e5dc1da6aebd9f87ca6"
   ],
   "decisionLogEntries": [
     {
@@ -4563,6 +4565,20 @@
       "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD ETH (10% treasury) · Market conditions evaluated.",
       "timestamp": 1776470572
+    },
+    {
+      "txHash": "0x802d9f60088c00f36dbbfb19adf919576b93686ca9d18dbf96f6417a1f173455",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · ETH price increased by 3.03% in 24h, indicating uptrend. Uniswap offers better price with 5.6 bps spread. High confidence in potential gains.",
+      "timestamp": 1776472405
+    },
+    {
+      "txHash": "0x56301376e795353917f1c475b5fff735b061cf1aa4650e5dc1da6aebd9f87ca6",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY OKB (100% treasury) · OKB price decreased by 0.75% in 24h, potential buying opportunity in stable market with balanced risk mode.",
+      "timestamp": 1776472405
     }
   ]
 }
