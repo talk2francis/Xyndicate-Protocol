@@ -1,29 +1,29 @@
 {
-  "lastUpdated": 1776489300808,
+  "lastUpdated": 1776491124856,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
-      "currentTreasury": 999.6371,
-      "realizedPnl": -0.2412,
-      "unrealizedPnl": -0.1217,
-      "roi": -0.0363,
+      "currentTreasury": 999.402,
+      "realizedPnl": -0.4196,
+      "unrealizedPnl": -0.1784,
+      "roi": -0.0598,
       "openPositions": [
         {
           "asset": "ETH",
           "entryPrice": 2415.67,
-          "markPrice": 2412.73,
-          "sizeUsdc": 50,
-          "openedAt": 1776483597867,
-          "cycleNumber": 17
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2415.67,
-          "markPrice": 2412.73,
+          "markPrice": 2407.05,
           "sizeUsdc": 50,
           "openedAt": 1776483644866,
           "cycleNumber": 18
+        },
+        {
+          "asset": "ETH",
+          "entryPrice": 2407.05,
+          "markPrice": 2407.05,
+          "sizeUsdc": 50,
+          "openedAt": 1776491124855,
+          "cycleNumber": 25
         }
       ],
       "tradeHistory": [
@@ -128,6 +128,25 @@
           "sizeUsdc": 50,
           "pnl": null,
           "timestamp": 1776483644866
+        },
+        {
+          "action": "SELL",
+          "asset": "ETH",
+          "entryPrice": 2415.67,
+          "exitPrice": 2407.05,
+          "sizeUsdc": 50,
+          "pnl": -0.1784,
+          "timestamp": 1776491124855,
+          "reason": "force-close-stale"
+        },
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "entryPrice": 2407.05,
+          "exitPrice": null,
+          "sizeUsdc": 50,
+          "pnl": null,
+          "timestamp": 1776491124855
         }
       ],
       "treasuryHistory": [
@@ -155,14 +174,15 @@
         999.3945,
         999.3945,
         999.6371,
-        999.6371
+        999.6371,
+        999.402
       ],
       "refillCount": 0,
       "lastRefillAt": null,
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 24
+      "cycleCount": 25
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
