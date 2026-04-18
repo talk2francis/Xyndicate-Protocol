@@ -1,6 +1,46 @@
 {
   "proofs": [
     {
+      "type": "decision",
+      "label": "XYNDICATE_ALPHA decision",
+      "txHash": "0x3cd68b157be81bc52e4e61e6e9eb4b5ce80dadd9e59d7dbbe26dcdc87f34152d",
+      "timestamp": 1776512101,
+      "amount": null,
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx/0x3cd68b157be81bc52e4e61e6e9eb4b5ce80dadd9e59d7dbbe26dcdc87f34152d",
+      "recoveryStatus": "recovered"
+    },
+    {
+      "type": "decision",
+      "label": "SQUAD_NOVA decision",
+      "txHash": "0x2d114f0c5bc5b691e37879303b04f01e6a504a4681c8e456a5fbd061b38bcc93",
+      "timestamp": 1776512101,
+      "amount": null,
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx/0x2d114f0c5bc5b691e37879303b04f01e6a504a4681c8e456a5fbd061b38bcc93",
+      "recoveryStatus": "recovered"
+    },
+    {
+      "type": "decision",
+      "label": "SPARTAN_ONE decision",
+      "txHash": "external-SPARTAN_ONE-1776510254990",
+      "timestamp": 1776510254,
+      "amount": "Pending recovery",
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx",
+      "recoveryStatus": "pending"
+    },
+    {
+      "type": "decision",
+      "label": "FRANCC_ALPHA decision",
+      "txHash": "external-FRANCC_ALPHA-1776510252015",
+      "timestamp": 1776510252,
+      "amount": "Pending recovery",
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx",
+      "recoveryStatus": "pending"
+    },
+    {
       "type": "payment",
       "label": "Strategist Wallet → Analyst Wallet",
       "txHash": "0xb9ddc5ed053601b89b83f8889373b110bd6c09c3c431dd8c3a196bd1f89cbb78",
@@ -5946,6 +5986,26 @@
     {
       "type": "decision",
       "label": "SQUAD_NOVA decision",
+      "txHash": "decision-875",
+      "timestamp": 0,
+      "amount": "Pending recovery",
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx",
+      "recoveryStatus": "pending"
+    },
+    {
+      "type": "decision",
+      "label": "XYNDICATE_ALPHA decision",
+      "txHash": "decision-874",
+      "timestamp": 0,
+      "amount": "Pending recovery",
+      "blockNumber": null,
+      "explorerUrl": "https://www.oklink.com/xlayer/tx",
+      "recoveryStatus": "pending"
+    },
+    {
+      "type": "decision",
+      "label": "SQUAD_NOVA decision",
       "txHash": "decision-873",
       "timestamp": 0,
       "amount": "Pending recovery",
@@ -9032,49 +9092,9 @@
       "blockNumber": null,
       "explorerUrl": "https://www.oklink.com/xlayer/tx",
       "recoveryStatus": "pending"
-    },
-    {
-      "type": "decision",
-      "label": "XYNDICATE_ALPHA decision",
-      "txHash": "decision-564",
-      "timestamp": 0,
-      "amount": "Pending recovery",
-      "blockNumber": null,
-      "explorerUrl": "https://www.oklink.com/xlayer/tx",
-      "recoveryStatus": "pending"
-    },
-    {
-      "type": "decision",
-      "label": "SQUAD_NOVA decision",
-      "txHash": "decision-563",
-      "timestamp": 0,
-      "amount": "Pending recovery",
-      "blockNumber": null,
-      "explorerUrl": "https://www.oklink.com/xlayer/tx",
-      "recoveryStatus": "pending"
-    },
-    {
-      "type": "decision",
-      "label": "XYNDICATE_ALPHA decision",
-      "txHash": "decision-562",
-      "timestamp": 0,
-      "amount": "Pending recovery",
-      "blockNumber": null,
-      "explorerUrl": "https://www.oklink.com/xlayer/tx",
-      "recoveryStatus": "pending"
-    },
-    {
-      "type": "decision",
-      "label": "SQUAD_NOVA decision",
-      "txHash": "decision-561",
-      "timestamp": 0,
-      "amount": "Pending recovery",
-      "blockNumber": null,
-      "explorerUrl": "https://www.oklink.com/xlayer/tx",
-      "recoveryStatus": "pending"
     }
   ],
-  "totalTxCount": 911,
+  "totalTxCount": 913,
   "contracts": [
     {
       "name": "DecisionLog",
@@ -9105,8 +9125,8 @@
       "oklinkUrl": "https://www.oklink.com/xlayer/tx/0x1ff8a1f8462003b2a17c5acddc5d856199c130b6df9c9fb4dbf6b92e6dfd915d"
     }
   ],
-  "updatedAt": "2026-04-18T11:04:07.637Z",
-  "onchainDecisionCount": 874,
+  "updatedAt": "2026-04-18T11:35:28.273Z",
+  "onchainDecisionCount": 876,
   "recoveredDecisionCount": 0,
   "source": "scheduler-artifact"
 }
