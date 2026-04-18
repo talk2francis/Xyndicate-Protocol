@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "372-narrator-1776403897758",
-      "agent": "narrator",
-      "cycle": 372,
-      "timestamp": 1776403897758,
-      "status": "complete",
-      "summary": "Xyndicate Alpha held ETH (10% treasury) via okx. Fallback decision | Squad Nova held OKB (10% treasury) via okx. Fallback decision",
-      "durationMs": 1
-    },
-    {
       "id": "373-oracle-1776405790726",
       "agent": "oracle",
       "cycle": 373,
@@ -538,6 +529,15 @@
       "timestamp": 1776510212427,
       "status": "complete",
       "summary": "BUY executed on OKX | 2 decision txs",
+      "durationMs": 1
+    },
+    {
+      "id": "382-narrator-1776510213349",
+      "agent": "narrator",
+      "cycle": 382,
+      "timestamp": 1776510213349,
+      "status": "complete",
+      "summary": "Xyndicate Alpha opened a $50 ETH position via okx. Uniswap price is slightly higher than OKX price, potential arbitrage opportunity with high confidence score. | Squad Nova held a $50 OKB position via okx. Price stable with minimal spread, no immediate opportunity identified. Negative 24h change indicates potential downward trend, wait for better entry point.",
       "durationMs": 1
     }
   ]
