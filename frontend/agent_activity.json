@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "384-router-1776513978395",
-      "agent": "router",
-      "cycle": 384,
-      "timestamp": 1776513978395,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "384-executor-1776513979269",
       "agent": "executor",
       "cycle": 384,
@@ -538,6 +529,15 @@
       "timestamp": 1776532748514,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | ETH price stable vs USDT despite slight decrease. Wait for better opportunity. High spread between exchanges signals potential liquidity issues.",
+      "durationMs": 1
+    },
+    {
+      "id": "394-router-1776532749365",
+      "agent": "router",
+      "cycle": 394,
+      "timestamp": 1776532749365,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
