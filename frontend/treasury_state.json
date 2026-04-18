@@ -1,76 +1,44 @@
 {
-  "lastUpdated": 1776508572797,
+  "lastUpdated": 1776510192591,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
-      "currentTreasury": 999.2189,
+      "currentTreasury": 1000,
       "realizedPnl": 0,
-      "unrealizedPnl": -0.7811,
-      "roi": -0.0781,
+      "unrealizedPnl": 0,
+      "roi": 0,
       "openPositions": [
         {
           "asset": "ETH",
-          "entryPrice": 2380.02,
-          "markPrice": 2361.43,
+          "entryPrice": 2356.52,
+          "markPrice": 2356.52,
           "sizeUsdc": 50,
-          "openedAt": 1776502852718,
+          "openedAt": 1776510192591,
           "cycleNumber": 1
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2380.02,
-          "markPrice": 2361.43,
-          "sizeUsdc": 50,
-          "openedAt": 1776502912453,
-          "cycleNumber": 2
         }
       ],
       "tradeHistory": [
         {
           "action": "BUY",
           "asset": "ETH",
-          "price": 2435.96,
-          "allocationUsdc": 1000,
-          "pnl": null,
-          "timestamp": 1776447172804
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2380.02,
+          "entryPrice": 2356.52,
           "exitPrice": null,
           "sizeUsdc": 50,
           "pnl": null,
-          "timestamp": 1776502852718
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2380.02,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776502912453
+          "timestamp": 1776510192591
         }
       ],
       "treasuryHistory": [
         1000,
-        1000,
-        1000,
-        999.9286,
-        999.9286,
-        999.7227,
-        999.7227,
-        999.2189,
-        999.2189
+        1000
       ],
       "refillCount": 0,
       "lastRefillAt": null,
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 8
+      "cycleCount": 1
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
@@ -90,14 +58,6 @@
         }
       ],
       "treasuryHistory": [
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
         1000
       ],
       "refillCount": 0,
@@ -105,7 +65,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 8
+      "cycleCount": 0
     },
     "VIVAX": {
       "startingUsdc": 1000,
@@ -134,11 +94,10 @@
       "treasuryHistory": [
         1000
       ],
-      "cycleCount": 4,
+      "cycleCount": 0,
       "wipedAt": null,
       "resetAt": 1776464798059,
-      "resetReason": "treasury-mechanics-rewrite-v2",
-      "refillCount": 0
+      "resetReason": "treasury-mechanics-rewrite-v2"
     },
     "SPARTAN_ONE": {
       "startingUsdc": 1000,
@@ -151,11 +110,10 @@
       "treasuryHistory": [
         1000
       ],
-      "cycleCount": 4,
+      "cycleCount": 0,
       "wipedAt": null,
       "resetAt": 1776464798059,
-      "resetReason": "treasury-mechanics-rewrite-v2",
-      "refillCount": 0
+      "resetReason": "treasury-mechanics-rewrite-v2"
     }
   }
 }
