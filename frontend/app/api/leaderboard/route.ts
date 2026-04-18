@@ -44,10 +44,12 @@ export async function GET() {
       ? registry.squads
           .filter((squad: any) => squad?.cancelled !== true)
           .map((squad: any) => {
+            const squadId = String(squad?.squadName || squad?.squadId || "UNKNOWN");
             const decisionCount = Number(squad?.decisionCount || 0);
+            const treasuryEntry = treasury?.squads?.[squadId] || {};
             return {
-              squadId: String(squad?.squadName || "UNKNOWN"),
-              name: String(squad?.squadName || "UNKNOWN"),
+              squadId,
+              name: squadId,
               rank: null,
               decisions: decisionCount,
               confidence: decisionCount > 0 ? Number(squad?.lastConfidence || 0) : 0,
@@ -57,8 +59,8 @@ export async function GET() {
               isExternal: true,
               enrollTx: squad?.enrollTx || null,
               walletAddress: squad?.walletAddress || null,
-              treasury: 1000,
-              roi: 0,
+              treasury: Number(treasuryEntry.currentTreasury ?? 1000),
+              roi: Number(treasuryEntry.roi ?? 0),
             };
           })
       : [];
