@@ -1,12 +1,6 @@
 {
   "entries": [
     {
-      "tool": "get_economy_snapshot",
-      "calledAt": 1776114103190,
-      "caller": "scheduler-self-call",
-      "responseTime": 254
-    },
-    {
       "tool": "get_leaderboard",
       "calledAt": 1776117714441,
       "caller": "scheduler-self-call",
@@ -599,6 +593,12 @@
       "calledAt": 1776485547727,
       "caller": "scheduler-self-call",
       "responseTime": 745
+    },
+    {
+      "tool": "get_market_signal",
+      "calledAt": 1776485549589,
+      "caller": "scheduler-self-call",
+      "responseTime": 742
     }
   ]
 }
