@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "410-executor-1776562802423",
-      "agent": "executor",
-      "cycle": 410,
-      "timestamp": 1776562802423,
-      "status": "complete",
-      "summary": "HOLD executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
       "id": "410-narrator-1776562803373",
       "agent": "narrator",
       "cycle": 410,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "ETH OKX: $2301.20 (-4.5%) | Uniswap: $2306.43 | Spread: 22.72bps",
       "durationMs": 24449
+    },
+    {
+      "id": "421-analyst-1776583408149",
+      "agent": "analyst",
+      "cycle": 421,
+      "timestamp": 1776583408149,
+      "status": "complete",
+      "summary": "WAIT ETH | confidence 70%",
+      "durationMs": 1
     }
   ]
 }
