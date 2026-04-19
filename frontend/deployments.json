@@ -594,7 +594,9 @@
     "0xb07083841a99a40559ba749db4b6f8f3db60ba124ca2daa13a09dd90279ceac2",
     "0x315074b3eebaf2376a25c137bff213e19106b0c318d9779ff78aee322c27da90",
     "0xf6969d02d286c6f3bcf8618c01d0aba9fa624408847bf8426b4865d933cfc33e",
-    "0x84eff7d56ea39267f8028d2ee3b6115f797779153840d11e6174522351d49480"
+    "0x84eff7d56ea39267f8028d2ee3b6115f797779153840d11e6174522351d49480",
+    "0x1410ddeb31e22c504c59a556f7ee55aac46d45743c114114527dc24c42413090",
+    "0x3b56a6aee9bf0e7b35af6ce593b01b62836e7890c64476f8b2f8b89ff212eaae"
   ],
   "decisionLogEntries": [
     {
@@ -4593,6 +4595,20 @@
       "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD ETH ($50 position) via OKX · Market conditions evaluated.",
       "timestamp": 1776592989
+    },
+    {
+      "txHash": "0x1410ddeb31e22c504c59a556f7ee55aac46d45743c114114527dc24c42413090",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · ETH price stable with small spread of 7.28 bps. Recommended to hold in current market conditions. Negative 24-hour change of -2.10% indicates short-term downside risk.",
+      "timestamp": 1776594838
+    },
+    {
+      "txHash": "0x3b56a6aee9bf0e7b35af6ce593b01b62836e7890c64476f8b2f8b89ff212eaae",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "SELL OKB (100% treasury) · OKB price decreased by 1.64% in 24h, signaling a short opportunity. Analyst confidence is 70%.",
+      "timestamp": 1776594838
     }
   ]
 }
