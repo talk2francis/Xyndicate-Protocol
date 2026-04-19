@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "407-oracle-1776557164892",
-      "agent": "oracle",
-      "cycle": 407,
-      "timestamp": 1776557164892,
-      "status": "complete",
-      "summary": "ETH OKX: $2352.91 (-2.8%) | Uniswap: $2353.35 | Spread: 1.86bps",
-      "durationMs": 31552
-    },
-    {
       "id": "407-analyst-1776557165841",
       "agent": "analyst",
       "cycle": 407,
@@ -538,6 +529,15 @@
       "timestamp": 1776575910650,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | Uniswap price slightly higher than OKX, minimal spread, hold position for now. Market volatility with -3.28% change in the last 24 hours.",
+      "durationMs": 1
+    },
+    {
+      "id": "417-router-1776575911486",
+      "agent": "router",
+      "cycle": 417,
+      "timestamp": 1776575911486,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
