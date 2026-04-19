@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 292,
+      "decisions": 293,
       "confidence": 0.7,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD ETH (100% treasury) · Price stability and minimal spread indicate holding position is favorable. Negative 24h price change suggests waiting for better entry point.",
-      "latestTimestamp": 1776602009,
+      "lastAction": "HOLD ETH (100% treasury) · Price stability and minimal spread indicate holding position is favorable. Negative 24h price change is a risk, but overall recommendation is to wait.",
+      "latestTimestamp": 1776603899,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 143,
         "sells": 10,
-        "holds": 135,
+        "holds": 136,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x38eb5047a0aa6fb6d868e8ce23f67d0ca0729dd830ecf4c82a8d0c970decc957",
         "0xd3705cfef3f205ac69e635f504f4d33b06c5c6a095b0bd27052004a044539d22",
         "0x705f3b50bb700b621aa45b7271d0e01975e0b92a74a24518c25761aac2ce972d",
         "0x59e6675ddc659b58c1ae2f1ed235d1c23341788010118eebcc67f6c00c74f216",
@@ -28,29 +27,29 @@
         "0x1410ddeb31e22c504c59a556f7ee55aac46d45743c114114527dc24c42413090",
         "0x109d028ae839a6dc4196e421748aecb8f5718f37803c6d363f5ab0046cab4436",
         "0x86762e1ba6ccbc1882976ff00933764f0abc63b5ee6b3cbddae13a17fe1e765b",
-        "0xfd7b1aa3c307e2d5d151399e062ff3a43f92829d02568b8e5a97bfb56ff14613"
+        "0xfd7b1aa3c307e2d5d151399e062ff3a43f92829d02568b8e5a97bfb56ff14613",
+        "0x390c58388fb7d1654fb71302e689d19215e6966f9f7d99268cae094207958ae5"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 265,
+      "decisions": 266,
       "confidence": 0.7,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD OKB (10% treasury) · Market is stable with no significant opportunities or risks. Analyst recommends waiting. Confidence score is low.",
-      "latestTimestamp": 1776602009,
+      "lastAction": "HOLD OKB (10% treasury) · Negative 24h price change of -0.76%. Analyst recommendation is to wait. No opportunities identified. Balanced risk mode.",
+      "latestTimestamp": 1776603899,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 49,
         "sells": 6,
-        "holds": 210,
+        "holds": 211,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x845bd7dee3ef199ef7ca5450b903a5b66fa664bf09bd57dcbb484183f0779552",
         "0xee582e6cb63bc800463359c6755227262816837273e181e0849fdcacb399babd",
         "0x363101b0e3221c06590d180a586560992b82f6bd2d5cdce71ddeaefac2c1ffd3",
         "0x82bf8071fcb877869b522c4b6dbed7dbf800deb03f12c79c201a4538242f7a8f",
@@ -59,18 +58,19 @@
         "0x3b56a6aee9bf0e7b35af6ce593b01b62836e7890c64476f8b2f8b89ff212eaae",
         "0xa8ed915fb972f0f96ceb5561a378e19cfc4d66c2805f494f6eec5a23dfc6c7fe",
         "0xfde8ff07f5b58600be1f0c3c4bcd434626199b2e6a88266852ab067ac7e2de4d",
-        "0xfef10763ced03b0d50040f2ede5a2d0aded8f9bdb38da59dbb7882b347104827"
+        "0xfef10763ced03b0d50040f2ede5a2d0aded8f9bdb38da59dbb7882b347104827",
+        "0x15b150dce055f3d50f335d3ca6cadffe37b56f56db47baa4549fd3935eb03773"
       ]
     },
     {
       "rank": 3,
       "squadId": "FRANCC_ALPHA",
-      "decisions": 11,
+      "decisions": 12,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776602040337,
+      "latestTimestamp": 1776603929670,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -86,12 +86,12 @@
     {
       "rank": 4,
       "squadId": "SPARTAN_ONE",
-      "decisions": 9,
+      "decisions": 10,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776602050956,
+      "latestTimestamp": 1776603940617,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -106,8 +106,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-19T12:34:21.492Z",
-  "totalDecisions": 577,
+  "updatedAt": "2026-04-19T13:05:46.116Z",
+  "totalDecisions": 581,
   "uniswapQueriesSuccessful": 2,
   "supportingProofs": {
     "narratorPayments": 29,
