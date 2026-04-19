@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { ethers } = require('ethers');
 const { fetchExternalRegistry, normalizeExternalSquad, touchExternalSquadRun, EXTERNAL_DECISION_INTERVAL_MS } = require('./external-squads');
 const { readCycleState, writeCycleState } = require('./cycle-state');
 const { writeTreasuryStateFromDecision } = require('./treasury');
@@ -8,6 +9,48 @@ const { writeAndPublishJson } = require('./github-artifacts');
 const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
 const DEPLOYMENTS_PATH = path.join(FRONTEND_DIR, 'deployments.json');
+const DECISION_LOG_ABI = ['function logDecision(string,string,string)'];
+
+async function logExternalDecisionOnChain(result) {
+  const privateKey = (process.env.STRATEGIST_KEY || '').trim();
+  const logAddress = (process.env.DECISION_LOG_ADDRESS || '').trim();
+  const rpcUrl = (process.env.XLAYER_RPC || 'https://rpc.xlayer.tech').trim();
+  const narrative = `${result.action} ${result.asset} ($50 position) via ${result.route} · ${result.rationale}`;
+  const agentChain = 'External→Oracle→Analyst→Strategist→Router→Executor';
+
+  if (!privateKey || !logAddress) {
+    return {
+      txHash: `external-${result.squadId}-${Date.now()}`,
+      narrative,
+      skipped: true,
+      reason: 'Missing chain credentials',
+    };
+  }
+
+  const provider = new ethers.JsonRpcProvider(rpcUrl);
+  const wallet = new ethers.Wallet(privateKey, provider);
+  const contract = new ethers.Contract(logAddress, DECISION_LOG_ABI, wallet);
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const nonce = await provider.getTransactionCount(wallet.address, 'pending');
+      const tx = await contract.logDecision(result.squadId, agentChain, narrative, { nonce });
+      await tx.wait(1);
+      return { txHash: tx.hash, narrative };
+    } catch (error) {
+      const message = String(error?.message || error || '');
+      if (!message.includes('nonce') && !message.includes('NONCE_EXPIRED')) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 750 * (attempt + 1)));
+    }
+  }
+
+  return {
+    txHash: `external-${result.squadId}-${Date.now()}`,
+    narrative,
+    skipped: true,
+    reason: 'Nonce retry exhausted',
+  };
+}
 
 async function runExternalSquad(squad, sharedMarketData) {
   const state = readCycleState();
@@ -48,6 +91,10 @@ async function runExternalSquad(squad, sharedMarketData) {
     currentPrice: externalPrice,
     asset: baseAsset,
   };
+  const onchainDecision = await logExternalDecisionOnChain(result);
+  result.txHash = onchainDecision.txHash;
+  result.narrative = onchainDecision.narrative;
+  result.onchainLogged = !onchainDecision.skipped;
 
   state.externalSquadLastRun = state.externalSquadLastRun || {};
   state.externalSquadLastRun[squad.squadId] = now;
@@ -70,7 +117,7 @@ async function runExternalSquad(squad, sharedMarketData) {
     txHash: result.txHash,
     squadId: result.squadId,
     agentChain: 'External→Oracle→Analyst→Strategist→Router→Executor',
-    rationale: `${result.action} ${result.asset} ($50 position) · ${result.rationale} via ${result.route}`,
+    rationale: result.narrative || `${result.action} ${result.asset} ($50 position) · ${result.rationale} via ${result.route}`,
     timestamp: Math.floor(now / 1000),
   });
   deployments.decisionLogEntries = existing;
