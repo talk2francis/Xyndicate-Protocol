@@ -638,7 +638,9 @@
     "0x392b48f1287bb9a608a7b4a6accac16bb0bc08a005dba7a1e783771ce7cec212",
     "0xb0a796c7c00bb668d20815dda38f59ed29ed2ed7a50fd4b3b097570e96fd8d70",
     "0xe7d37eb5f4b1bedf00ada90b4aabca9a6ef8666c30dcc63c0a04793346dec53d",
-    "0x798093f70b9ccdb25a44f8d8d6771d00e412274568fab552f80be89e05e6823e"
+    "0x798093f70b9ccdb25a44f8d8d6771d00e412274568fab552f80be89e05e6823e",
+    "0xacb92a2f7591d03c18bae4db6cb4dbce136556b63b0821c6445e47565017b1ed",
+    "0x923bd8df0c6bf63873b96eaed90ff6a6196843e5b953a73e47d9b7f6849e67be"
   ],
   "decisionLogEntries": [
     {
@@ -5246,6 +5248,27 @@
       "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
       "timestamp": 1776555321
+    },
+    {
+      "txHash": "external-SPARTAN_ONE-1776555324525",
+      "squadId": "SPARTAN_ONE",
+      "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
+      "timestamp": 1776555324
+    },
+    {
+      "txHash": "0xacb92a2f7591d03c18bae4db6cb4dbce136556b63b0821c6445e47565017b1ed",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · ETH price stable with minimal spread on Uniswap. Recent 2.80% decrease indicates potential volatility. Wait for clearer market direction.",
+      "timestamp": 1776557170
+    },
+    {
+      "txHash": "0x923bd8df0c6bf63873b96eaed90ff6a6196843e5b953a73e47d9b7f6849e67be",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Price stability, balanced risk mode, and resilience despite slight 24h decrease. Analyst recommendation to wait with high confidence score of 0.8.",
+      "timestamp": 1776557170
     }
   ]
 }
