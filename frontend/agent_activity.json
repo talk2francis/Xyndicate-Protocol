@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "372-strategist-1776403895465",
-      "agent": "strategist",
-      "cycle": 372,
-      "timestamp": 1776403895465,
-      "status": "complete",
-      "summary": "HOLD ETH (10% treasury) | Fallback decision",
-      "durationMs": 1
-    },
-    {
       "id": "372-router-1776403896215",
       "agent": "router",
       "cycle": 372,
@@ -538,6 +529,15 @@
       "timestamp": 1776625396492,
       "status": "complete",
       "summary": "WAIT ETH | confidence 70%",
+      "durationMs": 1
+    },
+    {
+      "id": "382-strategist-1776625397343",
+      "agent": "strategist",
+      "cycle": 382,
+      "timestamp": 1776625397343,
+      "status": "complete",
+      "summary": "HOLD ETH (100% treasury) | ETH price stable compared to USDT, hold strategy advised. High spread between exchanges and negative 24h change pose risks, but confidence in hold strategy is 80%.",
       "durationMs": 1
     }
   ]
