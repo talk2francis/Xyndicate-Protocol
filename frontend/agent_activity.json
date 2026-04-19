@@ -1,24 +1,6 @@
 {
   "entries": [
     {
-      "id": "405-strategist-1776553405957",
-      "agent": "strategist",
-      "cycle": 405,
-      "timestamp": 1776553405957,
-      "status": "complete",
-      "summary": "HOLD ETH (100% treasury) | ETH price stable with minimal spread, hold position. 3.05% decrease in 24h indicates potential volatility, but confidence in holding is 0.8.",
-      "durationMs": 1
-    },
-    {
-      "id": "405-router-1776553406792",
-      "agent": "router",
-      "cycle": 405,
-      "timestamp": 1776553406792,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "405-executor-1776553407729",
       "agent": "executor",
       "cycle": 405,
@@ -539,6 +521,24 @@
       "status": "complete",
       "summary": "WAIT ETH | confidence 80%",
       "durationMs": 1
+    },
+    {
+      "id": "415-strategist-1776572195048",
+      "agent": "strategist",
+      "cycle": 415,
+      "timestamp": 1776572195048,
+      "status": "complete",
+      "summary": "HOLD ETH (100% treasury) | ETH price stable against USDT with minor decrease in 24h. Holding could be strategic. Market volatility risk present.",
+      "durationMs": 1
+    },
+    {
+      "id": "416-oracle-1776574026385",
+      "agent": "oracle",
+      "cycle": 416,
+      "timestamp": 1776574026385,
+      "status": "complete",
+      "summary": "ETH OKX: $2330.25 (-3.1%) | Uniswap: $2330.55 | Spread: 1.28bps",
+      "durationMs": 29548
     }
   ]
 }
