@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "373-strategist-1776405792423",
-      "agent": "strategist",
-      "cycle": 373,
-      "timestamp": 1776405792423,
-      "status": "complete",
-      "summary": "HOLD ETH (10% treasury) | Fallback decision",
-      "durationMs": 1
-    },
-    {
       "id": "373-router-1776405793089",
       "agent": "router",
       "cycle": 373,
@@ -538,6 +529,15 @@
       "timestamp": 1776592940729,
       "status": "complete",
       "summary": "WAIT ETH | confidence 80%",
+      "durationMs": 1
+    },
+    {
+      "id": "383-strategist-1776592941598",
+      "agent": "strategist",
+      "cycle": 383,
+      "timestamp": 1776592941598,
+      "status": "complete",
+      "summary": "HOLD ETH (100% treasury) | Uniswap provides the best route with a minimal spread of 1.66 bps. High volatility with a 24h change of -2.76% in price.",
       "durationMs": 1
     }
   ]
