@@ -54,6 +54,11 @@ function formatOkbFromWei(value) {
   }
 }
 
+function isRecoverableProofTx(txHash) {
+  const value = String(txHash || '');
+  return value.startsWith('0x');
+}
+
 async function enrichWithChainData(provider, items) {
   const blockCache = new Map();
   const enriched = [];
@@ -123,15 +128,17 @@ async function buildProofsArtifact() {
     const txHash = embedded?.txHash || txhashes?.[String(i)] || recovered?.txHash || `decision-${i}`;
     const normalizedSquadId = normalizeSquadId(embedded?.squadId || recovered?.squadId || (i % 2 === 0 ? 'XYNDICATE_ALPHA' : 'SQUAD_NOVA'));
     const timestamp = normalizeTimestamp(embedded?.timestamp || recovered?.timestamp);
+    const recoverable = isRecoverableProofTx(txHash);
+    const syntheticExternal = String(txHash).startsWith('external-');
     return {
       type: 'decision',
       label: `${normalizedSquadId} decision`,
       txHash,
       timestamp,
-      amount: String(txHash).startsWith('0x') ? null : 'Pending recovery',
+      amount: recoverable ? null : (syntheticExternal ? 'Off-chain external decision' : 'Pending recovery'),
       blockNumber: recovered?.blockNumber ?? embedded?.blockNumber ?? null,
-      explorerUrl: String(txHash).startsWith('0x') ? `${OKLINK_BASE}/${txHash}` : `${OKLINK_BASE}`,
-      recoveryStatus: String(txHash).startsWith('0x') ? 'recovered' : 'pending',
+      explorerUrl: recoverable ? `${OKLINK_BASE}/${txHash}` : null,
+      recoveryStatus: recoverable ? 'recovered' : (syntheticExternal ? 'recovered' : 'pending'),
     };
   });
 
