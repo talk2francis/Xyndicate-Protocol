@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "412-router-1776566557859",
-      "agent": "router",
-      "cycle": 412,
-      "timestamp": 1776566557859,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "412-executor-1776566558790",
       "agent": "executor",
       "cycle": 412,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "Xyndicate Alpha held a $50 ETH position via okx. ETH price stable vs USDT despite 24h decrease. Analyst recommends waiting due to high market volatility. Confidence level at 80%. | Squad Nova held a $50 OKB position via okx. Market stability and balanced risk mode suggest holding OKB for now. Recent -3.32% change is a moderate risk but overall recommendation is to wait.",
       "durationMs": 3
+    },
+    {
+      "id": "423-oracle-1776587180411",
+      "agent": "oracle",
+      "cycle": 423,
+      "timestamp": 1776587180411,
+      "status": "complete",
+      "summary": "ETH OKX: $2317.92 (-2.8%) | Uniswap: $2318.92 | Spread: 4.32bps",
+      "durationMs": 35502
     }
   ]
 }
