@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776562780851,
+  "lastUpdated": 1776562797759,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -114,8 +114,27 @@
       "realizedPnl": 0,
       "unrealizedPnl": 0,
       "roi": 0,
-      "openPositions": [],
-      "tradeHistory": [],
+      "openPositions": [
+        {
+          "asset": "OKB",
+          "entryPrice": 84.09,
+          "markPrice": 84.09,
+          "sizeUsdc": 50,
+          "openedAt": 1776562797759,
+          "cycleNumber": 57
+        }
+      ],
+      "tradeHistory": [
+        {
+          "action": "BUY",
+          "asset": "OKB",
+          "entryPrice": 84.09,
+          "exitPrice": null,
+          "sizeUsdc": 50,
+          "pnl": null,
+          "timestamp": 1776562797759
+        }
+      ],
       "treasuryHistory": [
         1000,
         1000,
@@ -173,7 +192,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 56
+      "cycleCount": 57
     },
     "VIVAX": {
       "startingUsdc": 1000,
