@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "384-router-1776603896643",
-      "agent": "router",
-      "cycle": 384,
-      "timestamp": 1776603896643,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "384-executor-1776603897509",
       "agent": "executor",
       "cycle": 384,
@@ -538,6 +529,15 @@
       "timestamp": 1776622767058,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | Uniswap provides better pricing compared to OKX. High market volatility. Recommendation to wait with 80% confidence.",
+      "durationMs": 1
+    },
+    {
+      "id": "394-router-1776622767920",
+      "agent": "router",
+      "cycle": 394,
+      "timestamp": 1776622767920,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
