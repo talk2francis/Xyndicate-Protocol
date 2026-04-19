@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776596781548,
+  "lastUpdated": 1776600092801,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -12,13 +12,6 @@
       "tradeHistory": [],
       "treasuryHistory": [
         1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
         1000
       ],
       "refillCount": 0,
@@ -26,7 +19,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 8
+      "cycleCount": 1
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
@@ -35,16 +28,17 @@
       "unrealizedPnl": 0,
       "roi": 0,
       "openPositions": [],
-      "tradeHistory": [],
+      "tradeHistory": [
+        {
+          "action": "BUY",
+          "asset": "OKB",
+          "price": 86.8,
+          "allocationUsdc": 1000,
+          "pnl": null,
+          "timestamp": 1776447180784
+        }
+      ],
       "treasuryHistory": [
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
         1000
       ],
       "refillCount": 0,
@@ -52,7 +46,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 8
+      "cycleCount": 0
     },
     "VIVAX": {
       "startingUsdc": 1000,
@@ -81,11 +75,10 @@
       "treasuryHistory": [
         1000
       ],
-      "cycleCount": 4,
+      "cycleCount": 0,
       "wipedAt": null,
       "resetAt": 1776464798059,
-      "resetReason": "treasury-mechanics-rewrite-v2",
-      "refillCount": 0
+      "resetReason": "treasury-mechanics-rewrite-v2"
     },
     "SPARTAN_ONE": {
       "startingUsdc": 1000,
@@ -98,11 +91,10 @@
       "treasuryHistory": [
         1000
       ],
-      "cycleCount": 4,
+      "cycleCount": 0,
       "wipedAt": null,
       "resetAt": 1776464798059,
-      "resetReason": "treasury-mechanics-rewrite-v2",
-      "refillCount": 0
+      "resetReason": "treasury-mechanics-rewrite-v2"
     }
   }
 }
