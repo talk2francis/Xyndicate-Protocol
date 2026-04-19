@@ -6,6 +6,7 @@ const REPO = 'Xyndicate-Protocol';
 const APP_BRANCH = process.env.GITHUB_BRANCH || 'main';
 const ARTIFACT_BRANCH = process.env.GITHUB_ARTIFACTS_BRANCH || process.env.GITHUB_PUBLISH_BRANCH || APP_BRANCH;
 const API_BASE = `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
+const RAW_BASE = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${ARTIFACT_BRANCH}`;
 
 function getGithubToken() {
   return (process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '').trim();
@@ -67,6 +68,19 @@ async function putJsonArtifact(repoPath, content, message, sha) {
   return response.json();
 }
 
+async function fetchRemoteJsonArtifact(repoPath, fallback = null) {
+  try {
+    const response = await fetch(`${RAW_BASE}/${repoPath}`, {
+      headers: { Accept: 'application/json', 'User-Agent': 'xyndicate-scheduler' },
+      cache: 'no-store',
+    });
+    if (!response.ok) return fallback;
+    return await response.json();
+  } catch {
+    return fallback;
+  }
+}
+
 async function publishJsonArtifact({ repoPath, content, message }) {
   let sha = await getRemoteFileSha(repoPath);
 
@@ -108,4 +122,5 @@ module.exports = {
   writeLocalJson,
   publishJsonArtifact,
   writeAndPublishJson,
+  fetchRemoteJsonArtifact,
 };

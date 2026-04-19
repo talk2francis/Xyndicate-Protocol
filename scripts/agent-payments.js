@@ -3,7 +3,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { ethers } = require('ethers');
-const { writeAndPublishJson } = require('./github-artifacts');
+const { writeAndPublishJson, fetchRemoteJsonArtifact } = require('./github-artifacts');
 
 const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
@@ -42,6 +42,22 @@ function readPayments() {
   } catch {
     return [];
   }
+}
+
+async function readMergedPayments() {
+  const local = Array.isArray(readPayments()) ? readPayments() : [];
+  const remote = await fetchRemoteJsonArtifact(PAYMENTS_REPO_PATH, []);
+  const merged = [...local, ...(Array.isArray(remote) ? remote : [])];
+  const seen = new Set();
+  return merged
+    .filter((entry) => {
+      const key = `${entry?.txHash || ''}:${entry?.type || ''}`;
+      if (!entry?.txHash || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .sort((a, b) => Number(a.timestamp || 0) - Number(b.timestamp || 0))
+    .slice(-MAX_ENTRIES);
 }
 
 function writePayments(value) {
@@ -88,7 +104,7 @@ async function sendPayment(type) {
 }
 
 async function appendAndPublishPayment(entry) {
-  const current = Array.isArray(readPayments()) ? readPayments() : [];
+  const current = await readMergedPayments();
   const next = [...current, entry]
     .sort((a, b) => Number(a.timestamp || 0) - Number(b.timestamp || 0))
     .slice(-MAX_ENTRIES);
@@ -101,8 +117,12 @@ async function appendAndPublishPayment(entry) {
 }
 
 function getLatestPaymentTimestamp() {
-  const current = Array.isArray(readPayments()) ? readPayments() : [];
-  return current.reduce((latest, entry) => Math.max(latest, Number(entry?.timestamp || 0)), 0);
+  try {
+    const current = JSON.parse(fs.readFileSync(PAYMENTS_PATH, 'utf8'));
+    return (Array.isArray(current) ? current : []).reduce((latest, entry) => Math.max(latest, Number(entry?.timestamp || 0)), 0);
+  } catch {
+    return 0;
+  }
 }
 
 function shouldRunPayments(nowSeconds = Math.floor(Date.now() / 1000)) {

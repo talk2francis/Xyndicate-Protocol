@@ -3,7 +3,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const { ethers } = require('ethers');
-const { writeAndPublishJson } = require('./github-artifacts');
+const { writeAndPublishJson, fetchRemoteJsonArtifact } = require('./github-artifacts');
 
 const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
@@ -95,7 +95,10 @@ async function enrichWithChainData(provider, items) {
 }
 
 async function buildProofsArtifact() {
-  const deployments = readJson(DEPLOYMENTS_PATH, {});
+  const remoteDeployments = await fetchRemoteJsonArtifact('frontend/deployments.json', {});
+  const remoteTxhashes = await fetchRemoteJsonArtifact('frontend/txhashes.json', {});
+  const remoteAgentPayments = await fetchRemoteJsonArtifact('frontend/agentpayments.json', []);
+  const deployments = { ...readJson(DEPLOYMENTS_PATH, {}), ...remoteDeployments };
   const rootDeployments = readJson(path.join(ROOT, 'deployments.json'), {});
   const mergedDeployments = {
     ...rootDeployments,
@@ -106,9 +109,19 @@ async function buildProofsArtifact() {
     SeasonManagerV2: deployments?.SeasonManagerV2 || rootDeployments?.SeasonManagerV2 || null,
     DecisionLog: deployments?.DecisionLog || rootDeployments?.DecisionLog || null,
   };
-  const txhashes = readJson(TXHASHES_PATH, {});
+  const txhashes = { ...readJson(TXHASHES_PATH, {}), ...remoteTxhashes };
   const recovery = readJson(RECOVERY_PATH, { recoveredByIndex: {} });
-  const agentPayments = readJson(AGENT_PAYMENTS_PATH, []);
+  const agentPayments = (() => {
+    const local = readJson(AGENT_PAYMENTS_PATH, []);
+    const merged = [...(Array.isArray(local) ? local : []), ...(Array.isArray(remoteAgentPayments) ? remoteAgentPayments : [])];
+    const seen = new Set();
+    return merged.filter((entry) => {
+      const key = `${entry?.txHash || ''}:${entry?.type || ''}`;
+      if (!entry?.txHash || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  })();
   const embeddedDecisionEntries = Array.isArray(mergedDeployments?.decisionLogEntries) ? mergedDeployments.decisionLogEntries : [];
 
   const provider = new ethers.JsonRpcProvider(XLAYER_RPC);

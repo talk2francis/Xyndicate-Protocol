@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { writeAndPublishJson } = require('./github-artifacts');
+const { writeAndPublishJson, fetchRemoteJsonArtifact } = require('./github-artifacts');
 
 const ROOT = path.resolve(__dirname, '..');
 const FRONTEND_DIR = path.join(ROOT, 'frontend');
@@ -26,8 +26,21 @@ function nextDecisionIndex(entries) {
 }
 
 async function persistRuntimeHistory(result) {
-  const deployments = readJson(DEPLOYMENTS_PATH, {});
-  const txhashes = readJson(TXHASHES_PATH, {});
+  const remoteDeployments = await fetchRemoteJsonArtifact('frontend/deployments.json', {});
+  const remoteTxhashes = await fetchRemoteJsonArtifact('frontend/txhashes.json', {});
+  const localDeployments = readJson(DEPLOYMENTS_PATH, {});
+  const localTxhashes = readJson(TXHASHES_PATH, {});
+  const deployments = {
+    ...localDeployments,
+    ...remoteDeployments,
+    decisionLogEntries: Array.isArray(remoteDeployments?.decisionLogEntries) && remoteDeployments.decisionLogEntries.length >= (localDeployments?.decisionLogEntries || []).length
+      ? remoteDeployments.decisionLogEntries
+      : (localDeployments?.decisionLogEntries || []),
+    decisionLogTxs: Array.isArray(remoteDeployments?.decisionLogTxs) && remoteDeployments.decisionLogTxs.length >= (localDeployments?.decisionLogTxs || []).length
+      ? remoteDeployments.decisionLogTxs
+      : (localDeployments?.decisionLogTxs || []),
+  };
+  const txhashes = Object.keys(remoteTxhashes || {}).length >= Object.keys(localTxhashes || {}).length ? { ...localTxhashes, ...remoteTxhashes } : { ...remoteTxhashes, ...localTxhashes };
   const decisionLogEntries = Array.isArray(deployments.decisionLogEntries) ? [...deployments.decisionLogEntries] : [];
   const decisionLogTxs = Array.isArray(deployments.decisionLogTxs) ? [...deployments.decisionLogTxs] : [];
   const runtimeResults = Array.isArray(result?.results) ? result.results : [];
