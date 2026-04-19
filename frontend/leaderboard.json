@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 303,
-      "confidence": 0.7,
+      "decisions": 304,
+      "confidence": 0.66,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD ETH (100% treasury) · Uniswap provides better pricing compared to OKX. High market volatility. Recommendation to wait with 80% confidence.",
-      "latestTimestamp": 1776622770,
+      "lastAction": "HOLD ETH (100% treasury) · ETH price stable with slight decrease in last 24h. Holding recommended in current market conditions.",
+      "latestTimestamp": 1776624657,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 143,
         "sells": 10,
-        "holds": 146,
+        "holds": 147,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x54b58a40c5abf6ace8e468e86a6ca72b24a603b6c1d6634fa9cad42197ac45de",
         "0xe456bb053a6058714afe8008cb1fadb27beb982fa0c7d703065f39249f61b8a1",
         "0xe82d59b3eeaf4d4898e7101c23960f6a4df09c310d5f6a23e4c2fdf7922379ba",
         "0x2e6e3a83648b10484f1381e0f008bca8a9ce0e2a60d8857a404dfedd64caeadd",
@@ -28,29 +27,29 @@
         "0x5e306a7227b7b0a5486999dff468c767acd63864d6c2985f55e53a1831d243d2",
         "0x8b64dd1d4105eff18d1945e3e3b75f1c87beb3b361ddff282cbbd4e3f9a97377",
         "0x7203e11bfa3370ce57466df5072eb19d75c039862b87e002ceeb4473c5f6e493",
-        "0xaadf37e92dc7d84cada1dff9c90e05324fe2d33ccfffe0e52d40750d02194eec"
+        "0xaadf37e92dc7d84cada1dff9c90e05324fe2d33ccfffe0e52d40750d02194eec",
+        "0xe26e425d4cbacd79e85450a01321d02596857d0f9fb55686c0eae5f1a115bc1c"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 276,
+      "decisions": 277,
       "confidence": 0.7,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD OKB (100% treasury) · Negative 24h price change for OKB with a balanced risk mode. Analyst recommends waiting due to uncertainty. Confidence score is 0.7.",
-      "latestTimestamp": 1776622770,
+      "lastAction": "HOLD OKB (100% treasury) · The price change in the last 24 hours is negative, indicating a potential downward trend. It's recommended to wait and observe for now.",
+      "latestTimestamp": 1776624657,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 49,
         "sells": 9,
-        "holds": 218,
+        "holds": 219,
         "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x252c1224f663c9e88cb9938d5f2d78bd9f2e07097d1146498dcb75ebf36c60b7",
         "0x9dc5a3af7569c206ba2c2b77ceef241f3622ec9662230064cb3d2b85988ac53c",
         "0xf5847946b75d62cf0a7fc6434685f07ba52d26318d5d14f33d6e11810f507887",
         "0x00fc55318692f60533c8dfbae64a85dc6a947c62a2f13d6f4f649b2c23fd8faa",
@@ -59,18 +58,19 @@
         "0xa287e22311f3bf9e0bf909b147cb0323454ea00f6891399283455e94ef277b42",
         "0x5aac3fe56688607e087ff6354fdcc753c0565f4d9eb925845051beadea26755a",
         "0x2d509079594e0b668cef7e25ee4675b4e280095e367450f1f86bd151ea6d0381",
-        "0x4a3d3761db2cc6ae203fd5d6f5ba3da0589dc0b82740a2548e124a896bc55fe1"
+        "0x4a3d3761db2cc6ae203fd5d6f5ba3da0589dc0b82740a2548e124a896bc55fe1",
+        "0xafb1cc6ce1fe09caf2d9c4071ad25df4aac0fe70c0d76e7d29d065d64e054062"
       ]
     },
     {
       "rank": 3,
       "squadId": "FRANCC_ALPHA",
-      "decisions": 22,
+      "decisions": 23,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776622801613,
+      "latestTimestamp": 1776624689762,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -86,12 +86,12 @@
     {
       "rank": 4,
       "squadId": "SPARTAN_ONE",
-      "decisions": 20,
+      "decisions": 21,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776622807030,
+      "latestTimestamp": 1776624695895,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -106,8 +106,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-19T18:20:17.757Z",
-  "totalDecisions": 621,
+  "updatedAt": "2026-04-19T18:51:46.308Z",
+  "totalDecisions": 625,
   "uniswapQueriesSuccessful": 2,
   "supportingProofs": {
     "narratorPayments": 29,
