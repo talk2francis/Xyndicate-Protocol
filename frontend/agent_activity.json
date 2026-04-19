@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "380-strategist-1776417340054",
-      "agent": "strategist",
-      "cycle": 380,
-      "timestamp": 1776417340054,
-      "status": "complete",
-      "summary": "HOLD ETH (10% treasury) | Fallback decision",
-      "durationMs": 1
-    },
-    {
       "id": "380-router-1776417340901",
       "agent": "router",
       "cycle": 380,
@@ -538,6 +529,15 @@
       "timestamp": 1776640452485,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | ETH price has only slightly decreased in the last 24 hours, indicating potential stabilization. Holding is prudent amidst high market volatility and risk of sudden price fluctuations.",
+      "durationMs": 1
+    },
+    {
+      "id": "390-router-1776640453739",
+      "agent": "router",
+      "cycle": 390,
+      "timestamp": 1776640453739,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
