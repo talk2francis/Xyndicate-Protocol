@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "385-strategist-1776631076490",
-      "agent": "strategist",
-      "cycle": 385,
-      "timestamp": 1776631076490,
-      "status": "complete",
-      "summary": "HOLD ETH (100% treasury) | Price stability and minimal price difference across exchanges. Negative 24-hour price change indicates potential downward trend. Analyst recommendation to wait with 80% confidence.",
-      "durationMs": 1
-    },
-    {
       "id": "385-router-1776631077250",
       "agent": "router",
       "cycle": 385,
@@ -538,6 +529,15 @@
       "timestamp": 1776649898624,
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | Arbitrage opportunity between Uniswap and OKX prices, with Uniswap slightly higher. Market inefficiencies may be present, but confidence in the opportunity is high.",
+      "durationMs": 1
+    },
+    {
+      "id": "395-router-1776649899423",
+      "agent": "router",
+      "cycle": 395,
+      "timestamp": 1776649899423,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
