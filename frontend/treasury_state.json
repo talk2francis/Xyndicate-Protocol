@@ -1,22 +1,14 @@
 {
-  "lastUpdated": 1776722621863,
+  "lastUpdated": 1776722663179,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
       "currentTreasury": 999.7919,
-      "realizedPnl": 0.0188,
-      "unrealizedPnl": -0.2269,
+      "realizedPnl": -0.2081,
+      "unrealizedPnl": 0,
       "roi": -0.0208,
       "openPositions": [
-        {
-          "asset": "ETH",
-          "entryPrice": 2333.74,
-          "markPrice": 2323.15,
-          "sizeUsdc": 50,
-          "openedAt": 1776715091985,
-          "cycleNumber": 34
-        },
         {
           "asset": "ETH",
           "entryPrice": 2323.15,
@@ -24,6 +16,14 @@
           "sizeUsdc": 50,
           "openedAt": 1776722607586,
           "cycleNumber": 41
+        },
+        {
+          "asset": "ETH",
+          "entryPrice": 2323.15,
+          "markPrice": 2323.15,
+          "sizeUsdc": 50,
+          "openedAt": 1776722663179,
+          "cycleNumber": 42
         }
       ],
       "tradeHistory": [
@@ -101,6 +101,25 @@
           "sizeUsdc": 50,
           "pnl": null,
           "timestamp": 1776722607586
+        },
+        {
+          "action": "SELL",
+          "asset": "ETH",
+          "entryPrice": 2333.74,
+          "exitPrice": 2323.15,
+          "sizeUsdc": 50,
+          "pnl": -0.2269,
+          "timestamp": 1776722663179,
+          "reason": "force-close-stale"
+        },
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "entryPrice": 2323.15,
+          "exitPrice": null,
+          "sizeUsdc": 50,
+          "pnl": null,
+          "timestamp": 1776722663179
         }
       ],
       "treasuryHistory": [
@@ -145,6 +164,7 @@
         1000.5889,
         999.6458,
         999.6458,
+        999.7919,
         999.7919
       ],
       "refillCount": 0,
@@ -152,7 +172,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 41
+      "cycleCount": 42
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
