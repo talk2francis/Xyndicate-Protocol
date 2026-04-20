@@ -1,0 +1,407 @@
+{
+  "header": {
+    "title": "The Agent Economy Loop",
+    "subtitle": "Real value circulating between autonomous agents on X Layer."
+  },
+  "strategyVault": {
+    "address": "0x6002767f909B3049d5A65beAD84A843a385a61aC",
+    "depositedOkb": 0.00324,
+    "pnlDeltaOkb": 0.00012
+  },
+  "stats": {
+    "totalOkbCirculated": 0.0016,
+    "totalX402VolumeUsdc": 4.1,
+    "totalDecisionsDrivingEconomy": 559,
+    "economyCyclesCompleted": 15
+  },
+  "loopNodes": [
+    {
+      "id": "squad-strategy",
+      "label": "Squad Strategy",
+      "value": "FRANCC_ALPHA · 0.50 conf",
+      "secondary": "9 decision signals"
+    },
+    {
+      "id": "strategy-vault",
+      "label": "StrategyVault",
+      "value": "0.00324 OKB deposited",
+      "secondary": "PnL delta +0.00012 OKB"
+    },
+    {
+      "id": "x402-licensing",
+      "label": "x402 Licensing",
+      "value": "4.10 USDC collected",
+      "secondary": "5 paid access events"
+    },
+    {
+      "id": "creator-wallet",
+      "label": "Creator Wallet",
+      "value": "0.61 USDC royalties",
+      "secondary": "0x795009bb38a32348344a36a4cfcb36e4e84cb8d8"
+    },
+    {
+      "id": "oracle-data-feed",
+      "label": "Oracle Data Feed",
+      "value": "0.00075 OKB received",
+      "secondary": "15 tip events"
+    }
+  ],
+  "loopEdges": [
+    {
+      "id": "strategy-to-vault",
+      "from": "squad-strategy",
+      "to": "strategy-vault",
+      "paymentType": "PnL settlement",
+      "amount": "0.00012 OKB",
+      "last": "3932 minutes ago"
+    },
+    {
+      "id": "vault-to-license",
+      "from": "strategy-vault",
+      "to": "x402-licensing",
+      "paymentType": "Access pricing",
+      "amount": "4.10 USDC",
+      "last": "984 minutes ago"
+    },
+    {
+      "id": "license-to-creator",
+      "from": "x402-licensing",
+      "to": "creator-wallet",
+      "paymentType": "Creator royalties",
+      "amount": "0.61 USDC",
+      "last": "984 minutes ago"
+    },
+    {
+      "id": "creator-to-oracle",
+      "from": "creator-wallet",
+      "to": "oracle-data-feed",
+      "paymentType": "Data budget",
+      "amount": "0.00075 OKB",
+      "last": "847 minutes ago"
+    },
+    {
+      "id": "oracle-to-strategy",
+      "from": "oracle-data-feed",
+      "to": "squad-strategy",
+      "paymentType": "Signal delivery",
+      "amount": "0.00005 OKB",
+      "last": "847 minutes ago"
+    }
+  ],
+  "topSquad": {
+    "name": "FRANCC_ALPHA",
+    "decisions": 9,
+    "confidence": 0.5
+  },
+  "paymentHistory": [
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x808d7bbbad35eb178d0f317f48a7beb893dabe4d5289958b6abe97c2a442c37b",
+      "timestamp": 1776632979,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x09d99167c8897f156f3ed788fd3b5a38f92aee9b0b4850147a46180119622d1c",
+      "timestamp": 1776632975,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x82661b4384cdce1a4c508b0f5dfa9632761380ed7e6b392ec18418f98b09b22d",
+      "timestamp": 1776589328,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x1c716c81b5adb1d46315e4be7fbb228033cc9100daeb56445a93c1c3150edb36",
+      "timestamp": 1776589323,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0xcc534de6db545aea84d050c92d1e4dcdd4f5fc40782c7c0ed320d8c32196172c",
+      "timestamp": 1776407538,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x8e6c32142b45c4187b026a2f4543f612ad14e0a3217c56ba6c846244ec2dd7d2",
+      "timestamp": 1776407534,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0xc8fff9d39fb7097d4c897dc209ecbfba29435569415e5dab0c972e1949244e55",
+      "timestamp": 1776364247,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x4b38a4daeff645ec2d89bf60428a648fc7a214b960be3c7bde606f6871f4ff12",
+      "timestamp": 1776364243,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0xe33242caec39375d5b483db87247cb296fdd9fdfb33ce6067fc8c751a7f64eaa",
+      "timestamp": 1776290629,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x19d0790fa958b699e0cca929a03f1d35a4676eba9ec3c95a3d42300f458640d6",
+      "timestamp": 1776290626,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0xac49a6e8d209d2aa4e2ecdcec7e9fe3c6baec86807ea75c7f520672ff70e5965",
+      "timestamp": 1776243727,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x6111718cf49cca2c8779550c104ad7281d5720696bb0bc37856493ae761a23ed",
+      "timestamp": 1776243724,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x238d34f970b218618e69160aa6688eb4d3dfb1a2db6590ef6dc3d0d08f56d0d0",
+      "timestamp": 1776200494,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x12bbce36f77d458def675c57a616f1f717b4a7b096dacb3fb1bfe26549ba19a7",
+      "timestamp": 1776200491,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0xaa2cbdacb2832f6cf6caf9cd30d7f6fa23acfd53153e90cc7b4c32708cf07a9d",
+      "timestamp": 1776146621,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0xc35786f864b1b87f10b9095a79ae36f47c4ed4e6335ac78ef5047a4aeb4533b6",
+      "timestamp": 1776146618,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x42dfb9ba1c95154f59d41a0fa6f6a9317a319ccf07e3524345fdd6cf6c2bf238",
+      "timestamp": 1776101572,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x3476faebcfa819c43114c616bd1a0e71dcc0524c415f33d595645acf9835edfc",
+      "timestamp": 1776101569,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x44247eb832ae1f87cdc5bd60ee222acca8513e547d9c10edec277467b9e38d61",
+      "timestamp": 1776058338,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x53e845534eb96ecf8dfeea2cbf4bd57909f1efff9ab40277a929e04ecabf0b82",
+      "timestamp": 1776058331,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x353f8435ca9f2e65ae85893f97a63b5616639d2f813a73690b0140fcfb858703",
+      "timestamp": 1776014199,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x5b0f78600415a49b16afe628f3396d4955261c9136f85ea2d03f17a5ff1228c7",
+      "timestamp": 1776014191,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x69df3544822e8bbdadc4bb5d28acc7b098eccce4c9e6d8a4ca3aa8f7bb25ca38",
+      "timestamp": 1775968414,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0xdbcd51c013ba212d12763fad2ef6c331ad8a74cfc1224cda4aa4a11bc58a6256",
+      "timestamp": 1775968406,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x24f32507c3583136746aeff938d9814b8be14112456adf60603aa045e9b47851",
+      "timestamp": 1775923266,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0xf78b2c01270a3172e666dca2d737006c795d3c8e75f9383c1f954520b8fac30b",
+      "timestamp": 1775923265,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0xac81ce7f9f42f69b8c5248b86f4adafe08c4340ae66f38f2d1977ecc7d9c165f",
+      "timestamp": 1775878395,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x1f6f6cd3ac6e071656c60e7b945869888a3916089bb5b4b6f7c9cc2904cccc50",
+      "timestamp": 1775878392,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "type": "strategist-analyst",
+      "from": "Strategist Wallet",
+      "to": "Analyst Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x75cfa01583dc405785156288072763d25a259c2d5b48c4c4004e87289866ce57",
+      "timestamp": 1775833345,
+      "status": "confirmed",
+      "note": "demo wallet routing via ORACLE_WALLET_ADDRESS"
+    },
+    {
+      "type": "analyst-oracle",
+      "from": "Analyst Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.00005 OKB",
+      "txHash": "0x2dd2bfe6adc1d492fb3b393b0d23f5dc6b1066dca4cb8404b49d571c3ca3f797",
+      "timestamp": 1775833342,
+      "status": "confirmed",
+      "note": "analyst-oracle-data-fee"
+    },
+    {
+      "from": "Narrator Wallet",
+      "to": "Oracle Wallet",
+      "amount": "0.0001 OKB",
+      "txHash": "0x124940687e84763e245bdd054618d7fdd0204f946351b2163d502644236342c6",
+      "timestamp": 1743714081,
+      "status": "confirmed"
+    }
+  ],
+  "lastUpdated": "2026-04-20T11:16:37.578Z"
+}
