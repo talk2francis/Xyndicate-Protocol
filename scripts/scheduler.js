@@ -79,10 +79,11 @@ async function scheduledRun() {
     });
     result.uniswapQueriesTotal = nextUniswapTotal;
 
+    const latestTreasuryState = initializeTreasuryState();
     const mainSquads = ['XYNDICATE_ALPHA', 'SQUAD_NOVA'];
     const mainResults = mainSquads.map((squadId) => {
       const squadResult = result?.squadResults?.[squadId] || {};
-      const squadTreasury = Number(treasuryState?.squads?.[squadId]?.currentTreasury ?? 1000);
+      const squadTreasury = Number(latestTreasuryState?.squads?.[squadId]?.currentTreasury ?? 1000);
       const resolvedPrice = Number(
         squadResult?.currentPrice ||
         squadResult?.market?.okxPrice ||

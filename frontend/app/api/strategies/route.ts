@@ -32,7 +32,7 @@ export async function GET() {
       const match = leaderboardSquads.find((squad: any) => String(squad?.squadId || "").toUpperCase() === strategy.squadId.toUpperCase());
       const treasuryEntry = treasury?.squads?.[strategy.squadId] || {};
       const decisionCount = Number(match?.decisions ?? strategy.decisionCount ?? 0);
-      const roi = Number.isFinite(Number(treasuryEntry?.roi)) ? Number(treasuryEntry?.roi) : Number(strategy.performancePct || 0);
+      const roi = Number.isFinite(Number(treasuryEntry?.roi)) ? Number(Number(treasuryEntry?.roi).toFixed(2)) : Number(strategy.performancePct || 0);
       return {
         ...strategy,
         decisionCount,
@@ -57,7 +57,7 @@ export async function GET() {
           summary: "Listed on the market for licensing.",
           createdAt: squad?.registeredAt ? new Date(Number(squad.registeredAt)).toISOString() : undefined,
           creatorWallet: String(squad?.walletAddress || ""),
-          performancePct: Number.isFinite(Number(treasuryEntry?.roi)) ? Number(treasuryEntry?.roi) : Number(match?.roi || 0),
+          performancePct: Number.isFinite(Number(treasuryEntry?.roi)) ? Number(Number(treasuryEntry?.roi).toFixed(2)) : Number(match?.roi || 0),
           decisionCount: Number(match?.decisions || 0),
           confidenceScores: [],
           listedOnMarket: true,

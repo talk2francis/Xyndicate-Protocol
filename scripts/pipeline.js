@@ -9,8 +9,31 @@ const { createActivityEntry, appendAndPublishActivityEntry, summarizeFromResult 
 const { executeCyclePayments } = require('./agent-payments');
 const { buildStartCycleState, publishCycleState, readCycleState, advanceCycleState, completeCycleState, writeCycleState } = require('./cycle-state');
 
+function buildDeterministicSlowDecision(context = {}) {
+  const market = context?.market || {};
+  const squadName = context?.squad || 'unknown squad';
+  const change24h = Number(market?.change24h || 0);
+  const okxPrice = Number(market?.okxPrice || market?.price || 0);
+  const uniswapPrice = Number(market?.uniswapPrice || 0);
+  const spreadBps = okxPrice > 0 && uniswapPrice > 0 ? Math.abs(((uniswapPrice - okxPrice) / okxPrice) * 10000) : 0;
+
+  if (change24h <= -0.35 || (uniswapPrice > 0 && uniswapPrice < okxPrice && spreadBps >= 8)) {
+    return { action: 'BUY', confidence: 0.68, reason: `Deterministic fallback for ${squadName}: price weakness or venue discount supports a buy.` };
+  }
+  if (change24h >= 0.35 || (uniswapPrice > 0 && uniswapPrice > okxPrice && spreadBps >= 8)) {
+    return { action: 'SELL', confidence: 0.66, reason: `Deterministic fallback for ${squadName}: strength or venue premium supports trimming risk.` };
+  }
+  if (change24h < 0) {
+    return { action: 'BUY', confidence: 0.58, reason: `Deterministic fallback for ${squadName}: market is modestly red, so lean long instead of idling.` };
+  }
+  if (change24h > 0) {
+    return { action: 'SELL', confidence: 0.56, reason: `Deterministic fallback for ${squadName}: market is modestly green, so lean defensive instead of idling.` };
+  }
+  return { action: 'HOLD', confidence: 0.52, reason: `Deterministic fallback for ${squadName}: market is flat and edge is negligible.` };
+}
+
 async function callOpenAI(prompt, context = {}) {
-  return { action: 'HOLD', confidence: 0.5, reason: `Fallback strategist for ${context?.squad || 'unknown squad'}` };
+  return buildDeterministicSlowDecision(context);
 }
 
 function invokeRunCycle() {

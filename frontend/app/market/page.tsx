@@ -725,7 +725,7 @@ export default function MarketPage() {
                           <div className="truncate text-2xl font-semibold">{strategy.name}</div>
                           <div className="mt-1 text-sm text-xyn-muted dark:text-zinc-400">{strategy.assetPair} · {strategy.mode}</div>
                         </div>
-                        <div className="text-right text-sm font-semibold {strategy.performancePct && strategy.performancePct >= 0 ? 'text-emerald-400' : 'text-rose-400'}">{strategy.performancePct && strategy.performancePct >= 0 ? '+' : ''}{(strategy.performancePct || 0).toFixed(1)}%</div>
+                        <div className={`text-right text-sm font-semibold ${(strategy.performancePct || 0) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{(strategy.performancePct || 0) >= 0 ? '+' : ''}{(strategy.performancePct || 0).toFixed(2)}%</div>
                       </div>
                       <div className="mt-3 flex flex-wrap gap-2">
                         <span className={`rounded-full px-3 py-1 text-xs font-semibold ${strategyTypeClass(strategy.mode)}`}>{strategyTypeLabel(strategy.mode)}</span>
