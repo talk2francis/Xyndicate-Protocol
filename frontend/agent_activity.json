@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "395-router-1776709375838",
-      "agent": "router",
-      "cycle": 395,
-      "timestamp": 1776709375838,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "395-executor-1776709377063",
       "agent": "executor",
       "cycle": 395,
@@ -538,6 +529,15 @@
       "timestamp": 1776728288613,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | ETH price increased by 1.97% in the last 24 hours, indicating a potential bullish trend. Market volatility may increase due to exchange spread, so holding is advised.",
+      "durationMs": 1
+    },
+    {
+      "id": "405-router-1776728289532",
+      "agent": "router",
+      "cycle": 405,
+      "timestamp": 1776728289532,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
