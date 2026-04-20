@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 336,
-      "confidence": 0.7,
+      "decisions": 337,
+      "confidence": 0.66,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD ETH (100% treasury) · ETH price stable with minimal spread, negative 24h change indicates potential downward trend, wait for more clarity.",
-      "latestTimestamp": 1776686691,
+      "lastAction": "HOLD ETH (100% treasury) · Price stability and minimal spread indicate holding position for now. Negative 24h change may signal a potential downward trend, but confidence in holding is high.",
+      "latestTimestamp": 1776688578,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 146,
         "sells": 10,
-        "holds": 176,
+        "holds": 177,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x8b905b08b28208d18f45a56f2f4c941ee0be6901a7ff248dfe7b94daca329df1",
         "0xf56243fc32166c4ab16d1f6f55e099d2ff2a910b01c693cbe537b17f14498f1f",
         "0xf95e04e398dceb5b02290acc1ff5fd889f4b9b89cdd069fd5f174f7517be5cc0",
         "0x6d205804c8c92e2c55e79dbca21ddc7dedb90e8e2cdc48cee3caa49cfbf8981d",
@@ -28,29 +27,29 @@
         "0xa80a388b2095928ebd0a0f0f21eb6b15e6401bfc3201fea3a4624dc3b1dd1ffa",
         "0x468e524766fef4bf0c6ed0bdf9e962d4a6feaf19f8a6bd413f1c9b37f94d45b0",
         "0x240dc6c26f06dd031e5141cb0e7e671b764beeed07df96d7c5d3cb0a8a7c2b1c",
-        "0x43d576a3bcdbabefeaedbe9ad9d10439348a4f351fceae3acf21d51994aa3520"
+        "0x43d576a3bcdbabefeaedbe9ad9d10439348a4f351fceae3acf21d51994aa3520",
+        "0xa98bf18058fa2dbbf8cde06b31b945967a5c49a3e3dd8fbcd0e9004d17ac0a7f"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 309,
+      "decisions": 310,
       "confidence": 0.8,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "SELL OKB (100% treasury) · OKB price decreased by 1.25% in 24h, suggesting a short opportunity. Analyst confidence is 70%.",
-      "latestTimestamp": 1776686691,
+      "lastAction": "SELL OKB (100% treasury) · Negative 24h price change and analyst recommendation to act on short opportunity with high confidence score.",
+      "latestTimestamp": 1776688578,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 49,
-        "sells": 17,
+        "sells": 18,
         "holds": 243,
         "lastTradeAction": "SELL",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0xe56ac23c4f735a1adccd48c03e3e40950e36af0f0c07e55313371d345218857d",
         "0x5b878178b5ca9f220cb667ca11b6370d8f8d328cabfae01a2d4b981de28a02ed",
         "0x23f74f11c32619de0f4c75e73a376bfe2c8bcad7f31095ed29d5ce7e1092f64a",
         "0x8937ea2aff16504c205a66b6747b96cbbfa01061ed275d5f4e86f2cbf9994b8c",
@@ -59,18 +58,19 @@
         "0x8dfad18c642d49c75989486c120aa1364f6df885068e74400e4ff75ef33d99f7",
         "0x1168bb0a70dd5bd353591b090502714bc7d5d52c1d3757d0163bc3ba7a97e493",
         "0xf4c9668ee4c3fa2b2144b044b6c1c6ea92a2ca159ffdc34542e3cbaa08e7740f",
-        "0xda0f31b4925947430ca421c966443a749f63e93d1845f8d2cb075b03ccff733b"
+        "0xda0f31b4925947430ca421c966443a749f63e93d1845f8d2cb075b03ccff733b",
+        "0x1f68125552d29d947d04d7f177db9fafec5a6a858909aca9c4150a50397a7a3a"
       ]
     },
     {
       "rank": 3,
       "squadId": "FRANCC_ALPHA",
-      "decisions": 11,
+      "decisions": 12,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776686726900,
+      "latestTimestamp": 1776688612290,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -86,12 +86,12 @@
     {
       "rank": 4,
       "squadId": "SPARTAN_ONE",
-      "decisions": 9,
+      "decisions": 10,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776686738759,
+      "latestTimestamp": 1776688618605,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -106,8 +106,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-20T12:05:49.154Z",
-  "totalDecisions": 665,
+  "updatedAt": "2026-04-20T12:37:04.686Z",
+  "totalDecisions": 669,
   "uniswapQueriesSuccessful": 0,
   "uniswapQueriesTotal": 2,
   "supportingProofs": {
