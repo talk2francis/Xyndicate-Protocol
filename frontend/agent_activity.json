@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "391-strategist-1776642339581",
-      "agent": "strategist",
-      "cycle": 391,
-      "timestamp": 1776642339581,
-      "status": "complete",
-      "summary": "HOLD ETH (100% treasury) | The market data shows a slight price difference between Uniswap and OKX, but the spread is within acceptable limits for holding. High volatility and negative 24-hour change in ETH-USDT pair.",
-      "durationMs": 1
-    },
-    {
       "id": "391-router-1776642340402",
       "agent": "router",
       "cycle": 391,
@@ -538,6 +529,15 @@
       "timestamp": 1776661239470,
       "status": "complete",
       "summary": "WAIT ETH | confidence 80%",
+      "durationMs": 1
+    },
+    {
+      "id": "401-strategist-1776661240334",
+      "agent": "strategist",
+      "cycle": 401,
+      "timestamp": 1776661240334,
+      "status": "complete",
+      "summary": "HOLD ETH (100% treasury) | The price change in the last 24 hours is within an acceptable range for holding. High spread between Uniswap and OKX prices indicates potential arbitrage opportunities but also higher volatility.",
       "durationMs": 1
     }
   ]
