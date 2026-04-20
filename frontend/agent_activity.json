@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "385-router-1776631077250",
-      "agent": "router",
-      "cycle": 385,
-      "timestamp": 1776631077250,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "385-executor-1776631078064",
       "agent": "executor",
       "cycle": 385,
@@ -538,6 +529,15 @@
       "timestamp": 1776649899423,
       "status": "complete",
       "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
+      "durationMs": 1
+    },
+    {
+      "id": "395-executor-1776649900262",
+      "agent": "executor",
+      "cycle": 395,
+      "timestamp": 1776649900262,
+      "status": "complete",
+      "summary": "BUY executed on OKX | 2 decision txs",
       "durationMs": 1
     }
   ]
