@@ -1,162 +1,35 @@
 {
-  "lastUpdated": 1776666966140,
+  "lastUpdated": 1776670384296,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
-      "startingUsdc": 1000,
-      "currentTreasury": 999.721,
-      "realizedPnl": -0.279,
-      "unrealizedPnl": 0,
-      "roi": -0.0279,
-      "openPositions": [],
-      "tradeHistory": [
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2290.71,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776649883895
-        },
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2290.71,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776649934764
-        },
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2290.71,
-          "exitPrice": 2281.53,
-          "sizeUsdc": 50,
-          "pnl": -0.2004,
-          "timestamp": 1776657441820,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2290.71,
-          "exitPrice": 2287.11,
-          "sizeUsdc": 50,
-          "pnl": -0.0786,
-          "timestamp": 1776657492064,
-          "reason": "force-close-stale"
-        }
-      ],
-      "treasuryHistory": [
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        999.353,
-        999.353,
-        999.4932,
-        999.4932,
-        999.5993,
-        999.5993,
-        999.721,
-        999.721,
-        999.721,
-        999.721,
-        999.721,
-        999.721,
-        999.721,
-        999.721,
-        999.721,
-        999.721,
-        999.721,
-        999.721
-      ],
-      "refillCount": 0,
-      "lastRefillAt": null,
-      "wipedAt": null,
-      "resetAt": 1776464798059,
-      "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 45
-    },
-    "SQUAD_NOVA": {
       "startingUsdc": 1000,
       "currentTreasury": 1000,
       "realizedPnl": 0,
       "unrealizedPnl": 0,
       "roi": 0,
-      "openPositions": [],
-      "tradeHistory": [],
+      "openPositions": [
+        {
+          "asset": "ETH",
+          "entryPrice": 2307.87,
+          "markPrice": 2307.87,
+          "sizeUsdc": 50,
+          "openedAt": 1776670384296,
+          "cycleNumber": 1
+        }
+      ],
+      "tradeHistory": [
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "entryPrice": 2307.87,
+          "exitPrice": null,
+          "sizeUsdc": 50,
+          "pnl": null,
+          "timestamp": 1776670384296
+        }
+      ],
       "treasuryHistory": [
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
-        1000,
         1000,
         1000
       ],
@@ -165,7 +38,34 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 45
+      "cycleCount": 1
+    },
+    "SQUAD_NOVA": {
+      "startingUsdc": 1000,
+      "currentTreasury": 1000,
+      "realizedPnl": 0,
+      "unrealizedPnl": 0,
+      "roi": 0,
+      "openPositions": [],
+      "tradeHistory": [
+        {
+          "action": "BUY",
+          "asset": "OKB",
+          "price": 86.8,
+          "allocationUsdc": 1000,
+          "pnl": null,
+          "timestamp": 1776447180784
+        }
+      ],
+      "treasuryHistory": [
+        1000
+      ],
+      "refillCount": 0,
+      "lastRefillAt": null,
+      "wipedAt": null,
+      "resetAt": 1776464798059,
+      "resetReason": "treasury-mechanics-rewrite-v2",
+      "cycleCount": 0
     },
     "VIVAX": {
       "startingUsdc": 1000,
@@ -194,11 +94,10 @@
       "treasuryHistory": [
         1000
       ],
-      "cycleCount": 22,
+      "cycleCount": 0,
       "wipedAt": null,
       "resetAt": 1776464798059,
-      "resetReason": "treasury-mechanics-rewrite-v2",
-      "refillCount": 0
+      "resetReason": "treasury-mechanics-rewrite-v2"
     },
     "SPARTAN_ONE": {
       "startingUsdc": 1000,
@@ -211,11 +110,10 @@
       "treasuryHistory": [
         1000
       ],
-      "cycleCount": 22,
+      "cycleCount": 0,
       "wipedAt": null,
       "resetAt": 1776464798059,
-      "resetReason": "treasury-mechanics-rewrite-v2",
-      "refillCount": 0
+      "resetReason": "treasury-mechanics-rewrite-v2"
     }
   }
 }
