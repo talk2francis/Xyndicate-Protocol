@@ -1,24 +1,13 @@
 import { NextResponse } from "next/server";
+import usageData from "@/mcp_usage_log.json";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 5;
 
-const RAW_USAGE_URL = "https://raw.githubusercontent.com/talk2francis/Xyndicate-Protocol/main/frontend/mcp_usage_log.json";
-
 export async function GET() {
   try {
-    const response = await fetch(RAW_USAGE_URL, {
-      next: { revalidate: 5 },
-      headers: { Accept: "application/json" },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch MCP usage artifact: ${response.status}`);
-    }
-
-    const data = await response.json();
-    const entries = Array.isArray(data?.entries)
-      ? [...data.entries].sort((a, b) => Number(b.calledAt || 0) - Number(a.calledAt || 0))
+    const entries = Array.isArray((usageData as any)?.entries)
+      ? [...(usageData as any).entries].sort((a, b) => Number(b.calledAt || 0) - Number(a.calledAt || 0))
       : [];
 
     const last24h = Date.now() - 24 * 60 * 60 * 1000;
@@ -38,7 +27,7 @@ export async function GET() {
       byTool,
       averageResponseTimeMs,
     }, {
-      headers: { "Cache-Control": "s-maxage=5, stale-while-revalidate=5" },
+      headers: { "Cache-Control": "no-store, max-age=0, must-revalidate" },
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || "Failed to load MCP usage" }, { status: 500 });
