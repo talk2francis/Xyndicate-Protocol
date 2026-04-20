@@ -4,6 +4,7 @@ const { runFullPipeline } = require('./pipeline');
 const { INTERVAL_MS, readCycleState, writeCycleState } = require('./cycle-state');
 const { selfCallMcp } = require('./self-call-mcp');
 const { writeLeaderboardArtifact } = require('./generate-leaderboard');
+const { writeEconomyArtifact } = require('./generate-economy');
 const { initializeTreasuryState, writeTreasuryStateFromDecision } = require('./treasury');
 const { runExternalSquadCycle } = require('./external-squad-cycle');
 const HAS_GITHUB_TOKEN = Boolean((process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '').trim());
@@ -106,6 +107,7 @@ async function scheduledRun() {
     console.log('[EXTERNAL] External squad processing complete at', new Date().toISOString());
 
     await writeLeaderboardArtifact();
+    await writeEconomyArtifact();
 
     console.log(`Decision TX: ${result.txHash}`);
     console.log(`Narrator TX: ${result.narratorPaymentHash || 'n/a'}`);
