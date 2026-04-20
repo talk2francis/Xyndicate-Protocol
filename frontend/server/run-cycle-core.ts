@@ -408,6 +408,7 @@ export async function runCycleCore() {
     });
   }
 
+  const uniswapQueriesSuccessful = results.filter((result) => Number(result?.market?.uniswapPrice || 0) > 0).length;
   return {
     sharedMarket: {
       ...(results[0]?.market || {}),
@@ -417,7 +418,8 @@ export async function runCycleCore() {
     activeSquads: SQUADS.map((squad) => squad.displayName),
     squadResults: Object.fromEntries(results.map((result) => [result.squadId, result])),
     results,
-    uniswapQueriesSuccessful: results.filter((result) => Number(result?.market?.uniswapPrice || 0) > 0).length,
+    uniswapQueriesSuccessful,
+    uniswapQueriesTotal: uniswapQueriesSuccessful,
     txHashes: results.map((result) => result.txHash).filter(Boolean),
     txHash: results[0]?.txHash,
     narratorSummary: results.map((result) => result.narratorSummary).join(" | "),

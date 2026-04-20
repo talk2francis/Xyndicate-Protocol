@@ -55,6 +55,7 @@ function buildStartCycleState(previous = readCycleState()) {
     squadResults: {},
     slowSquadLastRunAt: {},
     uniswapQueriesSuccessful: Number(previous?.uniswapQueriesSuccessful || 0),
+    uniswapQueriesTotal: Number(previous?.uniswapQueriesTotal || 0),
     agentLog: [
       {
         agent: 'system',
@@ -107,6 +108,7 @@ function advanceCycleState(agent, result = {}) {
     activeSquads: result?.activeSquads || current?.activeSquads || ['XYNDICATE_ALPHA', 'Squad Nova'],
     squadResults,
     uniswapQueriesSuccessful: Number(result?.uniswapQueriesSuccessful ?? current?.uniswapQueriesSuccessful ?? 0),
+    uniswapQueriesTotal: Number(result?.uniswapQueriesTotal ?? current?.uniswapQueriesTotal ?? 0),
     agentLog: [
       ...(Array.isArray(current.agentLog) ? current.agentLog : []),
       {
@@ -131,6 +133,7 @@ function completeCycleState() {
     activeSquads: Array.isArray(current?.activeSquads) && current.activeSquads.length ? current.activeSquads : ['XYNDICATE_ALPHA', 'Squad Nova', 'Phantom Protocol', 'Cipher Strategy', 'Nexus Quant', 'HI'],
     squadResults: current?.squadResults || {},
     uniswapQueriesSuccessful: Number(current?.uniswapQueriesSuccessful || 0),
+    uniswapQueriesTotal: Number(current?.uniswapQueriesTotal || 0),
     agentLog: [
       ...(Array.isArray(current.agentLog) ? current.agentLog : []),
       {
@@ -162,6 +165,7 @@ function seedTruthfulCycleState() {
     squadResults: {},
     slowSquadLastRunAt: {},
     uniswapQueriesSuccessful: Number(previous?.uniswapQueriesSuccessful || 0),
+    uniswapQueriesTotal: Number(previous?.uniswapQueriesTotal || 0),
     agentLog: [
       {
         agent: 'system',

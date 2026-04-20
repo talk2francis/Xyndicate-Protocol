@@ -69,6 +69,15 @@ async function scheduledRun() {
       fs.writeFileSync(treasuryPath, JSON.stringify(refilledTreasuryState, null, 2) + '\n');
     }
     const result = await runFullPipeline();
+    const currentCycleState = readCycleState();
+    const cycleUniswapQueries = Number(result?.uniswapQueriesSuccessful || 0);
+    const nextUniswapTotal = Number(currentCycleState?.uniswapQueriesTotal || 0) + cycleUniswapQueries;
+    writeCycleState({
+      ...currentCycleState,
+      uniswapQueriesSuccessful: cycleUniswapQueries,
+      uniswapQueriesTotal: nextUniswapTotal,
+    });
+    result.uniswapQueriesTotal = nextUniswapTotal;
 
     const mainSquads = ['XYNDICATE_ALPHA', 'SQUAD_NOVA'];
     const mainResults = mainSquads.map((squadId) => {

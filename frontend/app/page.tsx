@@ -255,7 +255,7 @@ export default function HomePage() {
   });
 
   const edgePair = signal?.pairs?.[0];
-  const uniswapPoolQueries = Number((leaderboard as any)?.uniswapQueriesSuccessful || 0);
+  const uniswapPoolQueries = Number((cycleState as any)?.uniswapQueriesTotal || (leaderboard as any)?.uniswapQueriesTotal || 0);
 
   return (
     <div className="overflow-x-hidden bg-xyn-cream text-xyn-dark dark:bg-xyn-dark dark:text-xyn-surface">
@@ -308,7 +308,7 @@ export default function HomePage() {
             {[
               { label: "Total Decisions Logged", value: countTotal },
               { label: "Active Squads", value: countSquads },
-              { label: "UNISWAP POOL QUERIES", value: uniswapPoolQueries },
+              { label: "UNISWAP POOL QUERIES (TOTAL)", value: uniswapPoolQueries },
               { label: "Season", value: "LIVE" },
             ].map((item) => (
               <div key={item.label} className="rounded-3xl border border-black/10 bg-white/70 p-6 dark:border-white/10 dark:bg-white/5">

@@ -266,6 +266,7 @@ async function buildLeaderboard() {
     updatedAt: new Date().toISOString(),
     totalDecisions: squads.reduce((sum, squad) => sum + Number(squad.decisions || 0), 0),
     uniswapQueriesSuccessful: Number(cycleState?.uniswapQueriesSuccessful || 0),
+    uniswapQueriesTotal: Number(cycleState?.uniswapQueriesTotal || 0),
     supportingProofs: {
       narratorPayments: agentPayments.length,
       latestNarratorPayment: agentPayments[agentPayments.length - 1] || null,
