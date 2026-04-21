@@ -808,7 +808,9 @@
     "0x5395840344be560f4d5a34a61100762cc5aaf33d10bd95cb30dfff503ad3f42c",
     "0x27e8aeaab5949a555f01096b933854c3657665549483490b3db592586e493920",
     "0xe3f114bb80b41e6b534046f996f2fff3c1d31d8b2fb55574c58bfdb73af06844",
-    "0xd639e508e8ecd59abce30dc3b130df78d0b2679435f55a624bf8fb970ac44332"
+    "0xd639e508e8ecd59abce30dc3b130df78d0b2679435f55a624bf8fb970ac44332",
+    "0x9af8a1ff51312372426695c119e35394bc0f3a282b5c75b8bf81b18d0e51a9df",
+    "0x58cabfe853d6354b387238fd2881343f636c42db029b9b41dae6261e97ca35c2"
   ],
   "decisionLogEntries": [
     {
@@ -7803,6 +7805,20 @@
       "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD ETH ($50 position) via OKX · Market conditions evaluated.",
       "timestamp": 1776798551
+    },
+    {
+      "txHash": "0x9af8a1ff51312372426695c119e35394bc0f3a282b5c75b8bf81b18d0e51a9df",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · Uniswap price is 4.03 higher than OKX, indicating arbitrage opportunity. Analyst confidence score is 0.8.",
+      "timestamp": 1776800392
+    },
+    {
+      "txHash": "0x58cabfe853d6354b387238fd2881343f636c42db029b9b41dae6261e97ca35c2",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · OKB price decreased by 0.60% in the last 24 hours. Analyst recommends waiting. Balanced risk mode suggests holding position.",
+      "timestamp": 1776800392
     }
   ]
 }
