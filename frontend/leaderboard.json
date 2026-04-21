@@ -2,24 +2,54 @@
   "squads": [
     {
       "rank": 1,
-      "squadId": "SQUAD_NOVA",
-      "decisions": 366,
+      "squadId": "XYNDICATE_ALPHA",
+      "decisions": 394,
       "confidence": 0.7,
+      "treasury": 1000.0845,
+      "roi": 0.0085,
+      "lastAction": "HOLD ETH (100% treasury) · Price stability and minimal spread indicate holding position is favorable. Negative 24h price change may indicate potential downward trend, but wait for now.",
+      "latestTimestamp": 1776796610,
+      "status": "ACTIVE",
+      "routeUsed": null,
+      "stats": {
+        "buys": 180,
+        "sells": 10,
+        "holds": 200,
+        "lastTradeAction": "HOLD",
+        "lastAsset": "ETH"
+      },
+      "txHashes": [
+        "0x5a2c5bdfb6c84a09b94044b17b4902a9dc79c7cba2c6e9c6fcbc021aeaf2d998",
+        "0x1cdd95a56677f6ab29105470ae8dfe9e7fe09d3d7be4afeb1fb72d1809d16154",
+        "0xde418413f77625729c8add233c3066f34904e868b6d5f1b929eb913643d1e855",
+        "0x4132de8cfa760decc4d47c3dcdf495be8a98a177db6f8440d876d6a83e06991c",
+        "0x4dd8a4c96bc55ebf13feef44244a8463ef3167aaa652cceb5e47c8f30de8c68f",
+        "0xb77af82fe18b403a71a92b3d8d9de865ddea12ec811a502832dc557f96910943",
+        "0x7c0f3f7f8c92492dfa4fe5ddb1c2421a44d97be8f98c49c816c1bc57d7f86493",
+        "0x1d8ca3680183d6cac651eadad881a673f1114e54adbe2722aa33e544654fa791",
+        "0xa9f8c81f4bc9d98df710b8c16583aa01085f1f9f59da1b8ff0182626f0820f80",
+        "0x5395840344be560f4d5a34a61100762cc5aaf33d10bd95cb30dfff503ad3f42c"
+      ]
+    },
+    {
+      "rank": 2,
+      "squadId": "SQUAD_NOVA",
+      "decisions": 367,
+      "confidence": 0.8,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD OKB (100% treasury) · Price stable with minimal spread, no immediate trading opportunity. Negative 24h change indicates potential downward trend, wait for better entry point.",
-      "latestTimestamp": 1776794710,
+      "lastAction": "SELL OKB (100% treasury) · Negative 24-hour change suggests short-term decline, while market stability and minimal spread indicate a good selling opportunity.",
+      "latestTimestamp": 1776796610,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 62,
-        "sells": 20,
+        "sells": 21,
         "holds": 284,
-        "lastTradeAction": "HOLD",
+        "lastTradeAction": "SELL",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x11970ffcf0b004a9fe400e2ada43344f7cd0181ca3bac33ba2935f3926121724",
         "0xb7fc78b9ab65d9ba9a90f28f9b4a4091c50846b195ad34b5d027a615b2b261a9",
         "0x97a4e5558d770decd37cfa992837ac8486b4f216d01607738f965fbd2098b555",
         "0x35c76c8a33d9111df63d3d2dc2111f6f4305a6cd5e7053ac40cf39b7145c494b",
@@ -28,18 +58,19 @@
         "0x1b20c49fb33af785f852a79c00c169bdfcc16e79bf8aa22bfa561d81f31e9f40",
         "0xc7102b0360c6ffdfd4ef10effad92e6572baeaf2bb6bab31176cd32e85aab015",
         "0x799eccc869c5366ae8417b14bf87c5e597697ec96f487890f91d2cd6d3cb9e36",
-        "0xb45a61b9b425a796fbb0bd0b4686e2ea7999ac48b895a973eb952f032205b11e"
+        "0xb45a61b9b425a796fbb0bd0b4686e2ea7999ac48b895a973eb952f032205b11e",
+        "0x27e8aeaab5949a555f01096b933854c3657665549483490b3db592586e493920"
       ]
     },
     {
-      "rank": 2,
+      "rank": 3,
       "squadId": "FRANCC_ALPHA",
-      "decisions": 12,
+      "decisions": 13,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776794751909,
+      "latestTimestamp": 1776796652532,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -53,14 +84,14 @@
       "txHashes": []
     },
     {
-      "rank": 3,
+      "rank": 4,
       "squadId": "SPARTAN_ONE",
-      "decisions": 10,
+      "decisions": 11,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776794762135,
+      "latestTimestamp": 1776796658859,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -72,42 +103,11 @@
         "lastAsset": "ETH/USDC"
       },
       "txHashes": []
-    },
-    {
-      "rank": 4,
-      "squadId": "XYNDICATE_ALPHA",
-      "decisions": 393,
-      "confidence": 0.7,
-      "treasury": 999.9632,
-      "roi": -0.0037,
-      "lastAction": "HOLD ETH (100% treasury) · Price stability and minimal spread indicate holding position. Negative 24h price change suggests waiting for a better entry point.",
-      "latestTimestamp": 1776794710,
-      "status": "ACTIVE",
-      "routeUsed": null,
-      "stats": {
-        "buys": 180,
-        "sells": 10,
-        "holds": 199,
-        "lastTradeAction": "HOLD",
-        "lastAsset": "ETH"
-      },
-      "txHashes": [
-        "0x2d812269f0991bb691ab1d0661b420b9ee2438075a9bd661417b06f6539e4f3e",
-        "0x5a2c5bdfb6c84a09b94044b17b4902a9dc79c7cba2c6e9c6fcbc021aeaf2d998",
-        "0x1cdd95a56677f6ab29105470ae8dfe9e7fe09d3d7be4afeb1fb72d1809d16154",
-        "0xde418413f77625729c8add233c3066f34904e868b6d5f1b929eb913643d1e855",
-        "0x4132de8cfa760decc4d47c3dcdf495be8a98a177db6f8440d876d6a83e06991c",
-        "0x4dd8a4c96bc55ebf13feef44244a8463ef3167aaa652cceb5e47c8f30de8c68f",
-        "0xb77af82fe18b403a71a92b3d8d9de865ddea12ec811a502832dc557f96910943",
-        "0x7c0f3f7f8c92492dfa4fe5ddb1c2421a44d97be8f98c49c816c1bc57d7f86493",
-        "0x1d8ca3680183d6cac651eadad881a673f1114e54adbe2722aa33e544654fa791",
-        "0xa9f8c81f4bc9d98df710b8c16583aa01085f1f9f59da1b8ff0182626f0820f80"
-      ]
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-21T18:06:08.257Z",
-  "totalDecisions": 781,
+  "updatedAt": "2026-04-21T18:37:49.589Z",
+  "totalDecisions": 785,
   "uniswapQueriesSuccessful": 0,
   "uniswapQueriesTotal": 2,
   "supportingProofs": {
