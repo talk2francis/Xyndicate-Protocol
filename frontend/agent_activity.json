@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "379-strategist-1776416530136",
-      "agent": "strategist",
-      "cycle": 379,
-      "timestamp": 1776416530136,
-      "status": "complete",
-      "summary": "HOLD ETH (10% treasury) | Fallback decision",
-      "durationMs": 1
-    },
-    {
       "id": "379-router-1776416530840",
       "agent": "router",
       "cycle": 379,
@@ -538,6 +529,15 @@
       "timestamp": 1776804173534,
       "status": "complete",
       "summary": "WAIT ETH | confidence 75%",
+      "durationMs": 1
+    },
+    {
+      "id": "389-strategist-1776804174564",
+      "agent": "strategist",
+      "cycle": 389,
+      "timestamp": 1776804174564,
+      "status": "complete",
+      "summary": "HOLD ETH (100% treasury) | ETH price stable in last 24 hours. High spread between Uniswap and OKX prices indicates arbitrage opportunities and higher volatility. Recommendation to wait.",
       "durationMs": 1
     }
   ]
