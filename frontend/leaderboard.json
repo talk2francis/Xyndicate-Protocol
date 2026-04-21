@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 374,
+      "decisions": 375,
       "confidence": 0.8,
-      "treasury": 1000.0568,
-      "roi": 0.0057,
-      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and lower price on Uniswap compared to OKX. Analyst recommendation to act with high confidence.",
-      "latestTimestamp": 1776758559,
+      "treasury": 1000.0897,
+      "roi": 0.009,
+      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and lower price on Uniswap compared to OKX, despite high spread. Analyst confidence is 0.8.",
+      "latestTimestamp": 1776760448,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 169,
+        "buys": 170,
         "sells": 10,
         "holds": 191,
         "lastTradeAction": "BUY",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x14f738661e2627bd297cacd47b22d59d0166d024aa6c1efdf4ebc6c0dbdc4398",
         "0xb24ef35db1835f453df65a8bbf278c11dbdae84771fb714bc5fe201f7f08197c",
         "0x9cda7572a3b1b499e86798a430e55315cdd75fe23030d56e02d329869825008a",
         "0x43b8cfa961df5b21ac06ef198f16c2f846ff5f7d1b83fa9ba543e09fdcce6e85",
@@ -28,18 +27,19 @@
         "0x2db4c3e6221a6490518f1b6471d66e9664ac704823b862c0ce0172bd218cb7b6",
         "0x3ffd89943d3ae8568c5ab5dc84f8ecf77edd68f81ecf6d6325e739a93d287523",
         "0xe18519382e24adc570f195b949ea98bd23dc9ff1194e00d4dc73daed08070fd5",
-        "0xfb4cd9b096826af6daf0ca390aba0df3690f84b537e21daabd53e010fd270096"
+        "0xfb4cd9b096826af6daf0ca390aba0df3690f84b537e21daabd53e010fd270096",
+        "0xbeab995a525f9e68c2de60c26814d777b67c1c1f924f9741aa5dd427a1be25bb"
       ]
     },
     {
       "rank": 2,
       "squadId": "FRANCC_ALPHA",
-      "decisions": 49,
+      "decisions": 50,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776758599523,
+      "latestTimestamp": 1776760488081,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -55,12 +55,12 @@
     {
       "rank": 3,
       "squadId": "SPARTAN_ONE",
-      "decisions": 47,
+      "decisions": 48,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776758606342,
+      "latestTimestamp": 1776760493714,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -76,23 +76,22 @@
     {
       "rank": 4,
       "squadId": "SQUAD_NOVA",
-      "decisions": 347,
+      "decisions": 348,
       "confidence": 0.8,
-      "treasury": 999.2378,
-      "roi": -0.0762,
-      "lastAction": "BUY OKB (100% treasury) · Positive 24h price change with high confidence score.",
-      "latestTimestamp": 1776758559,
+      "treasury": 999.1663,
+      "roi": -0.0834,
+      "lastAction": "HOLD OKB (100% treasury) · Price stable with minimal spread, balanced risk mode. Analyst recommendation to wait. Confidence score: 0.8.",
+      "latestTimestamp": 1776760448,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 61,
         "sells": 20,
-        "holds": 266,
-        "lastTradeAction": "BUY",
+        "holds": 267,
+        "lastTradeAction": "HOLD",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x498e7a10cf4caba75b407e379c8c1f97e1693a62f8c4ce2219275220fdee59ef",
         "0x8cf120283272580ed5c31a1b086fdb2eb5ed8693287f64e4010ed919bce0ed98",
         "0x6ea0ce8ff7dbebe9db3024aafbd55b10bd78547bd8f60542bcf3a56ee5e74d0a",
         "0xc8ed59fea4c339c676b49df6703cc7004fa40cb6eefa488046217161928a1072",
@@ -101,13 +100,14 @@
         "0x2e8f49c79249f2fa3f7315454397d1a01611132c5d91c1848ec85d04c6a4d565",
         "0x38e1e3447be2ed3bd1bcb222e4cc415502ba03650fb67249f2914c22b42c6d0d",
         "0xb3038d31bcc6dc8e3b2772ae4be9a6b80c8680437a4e0e513dd6696c6ead506f",
-        "0x4746513d21af54a1fbff426e4287a5ee879a81939d9efd6061a256a218a84ce1"
+        "0x4746513d21af54a1fbff426e4287a5ee879a81939d9efd6061a256a218a84ce1",
+        "0xb4cd79bd9a44c70d21a9d16bc463627983c27cb89704fdf47b29ab04a029e2c8"
       ]
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-21T08:03:32.755Z",
-  "totalDecisions": 817,
+  "updatedAt": "2026-04-21T08:35:04.903Z",
+  "totalDecisions": 821,
   "uniswapQueriesSuccessful": 0,
   "uniswapQueriesTotal": 2,
   "supportingProofs": {
