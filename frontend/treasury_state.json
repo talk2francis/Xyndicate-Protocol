@@ -1,22 +1,14 @@
 {
-  "lastUpdated": 1776768033574,
+  "lastUpdated": 1776768076601,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
       "currentTreasury": 1000.4443,
-      "realizedPnl": 0.2713,
-      "unrealizedPnl": 0.173,
+      "realizedPnl": 0.4443,
+      "unrealizedPnl": 0,
       "roi": 0.0444,
       "openPositions": [
-        {
-          "asset": "ETH",
-          "entryPrice": 2320.57,
-          "markPrice": 2328.6,
-          "sizeUsdc": 50,
-          "openedAt": 1776760485732,
-          "cycleNumber": 82
-        },
         {
           "asset": "ETH",
           "entryPrice": 2328.6,
@@ -24,6 +16,14 @@
           "sizeUsdc": 50,
           "openedAt": 1776768014628,
           "cycleNumber": 89
+        },
+        {
+          "asset": "ETH",
+          "entryPrice": 2328.6,
+          "markPrice": 2328.6,
+          "sizeUsdc": 50,
+          "openedAt": 1776768076601,
+          "cycleNumber": 90
         }
       ],
       "tradeHistory": [
@@ -329,10 +329,28 @@
           "sizeUsdc": 50,
           "pnl": null,
           "timestamp": 1776768014628
+        },
+        {
+          "action": "SELL",
+          "asset": "ETH",
+          "entryPrice": 2320.57,
+          "exitPrice": 2328.6,
+          "sizeUsdc": 50,
+          "pnl": 0.173,
+          "timestamp": 1776768076601,
+          "reason": "force-close-stale"
+        },
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "entryPrice": 2328.6,
+          "exitPrice": null,
+          "sizeUsdc": 50,
+          "pnl": null,
+          "timestamp": 1776768076601
         }
       ],
       "treasuryHistory": [
-        999.6458,
         999.7919,
         999.7919,
         999.8031,
@@ -381,6 +399,7 @@
         1000.1293,
         1000.453,
         1000.453,
+        1000.4443,
         1000.4443
       ],
       "refillCount": 0,
@@ -388,7 +407,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 89
+      "cycleCount": 90
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
