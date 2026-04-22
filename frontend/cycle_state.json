@@ -1,193 +1,23 @@
 {
-  "currentAgent": "idle",
-  "cycleNumber": 423,
-  "cycleStartTime": 1776868603332,
-  "nextCycleTime": 1776870478527,
+  "currentAgent": "oracle",
+  "cycleNumber": 424,
+  "cycleStartTime": 1776870499984,
+  "nextCycleTime": 1776872299984,
   "lastCycleComplete": 1776868678527,
   "activeSquads": [
     "Xyndicate Alpha",
     "Squad Nova"
   ],
-  "squadResults": {
-    "XYNDICATE_ALPHA": {
-      "squadId": "XYNDICATE_ALPHA",
-      "squadName": "Xyndicate Alpha",
-      "riskMode": "aggressive",
-      "baseAsset": "ETH",
-      "txHash": "0x61666db0b2fba73250679faef470f53b8de58f5df2a859cd069e9ebb26b0bcb2",
-      "vaultTxHash": "0x4b0495bcd257650ad1e00665605bf20fb7acbaf925820aa052a10920e48c46ce",
-      "pnlDelta": "50",
-      "action": "BUY",
-      "asset": "ETH",
-      "sizePercent": 100,
-      "rationale": "Positive 24h price change and lower price on Uniswap compared to OKX. High spread between exchanges is a risk but overall opportunity is strong.",
-      "route": "okx",
-      "routingReason": "OKX remains within threshold, so default execution path is retained.",
-      "spreadBps": 3.4822,
-      "narratorSummary": "Xyndicate Alpha opened a $50 ETH position via okx. Positive 24h price change and lower price on Uniswap compared to OKX. High spread between exchanges is a risk but overall opportunity is strong.",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "ETH",
-            "type": "long",
-            "rationale": "Positive 24h price change and lower price on Uniswap compared to OKX.",
-            "confidence": 0.8
-          }
-        ],
-        "risks": [
-          {
-            "description": "High spread between Uniswap and OKX prices.",
-            "severity": 0.7
-          }
-        ],
-        "recommendation": "wait",
-        "topAsset": "ETH",
-        "confidenceScore": 0.8
-      },
-      "market": {
-        "pair": "ETH-USDT",
-        "price": 2399.77,
-        "okxPrice": 2399.77,
-        "uniswapPrice": 2400.6056389128485,
-        "spreadBps": 3.48,
-        "betterRoute": "uniswap",
-        "uniswapPoolId": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
-        "priceSpreads": {
-          "absolute": 0.8356389128,
-          "bps": 3.48,
-          "source": "uniswap-v3-onchain",
-          "rawUniswapPrice": 2400.6056389128485,
-          "rawOkxPrice": 2399.77,
-          "uniswapError": null
-        },
-        "change24h": 3.52939653833543
-      },
-      "narrative": "BUY ETH (100% treasury) via okx · Positive 24h price change and lower price on Uniswap compared to OKX. High spread between exchanges is a risk but overall opportunity is strong."
-    },
-    "SQUAD_NOVA": {
-      "squadId": "SQUAD_NOVA",
-      "squadName": "Squad Nova",
-      "riskMode": "balanced",
-      "baseAsset": "OKB",
-      "txHash": "0x574e89967ddc7b4ccdc2a6d904a33ecf08a6459e8c02572c5168d77406b1b919",
-      "vaultTxHash": "0x451402cc4480216b642e86a0e742bb4008de669411e9d08698f2bb5ef28931a1",
-      "pnlDelta": "50",
-      "action": "BUY",
-      "asset": "OKB",
-      "sizePercent": 100,
-      "rationale": "Positive 24h price change and balanced risk mode. Analyst recommendation to act with high confidence.",
-      "route": "okx",
-      "routingReason": "OKX remains within threshold, so default execution path is retained.",
-      "spreadBps": 0,
-      "narratorSummary": "Squad Nova opened a $50 OKB position via okx. Positive 24h price change and balanced risk mode. Analyst recommendation to act with high confidence.",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "OKB",
-            "type": "long",
-            "rationale": "Positive 24h price change and balanced risk mode",
-            "confidence": 0.8
-          }
-        ],
-        "risks": [],
-        "recommendation": "act",
-        "topAsset": "OKB",
-        "confidenceScore": 0.8
-      },
-      "market": {
-        "pair": "OKB-USDT",
-        "price": 84.73,
-        "okxPrice": 84.73,
-        "uniswapPrice": 84.73,
-        "spreadBps": 0,
-        "betterRoute": "okx",
-        "uniswapPoolId": null,
-        "priceSpreads": {
-          "absolute": 0,
-          "bps": 0,
-          "source": "okx-fallback",
-          "rawUniswapPrice": null,
-          "rawOkxPrice": 84.73,
-          "uniswapError": null
-        },
-        "change24h": 1.04949314251641
-      },
-      "narrative": "BUY OKB (100% treasury) via okx · Positive 24h price change and balanced risk mode. Analyst recommendation to act with high confidence."
-    }
-  },
-  "slowSquadLastRunAt": {
-    "phantom_last_run": 1776868638332,
-    "cipher_last_run": 1776868638332,
-    "nexus_last_run": 1776868638333
-  },
-  "uniswapQueriesSuccessful": 2,
+  "squadResults": {},
+  "slowSquadLastRunAt": {},
+  "uniswapQueriesSuccessful": 0,
   "uniswapQueriesTotal": 2,
   "agentLog": [
     {
       "agent": "system",
       "status": "started",
-      "completedAt": 1776868603332,
-      "summary": "Cycle 423 started. Oracle snapshot in progress."
-    },
-    {
-      "agent": "oracle",
-      "status": "complete",
-      "completedAt": 1776868631209,
-      "summary": "ETH $2399.77 (3.53%) | Uniswap spread 3.48bps"
-    },
-    {
-      "agent": "analyst",
-      "status": "complete",
-      "completedAt": 1776868632454,
-      "summary": "wait on ETH | confidence 0"
-    },
-    {
-      "agent": "strategist",
-      "status": "complete",
-      "completedAt": 1776868633576,
-      "summary": "HOLD ETH (0% treasury)"
-    },
-    {
-      "agent": "router",
-      "status": "complete",
-      "completedAt": 1776868634540,
-      "summary": "okx selected | spread 0.00bps"
-    },
-    {
-      "agent": "executor",
-      "status": "complete",
-      "completedAt": 1776868635911,
-      "summary": "HOLD executed | tx 0x61666db0b2fba73250679faef470f53b8de58f5df2a859cd069e9ebb26b0bcb2"
-    },
-    {
-      "agent": "narrator",
-      "status": "complete",
-      "completedAt": 1776868637135,
-      "summary": "Xyndicate Alpha opened a $50 ETH position via okx. Positive 24h price change and lower price on Uniswap compared to OKX. High spread between exchanges is a risk but overall opportunity is strong. | Squad Nova opened a $50 OKB position via okx. Positive 24h price change and balanced risk mode. Analyst recommendation to act with high confidence."
-    },
-    {
-      "agent": "slow-phantom",
-      "status": "complete",
-      "completedAt": 1776868638332,
-      "summary": "Phantom Protocol decision logged"
-    },
-    {
-      "agent": "slow-cipher",
-      "status": "complete",
-      "completedAt": 1776868638332,
-      "summary": "Cipher Strategy decision logged"
-    },
-    {
-      "agent": "slow-nexus",
-      "status": "complete",
-      "completedAt": 1776868638333,
-      "summary": "Nexus Quant decision logged"
-    },
-    {
-      "agent": "system",
-      "status": "complete",
-      "completedAt": 1776868678527,
-      "summary": "Cycle 423 complete. Awaiting next scheduled run."
+      "completedAt": 1776870499984,
+      "summary": "Cycle 424 started. Oracle snapshot in progress."
     }
   ]
 }
