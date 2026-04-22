@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "419-router-1776861032605",
-      "agent": "router",
-      "cycle": 419,
-      "timestamp": 1776861032605,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "419-executor-1776861033625",
       "agent": "executor",
       "cycle": 419,
@@ -538,6 +529,15 @@
       "timestamp": 1776880064182,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | Minimal price spread and stable price change in the last 24 hours, indicating a hold position is suitable for Xyndicate Alpha's aggressive risk mode.",
+      "durationMs": 1
+    },
+    {
+      "id": "429-router-1776880065276",
+      "agent": "router",
+      "cycle": 429,
+      "timestamp": 1776880065276,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
