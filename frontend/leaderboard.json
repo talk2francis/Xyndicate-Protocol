@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 419,
+      "decisions": 420,
       "confidence": 0.8,
-      "treasury": 1002.7523,
-      "roi": 0.2752,
-      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and lower price on Uniswap compared to OKX exchange, indicating potential for arbitrage opportunities.",
-      "latestTimestamp": 1776843978,
+      "treasury": 1002.6023,
+      "roi": 0.2602,
+      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and lower price on Uniswap compared to OKX. High spread between exchanges is a risk but outweighed by opportunity.",
+      "latestTimestamp": 1776845879,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 193,
+        "buys": 194,
         "sells": 10,
         "holds": 212,
         "lastTradeAction": "BUY",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0xcb9f3dfb299d50e36fa8f9b81e120c8d7ad415a98f92330bd63b0b3df539cb8f",
         "0x96f60980c9e9720c9ddb11dd97cfcf666597d0da976b7ae0efdab39e160df71f",
         "0x985991c72b94b498651193f9af8e4730fa969e268e91523314175813ae32185a",
         "0x96e8e3ac0b7fcf157e53ed8a4df1a571a36b140de1f6dcf2df9e1afd46cb86e8",
@@ -28,29 +27,29 @@
         "0x2419972cfbf3e49bdd654b4e4f2952942543936c863c186599e80936ec289a6c",
         "0x1601ef9ff468466d94986b4fc6d25f4bbc1888d8556eda9b14c521fe56e61ba7",
         "0xc627da81910d9ad9a6d6ebe449a7cc6044aff37ec48b8087725fcb9c557b29dc",
-        "0x9294a71436e2ad5bb0483c456c04e26dfce60e364b37a3df58850a5f452d0875"
+        "0x9294a71436e2ad5bb0483c456c04e26dfce60e364b37a3df58850a5f452d0875",
+        "0x2334f94a95a06343281f8a7c85eafc43edd60c89248374a1bc6b7f0a9ba412da"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 392,
-      "confidence": 0.7,
+      "decisions": 393,
+      "confidence": 0.8,
       "treasury": 1000.0411,
       "roi": 0.0041,
-      "lastAction": "HOLD OKB (100% treasury) · The market is stable with no significant opportunities or risks. Analyst recommends waiting. High confidence score of 98.89% supports holding position.",
-      "latestTimestamp": 1776843978,
+      "lastAction": "BUY OKB (100% treasury) · Positive 24h price change and balanced risk mode. Analyst recommendation to act with high confidence.",
+      "latestTimestamp": 1776845879,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 67,
+        "buys": 68,
         "sells": 22,
         "holds": 303,
-        "lastTradeAction": "HOLD",
+        "lastTradeAction": "BUY",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x04672d18b314f723d39184606c10dd3b122b0eba3f579d71eded02f517e62380",
         "0xefe08383151c47fe55376efb53ae5a3510bcc7b242fccfc448883067bf4ceba4",
         "0xe9a9cb3bab92f831a56a9ccf8a627307948ac1145fc8afbf5500f586d8d2609c",
         "0x8dfe8cd174938140ef29f91c98d9d779fa32934a93852d6ca432923b5cc6e87b",
@@ -59,18 +58,19 @@
         "0xee4eb669e0dd8109d0ea8bdf579f37e768157a89f60c49fd7a1b0ad3df7b731d",
         "0x80904bf3eb108375667e8df4e1f6ea9869d56e713e6a62d754430bb4702825eb",
         "0xb9a4da4e731a342b36d17f31ba33c27d0519745b7391588481b6851d4e4a9de3",
-        "0x1c5ba4df3a00dc8c486d3c0f571dbe3b33e12bd55e23936d44602d813f1e1507"
+        "0x1c5ba4df3a00dc8c486d3c0f571dbe3b33e12bd55e23936d44602d813f1e1507",
+        "0xaa725a47dbe7e2fae35af93b2e3d4b02253f8118aac1f7a40ed201f1a1bb5e37"
       ]
     },
     {
       "rank": 3,
       "squadId": "FRANCC_ALPHA",
-      "decisions": 38,
+      "decisions": 39,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776844020227,
+      "latestTimestamp": 1776845923983,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -86,12 +86,12 @@
     {
       "rank": 4,
       "squadId": "SPARTAN_ONE",
-      "decisions": 36,
+      "decisions": 37,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776844031367,
+      "latestTimestamp": 1776845935194,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -106,8 +106,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-22T07:47:21.889Z",
-  "totalDecisions": 885,
+  "updatedAt": "2026-04-22T08:19:00.923Z",
+  "totalDecisions": 889,
   "uniswapQueriesSuccessful": 0,
   "uniswapQueriesTotal": 2,
   "supportingProofs": {
