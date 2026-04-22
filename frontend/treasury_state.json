@@ -1,23 +1,14 @@
 {
-  "lastUpdated": 1776830714302,
+  "lastUpdated": 1776830759757,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
       "currentTreasury": 1002.4922,
-      "realizedPnl": 1.5896,
-      "unrealizedPnl": 0.9026,
+      "realizedPnl": 2.4922,
+      "unrealizedPnl": 0,
       "roi": 0.2492,
-      "openPositions": [
-        {
-          "asset": "ETH",
-          "entryPrice": 2323.4,
-          "markPrice": 2365.34,
-          "sizeUsdc": 50,
-          "openedAt": 1776823172763,
-          "cycleNumber": 36
-        }
-      ],
+      "openPositions": [],
       "tradeHistory": [
         {
           "action": "BUY",
@@ -160,6 +151,16 @@
           "pnl": 0.7784,
           "timestamp": 1776830705790,
           "reason": "force-close-stale"
+        },
+        {
+          "action": "SELL",
+          "asset": "ETH",
+          "entryPrice": 2323.4,
+          "exitPrice": 2365.34,
+          "sizeUsdc": 50,
+          "pnl": 0.9026,
+          "timestamp": 1776830759756,
+          "reason": "force-close-stale"
         }
       ],
       "treasuryHistory": [
@@ -206,6 +207,7 @@
         1002.7304,
         1002.368,
         1002.368,
+        1002.4922,
         1002.4922
       ],
       "refillCount": 0,
@@ -213,7 +215,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 43
+      "cycleCount": 44
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
