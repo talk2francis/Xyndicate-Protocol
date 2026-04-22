@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 409,
+      "decisions": 410,
       "confidence": 0.8,
-      "treasury": 1002.1631,
-      "roi": 0.2163,
-      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and minimal spread, favorable for a long position.",
-      "latestTimestamp": 1776825029,
+      "treasury": 1002.7304,
+      "roi": 0.273,
+      "lastAction": "BUY ETH (100% treasury) · Positive 24h price change and potential arbitrage opportunity with OKX exchange. Analyst recommendation and high confidence level support buying decision.",
+      "latestTimestamp": 1776826923,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 186,
+        "buys": 187,
         "sells": 10,
         "holds": 209,
         "lastTradeAction": "BUY",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x2d93440a71f35a9efafe6ea10d5f1118c4a5cce5e361a6f4d0a2ced7ce6a57da",
         "0xe3b955a895a4fecc77f89e40450fd28d4e1acfa35080d5b4499184d82e9e9cf4",
         "0xb9d6972f1631f62e0115efc47029db921820f62b0560ff695af43d6111714fc5",
         "0x697eb547758ee3864168560869bea9aef28840abacf6cb363699fd0fd1d061c7",
@@ -28,29 +27,29 @@
         "0xfd31da45d4a8f92fbc2c0e277fe7aed7b6e0b26d0191933077137228a81cc383",
         "0xbdf37ee1d6da15681663a9d9c0f1c3494ee6d8b13623327ea5b4396ec8021d6b",
         "0x993fc0d63b9490f1f8426ffdfbd6859f83861910dbe28f2ede55f1c566ae956d",
-        "0xc76c47128148af61573acd3f6b454725eadb10111c742170b787412da8b47416"
+        "0xc76c47128148af61573acd3f6b454725eadb10111c742170b787412da8b47416",
+        "0xcb9f3dfb299d50e36fa8f9b81e120c8d7ad415a98f92330bd63b0b3df539cb8f"
       ]
     },
     {
       "rank": 2,
       "squadId": "SQUAD_NOVA",
-      "decisions": 382,
+      "decisions": 383,
       "confidence": 0.8,
       "treasury": 1000,
       "roi": 0,
-      "lastAction": "HOLD OKB (100% treasury) · Price stability and balanced risk mode. Analyst recommendation to wait. Confidence score: 0.8.",
-      "latestTimestamp": 1776825029,
+      "lastAction": "BUY OKB (100% treasury) · Positive 24h price change indicates potential uptrend with high confidence score. Low price spread limits arbitrage opportunities.",
+      "latestTimestamp": 1776826923,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
-        "buys": 62,
+        "buys": 63,
         "sells": 22,
         "holds": 298,
-        "lastTradeAction": "HOLD",
+        "lastTradeAction": "BUY",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x20090e038e58892e000a6ba56bd356646d2d7a7998c54f8899354b3de72338e1",
         "0x806ba7f8e38dddd926acc763eefaab61f2cfceb155c687f73043b7215ed9b728",
         "0x0136a087a86a43e179d694a41e7235f2eb52530e207cdfef78244059c1da77e2",
         "0xac4df4d6e24f0ae692714278c57c9eb5ea36fb2d143e7610286b67ef88606e9e",
@@ -59,18 +58,19 @@
         "0x937712cd5d558ce5224e6661ad5477b85f544108ebfc000317fa59ec74e1ac74",
         "0x04a6b43fe3a55fea436ede0b8f7a0fa21113ef1cc13148845582aac1af32a673",
         "0x7c376972bcee96113426cc2bde9c5b957706c1cab4293071f745a5affdabf3ea",
-        "0x43a86cffde7a81e0ac8e0c268fff86f0f4da822448c93b186375b04806bc86ae"
+        "0x43a86cffde7a81e0ac8e0c268fff86f0f4da822448c93b186375b04806bc86ae",
+        "0x04672d18b314f723d39184606c10dd3b122b0eba3f579d71eded02f517e62380"
       ]
     },
     {
       "rank": 3,
       "squadId": "FRANCC_ALPHA",
-      "decisions": 28,
+      "decisions": 29,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776825069155,
+      "latestTimestamp": 1776826976369,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -86,12 +86,12 @@
     {
       "rank": 4,
       "squadId": "SPARTAN_ONE",
-      "decisions": 26,
+      "decisions": 27,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776825074923,
+      "latestTimestamp": 1776826988059,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -106,8 +106,8 @@
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-22T02:31:25.701Z",
-  "totalDecisions": 845,
+  "updatedAt": "2026-04-22T03:03:18.963Z",
+  "totalDecisions": 849,
   "uniswapQueriesSuccessful": 0,
   "uniswapQueriesTotal": 2,
   "supportingProofs": {
