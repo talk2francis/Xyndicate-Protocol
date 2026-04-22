@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776881938051,
+  "lastUpdated": 1776881945496,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -451,26 +451,26 @@
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
-      "currentTreasury": 999.7609,
-      "realizedPnl": 0.2059,
-      "unrealizedPnl": -0.445,
-      "roi": -0.0239,
+      "currentTreasury": 999.9483,
+      "realizedPnl": -0.0166,
+      "unrealizedPnl": -0.0351,
+      "roi": -0.0052,
       "openPositions": [
         {
           "asset": "OKB",
           "entryPrice": 85.4,
-          "markPrice": 85.02,
-          "sizeUsdc": 50,
-          "openedAt": 1776874335034,
-          "cycleNumber": 89
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 85.4,
-          "markPrice": 85.02,
+          "markPrice": 85.34,
           "sizeUsdc": 50,
           "openedAt": 1776874388145,
           "cycleNumber": 90
+        },
+        {
+          "asset": "OKB",
+          "entryPrice": 85.34,
+          "markPrice": 85.34,
+          "sizeUsdc": 50,
+          "openedAt": 1776881945495,
+          "cycleNumber": 97
         }
       ],
       "tradeHistory": [
@@ -681,13 +681,31 @@
           "sizeUsdc": 50,
           "pnl": null,
           "timestamp": 1776874388145
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "entryPrice": 85.4,
+          "exitPrice": 85.02,
+          "sizeUsdc": 50,
+          "pnl": -0.2225,
+          "timestamp": 1776881945495,
+          "reason": "force-close-stale"
+        },
+        {
+          "action": "BUY",
+          "asset": "OKB",
+          "entryPrice": 85.34,
+          "exitPrice": null,
+          "sizeUsdc": 50,
+          "pnl": null,
+          "timestamp": 1776881945495
         }
       ],
       "treasuryHistory": [
         999.9349,
         999.9349,
         999.9349,
-        999.9349,
         999.8995,
         999.8995,
         999.9467,
@@ -733,14 +751,15 @@
         1000.1005,
         1000.1005,
         999.7609,
-        999.7609
+        999.7609,
+        999.9483
       ],
       "refillCount": 0,
       "lastRefillAt": null,
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 96
+      "cycleCount": 97
     },
     "VIVAX": {
       "startingUsdc": 1000,
