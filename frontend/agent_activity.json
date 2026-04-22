@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "420-router-1776862925596",
-      "agent": "router",
-      "cycle": 420,
-      "timestamp": 1776862925596,
-      "status": "complete",
-      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
-      "durationMs": 1
-    },
-    {
       "id": "420-executor-1776862926653",
       "agent": "executor",
       "cycle": 420,
@@ -538,6 +529,15 @@
       "timestamp": 1776881949059,
       "status": "complete",
       "summary": "HOLD ETH (10% treasury) | ETH price increased by 4.14% in 24h, positive trend. Analyst recommends waiting. Confidence level: 80%",
+      "durationMs": 1
+    },
+    {
+      "id": "430-router-1776881950263",
+      "agent": "router",
+      "cycle": 430,
+      "timestamp": 1776881950263,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
