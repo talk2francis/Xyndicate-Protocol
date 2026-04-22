@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776891432839,
+  "lastUpdated": 1776891446812,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -510,7 +510,16 @@
       "realizedPnl": -0.7137,
       "unrealizedPnl": 0,
       "roi": -0.0714,
-      "openPositions": [],
+      "openPositions": [
+        {
+          "asset": "OKB",
+          "entryPrice": 84.6,
+          "markPrice": 84.6,
+          "sizeUsdc": 50,
+          "openedAt": 1776891446812,
+          "cycleNumber": 107
+        }
+      ],
       "tradeHistory": [
         {
           "action": "BUY",
@@ -777,10 +786,18 @@
           "pnl": -0.3808,
           "timestamp": 1776889601958,
           "reason": "force-close-stale"
+        },
+        {
+          "action": "BUY",
+          "asset": "OKB",
+          "entryPrice": 84.6,
+          "exitPrice": null,
+          "sizeUsdc": 50,
+          "pnl": null,
+          "timestamp": 1776891446812
         }
       ],
       "treasuryHistory": [
-        1000.0411,
         1000.0411,
         1000.0411,
         1000.0411,
@@ -829,6 +846,7 @@
         999.3858,
         999.3858,
         999.2863,
+        999.2863,
         999.2863
       ],
       "refillCount": 0,
@@ -836,7 +854,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 106
+      "cycleCount": 107
     },
     "VIVAX": {
       "startingUsdc": 1000,
