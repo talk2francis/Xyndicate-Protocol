@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776881999951,
+  "lastUpdated": 1776882001151,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -453,18 +453,10 @@
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
       "currentTreasury": 999.9483,
-      "realizedPnl": -0.0166,
-      "unrealizedPnl": -0.0351,
+      "realizedPnl": -0.0517,
+      "unrealizedPnl": 0,
       "roi": -0.0052,
       "openPositions": [
-        {
-          "asset": "OKB",
-          "entryPrice": 85.4,
-          "markPrice": 85.34,
-          "sizeUsdc": 50,
-          "openedAt": 1776874388145,
-          "cycleNumber": 90
-        },
         {
           "asset": "OKB",
           "entryPrice": 85.34,
@@ -472,6 +464,14 @@
           "sizeUsdc": 50,
           "openedAt": 1776881945495,
           "cycleNumber": 97
+        },
+        {
+          "asset": "OKB",
+          "entryPrice": 85.34,
+          "markPrice": 85.34,
+          "sizeUsdc": 50,
+          "openedAt": 1776882001151,
+          "cycleNumber": 98
         }
       ],
       "tradeHistory": [
@@ -701,12 +701,30 @@
           "sizeUsdc": 50,
           "pnl": null,
           "timestamp": 1776881945495
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "entryPrice": 85.4,
+          "exitPrice": 85.34,
+          "sizeUsdc": 50,
+          "pnl": -0.0351,
+          "timestamp": 1776882001151,
+          "reason": "force-close-stale"
+        },
+        {
+          "action": "BUY",
+          "asset": "OKB",
+          "entryPrice": 85.34,
+          "exitPrice": null,
+          "sizeUsdc": 50,
+          "pnl": null,
+          "timestamp": 1776882001151
         }
       ],
       "treasuryHistory": [
         999.9349,
         999.9349,
-        999.9349,
         999.8995,
         999.8995,
         999.9467,
@@ -753,6 +771,7 @@
         1000.1005,
         999.7609,
         999.7609,
+        999.9483,
         999.9483
       ],
       "refillCount": 0,
@@ -760,7 +779,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 97
+      "cycleCount": 98
     },
     "VIVAX": {
       "startingUsdc": 1000,
