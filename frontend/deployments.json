@@ -866,7 +866,9 @@
     "0x126f1f31d211f369417653133610be6c7cf98fb96c61f5c2d5c9edcdd5cc89d0",
     "0xf906c2c14b307366ed1fdec05e7b05a4967b2ad5a843fd0a74f82957bcdedbd0",
     "0x611b3c202ad833904e0ccfac68a3670742c9c42fdb7cc5f2d4f38a19139cba64",
-    "0xab10bfbabfb7b2b28550670ad92d8a20c7bc280667127e4f0b94f440c03eced1"
+    "0xab10bfbabfb7b2b28550670ad92d8a20c7bc280667127e4f0b94f440c03eced1",
+    "0x62b5c4bec5b846ae4881cca08b4dc44fafdab9951d2f113d4bda0986d32c1a98",
+    "0xcd3384480bea5c6d3d70b57dc9717cfc3f4be46a96e7d2557cddb52e3fb06c46"
   ],
   "decisionLogEntries": [
     {
@@ -8673,6 +8675,20 @@
       "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD ETH ($50 position) via OKX · Market conditions evaluated.",
       "timestamp": 1776853494
+    },
+    {
+      "txHash": "0x62b5c4bec5b846ae4881cca08b4dc44fafdab9951d2f113d4bda0986d32c1a98",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "BUY ETH (100% treasury) · Positive 24h price change and lower price on Uniswap compared to OKX. Analyst confidence is high at 0.8.",
+      "timestamp": 1776855336
+    },
+    {
+      "txHash": "0xcd3384480bea5c6d3d70b57dc9717cfc3f4be46a96e7d2557cddb52e3fb06c46",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (100% treasury) · Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait with moderate confidence.",
+      "timestamp": 1776855336
     }
   ]
 }
