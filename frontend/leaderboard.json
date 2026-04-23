@@ -3,23 +3,22 @@
     {
       "rank": 1,
       "squadId": "XYNDICATE_ALPHA",
-      "decisions": 475,
-      "confidence": 0.7,
+      "decisions": 476,
+      "confidence": 0.66,
       "treasury": 1000.7007,
       "roi": 0.0701,
-      "lastAction": "HOLD ETH (100% treasury) · Price stability and minimal spread indicate holding position for now. High volatility and recent decrease in the last 24 hours suggest waiting for better opportunities.",
-      "latestTimestamp": 1776950378,
+      "lastAction": "HOLD ETH (100% treasury) · ETH price has slightly decreased in the last 24 hours, indicating potential stabilization. Holding is advisable in current market conditions.",
+      "latestTimestamp": 1776952289,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 225,
         "sells": 10,
-        "holds": 236,
+        "holds": 237,
         "lastTradeAction": "HOLD",
         "lastAsset": "ETH"
       },
       "txHashes": [
-        "0x5dbf7cb7dfc601fd2366d1944caf237818f6fef15f32ecbbb44b63764d7baf3b",
         "0x4abfaaa22129245aef8b3f13d5356da9e519b479c7a4adffe417816642f3eb1b",
         "0xbec6b81746dba616fc7f05ce66ebc1db5426f3674c7ffd301fe50ec9af67035b",
         "0xbdba9769db52a0386c58d63a38781b6c1c8acea6aade6fd25899ba7ef63ea644",
@@ -28,18 +27,19 @@
         "0x2491308da2c9644c820c38add6072f59b25efa995d0d8cdffd398f25aad37ee8",
         "0xed72c829531dc73b055caef281c1f226c770b4016a14bd3fffd777229bbeac86",
         "0x00ce087844c2fa198ac451b227f424be7b036ddd7b7eafc02e1f1d0d4b5f2c83",
-        "0xea67937d316aaed843ef70832ec5d07d68f7b9d40dab411d76d52193efc4fe27"
+        "0xea67937d316aaed843ef70832ec5d07d68f7b9d40dab411d76d52193efc4fe27",
+        "0xce80bafd8decda2cd13fea481eab24a92f088283a71d8d4c5d18a27a64739c1f"
       ]
     },
     {
       "rank": 2,
       "squadId": "FRANCC_ALPHA",
-      "decisions": 94,
+      "decisions": 95,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776950427395,
+      "latestTimestamp": 1776952340547,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -55,12 +55,12 @@
     {
       "rank": 3,
       "squadId": "SPARTAN_ONE",
-      "decisions": 92,
+      "decisions": 93,
       "confidence": 0.5,
       "treasury": 1000,
       "roi": 0,
       "lastAction": "HOLD ETH ($50 position) · Market conditions evaluated. via OKX",
-      "latestTimestamp": 1776950434462,
+      "latestTimestamp": 1776952347489,
       "status": "ACTIVE",
       "badge": "External",
       "routeUsed": "OKX",
@@ -76,23 +76,22 @@
     {
       "rank": 4,
       "squadId": "SQUAD_NOVA",
-      "decisions": 448,
-      "confidence": 0.7,
+      "decisions": 449,
+      "confidence": 0.8,
       "treasury": 999.3618,
       "roi": -0.0638,
-      "lastAction": "HOLD OKB (100% treasury) · Market conditions stable, no significant opportunities or risks identified. Analyst recommendation to wait, confidence score low.",
-      "latestTimestamp": 1776950378,
+      "lastAction": "SELL OKB (100% treasury) · Price decreased by -1.47% in the last 24 hours, indicating a short opportunity with 70% confidence.",
+      "latestTimestamp": 1776952289,
       "status": "ACTIVE",
       "routeUsed": null,
       "stats": {
         "buys": 84,
-        "sells": 29,
+        "sells": 30,
         "holds": 335,
-        "lastTradeAction": "HOLD",
+        "lastTradeAction": "SELL",
         "lastAsset": "OKB"
       },
       "txHashes": [
-        "0x4b8360f06faa8f2d18d4b5e414f884479eb424157352c3d8eecc6129c4cd66b4",
         "0xbdc07d96616c89dbd48e0e9b30fd8930aae57c1d3c1f43dbe7fbb0e5bc60e771",
         "0xcb59d529538dc5cb2e9e9548c64aa6610324a008049c02ced947bad66d847fd0",
         "0x76672abdb3e4d20754e076b81cce69bd8958f883bf8f4517a2d02640a248926f",
@@ -101,13 +100,14 @@
         "0x21922dc2cd8879b3e12c2c56e6727490d6225a9429519b5d6532d95a1083338f",
         "0x8214e112d3753109c0fbd9de0773fc1aaab40a7d129346a7928b11af0887126f",
         "0xdee6330929711abe2b5db13bd261cd77f6ba9943a70a1eea8328a428adbd9e8c",
-        "0x9aa6419ec5224b7d77344bea8ae1b89fcf6db9bafc783ae33da9aa4b4a2b1d72"
+        "0x9aa6419ec5224b7d77344bea8ae1b89fcf6db9bafc783ae33da9aa4b4a2b1d72",
+        "0x4abc690cda3cc39ba55c5e5da9e4d2b50c08e3cc1e810ae0da96b560d5aacb7d"
       ]
     }
   ],
   "source": "scheduler-artifact",
-  "updatedAt": "2026-04-23T13:20:45.280Z",
-  "totalDecisions": 1109,
+  "updatedAt": "2026-04-23T13:52:39.400Z",
+  "totalDecisions": 1113,
   "uniswapQueriesSuccessful": 0,
   "uniswapQueriesTotal": 2,
   "supportingProofs": {
