@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1776986593918,
+  "lastUpdated": 1776986594834,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -549,19 +549,10 @@
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
       "currentTreasury": 999.5766,
-      "realizedPnl": -0.5129,
-      "unrealizedPnl": 0.0895,
+      "realizedPnl": -0.4234,
+      "unrealizedPnl": 0,
       "roi": -0.0423,
-      "openPositions": [
-        {
-          "asset": "OKB",
-          "entryPrice": 83.78,
-          "markPrice": 83.93,
-          "sizeUsdc": 50,
-          "openedAt": 1776978994515,
-          "cycleNumber": 200
-        }
-      ],
+      "openPositions": [],
       "tradeHistory": [
         {
           "action": "BUY",
@@ -932,12 +923,21 @@
           "pnl": 0.1253,
           "timestamp": 1776986539654,
           "reason": "force-close-stale"
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "entryPrice": 83.78,
+          "exitPrice": 83.93,
+          "sizeUsdc": 50,
+          "pnl": 0.0895,
+          "timestamp": 1776986594834,
+          "reason": "force-close-stale"
         }
       ],
       "treasuryHistory": [
         999.038,
         999.038,
-        999.038,
         999.1219,
         999.1219,
         999.3498,
@@ -984,6 +984,7 @@
         999.5886,
         999.6125,
         999.6125,
+        999.5766,
         999.5766
       ],
       "refillCount": 0,
@@ -991,7 +992,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 207
+      "cycleCount": 208
     },
     "VIVAX": {
       "startingUsdc": 1000,
