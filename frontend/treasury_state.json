@@ -1,22 +1,14 @@
 {
-  "lastUpdated": 1776906661637,
+  "lastUpdated": 1776906709142,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
       "currentTreasury": 1001.7307,
-      "realizedPnl": 2.2643,
-      "unrealizedPnl": -0.5336,
+      "realizedPnl": 1.7307,
+      "unrealizedPnl": 0,
       "roi": 0.1731,
       "openPositions": [
-        {
-          "asset": "ETH",
-          "entryPrice": 2394.3,
-          "markPrice": 2368.75,
-          "sizeUsdc": 50,
-          "openedAt": 1776899109349,
-          "cycleNumber": 116
-        },
         {
           "asset": "ETH",
           "entryPrice": 2368.75,
@@ -24,29 +16,17 @@
           "sizeUsdc": 50,
           "openedAt": 1776906644689,
           "cycleNumber": 123
+        },
+        {
+          "asset": "ETH",
+          "entryPrice": 2368.75,
+          "markPrice": 2368.75,
+          "sizeUsdc": 50,
+          "openedAt": 1776906709142,
+          "cycleNumber": 124
         }
       ],
       "tradeHistory": [
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2307.47,
-          "exitPrice": 2309.42,
-          "sizeUsdc": 50,
-          "pnl": 0.0423,
-          "timestamp": 1776798486132,
-          "reason": "force-close-stale"
-        },
-        {
-          "action": "SELL",
-          "asset": "ETH",
-          "entryPrice": 2307.47,
-          "exitPrice": 2318.86,
-          "sizeUsdc": 50,
-          "pnl": 0.2468,
-          "timestamp": 1776798543564,
-          "reason": "force-close-stale"
-        },
         {
           "action": "BUY",
           "asset": "ETH",
@@ -501,10 +481,28 @@
           "sizeUsdc": 50,
           "pnl": null,
           "timestamp": 1776906644689
+        },
+        {
+          "action": "SELL",
+          "asset": "ETH",
+          "entryPrice": 2394.3,
+          "exitPrice": 2368.75,
+          "sizeUsdc": 50,
+          "pnl": -0.5336,
+          "timestamp": 1776906709142,
+          "reason": "force-close-stale"
+        },
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "entryPrice": 2368.75,
+          "exitPrice": null,
+          "sizeUsdc": 50,
+          "pnl": null,
+          "timestamp": 1776906709142
         }
       ],
       "treasuryHistory": [
-        1002.8011,
         1002.7936,
         1002.7936,
         1003.0976,
@@ -553,6 +551,7 @@
         1001.8019,
         1001.9022,
         1001.9022,
+        1001.7307,
         1001.7307
       ],
       "refillCount": 0,
@@ -560,7 +559,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 123
+      "cycleCount": 124
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
