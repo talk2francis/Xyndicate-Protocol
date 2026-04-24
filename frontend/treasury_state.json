@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1777013118508,
+  "lastUpdated": 1777013128583,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -548,28 +548,11 @@
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
-      "currentTreasury": 999.7198,
-      "realizedPnl": -0.4234,
-      "unrealizedPnl": 0.1432,
-      "roi": -0.028,
-      "openPositions": [
-        {
-          "asset": "OKB",
-          "entryPrice": 83.82,
-          "markPrice": 83.94,
-          "sizeUsdc": 50,
-          "openedAt": 1777009324262,
-          "cycleNumber": 231
-        },
-        {
-          "asset": "OKB",
-          "entryPrice": 83.82,
-          "markPrice": 83.94,
-          "sizeUsdc": 50,
-          "openedAt": 1777009391728,
-          "cycleNumber": 232
-        }
-      ],
+      "currentTreasury": 999.505,
+      "realizedPnl": -0.495,
+      "unrealizedPnl": 0,
+      "roi": -0.0495,
+      "openPositions": [],
       "tradeHistory": [
         {
           "action": "BUY",
@@ -968,10 +951,27 @@
           "sizeUsdc": 50,
           "pnl": null,
           "timestamp": 1777009391728
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "entryPrice": 83.82,
+          "exitPrice": 83.76,
+          "sizeUsdc": 50,
+          "pnl": -0.0358,
+          "timestamp": 1777013128583
+        },
+        {
+          "action": "SELL",
+          "asset": "OKB",
+          "entryPrice": 83.82,
+          "exitPrice": 83.76,
+          "sizeUsdc": 50,
+          "pnl": -0.0358,
+          "timestamp": 1777013128583
         }
       ],
       "treasuryHistory": [
-        999.3618,
         999.3618,
         999.3618,
         999.3618,
@@ -1020,14 +1020,15 @@
         999.5766,
         999.5766,
         999.7198,
-        999.7198
+        999.7198,
+        999.505
       ],
       "refillCount": 0,
       "lastRefillAt": null,
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 234
+      "cycleCount": 235
     },
     "VIVAX": {
       "startingUsdc": 1000,
