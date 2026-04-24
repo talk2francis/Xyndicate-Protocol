@@ -1,186 +1,23 @@
 {
-  "currentAgent": "idle",
-  "cycleNumber": 496,
-  "cycleStartTime": 1777007397727,
-  "nextCycleTime": 1777009280211,
+  "currentAgent": "oracle",
+  "cycleNumber": 497,
+  "cycleStartTime": 1777009301375,
+  "nextCycleTime": 1777011101375,
   "lastCycleComplete": 1777007480211,
   "activeSquads": [
     "Xyndicate Alpha",
     "Squad Nova"
   ],
-  "squadResults": {
-    "XYNDICATE_ALPHA": {
-      "squadId": "XYNDICATE_ALPHA",
-      "squadName": "Xyndicate Alpha",
-      "riskMode": "aggressive",
-      "baseAsset": "ETH",
-      "txHash": "0x864bac00a6d285a12d806cdd80285a0b86c4b6d869c104d8e231df990e2288a0",
-      "vaultTxHash": "0x4b7fcbd553c20fc6456317581919ef137e2eb32f9939d046eb05faada2ee74c4",
-      "pnlDelta": "0",
-      "action": "HOLD",
-      "asset": "ETH",
-      "sizePercent": 100,
-      "rationale": "ETH price stable with slight decrease in last 24h. Holding recommended in current market conditions. Market volatility risk present.",
-      "route": "okx",
-      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "spreadBps": 2.0364,
-      "narratorSummary": "Xyndicate Alpha held a $50 ETH position via okx. ETH price stable with slight decrease in last 24h. Holding recommended in current market conditions. Market volatility risk present.",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "ETH",
-            "type": "hold",
-            "rationale": "The price of ETH has remained relatively stable with a slight decrease in the last 24 hours. Holding may be a prudent strategy in the current market conditions.",
-            "confidence": 0.8
-          }
-        ],
-        "risks": [
-          {
-            "description": "Market volatility could increase, leading to larger price fluctuations.",
-            "severity": 0.7
-          }
-        ],
-        "recommendation": "wait",
-        "topAsset": "ETH",
-        "confidenceScore": 0.8
-      },
-      "market": {
-        "pair": "ETH-USDT",
-        "price": 2305.5,
-        "okxPrice": 2305.5,
-        "uniswapPrice": 2305.9694961530167,
-        "spreadBps": 2.04,
-        "betterRoute": "uniswap",
-        "uniswapPoolId": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
-        "priceSpreads": {
-          "absolute": 0.469496153,
-          "bps": 2.04,
-          "source": "uniswap-v3-onchain",
-          "rawUniswapPrice": 2305.9694961530167,
-          "rawOkxPrice": 2305.5,
-          "uniswapError": null
-        },
-        "change24h": -1.9712057690508842
-      },
-      "narrative": "HOLD ETH (100% treasury) via okx · ETH price stable with slight decrease in last 24h. Holding recommended in current market conditions. Market volatility risk present."
-    },
-    "SQUAD_NOVA": {
-      "squadId": "SQUAD_NOVA",
-      "squadName": "Squad Nova",
-      "riskMode": "balanced",
-      "baseAsset": "OKB",
-      "txHash": "0x98cda1304adac1bb9079b865320bab39757eae6af6f942dfefa61fb9fd7e4945",
-      "vaultTxHash": "0x9ec18476bb441bae33dd25e4a362251dee9104b217b9ba59456bebd6d6599cfb",
-      "pnlDelta": "0",
-      "action": "HOLD",
-      "asset": "OKB",
-      "sizePercent": 100,
-      "rationale": "Market conditions stable, no significant opportunities or risks identified. Analyst recommends waiting. High confidence score of 0.8.",
-      "route": "okx",
-      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "spreadBps": 0,
-      "narratorSummary": "Squad Nova held a $50 OKB position via okx. Market conditions stable, no significant opportunities or risks identified. Analyst recommends waiting. High confidence score of 0.8.",
-      "analyst": {
-        "opportunities": [],
-        "risks": [],
-        "recommendation": "wait",
-        "topAsset": "OKB",
-        "confidenceScore": 0.8
-      },
-      "market": {
-        "pair": "OKB-USDT",
-        "price": 83.68,
-        "okxPrice": 83.68,
-        "uniswapPrice": 83.68,
-        "spreadBps": 0,
-        "betterRoute": "okx",
-        "uniswapPoolId": null,
-        "priceSpreads": {
-          "absolute": 0,
-          "bps": 0,
-          "source": "okx-fallback",
-          "rawUniswapPrice": null,
-          "rawOkxPrice": 83.68,
-          "uniswapError": null
-        },
-        "change24h": -0.08358208955223066
-      },
-      "narrative": "HOLD OKB (100% treasury) via okx · Market conditions stable, no significant opportunities or risks identified. Analyst recommends waiting. High confidence score of 0.8."
-    }
-  },
-  "slowSquadLastRunAt": {
-    "phantom_last_run": 1777007434197,
-    "cipher_last_run": 1777007434197,
-    "nexus_last_run": 1777007434198
-  },
-  "uniswapQueriesSuccessful": 2,
+  "squadResults": {},
+  "slowSquadLastRunAt": {},
+  "uniswapQueriesSuccessful": 0,
   "uniswapQueriesTotal": 2,
   "agentLog": [
     {
       "agent": "system",
       "status": "started",
-      "completedAt": 1777007397727,
-      "summary": "Cycle 496 started. Oracle snapshot in progress."
-    },
-    {
-      "agent": "oracle",
-      "status": "complete",
-      "completedAt": 1777007428291,
-      "summary": "ETH $2305.50 (-1.97%) | Uniswap spread 2.04bps"
-    },
-    {
-      "agent": "analyst",
-      "status": "complete",
-      "completedAt": 1777007429496,
-      "summary": "wait on ETH | confidence 0"
-    },
-    {
-      "agent": "strategist",
-      "status": "complete",
-      "completedAt": 1777007430374,
-      "summary": "HOLD ETH (0% treasury)"
-    },
-    {
-      "agent": "router",
-      "status": "complete",
-      "completedAt": 1777007431300,
-      "summary": "okx selected | spread 0.00bps"
-    },
-    {
-      "agent": "executor",
-      "status": "complete",
-      "completedAt": 1777007432232,
-      "summary": "HOLD executed | tx 0x864bac00a6d285a12d806cdd80285a0b86c4b6d869c104d8e231df990e2288a0"
-    },
-    {
-      "agent": "narrator",
-      "status": "complete",
-      "completedAt": 1777007433217,
-      "summary": "Xyndicate Alpha held a $50 ETH position via okx. ETH price stable with slight decrease in last 24h. Holding recommended in current market conditions. Market volatility risk present. | Squad Nova held a $50 OKB position via okx. Market conditions stable, no significant opportunities or risks identified. Analyst recommends waiting. High confidence score of 0.8."
-    },
-    {
-      "agent": "slow-phantom",
-      "status": "complete",
-      "completedAt": 1777007434197,
-      "summary": "Phantom Protocol decision logged"
-    },
-    {
-      "agent": "slow-cipher",
-      "status": "complete",
-      "completedAt": 1777007434197,
-      "summary": "Cipher Strategy decision logged"
-    },
-    {
-      "agent": "slow-nexus",
-      "status": "complete",
-      "completedAt": 1777007434198,
-      "summary": "Nexus Quant decision logged"
-    },
-    {
-      "agent": "system",
-      "status": "complete",
-      "completedAt": 1777007480211,
-      "summary": "Cycle 496 complete. Awaiting next scheduled run."
+      "completedAt": 1777009301375,
+      "summary": "Cycle 497 started. Oracle snapshot in progress."
     }
   ]
 }
