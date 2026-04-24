@@ -1,41 +1,24 @@
 {
-  "lastUpdated": 1777064611821,
+  "lastUpdated": 1777066427493,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
-      "currentTreasury": 1001.6678,
-      "realizedPnl": 1.4345,
-      "unrealizedPnl": 0.2333,
-      "roi": 0.1668,
+      "currentTreasury": 1001.5222,
+      "realizedPnl": 1.5511,
+      "unrealizedPnl": -0.0289,
+      "roi": 0.1522,
       "openPositions": [
         {
           "asset": "ETH",
           "entryPrice": 2319.32,
-          "markPrice": 2324.73,
-          "sizeUsdc": 50,
-          "openedAt": 1777058789409,
-          "cycleNumber": 283
-        },
-        {
-          "asset": "ETH",
-          "entryPrice": 2319.32,
-          "markPrice": 2324.73,
+          "markPrice": 2317.98,
           "sizeUsdc": 50,
           "openedAt": 1777058861606,
           "cycleNumber": 284
         }
       ],
       "tradeHistory": [
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2389.39,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776836385862
-        },
         {
           "action": "BUY",
           "asset": "ETH",
@@ -500,10 +483,19 @@
           "sizeUsdc": 50,
           "pnl": null,
           "timestamp": 1777058861606
+        },
+        {
+          "action": "SELL",
+          "asset": "ETH",
+          "entryPrice": 2319.32,
+          "exitPrice": 2324.73,
+          "sizeUsdc": 50,
+          "pnl": 0.1166,
+          "timestamp": 1777066427493,
+          "reason": "force-close-stale"
         }
       ],
       "treasuryHistory": [
-        1000.7007,
         1000.7007,
         1000.7007,
         1000.7007,
@@ -552,14 +544,15 @@
         1001.3241,
         1001.3241,
         1001.6678,
-        1001.6678
+        1001.6678,
+        1001.5222
       ],
       "refillCount": 0,
       "lastRefillAt": null,
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 290
+      "cycleCount": 291
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
