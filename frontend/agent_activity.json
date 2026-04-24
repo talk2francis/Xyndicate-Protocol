@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "501-executor-1777016926667",
-      "agent": "executor",
-      "cycle": 501,
-      "timestamp": 1777016926667,
-      "status": "complete",
-      "summary": "HOLD executed on OKX | 2 decision txs",
-      "durationMs": 1
-    },
-    {
       "id": "501-narrator-1777016927611",
       "agent": "narrator",
       "cycle": 501,
@@ -539,6 +530,15 @@
       "status": "complete",
       "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
+    },
+    {
+      "id": "511-executor-1777035946471",
+      "agent": "executor",
+      "cycle": 511,
+      "timestamp": 1777035946471,
+      "status": "complete",
+      "summary": "HOLD executed on OKX | 2 decision txs",
+      "durationMs": 2
     }
   ]
 }
