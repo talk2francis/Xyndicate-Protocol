@@ -1096,7 +1096,9 @@
     "0xaf1b83147c20a6db01c9c7bafa21cdee979dbe4b9e8188cbab58362199d9e5b9",
     "0x27c571023fda8ac5b7811f159a3b61a3c2394af9c6394593b4fbc504d3acdbea",
     "0xa43535b85ac921c57206e63c5750a36b6e43f815ed49b2fbe528e67a544039ec",
-    "0x76026419fd1f2a6a1fb4fa30cae26212898121bb72cb3989f2229f93d61ea9b3"
+    "0x76026419fd1f2a6a1fb4fa30cae26212898121bb72cb3989f2229f93d61ea9b3",
+    "0xfcadd8defd6172b870a910c1048f9875f900c596d3e59030efbf9c68457f7f2e",
+    "0x34b2e833bee19ad486e1fcd3c9f0f382b6e2507898cd5cf86077d95d6a98c130"
   ],
   "decisionLogEntries": [
     {
@@ -12123,6 +12125,20 @@
       "agentChain": "External→Oracle→Analyst→Strategist→Router→Executor",
       "rationale": "HOLD ETH ($50 position) via OKX · Market conditions evaluated.",
       "timestamp": 1777072212
+    },
+    {
+      "txHash": "0xfcadd8defd6172b870a910c1048f9875f900c596d3e59030efbf9c68457f7f2e",
+      "squadId": "XYNDICATE_ALPHA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD ETH (100% treasury) · Price stability and minimal spread indicate holding position is favorable. Negative 24h price change is a risk but overall recommendation is to wait.",
+      "timestamp": 1777074048
+    },
+    {
+      "txHash": "0x34b2e833bee19ad486e1fcd3c9f0f382b6e2507898cd5cf86077d95d6a98c130",
+      "squadId": "SQUAD_NOVA",
+      "agentChain": "Oracle→Analyst→Strategist→Router→Executor",
+      "rationale": "HOLD OKB (10% treasury) · Market conditions stable, no opportunities or risks identified. Analyst recommends waiting. Confidence score is low.",
+      "timestamp": 1777074048
     }
   ]
 }
