@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "515-router-1777043567648",
-      "agent": "router",
-      "cycle": 515,
-      "timestamp": 1777043567648,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "515-executor-1777043568685",
       "agent": "executor",
       "cycle": 515,
@@ -538,6 +529,15 @@
       "timestamp": 1777062628133,
       "status": "complete",
       "summary": "HOLD ETH (100% treasury) | ETH price stable with minor decrease in 24h. Holding suitable in current market. Market spread high at 5.44 bps, indicating liquidity issues.",
+      "durationMs": 1
+    },
+    {
+      "id": "525-router-1777062629168",
+      "agent": "router",
+      "cycle": 525,
+      "timestamp": 1777062629168,
+      "status": "complete",
+      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
       "durationMs": 1
     }
   ]
