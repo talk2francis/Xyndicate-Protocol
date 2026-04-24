@@ -1,15 +1,6 @@
 {
   "entries": [
     {
-      "id": "509-router-1777032126664",
-      "agent": "router",
-      "cycle": 509,
-      "timestamp": 1777032126664,
-      "status": "complete",
-      "summary": "OKX selected | No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "durationMs": 1
-    },
-    {
       "id": "509-executor-1777032127609",
       "agent": "executor",
       "cycle": 509,
@@ -538,6 +529,15 @@
       "timestamp": 1777051188164,
       "status": "complete",
       "summary": "BUY ETH (100% treasury) | Positive 24h price change and lower price on Uniswap compared to OKX. High spread between exchanges but overall opportunity outweighs risks.",
+      "durationMs": 1
+    },
+    {
+      "id": "519-router-1777051189217",
+      "agent": "router",
+      "cycle": 519,
+      "timestamp": 1777051189217,
+      "status": "complete",
+      "summary": "OKX selected | OKX remains within threshold, so default execution path is retained.",
       "durationMs": 1
     }
   ]
