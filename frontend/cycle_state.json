@@ -1,186 +1,23 @@
 {
-  "currentAgent": "idle",
-  "cycleNumber": 506,
-  "cycleStartTime": 1777026388412,
-  "nextCycleTime": 1777028264349,
+  "currentAgent": "oracle",
+  "cycleNumber": 507,
+  "cycleStartTime": 1777028287041,
+  "nextCycleTime": 1777030087041,
   "lastCycleComplete": 1777026464349,
   "activeSquads": [
     "Xyndicate Alpha",
     "Squad Nova"
   ],
-  "squadResults": {
-    "XYNDICATE_ALPHA": {
-      "squadId": "XYNDICATE_ALPHA",
-      "squadName": "Xyndicate Alpha",
-      "riskMode": "aggressive",
-      "baseAsset": "ETH",
-      "txHash": "0x4e4f4fdedeb16763959819e37c80ef09ce157ca0338bdde786f5cae8655f65d8",
-      "vaultTxHash": "0x38f33380d104ee72a8d9f03c62961d26e1b930e6b48dee7c8d6139224a636335",
-      "pnlDelta": "50",
-      "action": "BUY",
-      "asset": "ETH",
-      "sizePercent": 100,
-      "rationale": "Positive 24h change and lower price on Uniswap compared to OKX. Opportunities outweigh risks.",
-      "route": "okx",
-      "routingReason": "OKX remains within threshold, so default execution path is retained.",
-      "spreadBps": 6.6248,
-      "narratorSummary": "Xyndicate Alpha opened a $50 ETH position via okx. Positive 24h change and lower price on Uniswap compared to OKX. Opportunities outweigh risks.",
-      "analyst": {
-        "opportunities": [
-          {
-            "asset": "ETH",
-            "type": "long",
-            "rationale": "Positive 24h change and lower price on Uniswap compared to OKX.",
-            "confidence": 0.8
-          }
-        ],
-        "risks": [
-          {
-            "description": "Spread between Uniswap and OKX is relatively high.",
-            "severity": 0.7
-          }
-        ],
-        "recommendation": "wait",
-        "topAsset": "ETH",
-        "confidenceScore": 0.8
-      },
-      "market": {
-        "pair": "ETH-USDT",
-        "price": 2314.21,
-        "okxPrice": 2314.21,
-        "uniswapPrice": 2315.7431242339717,
-        "spreadBps": 6.62,
-        "betterRoute": "uniswap",
-        "uniswapPoolId": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
-        "priceSpreads": {
-          "absolute": 1.533124234,
-          "bps": 6.62,
-          "source": "uniswap-v3-onchain",
-          "rawUniswapPrice": 2315.7431242339717,
-          "rawOkxPrice": 2314.21,
-          "uniswapError": null
-        },
-        "change24h": 0.019881145326851923
-      },
-      "narrative": "BUY ETH (100% treasury) via okx · Positive 24h change and lower price on Uniswap compared to OKX. Opportunities outweigh risks."
-    },
-    "SQUAD_NOVA": {
-      "squadId": "SQUAD_NOVA",
-      "squadName": "Squad Nova",
-      "riskMode": "balanced",
-      "baseAsset": "OKB",
-      "txHash": "0x3a3962f450a0b70717834fa35b9f9de36bfa25db12e2acae59a525c7f11a5dda",
-      "vaultTxHash": "0x2a0d084dd7bae4af0fa07d4373801f687e82a1023e4a3f183dbc728ffa4cea5b",
-      "pnlDelta": "0",
-      "action": "HOLD",
-      "asset": "OKB",
-      "sizePercent": 10,
-      "rationale": "Market conditions stable, no opportunities or risks identified. Analyst recommendation to wait, low confidence score.",
-      "route": "okx",
-      "routingReason": "No execution improvement is needed for HOLD, so OKX remains the default route.",
-      "spreadBps": 0,
-      "narratorSummary": "Squad Nova held a $50 OKB position via okx. Market conditions stable, no opportunities or risks identified. Analyst recommendation to wait, low confidence score.",
-      "analyst": {
-        "opportunities": [],
-        "risks": [],
-        "recommendation": "wait",
-        "topAsset": "OKB",
-        "confidenceScore": 0
-      },
-      "market": {
-        "pair": "OKB-USDT",
-        "price": 83.8,
-        "okxPrice": 83.8,
-        "uniswapPrice": 83.8,
-        "spreadBps": 0,
-        "betterRoute": "okx",
-        "uniswapPoolId": null,
-        "priceSpreads": {
-          "absolute": 0,
-          "bps": 0,
-          "source": "okx-fallback",
-          "rawUniswapPrice": null,
-          "rawOkxPrice": 83.8,
-          "uniswapError": null
-        },
-        "change24h": 0.5881646861121052
-      },
-      "narrative": "HOLD OKB (10% treasury) via okx · Market conditions stable, no opportunities or risks identified. Analyst recommendation to wait, low confidence score."
-    }
-  },
-  "slowSquadLastRunAt": {
-    "phantom_last_run": 1777026419565,
-    "cipher_last_run": 1777026419565,
-    "nexus_last_run": 1777026419566
-  },
-  "uniswapQueriesSuccessful": 2,
+  "squadResults": {},
+  "slowSquadLastRunAt": {},
+  "uniswapQueriesSuccessful": 0,
   "uniswapQueriesTotal": 2,
   "agentLog": [
     {
       "agent": "system",
       "status": "started",
-      "completedAt": 1777026388412,
-      "summary": "Cycle 506 started. Oracle snapshot in progress."
-    },
-    {
-      "agent": "oracle",
-      "status": "complete",
-      "completedAt": 1777026413450,
-      "summary": "ETH $2314.21 (0.02%) | Uniswap spread 6.62bps"
-    },
-    {
-      "agent": "analyst",
-      "status": "complete",
-      "completedAt": 1777026414500,
-      "summary": "wait on ETH | confidence 0"
-    },
-    {
-      "agent": "strategist",
-      "status": "complete",
-      "completedAt": 1777026415682,
-      "summary": "HOLD ETH (0% treasury)"
-    },
-    {
-      "agent": "router",
-      "status": "complete",
-      "completedAt": 1777026416747,
-      "summary": "okx selected | spread 0.00bps"
-    },
-    {
-      "agent": "executor",
-      "status": "complete",
-      "completedAt": 1777026417758,
-      "summary": "HOLD executed | tx 0x4e4f4fdedeb16763959819e37c80ef09ce157ca0338bdde786f5cae8655f65d8"
-    },
-    {
-      "agent": "narrator",
-      "status": "complete",
-      "completedAt": 1777026418681,
-      "summary": "Xyndicate Alpha opened a $50 ETH position via okx. Positive 24h change and lower price on Uniswap compared to OKX. Opportunities outweigh risks. | Squad Nova held a $50 OKB position via okx. Market conditions stable, no opportunities or risks identified. Analyst recommendation to wait, low confidence score."
-    },
-    {
-      "agent": "slow-phantom",
-      "status": "complete",
-      "completedAt": 1777026419565,
-      "summary": "Phantom Protocol decision logged"
-    },
-    {
-      "agent": "slow-cipher",
-      "status": "complete",
-      "completedAt": 1777026419565,
-      "summary": "Cipher Strategy decision logged"
-    },
-    {
-      "agent": "slow-nexus",
-      "status": "complete",
-      "completedAt": 1777026419566,
-      "summary": "Nexus Quant decision logged"
-    },
-    {
-      "agent": "system",
-      "status": "complete",
-      "completedAt": 1777026464349,
-      "summary": "Cycle 506 complete. Awaiting next scheduled run."
+      "completedAt": 1777028287041,
+      "summary": "Cycle 507 started. Oracle snapshot in progress."
     }
   ]
 }
