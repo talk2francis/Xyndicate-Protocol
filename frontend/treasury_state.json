@@ -1,33 +1,15 @@
 {
-  "lastUpdated": 1777098792906,
+  "lastUpdated": 1777098849173,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
       "startingUsdc": 1000,
       "currentTreasury": 1001.4331,
-      "realizedPnl": 1.4795,
-      "unrealizedPnl": -0.0464,
+      "realizedPnl": 1.4331,
+      "unrealizedPnl": 0,
       "roi": 0.1433,
-      "openPositions": [
-        {
-          "asset": "ETH",
-          "entryPrice": 2318.67,
-          "markPrice": 2316.52,
-          "sizeUsdc": 50,
-          "openedAt": 1777091227147,
-          "cycleNumber": 318
-        }
-      ],
+      "openPositions": [],
       "tradeHistory": [
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2394.02,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776844018264
-        },
         {
           "action": "SELL",
           "asset": "ETH",
@@ -493,10 +475,19 @@
           "pnl": -0.0427,
           "timestamp": 1777098783361,
           "reason": "force-close-stale"
+        },
+        {
+          "action": "SELL",
+          "asset": "ETH",
+          "entryPrice": 2318.67,
+          "exitPrice": 2316.52,
+          "sizeUsdc": 50,
+          "pnl": -0.0464,
+          "timestamp": 1777098849173,
+          "reason": "force-close-stale"
         }
       ],
       "treasuryHistory": [
-        1001.2964,
         1001.2765,
         1001.2765,
         1001.1496,
@@ -545,6 +536,7 @@
         1001.3613,
         1001.4368,
         1001.4368,
+        1001.4331,
         1001.4331
       ],
       "refillCount": 0,
@@ -552,7 +544,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 325
+      "cycleCount": 326
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
