@@ -3,6 +3,7 @@ const path = require('path');
 const { runFullPipeline } = require('./pipeline');
 const { INTERVAL_MS, readCycleState, writeCycleState } = require('./cycle-state');
 const { selfCallMcp } = require('./self-call-mcp');
+const AUTOMATION_DISABLED = String(process.env.XYNDICATE_AUTOMATION_DISABLED || 'true').trim().toLowerCase() === 'true';
 const { writeLeaderboardArtifact } = require('./generate-leaderboard');
 const { writeEconomyArtifact } = require('./generate-economy');
 const { initializeTreasuryState, writeTreasuryStateFromDecision } = require('./treasury');
@@ -52,6 +53,11 @@ function applyTreasuryRefillIfReady(treasuryState) {
 }
 
 async function scheduledRun() {
+  if (AUTOMATION_DISABLED) {
+    console.log('[HALT] Xyndicate automation is disabled. Scheduler will not run.');
+    return;
+  }
+
   if (!canRun()) {
     console.log('Too soon since last run. Skipping.');
     scheduleNext();
@@ -142,4 +148,8 @@ function scheduleNext() {
   setTimeout(scheduledRun, INTERVAL_MS);
 }
 
-scheduledRun();
+if (AUTOMATION_DISABLED) {
+  console.log('[HALT] Scheduler bootstrap skipped because XYNDICATE_AUTOMATION_DISABLED=true');
+} else {
+  scheduledRun();
+}

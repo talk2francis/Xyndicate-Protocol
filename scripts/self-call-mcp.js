@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const { appendAndPublishUsageEntry } = require('./mcp-usage');
+const AUTOMATION_DISABLED = String(process.env.XYNDICATE_AUTOMATION_DISABLED || 'true').trim().toLowerCase() === 'true';
 
 const MCP_BASE_URL = (process.env.MCP_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://xyndicateprotocol.vercel.app').replace(/\/$/, '');
 const MCP_URL = `${MCP_BASE_URL}/api/mcp`;
@@ -27,6 +28,11 @@ async function callTool(tool, params = {}, caller = 'scheduler-self-call') {
 }
 
 async function selfCallMcp() {
+  if (AUTOMATION_DISABLED) {
+    console.log('[HALT] MCP self-call disabled by XYNDICATE_AUTOMATION_DISABLED');
+    return [];
+  }
+
   const results = [];
 
   for (const job of [

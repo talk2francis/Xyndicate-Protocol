@@ -13,6 +13,8 @@ function getGithubToken() {
 }
 
 function remoteArtifactPublishEnabled() {
+  const halted = String(process.env.XYNDICATE_AUTOMATION_DISABLED || 'true').trim().toLowerCase() === 'true';
+  if (halted) return false;
   return String(process.env.ENABLE_REMOTE_ARTIFACT_PUBLISH || '').trim().toLowerCase() === 'true';
 }
 
