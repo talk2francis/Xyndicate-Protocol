@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1777102611309,
+  "lastUpdated": 1777102664856,
   "initialized": true,
   "squads": {
     "XYNDICATE_ALPHA": {
@@ -16,18 +16,17 @@
           "sizeUsdc": 50,
           "openedAt": 1777102593390,
           "cycleNumber": 329
+        },
+        {
+          "asset": "ETH",
+          "entryPrice": 2316.33,
+          "markPrice": 2316.33,
+          "sizeUsdc": 50,
+          "openedAt": 1777102664856,
+          "cycleNumber": 330
         }
       ],
       "tradeHistory": [
-        {
-          "action": "BUY",
-          "asset": "ETH",
-          "entryPrice": 2389.89,
-          "exitPrice": null,
-          "sizeUsdc": 50,
-          "pnl": null,
-          "timestamp": 1776851536896
-        },
         {
           "action": "SELL",
           "asset": "ETH",
@@ -493,10 +492,18 @@
           "sizeUsdc": 50,
           "pnl": null,
           "timestamp": 1777102593390
+        },
+        {
+          "action": "BUY",
+          "asset": "ETH",
+          "entryPrice": 2316.33,
+          "exitPrice": null,
+          "sizeUsdc": 50,
+          "pnl": null,
+          "timestamp": 1777102664856
         }
       ],
       "treasuryHistory": [
-        1001.1496,
         1001.4337,
         1001.4337,
         1001.4345,
@@ -541,6 +548,7 @@
         1001.3613,
         1001.4368,
         1001.4368,
+        1001.4331,
         1001.4331,
         1001.4331,
         1001.4331,
@@ -552,7 +560,7 @@
       "wipedAt": null,
       "resetAt": 1776464798059,
       "resetReason": "treasury-mechanics-rewrite-v2",
-      "cycleCount": 329
+      "cycleCount": 330
     },
     "SQUAD_NOVA": {
       "startingUsdc": 1000,
